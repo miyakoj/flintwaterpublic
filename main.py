@@ -26,10 +26,13 @@ form = cgi.FieldStorage()
 print "Content-Type: text/html"
 print
 
-if (form.getvalue("type") == "lead") :
-  cursor = db.cursor()
-  cursor.execute("USE waterdata")
-  cursor.execute("SELECT * FROM waterCondition  ORDER BY latitude")
-  all_rows = cursor.fetchall()
+print "test 1"
+
+if (form.getvalue("type") == "lead"):
+    print "test 2"
+    cursor = db.cursor()
+    cursor.execute("USE waterdata")
+    cursor.execute("SELECT * FROM waterCondition  ORDER BY latitude")
+    all_rows = cursor.fetchall()
 
 print(all_rows)

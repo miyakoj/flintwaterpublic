@@ -272,6 +272,7 @@ $(document).ready(function(){
 	})
 	.done(function( data ) {
 		console.log(data);
+		//$("body").html(data);
 	});
 	
 
