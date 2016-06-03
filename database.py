@@ -6,10 +6,10 @@ import cgitb
 cgitb.enable()
 
 #form = cgi.FieldStorage()
-print "Content-Type: text/html"
-print
+#print "Content-Type: text/html"
+#print
 
-print "test 1"
+return "test 1"
 
 """env = os.getenv('SERVER_SOFTWARE')
 if (env and env.startswith('Google App Engine/')):
