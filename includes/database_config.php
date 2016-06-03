@@ -1,10 +1,9 @@
 <?php
 
-// Using mysqli (connecting from App Engine)
-$sql = new mysqli(
+$mysqli = new mysqli(
 	null, // host
 	'root', // username
-	'adminpassword',     // password
+	'',     // password
 	'waterdata', // database name
 	null,
 	'/cloudsql/flint-water-project:flint-water-project-db'

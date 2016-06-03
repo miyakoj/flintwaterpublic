@@ -7,7 +7,7 @@ function queries($choice) {
 	$choice = $mysqli->real_escape_string($choice);
 	
 	if (strcmp($choice, "lead") === 0)
-		$query = "SELECT * FROM waterCondition ORDER BY latitude";
+		$query = "SELECT * FROM waterCondition ORDER BY leadLevel";
 	
 	// Return results
 	return $mysqli->query($query);
