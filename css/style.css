@@ -1,0 +1,230 @@
+html, body {
+  	height:100%;
+}
+
+header {
+	background-color:#000;
+	height:35px;
+	text-align:center;
+}
+
+header h2 {
+	margin-bottom:0;
+	display:none;
+}
+
+.col-md-12 {
+	padding-left:0!important;
+	padding-right:0!important;
+}
+
+#main {
+	padding:0;
+}
+
+#main .row {
+	margin-left:0!important;
+	margin-right:0!important;
+}
+
+.border {
+	margin-bottom:12px;
+	padding-bottom:12px;
+	border-bottom:1px solid #CCC;
+}
+
+
+/* Drawer Nav */
+nav ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	text-align:left;
+}
+
+nav ul li:last-child {
+	padding-bottom:0!important;
+}
+
+nav ul a {
+	padding:0!important;
+}
+
+nav {
+	padding:5px;
+	font-size:1.25rem;
+	text-align:left;
+}
+
+nav h5 {
+	font-weight:bold;
+}
+
+nav .tooltip-arrow {
+	display:none;
+}
+
+nav #saved_locations {
+	margin-top:0;
+}
+
+nav #resource_buttons {
+	margin-bottom:15px;
+}
+
+nav #resource_buttons div {
+	text-align:center;
+}
+
+nav #resource_buttons div:first-of-type {
+	margin-bottom:15px;
+}
+
+nav button img {
+	width:auto;
+    max-height:30px;
+}
+
+nav #news li {
+	padding-bottom:8px;
+}
+
+.drawer-toggle {
+	padding-top:0;
+	padding-bottom:0;
+	line-height:35px;
+	color:#FFF;
+}
+
+.drawer-nav {
+	width:35rem;
+}
+
+.drawer--left .drawer-nav {
+	left:-35rem;
+}
+
+.drawer-open .drawer-hamburger {
+	left:32rem!important;
+	opacity: 0;
+}
+
+.drawer-menu-item {
+	font-size:1.25rem;
+}
+
+@media only screen and (max-width: 800px) {
+    .drawer-menu-item {
+		font-size:110%;
+	}
+}
+
+
+/* Map-Related Styles. */
+#search_box {
+}
+
+#pac-input {
+	background-color: #fff;
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
+	margin-left: 12px;
+	padding: 0 11px 0 13px;
+	text-overflow: ellipsis;
+	width: 250px;
+	top:10px!important;
+	left:10px!important;
+}
+
+#pac-input:focus {
+	border-color: #4d90fe;
+}
+
+.pac-container {
+	font-family: Roboto;
+}
+
+.controls {
+	margin-top: 10px;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 32px;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#search_button, #save_button {
+	background-color: #8ec7ff;
+	width: 35px;
+	height: 32px;
+	font-size: 180%;
+	color: #61b1ff;
+	border-style: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+	z-index: 1;
+}
+
+#search_button {
+	position:absolute;
+	top:95px;
+	left:272px;
+}
+
+#save_button {
+	position:absolute;
+	top:95px;
+	left:308px;
+}
+
+#type-selector {
+	color: #fff;
+	background-color: #4d90fe;
+	padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+	font-family: Roboto;
+	font-size: 13px;
+	font-weight: 300;
+}
+
+#map {
+	width:100%;
+	
+}
+
+#map h1 {
+	font-size:1.25em;
+}
+
+
+footer {
+	display:none;
+	margin-top:15px;
+}
+
+/* Tooltip */
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-top-color: #fff;
+  border-width: 5px 5px 0;
+}
+.tooltip-inner {
+  color: #000;
+  background: #fff;
+  border: solid 1px #fff;
+}
+
+.resource_buttons{
+	margin: 3px 5px 3px 5px;
+}
+
+.resource_buttons_image{
+	margin-right: 3px;
+}
+

@@ -1,0 +1,112 @@
+{ "providers": [
+{
+	"title" : "University of Michigan-Flint",
+	"lat" : "43.0193644",
+	"long" : "-83.7241459",
+	"details" : "The University of Michigan-Flint is open daily from 9am-10pm. Water pick-up is located in the U-drive at the rear of the University Center.",
+	"hasWater" : "true",
+	"hasRecycle" : "true",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "false",
+	"hasWaterTestKits" : "false"
+},
+{
+	"title" : "McLaren Health Care",
+	"lat" : "42.9822035",
+	"long" : "-83.741312",
+	"details" : "McLaren Health Care, headquartered in Flint, Michigan, is a fully integrated health network committed to quality evidence-based patient care and cost efficiency. The McLaren system includes 12 hospitals, ambulatory surgery centers, imaging centers, the state’s only proton therapy center, an employed primary care physician network, commercial and Medicaid HMOs covering more than 250,000 lives, home health and hospice providers, retail medical equipment showrooms, pharmacy services, and a wholly owned medical malpractice insurance company.",
+	"hasWater" : "false",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "true",
+	"hasFilters" : "true",
+	"hasWaterTestKits" : "false"
+},
+{
+	"title" : "Flint Fire Department",
+	"lat" : "43.0039226",
+	"long" : "-83.6935473",
+	"details" : "The Flint Fire Department has free water bottles and water test kits from 1pm-5pm, Monday-Friday.",
+	"hasWater" : "true",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "false",
+	"hasWaterTestKits" : "true"
+},
+{
+	"title" : "Fire Station #3",
+	"lat" : "43.029836",
+	"long" : "-83.7205125",
+	"details" : "Fire Station #3 has free water bottles and water test kits from 1pm-5pm, Monday-Friday.",
+	"hasWater" : "true",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "false",
+	"hasWaterTestKits" : "true"
+},
+{
+	"title" : "Hurley Medical Center",
+	"lat" : "43.0212883",
+	"long" : "-83.7066846",
+	"details" : "Open 24/7, Hurley Medical Center conducts blood testing and distributes water filters.",
+	"hasWater" : "false",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "true",
+	"hasFilters" : "true",
+	"hasWaterTestKits" : "false"
+},
+{
+	"title" : "Dort Federal Event Center",
+	"lat" : "43.0112159",
+	"long" : "-83.6441627",
+	"details" : "The Dort Federal Event Center distributes water bottles and water filters. Recycling may be dropped off here near the entrance.",
+	"hasWater" : "true",
+	"hasRecycle" : "true",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "true",
+	"hasWaterTestKits" : "false"
+},
+{
+	"title" : "Genesee County Land Bank",
+	"lat" : "43.0144874",
+	"long" : "-83.7606287",
+	"details" : "The Genesee County Land Bank, located in Ross Plaza, provides water bottles and filters Monday-Friday.",
+	"hasWater" : "true",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "true",
+	"hasWaterTestKits" : "false"
+},
+{
+	"title" : "Genesee County Community Action Resource Department",
+	"lat" : "43.0287041",
+	"long" : "-83.7059183",
+	"details" : "The Genesee County Community Action Resource Department provides water bottles, water filters, and water test kits.",
+	"hasWater" : "true",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "true",
+	"hasWaterTestKits" : "true"
+},
+{
+	"title" : "Flint City Council",
+	"lat" : "43.0107573",
+	"long" : "-83.6860593",
+	"details" : "Free water bottles are distributed from 2-9pm every Tuesday and Thursday near the entrance.",
+	"hasWater" : "true",
+	"hasRecycle" : "false",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "false",
+	"hasWaterTestKits" : "false"
+},
+{
+	"title" : "Michigan Department Of Human Services",
+	"lat" : "43.0367962",
+	"long" : "-84.1745667",
+	"details" : "Open from 9am-5pm.",
+	"hasWater" : "true",
+	"hasRecycle" : "true",
+	"hasBloodTesting" : "false",
+	"hasFilters" : "true",
+	"hasWaterTestKits" : "true"
+}
+]}
