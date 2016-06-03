@@ -265,15 +265,15 @@ function bindInfoWindow(marker, map, infowindow, html){
 
 $(document).ready(function(){
 	/* Load the lead level data. */
-	$.ajax({
+	/*$.ajax({
 		method: "GET",
-		url: "database.py",
-		data: {type: "lead"}
-	})
-	.done(function(data) {
-		//console.log(data);
-		$("body").prepend(data);
-	});
+		url: "/database.py",
+		data: {type: "lead"},
+		success: function(data){ 
+			//$("body").append(data);
+			console.log(data);
+		}
+	});*/
 	
 	/*$.get("database.py", function(data, status){
         $("body").prepend(data);
