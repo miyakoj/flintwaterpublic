@@ -276,7 +276,7 @@ $(document).ready(function(){
 	});*/
 	
 	$.get("database.py", function(data, status){
-        //console.log(data);
+        console.log(status);
     });
 	
 
