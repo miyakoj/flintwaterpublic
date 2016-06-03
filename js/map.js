@@ -265,15 +265,19 @@ function bindInfoWindow(marker, map, infowindow, html){
 
 $(document).ready(function(){
 	/* Load the lead level data. */
-	$.ajax({
+	/*$.ajax({
 		method: "GET",
 		url: "main.py",
 		data: {type: "lead"}
 	})
-	.done(function( data ) {
+	.done(function(data) {
 		console.log(data);
 		//$("body").html(data);
-	});
+	});*/
+	
+	$.get("main.py", function(data, status){
+        console.log(data);
+    });
 	
 
 	$("[name='heatmap']").on('click', function(){
