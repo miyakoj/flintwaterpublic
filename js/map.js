@@ -265,19 +265,19 @@ function bindInfoWindow(marker, map, infowindow, html){
 
 $(document).ready(function(){
 	/* Load the lead level data. */
-	/*$.ajax({
+	$.ajax({
 		method: "GET",
-		url: "main.py",
+		url: "database.py",
 		data: {type: "lead"}
 	})
 	.done(function(data) {
-		console.log(data);
-		//$("body").html(data);
-	});*/
+		//console.log(data);
+		$("body").prepend(data);
+	});
 	
-	$.get("database.py", function(data, status){
+	/*$.get("database.py", function(data, status){
         $("body").prepend(data);
-    });
+    });*/
 	
 
 	$("[name='heatmap']").on('click', function(){
