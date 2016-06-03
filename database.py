@@ -5,7 +5,13 @@ import cgitb
 
 cgitb.enable()
 
-env = os.getenv('SERVER_SOFTWARE')
+#form = cgi.FieldStorage()
+print "Content-Type: text/html"
+print
+
+print "test 1"
+
+"""env = os.getenv('SERVER_SOFTWARE')
 if (env and env.startswith('Google App Engine/')):
   # Connecting from App Engine
   db = MySQLdb.connect(
@@ -21,12 +27,6 @@ else:
     port=3306,
     user='root'
   )
-    
-form = cgi.FieldStorage()
-print "Content-Type: text/html"
-print
-
-print "test 1"
 
 if (form.getvalue("type") == "lead"):
     print "test 2"
@@ -35,4 +35,4 @@ if (form.getvalue("type") == "lead"):
     cursor.execute("SELECT * FROM waterCondition  ORDER BY latitude")
     all_rows = cursor.fetchall()
 
-print(all_rows)
+print(all_rows)"""
