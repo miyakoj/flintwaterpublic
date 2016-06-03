@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flint Water Crisis Information Site</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link rel="stylesheet" href="css/drawer.min.css">
+<link rel="stylesheet" href="css/style.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.1.3/iscroll.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+<script src="js/drawer.min.js" charset="utf-8"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7HOgmlOJWmtlAZL4XGhItNJzWA0nUW0&callback=initMap&libraries=visualization,places" async defer></script>
+<script src="js/script.js"></script>
+<script src="js/map.js"></script>
+
+{MAP_POPULATION}
+</head>
+
+<body class="drawer drawer--left">
+
+	<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+	<button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
+	<button id="save_button" class="glyphicon glyphicon-floppy-disk" data-toggle="tooltip" title="Save location" ></button>
+
+	<div id="map"></div>
+
+<div class="container-fluid" id="main">
+  <div class="row">
+  	<div class="col-md-12" id="header">
+		<header role="banner">
+			<button type="button" class="drawer-toggle drawer-hamburger">
+			  <span class="sr-only">toggle navigation</span>
+			  <span class="glyphicon glyphicon-menu-hamburger"></span>
+			</button>
+			
+			<nav class="drawer-nav" role="navigation">
+				<a class="close">&times;</a>	
+				<ul class="drawer-menu">
+
+
+					<li class="border">
+					<h5>Saved Map Locations</h5>
+					
+					<ul id="saved_locations">
+					<li>[saved locations]</li>
+					</ul>
+					</li>
+	
+					
+					<li class="border">
+					<h5>Latest News and Alerts</h5>
+					
+					<ul id="news">
+					<li><a class="drawer-menu-item" href="#">News Item</a></li>
+					<li><a class="drawer-menu-item" href="#">News Item</a></li>
+					</ul>
+					</li>
+					
+					<li class="border">
+					<ul id="user_input">
+					<li><a class="drawer-menu-item" href="#">Take the Survey</a></li>
+					<li><a class="drawer-menu-item" href="#">Test My Water</a></li>
+					<li><a class="drawer-menu-item" href="#">Report a Problem</a></li>
+					</ul>
+					</li>
+					
+					<li><a class="drawer-menu-item" href="#">About This App</a></li>
+				</ul>
+			</nav>
+		  </header>
+
+		<div class="btn-group" data-toggle="buttons">
+		  <label class="btn btn-primary active resource_buttons"  name="heatmap" >
+		    <input type="checkbox" autocomplete="off" >Lead Levels
+		  </label>
+		  <label class="btn btn-primary resource_buttons" name="water_pickup">
+		    <input type="checkbox" autocomplete="off"  ><img src="images/waterpickupicon.png" height="18px" class="resource_buttons_image"> Water Pickup
+		  </label>
+		  <label class="btn btn-primary resource_buttons" name="recycling" >
+		    <input type="checkbox" autocomplete="off" ><img src="images/recycleicon.png" height="18px" class="resource_buttons_image">Recycling
+		  </label>
+		  <label class="btn btn-primary resource_buttons" name="water_testing">
+		    <input type="checkbox" autocomplete="off"  ><img src="images/leadtesticon.png" height="18px" class="resource_buttons_image">Lead Testing
+		  </label>
+		  <label class="btn btn-primary resource_buttons" name="blood_testing">
+		    <input type="checkbox" autocomplete="off"  ><img src="images/bloodtesticon.png" height="18px" class="resource_buttons_image">Blood Testing
+		  </label>
+		  <label class="btn btn-primary resource_buttons" name="water_filters">
+		    <input type="checkbox" autocomplete="off"  ><img src="images/waterfiltericon.png" height="18px" class="resource_buttons_image">Filters
+		  </label>
+		  <label class="btn btn-primary resource_buttons" name="construction">
+		    <input type="checkbox" autocomplete="off"  ><img src="images/constructionicon.png" height="18px" class="resource_buttons_image">Construction
+		  </label>
+		</div>
+    </div>
+    <div class="col-md-12" id="map_container"></div>
+</div>
+</div>
+</body>
+</html>
