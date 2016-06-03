@@ -275,8 +275,8 @@ $(document).ready(function(){
 		//$("body").html(data);
 	});*/
 	
-	$.get("main.py", function(data, status){
-        console.log(data);
+	$.get("database.py", function(data, status){
+        //console.log(data);
     });
 	
 
