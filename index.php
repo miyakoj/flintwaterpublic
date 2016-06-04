@@ -1,16 +1,16 @@
 <?php
 
-require_once "includes/template.class";
-require_once "includes/queries.php";
+require_once "includes/template.php";
+//require_once "includes/queries.php";
 
-$result = queries("lead");
+//$result = queries("lead");
 
 /*while ($row = $result->fetch_assoc()) {
 	print_r($row);
 }*/
 
-$data = "<script></script>";
+//$data = "<script></script>";
 
 $page = new webpageTemplate("includes/template.html");
-$page->set("MAP_POPULATION", $data);
+//$page->set("MAP_POPULATION", $data);
 $page->create();
