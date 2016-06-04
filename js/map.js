@@ -13,6 +13,22 @@ var constructionMarker ;
 var constructionToggle = 0;
 var pipePolyLine;
 
+$(document).ready(function() {
+	/* Load the lead level data. */
+	$.ajax({
+		method: "GET",
+		url: "includes/json_processing.php",
+		data: {type: "lead"},
+		success: function(data){ 
+			$("body").append(data);
+		}
+	});
+	
+	/*$.get("database.py", function(data, status){
+        $("body").prepend(data);
+    });*/
+});
+
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
@@ -263,24 +279,8 @@ function bindInfoWindow(marker, map, infowindow, html){
 	});
 }
 
-$(document).ready(function(){
-	/* Load the lead level data. */
-	/*$.ajax({
-		method: "GET",
-		url: "/database.py",
-		data: {type: "lead"},
-		success: function(data){ 
-			//$("body").append(data);
-			console.log(data);
-		}
-	});*/
-	
-	/*$.get("database.py", function(data, status){
-        $("body").prepend(data);
-    });*/
-	
-
-	$("[name='heatmap']").on('click', function(){
+$(document).ready(function() {
+	$("[name='heatmap']").on('click', function() {		
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
 		}

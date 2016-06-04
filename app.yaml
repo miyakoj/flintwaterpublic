@@ -17,9 +17,27 @@ handlers:
 - url: /js
   static_dir: js
   
+- url: /(.+\.(gif|png|jpg))$
+  static_files: \1
+  upload: .+\.(gif|png|jpg)$
+  
+- url: /(.*\.json)
+  mime_type: application/json
+  static_files: data/\1
+  upload: data/(.*\.json)
+  expiration: "1h"
+
 - url: /(.+\.php)$
   script: \1
   
-- url: /(.*)
-  static_files: index.php
-  upload: index.php 
+- url: /
+  script: index.html
+  
+# [START env]
+env_variables:
+  # Replace project, instance, database, user and password with the values obtained
+  # when configuring your Cloud SQL instance.
+  MYSQL_DSN: mysql:unix_socket=/cloudsql/flint-water-project:flint-water-project-db;dbname=waterdata
+  MYSQL_USER: root
+  MYSQL_PASSWORD: ''
+# [END env]
