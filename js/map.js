@@ -1,11 +1,18 @@
+/* Google Service Account info */
+var clientId = '807599170352-afiu7fosjp2hg4n6gs3ghc99momgfica.apps.googleusercontent.com';
+var apiKey = "AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI";
+
+// Access Google Cloud Storage
+var default_bucket = "flint-water-project.appspot.com";
+var scopes = "https://www.googleapis.com/auth/devstorage.read_only";
+
 var map;
+var infoWindow;
 var heatmap;
 
-
 var allMarkers = [];
-
 var allMarkersString = [];
-var resourceActiveArray = [0,0,0,0,0,0];
+var resourceActiveArray = [0, 0, 0, 0, 0, 0];
 
 //for construction
 
@@ -13,20 +20,17 @@ var constructionMarker ;
 var constructionToggle = 0;
 var pipePolyLine;
 
+function setAPIKey() {
+	gapi.client.setApiKey(apiKey);
+	window.setTimeout(checkAuth, 1);
+}
+
+function checkAuth() {
+	gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, initMap);
+}
+
 $(document).ready(function() {
-	/* Load the lead level data. */
-	$.ajax({
-		method: "GET",
-		url: "includes/json_processing.php",
-		data: {type: "lead"},
-		success: function(data){ 
-			$("body").append(data);
-		}
-	});
 	
-	/*$.get("database.py", function(data, status){
-        $("body").prepend(data);
-    });*/
 });
 
 function initMap() {
@@ -45,129 +49,42 @@ function initMap() {
 		$("#map").css("height", window.innerHeight - $("header").height());
 	});
 	
-	var infoWindow = new google.maps.InfoWindow();
+	infoWindow = new google.maps.InfoWindow();
+	
+	callStorageAPI("leadlevels.json");
+	callStorageAPI("providers.json");
 
-	/* Lead Level Data and Heat Map */
-	var heatmapData = [];
-	$.getJSON("leadlevels.json", function( data ) {
-		var info = data;
-		for(i=0; i<info.leadLevels.length; i++) {
-			var level = info.leadLevels[i];
-			var weightValue = assignWeight(level.lead_ppb);
-			heatmapData.push({location: new google.maps.LatLng(level.lat,level.long), weight:weightValue});
-		}
-		
-		heatmap = new google.maps.visualization.HeatmapLayer({
-			 data: heatmapData,
-			 radius: 25,
-			 dissipate: true,
-			 gradient: ['rgba(0,0,0,0)',
-						'rgba(255,255,0,1)',
-						'rgba(213,109,0,1)',
-						'rgba(255,0,0,1)',
-						'rgba(128,0,0,1)']
-		});
-
-		heatmap.setMap(map);
+	allMarkers.forEach(function(marker){
+		marker.setMap(null);
 	});
 	
-	function assignWeight(levelIn){
-		if (levelIn < 5){
-			return 0;
-		}
-		else if (levelIn < 14){
-			return 50;
-		}
-		else {
-			return 100;
-		}
-	}
+	//Construction Junk
+	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
+	var constructionTitle = "Construction Zone";
+	var constructionImage = "images/constructionicon.png";
+	constructionMarker  = new google.maps.Marker({
+		position: constructionLatLng,
+		map: map,
+		title: constructionTitle,
+		icon: constructionImage
+	});
 
-	/* Provider Data */
-	$.getJSON("providers.json", function( data ) {
-		var info = data;
+	var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
+	bindInfoWindow(constructionMarker,map, infoWindow,constructionContent);
 
-		//Construction Junk
-		var constructionLatLng = {lat:43.019368, lng:-83.668522 };
-		var constructionTitle = "Construction Zone";
-		var constructionImage = "images/constructionicon.png";
-		constructionMarker  = new google.maps.Marker({
-			position: constructionLatLng,
-			map: map,
-			title: constructionTitle,
-			icon: constructionImage
-		})
+	constructionMarker.setMap(null);
 
-		var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
-		bindInfoWindow(constructionMarker,map, infoWindow,constructionContent);
+	var pipePlanCoordinates = [
+		{lat:43.01826, lng:-83.66875},
+		{lat:43.01837, lng:-83.66106},
+		{lat:43.022, lng:-83.66128 }
+	];
 
-		constructionMarker.setMap(null);
-		
-
-		var pipePlanCoordinates = [
-			{lat:43.01826, lng:-83.66875},
-			{lat:43.01837, lng:-83.66106},
-			{lat:43.022, lng:-83.66128 }
-		]
-
-		pipePolyLine = new google.maps.Polyline({
-			path: pipePlanCoordinates,
-			strokeColor: '#FF0000',
-			strokeOpacity: .9,
-    		strokeWeight: 2
-		})
-
-
-
-		for(i=0; i<info.providers.length; i++) {
-			var provider = info.providers[i];
-			var latLng = new google.maps.LatLng(provider.lat, provider.long);
-			var title = provider.title;
-			
-			var images = "";
-			
-			if (provider.hasWater === "true") {			
-				var image = "images/waterpickupicon.png";
-				images += "<img src='" + image + "' /> ";
-			}
-			if (provider.hasRecycle === "true") {
-				var image = "images/recycleicon.png";
-				images += "<img src='" + image + "' /> ";
-			}
-			if (provider.hasBloodTesting === "true") {
-				var image = "images/bloodtesticon.png";
-				images += "<img src='" + image + "' /> ";
-			}
-			if (provider.hasFilters === "true") {
-				var image = "images/waterfiltericon.png";
-				images += "<img src='" + image + "' /> ";
-			}
-			if (provider.hasWaterTestKits === "true") {
-				var image = "images/leadtesticon.png";
-				images += "<img src='" + image + "' /> ";
-			}
-			
-			allMarkersString.push(images);
-			var content = "<h1>" + provider.title + "</h1><p>" + provider.details + "</p><p>" + images + "</p>";
-						
-			var marker = new google.maps.Marker({
-				position: latLng,
-				title: title,
-				map: map,
-				icon: image
-			});
-			
-			/* Store the markers in arrays for the add/remove functionality. */
-			allMarkers.push(marker);
-	
-			
-			bindInfoWindow(marker, map, infoWindow, content);
-		}
-
-		allMarkers.forEach(function(marker){
-			marker.setMap(null);
-		})
-
+	pipePolyLine = new google.maps.Polyline({
+		path: pipePlanCoordinates,
+		strokeColor: '#FF0000',
+		strokeOpacity: .9,
+		strokeWeight: 2
 	});
 
 	
@@ -269,8 +186,112 @@ function initMap() {
 		else
 			console.log("The search input is empty.");
 	});
-};
+}
 
+/* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
+function callStorageAPI(object) {
+	gapi.client.load('storage', 'v1').then(function() {
+		var request = gapi.client.storage.objects.get({
+			'bucket': 'flint-water-project.appspot.com',
+			'object': object,
+			'alt': 'media'
+		});
+		
+		request.then(function(resp) {
+			/* Heatmap Data */
+			if (object == "leadlevels.json") {
+				var heatmapData = [];
+				js_obj = $.parseJSON(resp.body);
+				
+				for(i=0; i<js_obj.leadLevels.length; i++) {
+					var level = js_obj.leadLevels[i];
+					var weightValue = assignWeight(level.leadLevel);
+					heatmapData.push({location: new google.maps.LatLng(level.latitude, level.longitude), weight:weightValue});
+				}
+				
+				heatmap = new google.maps.visualization.HeatmapLayer({
+					 data: heatmapData,
+					 radius: 25,
+					 dissipate: true,
+					 gradient: ['rgba(0,0,0,0)',
+								'rgba(255,255,0,1)',
+								'rgba(213,109,0,1)',
+								'rgba(255,0,0,1)',
+								'rgba(128,0,0,1)']
+				});
+
+				heatmap.setMap(map);
+				
+				function assignWeight(levelIn){
+					if (levelIn < 5){
+						return 0;
+					}
+					else if (levelIn < 14){
+						return 50;
+					}
+					else {
+						return 100;
+					}
+				}
+			}
+			/* Provider Data */
+			else if (object == "providers.json") {
+				console.log(resp.body);
+				js_obj = $.parseJSON(resp.body);
+				
+				for(i=0; i<js_obj.providers.length; i++) {
+					var provider = js_obj.providers[i];
+					var latLng = new google.maps.LatLng(provider.lat, provider.long);
+					var title = provider.title;
+					
+					var images = "";
+					
+					if (provider.hasWater === "true") {			
+						var image = "images/waterpickupicon.png";
+						images += "<img src='" + image + "' /> ";
+					}
+					if (provider.hasRecycle === "true") {
+						var image = "images/recycleicon.png";
+						images += "<img src='" + image + "' /> ";
+					}
+					if (provider.hasBloodTesting === "true") {
+						var image = "images/bloodtesticon.png";
+						images += "<img src='" + image + "' /> ";
+					}
+					if (provider.hasFilters === "true") {
+						var image = "images/waterfiltericon.png";
+						images += "<img src='" + image + "' /> ";
+					}
+					if (provider.hasWaterTestKits === "true") {
+						var image = "images/leadtesticon.png";
+						images += "<img src='" + image + "' /> ";
+					}
+					
+					allMarkersString.push(images);
+					var content = "<h1>" + provider.title + "</h1><p>" + provider.details + "</p><p>" + images + "</p>";
+								
+					var marker = new google.maps.Marker({
+						position: latLng,
+						title: title,
+						map: map,
+						icon: image
+					});
+					
+					/* Store the markers in arrays for the add/remove functionality. */
+					allMarkers.push(marker);
+					
+					bindInfoWindow(marker, map, infoWindow, content);
+				}
+			}
+			/* Construction Data */
+			/*else if (object == "construction.json") {
+			}*/
+				
+		}, function(reason) {
+			console.log('Error: ' + reason.result.error.message);
+		});
+	});
+}
 
 function bindInfoWindow(marker, map, infowindow, html){
 	marker.addListener("click", function(){
@@ -280,6 +301,17 @@ function bindInfoWindow(marker, map, infowindow, html){
 }
 
 $(document).ready(function() {
+	/* Get the lead data from the database and save it as a JSON file. */
+	$.ajax({
+		method: "POST",
+		url: "includes/json_processing.php",
+		data: {type: "lead"},
+		error: function(resp) { 
+			console.log("error");
+			//show an alert to the user
+		}
+	});
+	
 	$("[name='heatmap']").on('click', function() {		
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
