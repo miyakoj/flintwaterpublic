@@ -4,7 +4,7 @@ var apiKey = "AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI";
 
 // Access Google Cloud Storage
 var default_bucket = "flint-water-project.appspot.com";
-var scopes = "https://www.googleapis.com/auth/devstorage.read_only";
+var scope = "https://www.googleapis.com/auth/devstorage.read_only";
 
 var map;
 var infoWindow;
@@ -15,7 +15,6 @@ var allMarkersString = [];
 var resourceActiveArray = [0, 0, 0, 0, 0, 0];
 
 //for construction
-
 var constructionMarker ;
 var constructionToggle = 0;
 var pipePolyLine;
@@ -26,12 +25,8 @@ function setAPIKey() {
 }
 
 function checkAuth() {
-	gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, initMap);
+	gapi.auth.authorize({client_id: clientId, scope: scope, immediate: true}, initMap);
 }
-
-$(document).ready(function() {
-	
-});
 
 function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
@@ -53,8 +48,9 @@ function initMap() {
 	
 	callStorageAPI("leadlevels.json");
 	callStorageAPI("providers.json");
+	//callStorageAPI("construction.json");
 
-	allMarkers.forEach(function(marker){
+	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
 	});
 	
@@ -192,7 +188,7 @@ function initMap() {
 function callStorageAPI(object) {
 	gapi.client.load('storage', 'v1').then(function() {
 		var request = gapi.client.storage.objects.get({
-			'bucket': 'flint-water-project.appspot.com',
+			'bucket': default_bucket,
 			'object': object,
 			'alt': 'media'
 		});
@@ -204,9 +200,21 @@ function callStorageAPI(object) {
 				js_obj = $.parseJSON(resp.body);
 				
 				for(i=0; i<js_obj.leadLevels.length; i++) {
-					var level = js_obj.leadLevels[i];
-					var weightValue = assignWeight(level.leadLevel);
-					heatmapData.push({location: new google.maps.LatLng(level.latitude, level.longitude), weight:weightValue});
+					var info = js_obj.leadLevels[i];
+					var weightValue = assignWeight(info.leadLevel);
+					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
+				}
+				
+				function assignWeight(levelIn){
+					if (levelIn < 5){
+						return 0;
+					}
+					else if (levelIn < 14){
+						return 50;
+					}
+					else {
+						return 100;
+					}
 				}
 				
 				heatmap = new google.maps.visualization.HeatmapLayer({
@@ -221,22 +229,9 @@ function callStorageAPI(object) {
 				});
 
 				heatmap.setMap(map);
-				
-				function assignWeight(levelIn){
-					if (levelIn < 5){
-						return 0;
-					}
-					else if (levelIn < 14){
-						return 50;
-					}
-					else {
-						return 100;
-					}
-				}
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
-				console.log(resp.body);
 				js_obj = $.parseJSON(resp.body);
 				
 				for(i=0; i<js_obj.providers.length; i++) {
@@ -301,14 +296,17 @@ function bindInfoWindow(marker, map, infowindow, html){
 }
 
 $(document).ready(function() {
-	/* Get the lead data from the database and save it as a JSON file. */
+	$(".alert-warning").css("display", "none"); // hide the alert box by default
+	
+	/* Get the data from the database and save it into JSON files. */
 	$.ajax({
 		method: "POST",
 		url: "includes/json_processing.php",
-		data: {type: "lead"},
-		error: function(resp) { 
-			console.log("error");
-			//show an alert to the user
+		complete: function(resp) {
+			if (resp.responseText == "error") {
+				$(".alert-warning").append("<strong>Error:</strong> The map data didn't load successfully.")
+				$(".alert-warning").css("display", "block");
+			}
 		}
 	});
 	
