@@ -9,7 +9,7 @@ handlers:
   static_dir: css
 
 - url: /includes
-  static_dir: includes
+  script: \1
 
 - url: /images
   static_dir: images
@@ -20,12 +20,6 @@ handlers:
 - url: /(.+\.(gif|png|jpg))$
   static_files: \1
   upload: .+\.(gif|png|jpg)$
-  
-- url: /(.*\.json)
-  mime_type: application/json
-  static_files: data/\1
-  upload: data/(.*\.json)
-  expiration: "1h"
 
 - url: /(.+\.php)$
   script: \1
@@ -40,4 +34,5 @@ env_variables:
   MYSQL_DSN: mysql:unix_socket=/cloudsql/flint-water-project:flint-water-project-db;dbname=waterdata
   MYSQL_USER: root
   MYSQL_PASSWORD: ''
+  GOOGLE_APPLICATION_CREDENTIALS: flint-water-project@appspot.gserviceaccount.com
 # [END env]
