@@ -22,12 +22,15 @@
 </head>
 
 <body class="drawer drawer--left">
+<div class="alert alert-warning alert-dismissible fade in" role="alert">
+<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+</div>
+			
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
+<button id="save_button" class="glyphicon glyphicon-floppy-disk" data-toggle="tooltip" title="Save location" ></button>
 
-	<input id="pac-input" class="controls" type="text" placeholder="Search Box">
-	<button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
-	<button id="save_button" class="glyphicon glyphicon-floppy-disk" data-toggle="tooltip" title="Save location" ></button>
-
-	<div id="map"></div>
+<div id="map"></div>
 
 <div class="container-fluid" id="main">
   <div class="row">
@@ -42,38 +45,32 @@
 				<a class="close">&times;</a>	
 				<ul class="drawer-menu">
 
+					<li class="border">
+					<a class="drawer-menu-item"><img src="images/nav_icon_map.png" class="drawer-nav-icon">Map</a>
+					</li>
 
 					<li class="border">
-					<h5>Saved Map Locations</h5>
-					
-					<ul id="saved_locations">
-					<li>[saved locations]</li>
-					</ul>
+					<a class="drawer-menu-item"><img src="images/nav_icon_saved.png" class="drawer-nav-icon">Saved Map Locations</a>
 					</li>
-	
-					
+
 					<li class="border">
-					<h5>Latest News and Alerts</h5>
-					
-					<ul id="news">
-					<li><a class="drawer-menu-item" href="#">News Item</a></li>
-					<li><a class="drawer-menu-item" href="#">News Item</a></li>
-					</ul>
+					<a class="drawer-menu-item"><img src="images/nav_icon_alerts.png" class="drawer-nav-icon">Latest News and Alerts</a>
 					</li>
-					
+
 					<li class="border">
-					<ul id="user_input">
-					<li><a class="drawer-menu-item" href="#">Take the Survey</a></li>
-					<li><a class="drawer-menu-item" href="#">Test My Water</a></li>
-					<li><a class="drawer-menu-item" href="#">Report a Problem</a></li>
-					</ul>
+					<a class="drawer-menu-item"><img src="images/nav_icon_test.png" class="drawer-nav-icon">Test My Water</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon">Report a Problem</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_submit.png" class="drawer-nav-icon">Submit Location Information</a>
 					</li>
+
+					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon">About this app</a>
 					
-					<li><a class="drawer-menu-item" href="#">About This App</a></li>
+					
 				</ul>
 			</nav>
 		  </header>
 
+		 <!-- here are the buttons -->
 		<div class="btn-group" data-toggle="buttons">
 		  <label class="btn btn-primary active resource_buttons"  name="heatmap" >
 		    <input type="checkbox" autocomplete="off" >Lead Levels

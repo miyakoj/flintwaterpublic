@@ -1,6 +1,12 @@
 $(document).ready(function(){
+	var windowWidth = window.innerWidth;
+	var windowHeight = window.innerHeight;
+	
 	/* Attach the drawer toggle function to the nav drawer. */	
 	$(".drawer").drawer();
+	
+	/* Position alert in the middle of the page. */
+	$(".alert").css({"top": (windowHeight - $(".alert").height()) / 2, "left": (windowWidth - $(".alert").width()) / 2});
 	
 	/* Activate tooltips. */
 	$(function () {
@@ -11,13 +17,9 @@ $(document).ready(function(){
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	var windowHeight = window.innerHeight;
 	var mapHeight = windowHeight - $("header").height();
 	
-	//console.log(windowHeight);
-	
-	$("#map").css("height", mapHeight);
-	
+	$("#map").css("height", mapHeight);	
 	$("#pac-input").val(""); // clear the search input upon refresh
 	
 	//$("#search_button").insertAfter("#pac-input");
