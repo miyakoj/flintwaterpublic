@@ -31,6 +31,7 @@ handlers:
 env_variables:
   # Replace project, instance, database, user and password with the values obtained
   # when configuring your Cloud SQL instance.
+  MYSQL_INSTANCE: /cloudsql/flint-water-project:flint-water-project-db
   MYSQL_DSN: mysql:unix_socket=/cloudsql/flint-water-project:flint-water-project-db;dbname=waterdata
   MYSQL_USER: root
   MYSQL_PASSWORD: ''
