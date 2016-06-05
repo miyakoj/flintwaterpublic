@@ -2,14 +2,13 @@
 
 $mysqli = new mysqli(
 	null, // host
-	'root', // username
-	'',     // password
+	getenv('MYSQL_USER'), // username
+	getenv('MYSQL_PASSWORD'), // password
 	'waterdata', // database name
 	null,
-	'/cloudsql/flint-water-project:flint-water-project-db'
+	getenv('MYSQL_INSTANCE')
 );
 
 if ($mysqli->connect_errno) {
-    printf("Connect failed: %s\n", $mysqli->connect_error);
-    exit();
+	print "error";
 }

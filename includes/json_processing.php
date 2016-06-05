@@ -1,36 +1,28 @@
 <?php
 
 require_once "queries.php";
-use google\appengine\api\cloud_storage\CloudStorageTools;
 
-$type = $_POST['type'];
-$result = queries($type);
+/* Process lead level data. */
+json_output(queries("lead"), "leadLevels", "leadlevels.json");
+//json_output(queries("providers"), "providers", "providers.json");
 
-if (strcmp($type, "lead") === 0) {
-	$array_name = "leadLevels";
-	$filename = "leadlevels.json";
-}
-else if (strcmp($type, "providers") === 0) {
-	$array_name = "providers";
-	$filename = "providers.json";
-}
-	
-$output = "{ \"" . $array_name . "\": [\n";
+function json_output($result, $array_name, $filename) {
+	$output = "{ \"" . $array_name . "\": [\n";
 
-for ($i=0; $i<$result->num_rows; $i++) {
-	$row = $result->fetch_assoc();
-	$output .= json_encode($row, JSON_NUMERIC_CHECK);
-	
-	if ($i < $result->num_rows-1)
-		$output .= ",";
+	for ($i=0; $i<$result->num_rows; $i++) {
+		$row = $result->fetch_assoc();
+		$output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
 		
-	$output .= "\n";
+		if ($i < $result->num_rows-1)
+			$output .= ",";
+			
+		$output .= "\n";
+	}
+
+	$output .= "]}";
+
+	$fp = fopen("gs://flint-water-project.appspot.com/".$filename, 'w');
+	fwrite($fp, $output);
+	fclose($fp);
 }
-
-$output .= "]}";
-
-$default_bucket = CloudStorageTools::getDefaultGoogleStorageBucketName();
-$fp = fopen("gs://${default_bucket}/".$filename, 'w');
-fwrite($fp, $output);
-fclose($fp);
 

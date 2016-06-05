@@ -28,8 +28,6 @@ header h2 {
 }
 
 .border {
-	margin-bottom:12px;
-	padding-bottom:12px;
 	border-bottom:1px solid #CCC;
 }
 
@@ -98,6 +96,7 @@ nav #news li {
 
 .drawer-nav {
 	width:35rem;
+	z-index: 3;
 }
 
 .drawer--left .drawer-nav {
@@ -111,6 +110,12 @@ nav #news li {
 
 .drawer-menu-item {
 	font-size:1.25rem;
+	font-weight: bold;
+	margin: 10px 0px 10px 10px;
+}
+
+.drawer-nav-icon{
+	margin: 8px 20px 8px 10px;
 }
 
 @media only screen and (max-width: 800px) {
@@ -206,6 +211,18 @@ footer {
 	margin-top:15px;
 }
 
+/* Alert Box */
+.alert {
+	width:45rem;
+	position:absolute;
+	top:0;
+	z-index:99;
+}
+
+.alert .close {
+	top:-10px!important;
+}
+
 /* Tooltip */
 .tooltip.top .tooltip-arrow {
   bottom: 0;
@@ -227,4 +244,3 @@ footer {
 .resource_buttons_image{
 	margin-right: 3px;
 }
-
