@@ -173,13 +173,13 @@ nav #news li {
 }
 
 #search_button {
-	position:absolute;
+	position: absolute;
 	top:95px;
 	left:272px;
 }
 
 #save_button {
-	position:absolute;
+	position: absolute;
 	top:95px;
 	left:308px;
 }
@@ -233,3 +233,71 @@ footer {
 	margin-right: 3px;
 }
 
+#get_started {
+	background-color: black;
+	width: 1000px;
+	height: 32px;
+	font-size: 180%;
+	color: white;
+	border-style: none;
+	z-index: 1;
+    position: absolute;
+	top:200px;
+	left:50px;
+}
+
+.submit_info {
+	margin-left: 10em;
+}
+
+.submit_header {
+	margin-left: 10em;
+}
+
+#discolored_water, #water_main_break, #infrastructure_issue {
+    background-color: black;
+	width: 1000px;
+	height: 32px;
+	font-size: 180%;
+	color: white;
+	border-style: none;
+	z-index: 1;
+
+}
+
+#discolored_water {
+	position: absolute;
+	top:200px;
+	left:50px;
+}
+
+#water_main_break {
+	position: absolute;
+	top:250px;
+	left:50px;
+}
+
+#infrastructure_issue {
+	position: absolute;
+	top:300px;
+	left:50px;
+}
+div.report_problem {
+	margin-left: 30em;
+}
+
+.test_water {
+	margin-left: 10em;
+}
+
+.news_header {
+	margin-left: 3em;
+}
+
+p.news {
+	margin-left: 10em;
+}
+
+h1.about {
+	margin-left: 10em;
+}
