@@ -124,6 +124,11 @@ nav #news li {
 	}
 }
 
+#toggles img {
+	width: auto;
+	height: 18px;
+}
+
 
 /* Map-Related Styles. */
 #search_box {
@@ -174,7 +179,7 @@ nav #news li {
 
 #search_button {
 	position:absolute;
-	top:95px;
+	top:91px;
 	left:272px;
 }
 
@@ -182,6 +187,7 @@ nav #news li {
 	position:absolute;
 	top:95px;
 	left:308px;
+	display:none;
 }
 
 #type-selector {
@@ -205,6 +211,36 @@ nav #news li {
 	font-size:1.25em;
 }
 
+#location_card {
+	position:absolute;
+	display:none;
+}
+
+.card {
+	margin-top:0!important;
+	margin-bottom:0!important;
+}
+
+.card-inner {
+	margin-top:16px!important;
+	margin-bottom:16px!important;
+}
+
+.card-inner h5 {
+	margin-top:0!important;
+	font-weight:bold;
+}
+
+#provider_popup h1 {
+	margin:0;
+	padding:0;
+	line-height:30px;
+}
+
+#provider_popup img {
+	margin-right:8px;
+}
+
 
 footer {
 	display:none;
@@ -217,6 +253,7 @@ footer {
 	position:absolute;
 	top:0;
 	z-index:99;
+	display:none;
 }
 
 .alert .close {

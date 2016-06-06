@@ -13,14 +13,21 @@ $(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
+	/* Activate and position the info cards. */
+	
+	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	var mapHeight = windowHeight - $("header").height();
+	var mapHeight = windowHeight - $("header").height() - $("#toggles").height();
 	
 	$("#map").css("height", mapHeight);	
 	$("#pac-input").val(""); // clear the search input upon refresh
+	
+	/* Resize the provider info popups. */
+	//console.log($("#provider_popup").parent());
+	//$("#provider_popup").parent().parent().css("width", "300px");
 	
 	//$("#search_button").insertAfter("#pac-input");
 	//$("#save_button").insertAfter("#search_button");
