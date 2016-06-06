@@ -282,7 +282,7 @@ function callStorageAPI(object) {
 
 				}
 
-				for(int i=0; i<allMarkers.length();i++){
+				for(var i=0; i<allMarkers.length;i++){
 					allMarkers[i].setMap(null);
 				}
 			}
@@ -307,7 +307,7 @@ $(document).ready(function() {
 	$(".alert-warning").css("display", "none"); // hide the alert box by default
 	
 	/* Get the data from the database and save it into JSON files. */
-	$.ajax({
+	/*$.ajax({
 		method: "POST",
 		url: "includes/json_processing.php",
 		complete: function(resp) {
@@ -316,7 +316,7 @@ $(document).ready(function() {
 				$(".alert-warning").css("display", "block");
 			}
 		}
-	});
+	});*/
 	
 	$("[name='heatmap']").on('click', function() {		
 		if (heatmap.getMap() != null) {
