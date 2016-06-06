@@ -93,8 +93,6 @@ function initMap() {
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
 	});
-
-	var markers = [];
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
 	// more details for that place.
@@ -104,13 +102,6 @@ function initMap() {
 		if (places.length == 0) {
 			return;
 		}
-
-		// Clear out the old markers.
-		markers.forEach(function(marker) {
-			marker.setMap(null);
-		});
-		
-		markers = [];
 
 	  // For each place, get the icon, name and location.
 	  var bounds = new google.maps.LatLngBounds();
@@ -122,13 +113,15 @@ function initMap() {
 		  anchor: new google.maps.Point(17, 34),
 		  scaledSize: new google.maps.Size(25, 25)
 		};
+		
+		var markers = [];
 
 		// Create a marker for each place.
 		markers.push(new google.maps.Marker({
-		  map: map,
-		  icon: icon,
-		  title: place.name,
-		  position: place.geometry.location
+			map: map,
+			icon: icon,
+			title: place.name,
+			position: place.geometry.location
 		}));
 
 		if (place.geometry.viewport) {
@@ -141,10 +134,33 @@ function initMap() {
 	  });
 	  
 	  map.fitBounds(bounds);
+	  
+	  /* Location Info Card */
+	  $("#location_card").css({
+			"width": function() {return $("#pac-input").outerWidth() + parseFloat($("#search_button").outerWidth());},
+			"display": "block",
+			"top": function() {
+				return parseFloat($("#pac-input").css("top")) + parseFloat($("#pac-input").height()) + 20 + "px";
+				},
+			"left": function() {
+				return parseFloat($("#pac-input").css("left")) + parseFloat($("#pac-input").css("margin-left")) + "px";
+				}
+		});
+		
+		$("#location_card .card-inner").html("<h5>Lead Level Prediction</h5> <p>Low</p>");
+		$("#location_card .card-action").html();
 	});
 	
+	//303 E Kearsley St, Flint, MI, United States
+	
+	/*$("#search_button").css({
+		"top": function() {
+				return parseFloat($("#pac-input").css("top")) + "px";
+			   }
+	});*/
+	
 	// Trigger search on button click
-    $("#search_button").click(function () {
+    $("#search_button").click(function() {
 		if(activeSearch){
 			var input = document.getElementById('pac-input');
 
@@ -252,27 +268,27 @@ function callStorageAPI(object) {
 					
 					if (provider.hasWater === "true") {			
 						var image = "images/waterpickupicon.png";
-						images += "<img src='" + image + "' /> ";
+						images += "<img src='" + image + "' />";
 					}
 					if (provider.hasRecycle === "true") {
 						var image = "images/recycleicon.png";
-						images += "<img src='" + image + "' /> ";
+						images += "<img src='" + image + "' />";
 					}
 					if (provider.hasBloodTesting === "true") {
 						var image = "images/bloodtesticon.png";
-						images += "<img src='" + image + "' /> ";
+						images += "<img src='" + image + "' />";
 					}
 					if (provider.hasFilters === "true") {
 						var image = "images/waterfiltericon.png";
-						images += "<img src='" + image + "' /> ";
+						images += "<img src='" + image + "' />";
 					}
 					if (provider.hasWaterTestKits === "true") {
 						var image = "images/leadtesticon.png";
-						images += "<img src='" + image + "' /> ";
+						images += "<img src='" + image + "' />";
 					}
 					
 					allMarkersString.push(images);
-					var content = "<h1>" + provider.title + "</h1><p>" + provider.details + "</p><p>" + images + "</p>";
+					var content = "<div id=\"provider_popup\"><h1>" + provider.title + "</h1> <p>" + provider.details + "</p><p>" + images + "</p></div>";
 								
 					var marker = new google.maps.Marker({
 						position: latLng,
@@ -310,8 +326,6 @@ function bindInfoWindow(marker, map, infowindow, html){
 }
 
 $(document).ready(function() {
-	$(".alert-warning").css("display", "none"); // hide the alert box by default
-	
 	/* Get the data from the database and save it into JSON files. */
 	/*$.ajax({
 		method: "POST",
@@ -428,7 +442,6 @@ $(document).ready(function() {
 			}
 		}
 	}
-
 	
 	$("#pac-input").keyup(function() {
 		if($("#pac-input").val()) {
