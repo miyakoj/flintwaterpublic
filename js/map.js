@@ -210,6 +210,9 @@ function callStorageAPI(object) {
 						return 0;
 					}
 					else if (levelIn < 14){
+						return 0;
+					}
+					else if(levelIn < 50){
 						return 50;
 					}
 					else {
@@ -276,6 +279,10 @@ function callStorageAPI(object) {
 					allMarkers.push(marker);
 					
 					bindInfoWindow(marker, map, infoWindow, content);
+
+					for(int i=0; i<allMarkers.length();i++){
+							allMarkers[i].setMap(null);
+					}
 				}
 			}
 			/* Construction Data */
