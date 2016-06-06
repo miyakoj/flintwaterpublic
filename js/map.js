@@ -280,9 +280,10 @@ function callStorageAPI(object) {
 					
 					bindInfoWindow(marker, map, infoWindow, content);
 
-					for(int i=0; i<allMarkers.length();i++){
-							allMarkers[i].setMap(null);
-					}
+				}
+
+				for(int i=0; i<allMarkers.length();i++){
+					allMarkers[i].setMap(null);
 				}
 			}
 			/* Construction Data */
