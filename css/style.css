@@ -95,16 +95,16 @@ nav #news li {
 }
 
 .drawer-nav {
-	width:35rem;
+	width:25rem;
 	z-index: 3;
 }
 
 .drawer--left .drawer-nav {
-	left:-35rem;
+	left:-25rem;
 }
 
 .drawer-open .drawer-hamburger {
-	left:32rem!important;
+	left:22rem!important;
 	opacity: 0;
 }
 
@@ -126,7 +126,8 @@ nav #news li {
 
 #toggles img {
 	width: auto;
-	height: 18px;
+	height: 20px;
+	vertical-align:middle;
 }
 
 
@@ -166,7 +167,7 @@ nav #news li {
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
-#search_button, #save_button {
+#search_button {
 	background-color: #8ec7ff;
 	width: 35px;
 	height: 32px;
@@ -174,20 +175,10 @@ nav #news li {
 	color: #61b1ff;
 	border-style: none;
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-	z-index: 1;
-}
-
-#search_button {
 	position:absolute;
-	top:91px;
+	top:92px;
 	left:272px;
-}
-
-#save_button {
-	position:absolute;
-	top:95px;
-	left:308px;
-	display:none;
+	z-index: 1;
 }
 
 #type-selector {
@@ -212,8 +203,13 @@ nav #news li {
 }
 
 #location_card {
+	padding:5px;
 	position:absolute;
 	display:none;
+}
+
+.btn::after, .btn-flat::after {
+	background-color:transparent!important;
 }
 
 .card {
@@ -222,13 +218,33 @@ nav #news li {
 }
 
 .card-inner {
-	margin-top:16px!important;
-	margin-bottom:16px!important;
+	margin-top:10px!important;
+	margin-bottom:10px!important;
 }
 
 .card-inner h5 {
 	margin-top:0!important;
 	font-weight:bold;
+}
+
+.card-action {
+	text-align:center;
+}
+
+.card-action .btn {
+	padding:10px!important;
+	font-size:0.9rem!important;
+}
+
+.card-action img {
+	width:auto;
+	height:18px!important;
+	vertical-align:middle;
+}
+
+#saved_locations .btn {
+	text-align:left;
+	white-space:normal!important;
 }
 
 #provider_popup h1 {
@@ -275,7 +291,7 @@ footer {
 }
 
 .resource_buttons{
-	margin: 3px 5px 3px 5px;
+	margin: 3px 5px;
 }
 
 .resource_buttons_image{
