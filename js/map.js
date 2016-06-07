@@ -393,12 +393,19 @@ function callStorageAPI(object) {
 					
 					allMarkersString.push(images);
 					var content = "<div id=\"provider_popup\"><h1>" + provider.title + "</h1> <p>" + provider.details + "</p><p>" + images + "</p></div>";
-								
+						
+					var pinIcon = {url: marker_img,
+									size: new google.maps.Size(35,35),
+									origin: new google.maps.Point(0,0),
+									anchor: new google.maps.Point(0,0)
+									};
+					
+
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
 						map: map,
-						icon: marker_img
+						icon: pinIcon
 					});
 					
 					/* Store the markers in arrays for the add/remove functionality. */
