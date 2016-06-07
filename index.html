@@ -30,9 +30,8 @@
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 			
-<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<input id="pac-input" class="controls" type="text" placeholder="Search">
 <button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
-<button id="save_button" class="glyphicon glyphicon-floppy-disk" data-toggle="tooltip" title="Save location" ></button>
 
 <div id="map"></div>
 
@@ -76,25 +75,25 @@
 
 		 <!-- here are the buttons -->
 		<div id="toggles" class="btn-group btn-group-justified" data-toggle="buttons">
-		  <label class="btn btn-primary active resource_buttons" name="heatmap >
+		  <label class="btn btn-primary active resource_buttons btn-brand" name="heatmap >
 		    <input type="checkbox" autocomplete="off"> Lead Levels
 		  </label>
-		  <label class="btn btn-primary resource_buttons" name="water_pickup">
+		  <label class="btn btn-primary resource_buttons btn-brand" name="water_pickup">
 		    <input type="checkbox" autocomplete="off"><img src="images/waterpickupicon.png" class="resource_buttons_image" /> Water Pickup
 		  </label>
-		  <label class="btn btn-primary resource_buttons" name="recycling" >
+		  <label class="btn btn-primary resource_buttons btn-brand" name="recycling" >
 		    <input type="checkbox" autocomplete="off"><img src="images/recycleicon.png" class="resource_buttons_image" />Recycling
 		  </label>
-		  <label class="btn btn-primary resource_buttons" name="water_testing">
+		  <label class="btn btn-primary resource_buttons btn-brand" name="water_testing">
 		    <input type="checkbox" autocomplete="off"><img src="images/leadtesticon.png" class="resource_buttons_image" />Lead Testing
 		  </label>
-		  <label class="btn btn-primary resource_buttons" name="blood_testing">
+		  <label class="btn btn-primary resource_buttons btn-brand" name="blood_testing">
 		    <input type="checkbox" autocomplete="off"><img src="images/bloodtesticon.png" class="resource_buttons_image">Blood Testing
 		  </label>
-		  <label class="btn btn-primary resource_buttons" name="water_filters">
+		  <label class="btn btn-primary resource_buttons btn-brand" name="water_filters">
 		    <input type="checkbox" autocomplete="off"><img src="images/waterfiltericon.png" class="resource_buttons_image" />Filters
 		  </label>
-		  <label class="btn btn-primary resource_buttons" name="construction">
+		  <label class="btn btn-primary resource_buttons btn-brand" name="construction">
 		    <input type="checkbox" autocomplete="off"><img src="images/constructionicon.png" class="resource_buttons_image" />Construction
 		  </label>
 		</div>
@@ -104,9 +103,9 @@
 			<div class="card-main">
 				<div class="card-inner"></div>
 				<div class="card-action">
-					<div class="row">
-						<div class="col-md-6" id="saved_location"></div>
-						<div class="col-md-6" id="more_info"></div>
+					<div class="btn-group" role="group" aria-label="Location Info Buttons">
+						<button id="saved_location_button" type="button" class="btn btn-flat btn-brand"><img src="images/savedlocation.png" /> <span></span></button>
+						<button id="more_info_button" type="button" class="btn btn-flat btn-brand"><span>More Info</span></button>
 					</div>
 				</div>
 			</div>
