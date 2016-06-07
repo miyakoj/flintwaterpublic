@@ -110,7 +110,7 @@ function initMap() {
 	
 	/* Saved Location Selection Card */
 	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
-		$("#location_card .card-inner").html("<h5>Saved Locations</h5>");
+		$("#location_card .card-inner").html("<h6>Saved Locations</h6>");
 		$(".card-action").css("font-size", "0.5rem");
 		
 		var saved_locations = "<div id=\"saved_locations\">";
@@ -119,7 +119,7 @@ function initMap() {
 			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"btn btn-flat btn-brand\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
 		}
 		else if (localStorage.getItem("saved_location2") !== null) {
-			//$(".card-main").addClass(".card-action");
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"btn btn-flat btn-brand\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
 		}
 		else if (localStorage.getItem("saved_location3") !== null) {
 			//$(".card-main").addClass(".card-action");
@@ -127,11 +127,11 @@ function initMap() {
 		
 		saved_locations += "</div>";
 		
-		$location_buttons = $(".card-action").detach(); // remove node and store it
-		$(".card-main").append(saved_locations);
+		$("#location_buttons").css("display", "none");
+		$(".card-action").append(saved_locations);
 		$("#location_card").css("display", "block");
 		
-		//console.log($location_buttons);
+		console.log(saved_locations);
 	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
@@ -179,15 +179,15 @@ function initMap() {
 	  $("#location_card").css("display", "block");
 		
 		/* Display appropriate lead rating and message. */
-		var lead_meter = "<p>[lead rating]</p>";
-		var lead_msg = "<p>OK to use filtered water, except children under 6 and pregnant women.</p>";		
-		$("#location_card .card-inner").html("<h5>Predicted low lead levels</h5>" + lead_meter + lead_msg);
+		var lead_prediction = "Predicted low lead levels";
+		var lead_meter = "[lead rating]";
+		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";		
+		$("#location_card .card-inner").html("<h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
 	});
 	
 	//303 E Kearsley St, Flint, MI, United States
 	
 	console.log(localStorage);
-	
 	
 	/*$("#search_button").css({
 		"top": function() {
@@ -211,7 +211,6 @@ function initMap() {
 				keyCode: 13
 			});
 			
-			$(".card-main").append($location_buttons); // reattach location buttons
 			updateSaveButtons();
 		}
     });
@@ -223,10 +222,10 @@ function initMap() {
 	if ((Number(localStorage.saved_locations_count) == 3) && ($("#saved_location_button span").text() == save_location_msg))
 		$("#saved_location_button").attr("disabled", "disabled");
 	
-	/* Use different button text depending on whether or not the location is saved. */
+	/* Show/hide buttons and dymaically set different button text. */
 	function updateSaveButtons() {
-		$("#saved_locations").detach(); // remove saved location items
-		$(".card-main").append($location_buttons); // reattach location buttons
+		$("#saved_locations").css("display", "none"); // hide saved locations
+		$("#location_buttons").css("display", "block"); // unhide location buttons
 			
 		var searched_location = $("#pac-input").val();
 		
@@ -248,13 +247,13 @@ function initMap() {
 		console.log(localStorage);
 	}
 	
-	if (localStorage.getItem("saved_location2") !== null) {
+	/*if (localStorage.getItem("saved_location2") !== null) {
 		localStorage.removeItem("saved_location2");
 		localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
-	}
+	}*/
 	
-	// Save a location to HTML5 local storage when the save button is clicked
-    $("#saved_location_button").click(function() {
+	// Save a location to HTML5 local storage when the save button is clicked	
+    $("#saved_location_button").on("click", function() {
 		if ($("#pac-input").val() != "") {
 			if (typeof(Storage) !== "undefined") {
 				if ($("#location_card #saved_location_button span").text() == save_location_msg) {
