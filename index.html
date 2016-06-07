@@ -48,24 +48,24 @@
 				<a class="close">&times;</a>	
 				<ul class="drawer-menu">
 					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_map.png" class="drawer-nav-icon" />Map</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_map.png" class="drawer-nav-icon" /><span>Map</span></a>
 					</li>
 
 					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_saved.png" class="drawer-nav-icon" />Saved Map Locations</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_saved.png" class="drawer-nav-icon" /><span>Saved Map Locations</span></a>
 					</li>
 
 					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_alerts.png" class="drawer-nav-icon" />Latest News and Alerts</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_alerts.png" class="drawer-nav-icon" /><span>Latest News and Alerts</span></a>
 					</li>
 
 					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_test.png" class="drawer-nav-icon" />Test My Water</a>
-					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon" />Report a Problem</a>
-					<a class="drawer-menu-item"><img src="images/nav_icon_submit.png" class="drawer-nav-icon" />Submit Location Information</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_test.png" class="drawer-nav-icon" /><span>Test My Water</span></a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon" /><span>Report a Problem</span></a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_submit.png" class="drawer-nav-icon" /><span>Submit Location Information</span></a>
 					</li>
 
-					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon" />About this app</a>
+					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon" /><span>About this app</span></a>
 				</ul>
 			</nav>
 		  </header>
@@ -73,28 +73,28 @@
 		 <!-- here are the buttons -->
 		<div id="toggles" class="btn-group btn-group-justified" data-toggle="buttons">
 		  <label class="btn btn-primary active resource_buttons btn-brand" name="heatmap">
-		    <input type="checkbox" autocomplete="off" /><img src="images/leadtesticon.png" class="resource_buttons_image" /> Lead Levels
+		    <input type="checkbox" autocomplete="off" /><img src="images/leadicon.png" class="resource_buttons_image" /> <span>Lead Levels</span>
 		  </label>
-		  <label class="btn btn-primary active resource_buttons btn-brand" name="heatmap">
-		    <input type="checkbox" autocomplete="off" /><img src="images/waterpickupicon.png" class="resource_buttons_image" />  Predicted Lead Levels
+		  <label class="btn btn-primary active resource_buttons btn-brand" name="predicted_lead_levels">
+		    <input type="checkbox" autocomplete="off" /><img src="images/predictedleadtesticon.png" class="resource_buttons_image" /> <span>Predicted Levels</span>
 		  </label>
 		  <label class="btn btn-primary resource_buttons btn-brand" name="water_pickup">
-		    <input type="checkbox" autocomplete="off" /><img src="images/predictedleadtesticon.png" class="resource_buttons_image" /> Water Pickup
+		    <input type="checkbox" autocomplete="off" /><img src="images/waterpickupicon.png" class="resource_buttons_image" /> <span>Water Pickup</span>
 		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="recycling" >
-		    <input type="checkbox" autocomplete="off" /><img src="images/recycleicon.png" class="resource_buttons_image" /> Recycling
+		  <label class="btn btn-primary resource_buttons btn-brand" name="recycling">
+		    <input type="checkbox" autocomplete="off" /><img src="images/recycleicon.png" class="resource_buttons_image" /> <span>Recycling</span>
 		  </label>
 		  <label class="btn btn-primary resource_buttons btn-brand" name="water_testing">
-		    <input type="checkbox" autocomplete="off" /><img src="images/leadtesticon.png" class="resource_buttons_image" /> Lead Testing
+		    <input type="checkbox" autocomplete="off" /><img src="images/leadtesticon.png" class="resource_buttons_image" /> <span>Water Testing</span>
 		  </label>
 		  <label class="btn btn-primary resource_buttons btn-brand" name="blood_testing">
-		    <input type="checkbox" autocomplete="off" /><img src="images/bloodtesticon.png" class="resource_buttons_image"> Blood Testing
+		    <input type="checkbox" autocomplete="off" /><img src="images/bloodtesticon.png" class="resource_buttons_image"> <span>Blood Testing</span>
 		  </label>
 		  <label class="btn btn-primary resource_buttons btn-brand" name="water_filters">
-		    <input type="checkbox" autocomplete="off" /><img src="images/waterfiltericon.png" class="resource_buttons_image" /> Filters
+		    <input type="checkbox" autocomplete="off" /><img src="images/waterfiltericon.png" class="resource_buttons_image" /> <span>Filters</span>
 		  </label>
 		  <label class="btn btn-primary resource_buttons btn-brand" name="construction">
-		    <input type="checkbox" autocomplete="off" /><img src="images/constructionicon.png" class="resource_buttons_image" /> Construction
+		    <input type="checkbox" autocomplete="off" /><img src="images/constructionicon.png" class="resource_buttons_image" /> <span>Construction</span>
 		  </label>
 		</div>
     </div>
@@ -105,7 +105,8 @@
 				<div class="card-action">
 					<div id="location_buttons" class="btn-group" role="group" aria-label="Location Info Buttons">
 						<button id="saved_location_button" type="button" class="btn btn-flat btn-brand"><img src="images/savedlocation.png" /> <span></span></button>
-						<button id="more_info_button" type="button" class="btn btn-flat btn-brand"><span>More Info</span></button>
+						<button id="more_info_button" type="button" class="btn btn-flat btn-brand"><img src="images/moreinfo.png" /> 
+						<span>More Info</span></button>
 					</div>
 				</div>
 			</div>
