@@ -23,6 +23,14 @@ var constructionMarker ;
 var constructionToggle = 0;
 var pipePolyLine;
 
+//icons
+var bloodIcon ;
+var waterpickupIcon ;
+var leadTestIcon ;
+var recycleIcon ;
+var filterIcon ;
+var constructionIcon ;
+
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
 	window.setTimeout(checkAuth, 1);
@@ -57,6 +65,38 @@ function initMap() {
 	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
 	});
+
+	//make icons for each resource
+	bloodIcon ={url: 'images/bloodtesticon.png',
+				size: new google.maps.Size(64,64),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(0,0),
+				scaledSize: new google.maps.Size(25,25)};
+	waterpickupIcon ={url: 'images/waterpickupicon.png',
+				size: new google.maps.Size(100,100),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(0,0),
+				scaledSize: new google.maps.Size(25,25)};
+	leadTestIcon ={url: 'images/leadtesticon.png',
+				size: new google.maps.Size(100,100),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(0,0),
+				scaledSize: new google.maps.Size(25,25)};
+	recycleIcon ={url: 'images/recycleicon.png',
+				size: new google.maps.Size(100,100),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(0,0),
+				scaledSize: new google.maps.Size(25,25)};
+	filterIcon ={url: 'images/waterfiltericon.png',
+				size: new google.maps.Size(100,100),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(0,0),
+				scaledSize: new google.maps.Size(25,25)};
+	constructionIcon ={url: 'images/constructionicon.png',
+				size: new google.maps.Size(100,100),
+				origin: new google.maps.Point(0,0),
+				anchor: new google.maps.Point(0,0),
+				scaledSize: new google.maps.Size(25,25)};
 	
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
@@ -66,7 +106,7 @@ function initMap() {
 		position: constructionLatLng,
 		map: map,
 		title: constructionTitle,
-		icon: constructionImage
+		icon: constructionIcon
 	});
 
 	var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
@@ -86,6 +126,9 @@ function initMap() {
 		strokeOpacity: .9,
 		strokeWeight: 2
 	});
+
+
+		
 
 	
 	// Create the search box and link it to the UI element.
@@ -393,19 +436,12 @@ function callStorageAPI(object) {
 					
 					allMarkersString.push(images);
 					var content = "<div id=\"provider_popup\"><h1>" + provider.title + "</h1> <p>" + provider.details + "</p><p>" + images + "</p></div>";
-						
-					var pinIcon = {url: marker_img,
-									size: new google.maps.Size(35,35),
-									origin: new google.maps.Point(0,0),
-									anchor: new google.maps.Point(0,0)
-									};
-					
+
 
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
-						map: map,
-						icon: pinIcon
+						map: map
 					});
 					
 					/* Store the markers in arrays for the add/remove functionality. */
@@ -519,30 +555,31 @@ $(document).ready(function() {
 		}
 		setMarkers();
 	})
-		
+
+	
 
 	/* Set markers on the map based on type. */
 	function setMarkers() {  
 		for (var i = 0; i < allMarkers.length; i++){
 			allMarkers[i].setMap(null);
 			if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
-				allMarkers[i].setIcon("images/bloodtesticon.png");
+				allMarkers[i].setIcon(bloodIcon);
 				allMarkers[i].setMap(map);
 			}
 			else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
-				allMarkers[i].setIcon("images/leadtesticon.png");
+				allMarkers[i].setIcon(leadTestIcon);
 				allMarkers[i].setMap(map);
 			}
 			else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
-				allMarkers[i].setIcon("images/waterfiltericon.png");
+				allMarkers[i].setIcon(filterIcon);
 				allMarkers[i].setMap(map);
 			}
 			else if(resourceActiveArray[2]==1 && allMarkersString[i].search("recycle") > -1){
-				allMarkers[i].setIcon("images/recycleicon.png");
+				allMarkers[i].setIcon(recycleIcon);
 				allMarkers[i].setMap(map);
 			}
 			else if(resourceActiveArray[1]==1 && allMarkersString[i].search("water") > -1){
-				allMarkers[i].setIcon("images/waterpickupicon.png");
+				allMarkers[i].setIcon(waterpickupIcon);
 				allMarkers[i].setMap(map);
 			}
 			if(constructionToggle==1){
