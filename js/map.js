@@ -130,8 +130,6 @@ function initMap() {
 		$("#location_buttons").css("display", "none");
 		$(".card-action").append(saved_locations);
 		$("#location_card").css("display", "block");
-		
-		console.log(saved_locations);
 	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
@@ -393,19 +391,12 @@ function callStorageAPI(object) {
 					
 					allMarkersString.push(images);
 					var content = "<div id=\"provider_popup\"><h1>" + provider.title + "</h1> <p>" + provider.details + "</p><p>" + images + "</p></div>";
-						
-					var pinIcon = {url: marker_img,
-									size: new google.maps.Size(35,35),
-									origin: new google.maps.Point(0,0),
-									anchor: new google.maps.Point(0,0)
-									};
-					
-
+								
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
 						map: map,
-						icon: pinIcon
+						icon: marker_img
 					});
 					
 					/* Store the markers in arrays for the add/remove functionality. */
@@ -450,6 +441,21 @@ $(document).ready(function() {
 	});*/
 	
 	//localStorage.clear();
+	
+	/* Selectively wrap toggle button text, */
+	var toggle_buttons = $("#toggles").children();
+	
+	//console.log(toggle_buttons);
+	
+	/*toggle_buttons.each(function(i) {
+		var span = $(this).children("span");
+		
+		if (span.outerWidth() > span.parent().width()) {
+			//span.parent().addClass("wrap_text");
+			span.parent().css("white-space", "normal");
+			span.css({"font-size": "80%", "text-align": "left"});
+		}
+	});*/
 	
 	$("[name='heatmap']").on('click', function() {		
 		if (heatmap.getMap() != null) {
