@@ -2,35 +2,34 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flint Water Crisis Information Site</title>
+<title>Flint Water Crisis Information</title>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 <link rel="stylesheet" href="css/base.min.css">
 <link rel="stylesheet" href="css/project.min.css">
-<link rel="stylesheet" href="css/drawer.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iScroll/5.1.3/iscroll.min.js"></script>
+<!--<script src="js/base.min.js"></script>-->
+<!--<script src="js/project.min.js"></script>-->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script src="js/drawer.min.js" charset="utf-8"></script>
-<script src="js/base.min.js"></script>
-<script src="js/project.min.js"></script>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7HOgmlOJWmtlAZL4XGhItNJzWA0nUW0&libraries=visualization,places" async defer></script>
 <script src="js/script.js"></script>
 <script src="js/map.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=setAPIKey"></script>
 </head>
 
-<body class="drawer drawer--left">
+<body>
 <div class="alert alert-warning alert-dismissible fade in" role="alert">
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 			
-<input id="pac-input" class="controls" type="text" placeholder="Search">
+<input id="search_input" class="controls" type="text" placeholder="Search">
 <button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
 
 <div id="map"></div>
@@ -38,45 +37,54 @@
 <div class="container-fluid" id="main">
   <div class="row">
   	<div class="col-md-12" id="header">
-		<header role="banner">
-			<button type="button" class="drawer-toggle drawer-hamburger">
-			  <span class="sr-only">toggle navigation</span>
-			  <span class="glyphicon glyphicon-menu-hamburger"></span>
-			</button>
-			
-			<nav class="drawer-nav" role="navigation">
-				<a class="close">&times;</a>	
-				<ul class="drawer-menu">
-					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_map.png" class="drawer-nav-icon" /><span>Map</span></a>
-					</li>
+		<header>
+			<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+				<div class="navbar-header">
+				  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main_menu" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				  </button>
+				  <a class="navbar-brand" href="#">Flint Water Info Site</a>
+				</div>
 
-					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_saved.png" class="drawer-nav-icon" /><span>Saved Map Locations</span></a>
+				<div id="main_menu" class="collapse navbar-collapse">
+				  <ul class="nav navbar-nav">
+					<li><a id="map_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">map</span> <span>Map</span></a></li>
+					<li><a id="news_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">markunread_mailbox</span> <span>News and Alerts</span></a></li>
+					
+					<li class="dropdown">
+					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how to... <span class="caret"></span></a>
+					  <ul class="dropdown-menu">
+						<li><a id="test_link" href="#"><span class="material-icons md-18" aria-hidden="true">local_drink</span> <span>Test My Water</span></a></li>
+						<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Filter</span></a></li>
+						<li><a id="aerator_link" href="#"><span class="material-icons md-18" aria-hidden="true">bubble_chart</span> <span>Clean My Aerator</span></a></li>
+						<li><a id="report_link" href="#"><span class="material-icons md-18" aria-hidden="true">report_problem</span> <span>Report a Problem</span></a></li>
+						<li><a id="submit_link" href="#"><span class="material-icons md-18" aria-hidden="true">rate_review</span> <span>Submit Location Information</span></a></li>
+					  </ul>
 					</li>
-
-					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_alerts.png" class="drawer-nav-icon" /><span>Latest News and Alerts</span></a>
-					</li>
-
-					<li class="border">
-					<a class="drawer-menu-item"><img src="images/nav_icon_test.png" class="drawer-nav-icon" /><span>Test My Water</span></a>
-					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon" /><span>Report a Problem</span></a>
-					<a class="drawer-menu-item"><img src="images/nav_icon_submit.png" class="drawer-nav-icon" /><span>Submit Location Information</span></a>
-					</li>
-
-					<a class="drawer-menu-item"><img src="images/nav_icon_about.png" class="drawer-nav-icon" /><span>About this app</span></a>
-				</ul>
+				  </ul>
+				  
+				  <ul class="nav navbar-nav navbar-right">
+					<li><a id="lang_en" href="#">EN</a></li>
+					<li><a id="lang_es" href="#">ES</a></li>
+					<li><a id="lang_ar" href="#">العربية</a></li>
+				  </ul>
+				</div>
+			  </div>
 			</nav>
-		  </header>
+		</header>
 
-		 <!-- here are the buttons -->
-		<div id="toggles" class="btn-group btn-group-justified" data-toggle="buttons">
+		 <!-- here are the toggle buttons -->
+		<nav id="toggles" class="btn-group btn-group-justified" data-toggle="buttons">
 		  <label class="btn btn-primary active resource_buttons btn-brand" name="heatmap">
 		    <input type="checkbox" autocomplete="off" /><img src="images/leadicon.png" class="resource_buttons_image" /> <span>Lead Levels</span>
 		  </label>
-		  <label class="btn btn-primary active resource_buttons btn-brand" name="predicted_lead_levels">
-		    <input type="checkbox" autocomplete="off" /><img src="images/predictedleadtesticon.png" class="resource_buttons_image" /> <span>Predicted Levels</span>
+		  <label class="btn btn-primary resource_buttons btn-brand" name="risk_factor">
+		    <input type="checkbox" autocomplete="off" /><img src="images/predictedleadtesticon.png" class="resource_buttons_image" /> <span>Risk Factor</span>
 		  </label>
 		  <label class="btn btn-primary resource_buttons btn-brand" name="water_pickup">
 		    <input type="checkbox" autocomplete="off" /><img src="images/waterpickupicon.png" class="resource_buttons_image" /> <span>Water Pickup</span>
@@ -96,8 +104,9 @@
 		  <label class="btn btn-primary resource_buttons btn-brand" name="construction">
 		    <input type="checkbox" autocomplete="off" /><img src="images/constructionicon.png" class="resource_buttons_image" /> <span>Construction</span>
 		  </label>
-		</div>
+		</nav>
     </div>
+	
     <div class="col-md-12" id="map_container">
 		<div id="location_card" class="card">
 			<div class="card-main">
@@ -112,6 +121,8 @@
 			</div>
 		</div>
 	</div>
+	
+	<footer><a href="#"><img src="images/nav_icon_about.png" class="drawer-nav-icon" /><span>About this app</span></a></footer>
 </div>
 </div>
 </body>

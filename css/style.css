@@ -4,8 +4,8 @@ html, body {
 
 header {
 	background-color:#000;
-	height:35px;
-	text-align:center;
+	/*height:35px;
+	text-align:center;*/
 }
 
 header h2 {
@@ -31,8 +31,21 @@ header h2 {
 	border-bottom:1px solid #CCC;
 }
 
+/* Navbar */
+.navbar {
+	margin-bottom:0!important;
+}
 
-/* Drawer Nav */
+.navbar .material-icons {
+	vertical-align:middle;
+}
+
+.navbar .dropdown-menu {
+	
+}
+
+
+/* Drawer Nav 
 nav ul {
 	margin:0;
 	padding:0;
@@ -62,23 +75,23 @@ nav .tooltip-arrow {
 	display:none;
 }
 
-nav #saved_locations {
+#toggles #saved_locations {
 	margin-top:0;
 }
 
-nav #resource_buttons {
+#toggles #resource_buttons {
 	margin-bottom:15px;
 }
 
-nav #resource_buttons div {
+#toggles #resource_buttons div {
 	text-align:center;
 }
 
-nav #resource_buttons div:first-of-type {
+#toggles #resource_buttons div:first-of-type {
 	margin-bottom:15px;
 }
 
-nav button img {
+#toggles button img {
 	width:auto;
     max-height:30px;
 }
@@ -116,7 +129,7 @@ nav #news li {
 
 .drawer-nav-icon{
 	margin: 8px 20px 8px 10px;
-}
+}*/
 
 @media only screen and (max-width: 800px) {
     .drawer-menu-item {
@@ -135,7 +148,7 @@ nav #news li {
 #search_box {
 }
 
-#pac-input {
+#search_input {
 	background-color: #fff;
 	font-family: Roboto;
 	font-size: 15px;
@@ -148,7 +161,7 @@ nav #news li {
 	left:10px!important;
 }
 
-#pac-input:focus {
+#search_input:focus {
 	border-color: #4d90fe;
 }
 
