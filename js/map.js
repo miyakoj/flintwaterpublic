@@ -159,10 +159,10 @@ function initMap() {
 		var saved_locations = "<div id=\"saved_locations\">";
 		
 		if (localStorage.getItem("saved_location1") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"btn btn-flat btn-brand\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
 		}
 		else if (localStorage.getItem("saved_location2") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"btn btn-flat btn-brand\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location2\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
 		}
 		else if (localStorage.getItem("saved_location3") !== null) {
 			//$(".card-main").addClass(".card-action");
@@ -246,7 +246,6 @@ function initMap() {
 	
 	// Trigger search on button click
     $("#search_button").click(function() {
-		if(activeSearch){
 			var input = document.getElementById('pac-input');
 
 			google.maps.event.trigger(input, 'focus');
@@ -255,11 +254,12 @@ function initMap() {
 			});
 			
 			updateSaveButtons();
-		}
+		
     });
 	
 	var save_location_msg = "Save This Location";
-	var saved_location_msg = "Saved Location"
+	var saved_location_msg = "Saved Location";
+
 	
 	/* Disable the save button if there are already three saved locations. */
 	if ((Number(localStorage.saved_locations_count) == 3) && ($("#saved_location_button span").text() == save_location_msg))
@@ -344,6 +344,20 @@ function initMap() {
 		}
 		else
 			console.log("The search input is empty.");
+	});
+
+
+	$("#more_info_button").on("click", function(){		
+		if($(this).text() === "More Info"){
+			console.log("currently more info");
+			$(this).text("Less Info");
+			$("#location_card .card-inner").append("<p class=\"more-info\">More Info</p>");
+		}
+		else{
+			console.log("currently less info");
+			$(this).text("More Info");
+			$(".more-info").remove();
+		}
 	});
 }
 
@@ -555,6 +569,12 @@ $(document).ready(function() {
 		}
 		setMarkers();
 	});
+
+	/*when a saved location is clicked, puts the location in search bar and searches*/
+	$(document).on('click', 'button.saved-location',function(){
+		$('#pac-input').val($(this).text());
+		$('#search_button').click();
+	})
 
 	/* Set markers on the map based on type. */
 	function setMarkers() {  
