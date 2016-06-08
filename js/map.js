@@ -142,12 +142,12 @@ function initMap() {
 	});
 	
 	$("#location_card").css({
-		"width": function() {return $("#pac-input").outerWidth() + $("#search_button").outerWidth();},
+		"width": function() {return $("#pac-input").outerWidth() + parseFloat($("#search_button").outerWidth());},
 		"top": function() {
-			return parseInt($("#pac-input").css("top")) + $("#pac-input").height() + 20 + "px";
+			return parseFloat($("#pac-input").css("top")) + parseFloat($("#pac-input").height()) + 20 + "px";
 			},
 		"left": function() {
-			return parseInt($("#pac-input").css("left")) + parseInt($("#pac-input").css("margin-left")) + "px";
+			return parseFloat($("#pac-input").css("left")) + parseFloat($("#pac-input").css("margin-left")) + "px";
 			}
 	});
 	
@@ -173,6 +173,8 @@ function initMap() {
 		$("#location_buttons").css("display", "none");
 		$(".card-action").append(saved_locations);
 		$("#location_card").css("display", "block");
+		
+		console.log(saved_locations);
 	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
@@ -232,7 +234,7 @@ function initMap() {
 	
 	/*$("#search_button").css({
 		"top": function() {
-				return parseInt($("#pac-input").css("top")) + "px";
+				return parseFloat($("#pac-input").css("top")) + "px";
 			   }
 	});*/
 	
@@ -434,21 +436,12 @@ function callStorageAPI(object) {
 					
 					allMarkersString.push(images);
 					var content = "<div id=\"provider_popup\"><h1>" + provider.title + "</h1> <p>" + provider.details + "</p><p>" + images + "</p></div>";
-<<<<<<< HEAD
-								
-					var marker = new google.maps.Marker({
-						position: latLng,
-						title: title,
-						map: map,
-						icon: marker_img
-=======
 
 
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
 						map: map
->>>>>>> origin/master
 					});
 					
 					/* Store the markers in arrays for the add/remove functionality. */
@@ -494,21 +487,6 @@ $(document).ready(function() {
 	
 	//localStorage.clear();
 	
-	/* Selectively wrap toggle button text, */
-	var toggle_buttons = $("#toggles").children();
-	
-	//console.log(toggle_buttons);
-	
-	/*toggle_buttons.each(function(i) {
-		var span = $(this).children("span");
-		
-		if (span.outerWidth() > span.parent().width()) {
-			//span.parent().addClass("wrap_text");
-			span.parent().css("white-space", "normal");
-			span.css({"font-size": "80%", "text-align": "left"});
-		}
-	});*/
-	
 	$("[name='heatmap']").on('click', function() {		
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
@@ -516,7 +494,7 @@ $(document).ready(function() {
 		else {
 			heatmap.setMap(map);
 		}
-	})
+	});
 
 	$("[name='water_pickup']").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
@@ -526,7 +504,7 @@ $(document).ready(function() {
 			resourceActiveArray[1] = 1;
 		}
 		setMarkers();
-	})
+	});
 
 	$("[name='recycling']").on('click', function(){
 		if (resourceActiveArray[2] == 1) {
@@ -536,7 +514,7 @@ $(document).ready(function() {
 			resourceActiveArray[2] = 1;
 		}
 		setMarkers();
-	})
+	});
 
 	$("[name='water_testing']").on('click', function(){
 		if (resourceActiveArray[4] == 1) {
@@ -546,7 +524,7 @@ $(document).ready(function() {
 			resourceActiveArray[4] = 1;
 		}
 		setMarkers();
-	})
+	});
 
 	$("[name='blood_testing']").on('click', function(){
 		if (resourceActiveArray[5] == 1) {
@@ -556,7 +534,7 @@ $(document).ready(function() {
 			resourceActiveArray[5] = 1;
 		}
 		setMarkers();
-	})
+	});
 
 	$("[name='water_filters']").on('click', function(){
 		if (resourceActiveArray[3] == 1) {
@@ -566,7 +544,7 @@ $(document).ready(function() {
 			resourceActiveArray[3] = 1;
 		}
 		setMarkers();
-	})
+	});
 
 	$("[name='construction']").on('click', function(){
 		if (constructionToggle == 1) {
@@ -576,9 +554,7 @@ $(document).ready(function() {
 			constructionToggle = 1;
 		}
 		setMarkers();
-	})
-
-	
+	});
 
 	/* Set markers on the map based on type. */
 	function setMarkers() {  
@@ -626,4 +602,3 @@ $(document).ready(function() {
 		}
 	});
 });
-
