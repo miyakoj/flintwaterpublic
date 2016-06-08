@@ -99,12 +99,12 @@ function initMap() {
 	});
 	
 	$("#location_card").css({
-		"width": function() {return $("#pac-input").outerWidth() + parseFloat($("#search_button").outerWidth());},
+		"width": function() {return $("#pac-input").outerWidth() + $("#search_button").outerWidth();},
 		"top": function() {
-			return parseFloat($("#pac-input").css("top")) + parseFloat($("#pac-input").height()) + 20 + "px";
+			return parseInt($("#pac-input").css("top")) + $("#pac-input").height() + 20 + "px";
 			},
 		"left": function() {
-			return parseFloat($("#pac-input").css("left")) + parseFloat($("#pac-input").css("margin-left")) + "px";
+			return parseInt($("#pac-input").css("left")) + parseInt($("#pac-input").css("margin-left")) + "px";
 			}
 	});
 	
@@ -189,7 +189,7 @@ function initMap() {
 	
 	/*$("#search_button").css({
 		"top": function() {
-				return parseFloat($("#pac-input").css("top")) + "px";
+				return parseInt($("#pac-input").css("top")) + "px";
 			   }
 	});*/
 	
