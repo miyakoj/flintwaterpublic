@@ -242,12 +242,8 @@ function initMap() {
 	
 	// Trigger search on button click
     $("#search_button").click(function() {
-<<<<<<< HEAD
 		if(activeSearch){
 			var input = document.getElementById('search_input');
-=======
-			var input = document.getElementById('pac-input');
->>>>>>> origin/master
 
 			google.maps.event.trigger(input, 'focus');
 			google.maps.event.trigger(input, 'keydown', {
@@ -582,7 +578,7 @@ $(document).ready(function() {
 
 	/*when a saved location is clicked, puts the location in search bar and searches*/
 	$(document).on('click', 'button.saved-location',function(){
-		$('#pac-input').val($(this).text());
+		$('#search_input').val($(this).text());
 		$('#search_button').click();
 	})
 
