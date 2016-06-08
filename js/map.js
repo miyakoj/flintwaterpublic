@@ -127,12 +127,9 @@ function initMap() {
 		strokeWeight: 2
 	});
 
-
-		
-
 	
 	// Create the search box and link it to the UI element.
-	var input = document.getElementById('pac-input');
+	var input = document.getElementById('search_input');
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
@@ -142,12 +139,12 @@ function initMap() {
 	});
 	
 	$("#location_card").css({
-		"width": function() {return $("#pac-input").outerWidth() + parseFloat($("#search_button").outerWidth());},
+		"width": function() {return $("#search_input").outerWidth() + parseFloat($("#search_button").outerWidth());},
 		"top": function() {
-			return parseFloat($("#pac-input").css("top")) + parseFloat($("#pac-input").height()) + 20 + "px";
+			return parseFloat($("#search_input").css("top")) + parseFloat($("#search_input").height()) + 20 + "px";
 			},
 		"left": function() {
-			return parseFloat($("#pac-input").css("left")) + parseFloat($("#pac-input").css("margin-left")) + "px";
+			return parseFloat($("#search_input").css("left")) + parseFloat($("#search_input").css("margin-left")) + "px";
 			}
 	});
 	
@@ -173,8 +170,6 @@ function initMap() {
 		$("#location_buttons").css("display", "none");
 		$(".card-action").append(saved_locations);
 		$("#location_card").css("display", "block");
-		
-		console.log(saved_locations);
 	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
@@ -232,14 +227,15 @@ function initMap() {
 	
 	console.log(localStorage);
 	
-	/*$("#search_button").css({
+	$("#search_button").css({
 		"top": function() {
-				return parseFloat($("#pac-input").css("top")) + "px";
+				//return parseFloat($("#search_input").css("top")) + "px";
+				return $("header").outerHeight() + $("#toggles").outerHeight() + 20;
 			   }
-	});*/
+	});
 	
 	// Check the saved locations if enter is pressed while in the search box
-	$("#pac-input").keydown(function( event ) {
+	$("#search_input").keydown(function( event ) {
 		if (event.which == 13)
 			updateSaveButtons();
 	});
@@ -247,7 +243,7 @@ function initMap() {
 	// Trigger search on button click
     $("#search_button").click(function() {
 		if(activeSearch){
-			var input = document.getElementById('pac-input');
+			var input = document.getElementById('search_input');
 
 			google.maps.event.trigger(input, 'focus');
 			google.maps.event.trigger(input, 'keydown', {
@@ -270,7 +266,7 @@ function initMap() {
 		$("#saved_locations").css("display", "none"); // hide saved locations
 		$("#location_buttons").css("display", "block"); // unhide location buttons
 			
-		var searched_location = $("#pac-input").val();
+		var searched_location = $("#search_input").val();
 		
 		console.log(localStorage.saved_location1 + " - " + searched_location);
 		
@@ -297,7 +293,7 @@ function initMap() {
 	
 	// Save a location to HTML5 local storage when the save button is clicked	
     $("#saved_location_button").on("click", function() {
-		if ($("#pac-input").val() != "") {
+		if ($("#search_input").val() != "") {
 			if (typeof(Storage) !== "undefined") {
 				if ($("#location_card #saved_location_button span").text() == save_location_msg) {
 					if (localStorage.getItem("saved_locations_count") !== null) {
@@ -309,13 +305,13 @@ function initMap() {
 					else
 						localStorage.saved_locations_count = 1;
 					
-					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#pac-input").val());
+					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
 					marker_img = "images/savedlocation.png";					
 					
 					$("#location_card #saved_location_button span").text(saved_location_msg);
 				}
 				else { // remove location
-					var searched_location = $("#pac-input").val();
+					var searched_location = $("#search_input").val();
 					localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
 				
 					if (localStorage.saved_location1 == searched_location) {
@@ -495,6 +491,15 @@ $(document).ready(function() {
 			heatmap.setMap(map);
 		}
 	});
+	
+	$("[name='risk_factor']").on('click', function() {		
+		/*if (riskmap.getMap() != null) {
+			riskmap.setMap(null);
+		}
+		else {
+			riskmap.setMap(map);
+		}*/
+	});
 
 	$("[name='water_pickup']").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
@@ -591,8 +596,8 @@ $(document).ready(function() {
 		}
 	}
 	
-	$("#pac-input").keyup(function() {
-		if($("#pac-input").val()) {
+	$("#search_input").keyup(function() {
+		if($("#search_input").val()) {
 			$("#search_button").css("color", "#FFF");
 			activeSearch = 1;
 		}
