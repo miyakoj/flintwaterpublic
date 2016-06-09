@@ -270,16 +270,19 @@ function initMap() {
 		$("#location_buttons").css("display", "block"); // unhide location buttons
 			
 		var searched_location = $("#search_input").val();
-		
-		console.log(localStorage.saved_location1 + " - " + searched_location);
+		var searched_location_sub = searched_location.substring(1,searched_location.length);
+
+		console.log(localStorage.saved_location1);
+		console.log(searched_location_sub);
+		console.log(searched_location);
 		
 		marker_img = "images/savedlocation.png"; // saved location icon by default
 		
-		if (localStorage.saved_location1 == searched_location)
+		if (localStorage.saved_location1 === searched_location_sub)
 			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location2 == searched_location)
+		else if (localStorage.saved_location2 === searched_location_sub)
 			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location3 == searched_location)
+		else if (localStorage.saved_location3 === searched_location_sub)
 			$("#saved_location_button span").text(saved_location_msg);
 		else {
 			$("#saved_location_button span").text(save_location_msg);
@@ -317,17 +320,16 @@ function initMap() {
 					var searched_location = $("#search_input").val();
 					localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
 				
+					$("#saved_location_button span").text(save_location_msg);
+
 					if (localStorage.saved_location1 == searched_location) {
 						localStorage.removeItem("saved_location1");
-						$("#saved_location_button span").text(save_location_msg);
 					}
 					else if (localStorage.saved_location2 == searched_location) {
 						localStorage.removeItem("saved_location2");
-						$("#saved_location_button span").text(save_location_msg);
 					}
 					else if (localStorage.saved_location3 == searched_location) {
 						localStorage.removeItem("saved_location3");
-						$("#saved_location_button span").text(save_location_msg);
 					}
 					
 					marker_img = "images/locationicon.png";
