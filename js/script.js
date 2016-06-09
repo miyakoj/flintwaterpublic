@@ -17,9 +17,9 @@ $(document).ready(function(){
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	var mapHeight = windowHeight - $("header").height() - $("#toggles").height();
+	var mapHeight = windowHeight - $("header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
 	
-	$("#map").css("height", mapHeight);	
+	$("#map").css("height", mapHeight);
 	$("#search_input").val(""); // clear the search input upon refresh
 	
 	/* Resize the provider info popups. */
