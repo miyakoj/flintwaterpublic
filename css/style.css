@@ -133,8 +133,12 @@ header h2 {
 
 #map {
 	width:100%;
-	
+	/*display:none;*/
 }
+
+/*#map [id="page"] {
+	display:block;
+}*/
 
 #map h1 {
 	font-size:1.25em;
@@ -197,7 +201,11 @@ header h2 {
 
 
 footer {
-	margin-top:15px;
+	padding:4px;
+}
+
+footer span {
+	vertical-align:middle;
 }
 
 /* Alert Box */
