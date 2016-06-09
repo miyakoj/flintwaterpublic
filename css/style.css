@@ -68,6 +68,12 @@ header h2 {
 	vertical-align:middle;
 }
 
+@media only screen and (max-width: 768px) {
+    #toggles span{
+		display: none;
+	}
+}
+
 
 /* Map-Related Styles. */
 #search_box {
