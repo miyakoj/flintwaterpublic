@@ -158,11 +158,13 @@ function initMap() {
 		if (localStorage.getItem("saved_location1") !== null) {
 			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
 		}
-		else if (localStorage.getItem("saved_location2") !== null) {
+		
+		if (localStorage.getItem("saved_location2") !== null) {
 			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location2\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
 		}
-		else if (localStorage.getItem("saved_location3") !== null) {
-			//$(".card-main").addClass(".card-action");
+		
+		if (localStorage.getItem("saved_location3") !== null) {
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location3\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location3") + "</span></button></div>";
 		}
 		
 		saved_locations += "</div>";
@@ -242,7 +244,7 @@ function initMap() {
 	
 	// Trigger search on button click
     $("#search_button").click(function() {
-		if(activeSearch){
+		//if(activeSearch){
 			var input = document.getElementById('search_input');
 
 			google.maps.event.trigger(input, 'focus');
@@ -251,7 +253,7 @@ function initMap() {
 			});
 			
 			updateSaveButtons();
-		
+		//}	
     });
 	
 	var save_location_msg = "Save This Location";
