@@ -9,7 +9,7 @@ class webpageTemplate {
 	var $html;
 	var $parameters = array();
 
-	function webpageTemplate($template) {
+	function __construct($template) {
 		$this->template = $template;
 		$this->html = implode("", (file($this->template)));
 	}
