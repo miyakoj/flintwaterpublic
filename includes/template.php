@@ -15,17 +15,7 @@ class webpageTemplate {
 	}
 
 	function set($variable, $content) {
-		if (strcmp($variable, "PAGE_TITLE") == 0)
-			$content = "| " . $content;
-	
-		if (preg_match("/\.html$/", $content)) {
-			$handle = fopen("data/" . $content, "r");
-			$text = fread($handle, filesize("data/" . $content));
-			fclose($handle);
-		}
-		else
-			$text = $content;
-
+		$text = $content;
 		$this->parameters[$variable] = $text;
 	}
 
