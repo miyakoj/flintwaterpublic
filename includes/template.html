@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Flint Water Crisis Information</title>
+<title>Flint Water Crisis Information {PAGE_TITLE}</title>
 
 <link rel="stylesheet" href="css/base.min.css">
 <link rel="stylesheet" href="css/project.min.css">
@@ -19,8 +19,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7HOgmlOJWmtlAZL4XGhItNJzWA0nUW0&libraries=visualization,places" async defer></script>
+<script src="https://www.google.com/jsapi"></script>
 <script src="js/script.js"></script>
 <script src="js/map.js"></script>
+<script src="js/news.js"></script>
+<script src="js/alerts.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=setAPIKey"></script>
 </head>
 
@@ -34,9 +37,9 @@
 
 <div id="map"></div>
 
-<div class="container-fluid" id="main">
+<div id="main" class="container-fluid">
   <div class="row">
-  	<div class="col-md-12" id="header">
+  	<div id="header" class="col-md-12">
 		<header>
 			<nav class="navbar navbar-default">
 			  <div class="container-fluid">
@@ -78,39 +81,15 @@
 			</nav>
 		</header>
 
-		 <!-- here are the toggle buttons -->
-		<nav id="toggles" class="btn-group btn-group-justified" data-toggle="buttons">
-		  <label class="btn btn-primary active resource_buttons btn-brand" name="heatmap">
-		    <input type="checkbox" autocomplete="off" /><img src="images/leadicon.png" class="resource_buttons_image" /> <span>Lead Levels</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="risk_factor">
-		    <input type="checkbox" autocomplete="off" /><img src="images/predictedleadtesticon.png" class="resource_buttons_image" /> <span>Risk Factor</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="water_pickup">
-		    <input type="checkbox" autocomplete="off" /><img src="images/waterpickupicon.png" class="resource_buttons_image" /> <span>Water Pickup</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="recycling">
-		    <input type="checkbox" autocomplete="off" /><img src="images/recycleicon.png" class="resource_buttons_image" /> <span>Recycling</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="water_testing">
-		    <input type="checkbox" autocomplete="off" /><img src="images/leadtesticon.png" class="resource_buttons_image" /> <span>Water Testing</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="blood_testing">
-		    <input type="checkbox" autocomplete="off" /><img src="images/bloodtesticon.png" class="resource_buttons_image"> <span>Blood Testing</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="water_filters">
-		    <input type="checkbox" autocomplete="off" /><img src="images/waterfiltericon.png" class="resource_buttons_image" /> <span>Water Filters</span>
-		  </label>
-		  <label class="btn btn-primary resource_buttons btn-brand" name="construction">
-		    <input type="checkbox" autocomplete="off" /><img src="images/constructionicon.png" class="resource_buttons_image" /> <span>Construction</span>
-		  </label>
-		</nav>
+		{TOGGLES}		
     </div>
 	
+	<main class="col-md-12">
 	{CONTENT}
-</div>
+	</main>
+  </div>
 </div>
 
-<footer>[copyright] <a href="#"><span class="material-icons md-18" aria-hidden="true">info</span> About this site</a></footer>
+<footer>[copyright] <a id="about_link" href="#"><span class="material-icons md-18" aria-hidden="true">info</span> About this site</a></footer>
 </body>
 </html>
