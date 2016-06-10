@@ -1,9 +1,12 @@
-$(document).ready(function(){
+$(document).ready(function() {
 	var windowWidth = window.innerWidth;
 	var windowHeight = window.innerHeight;
 	
 	/* Position alert in the middle of the page. */
-	$(".alert").css({"top": (windowHeight - $(".alert").height()) / 2, "left": (windowWidth - $(".alert").width()) / 2});
+	$(".alert").css({
+		"top": (windowHeight - $(".alert").height()) / 2,
+		"left": (windowWidth - $(".alert").width()) / 2
+	});
 	
 	/* Activate tooltips. */
 	$(function () {
