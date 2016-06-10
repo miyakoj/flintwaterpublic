@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="css/nav_drawer.css">
 <link rel="stylesheet" href="css/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
@@ -20,6 +21,8 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7HOgmlOJWmtlAZL4XGhItNJzWA0nUW0&libraries=visualization,places" async defer></script>
 <script src="https://www.google.com/jsapi"></script>
+<script src="js/nav_drawer.js"></script>
+<script src="js/modernizr.js"></script>
 <script src="js/script.js"></script>
 <script src="js/map.js"></script>
 <script src="js/news.js"></script>
@@ -31,7 +34,7 @@
 <div class="alert alert-warning alert-dismissible fade in" role="alert">
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
-			
+
 <input id="search_input" class="controls" type="text" placeholder="Search">
 <button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
 
@@ -40,7 +43,7 @@
 <div id="main" class="container-fluid">
   <div class="row">
   	<div id="header" class="col-md-12">
-		<header>
+		<header>			
 			<nav class="navbar navbar-default">
 			  <div class="container-fluid">
 				<div class="navbar-header">
