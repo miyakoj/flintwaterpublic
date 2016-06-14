@@ -272,3 +272,21 @@ footer span {
 .resource_buttons_image{
 	margin-right: 3px;
 }
+
+.marker_window_icons{
+	height: 50px;
+	width: 50px;
+}
+
+.stepper_group_width{
+	max-width: 150px;
+    margin: 0px auto;
+}
+
+#survey-get-started .btn{
+	width: 99%;
+}
+
+.stepper_group_width .stepper{
+	padding-left: 0px!important;
+}

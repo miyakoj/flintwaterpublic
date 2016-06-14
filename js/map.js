@@ -71,32 +71,32 @@ function initMap() {
 				size: new google.maps.Size(64,64),
 				origin: new google.maps.Point(0,0),
 				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(25,25)};
+				scaledSize: new google.maps.Size(45,45)};
 	waterpickupIcon ={url: 'images/waterpickupicon.png',
 				size: new google.maps.Size(100,100),
 				origin: new google.maps.Point(0,0),
 				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(25,25)};
+				scaledSize: new google.maps.Size(45,45)};
 	leadTestIcon ={url: 'images/leadtesticon.png',
 				size: new google.maps.Size(100,100),
 				origin: new google.maps.Point(0,0),
 				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(25,25)};
+				scaledSize: new google.maps.Size(45,45)};
 	recycleIcon ={url: 'images/recycleicon.png',
 				size: new google.maps.Size(100,100),
 				origin: new google.maps.Point(0,0),
 				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(25,25)};
+				scaledSize: new google.maps.Size(45,45)};
 	filterIcon ={url: 'images/waterfiltericon.png',
 				size: new google.maps.Size(100,100),
 				origin: new google.maps.Point(0,0),
 				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(25,25)};
+				scaledSize: new google.maps.Size(45,45)};
 	constructionIcon ={url: 'images/constructionicon.png',
 				size: new google.maps.Size(100,100),
 				origin: new google.maps.Point(0,0),
 				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(25,25)};
+				scaledSize: new google.maps.Size(45,45)};
 	
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
@@ -430,23 +430,23 @@ function callStorageAPI(object) {
 					
 					if (provider.hasWater === "true") {			
 						marker_img = "images/waterpickupicon.png";
-						images += "<img src='" + marker_img + "' />";
+						images += "<img src='" + marker_img + "' class='marker_window_icons' />";
 					}
 					if (provider.hasRecycle === "true") {
 						marker_img = "images/recycleicon.png";
-						images += "<img src='" + marker_img + "' />";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
 					if (provider.hasBloodTesting === "true") {
 						marker_img = "images/bloodtesticon.png";
-						images += "<img src='" + marker_img + "' />";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
 					if (provider.hasFilters === "true") {
 						marker_img = "images/waterfiltericon.png";
-						images += "<img src='" + marker_img + "' />";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
 					if (provider.hasWaterTestKits === "true") {
 						marker_img = "images/leadtesticon.png";
-						images += "<img src='" + marker_img + "' />";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
 					
 					allMarkersString.push(images);
