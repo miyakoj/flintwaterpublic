@@ -33,19 +33,12 @@ header {
 /* Navbar */
 .navbar {
 	margin-bottom:0!important;
+	z-index:1000;
 }
 
-#index_page .navbar #map_link {
-	/*display:none;*/
+.navbar-brand {
+	margin-top:12px!important;
 }
-
-/*.navbar .navbar-header {
-	float:left;
-}
-
-.navbar navbar-toggle {
-	float:left;
-}*/
 
 .navbar, .navbar-default {
 	border-radius:0!important;
@@ -62,6 +55,10 @@ header {
 
 .nav {
 	z-index:99;
+}
+
+#main_menu {
+	margin-top:10px!important;
 }
 
 .dropdown-menu .btn, .dropdown-menu .btn-flat {
@@ -158,9 +155,9 @@ body[id="index_page"] #search_input {
 	display:none;
 }
 
-body[id="index_page"] #search_button {
-	display:none;
-}
+/*body[id="index_page"] #search_button {
+	display:block;
+}*/
 
 #type-selector {
 	color: #fff;
