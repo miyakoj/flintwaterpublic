@@ -13,6 +13,9 @@ $(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
+	/* Make the line-height of the navbar header h1 match the height of the navbar. */
+	//$(".navbar-brand").css("line-height", $("#main_menu ul").css("line-height"));
+	
 	/* Dynamically adjust the line-height of the dropdown links by the link height. */
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
 	
@@ -29,8 +32,8 @@ $(document).ready(function() {
 	var id;
 	var page;
 	
-	$(".nav a").each(function(i) {
-		id = $(this).attr("id");
+	$("#main_menu a").each(function(i) {
+		id = $(this).attr("id");		
 		var dropdown = $(this).siblings(".dropdown-menu");
 		
 		/* If the dropdown is a sibling of the current <a> then generate the links for the items. */
@@ -59,15 +62,36 @@ $(document).ready(function() {
 	
 	/* Mark the tab of the current page as active. */
 	//$(this).parent().addClass("active");
-	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
-	$to_find = "[id='" + $page_id + "_link']";
+	/*$to_find = "[id='" + $page_id + "_link']";
 	console.log($("body").attr("id"));
-	$(".navbar").find($to_find).parent().addClass("active")
+	$(".navbar").find($to_find).parent().addClass("active");*/
+	
+	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+	
+	/*if ($page_id.indexOf("index") != -1)
+		$("#map_link").parent().addClass("active");
+	else
+		$("#" + page_id + "_link").parent().addClass("active");*/
 	
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
 	//$("#provider_popup").parent().parent().css("width", "300px");
 	
-	//$("#search_button").insertAfter("#pac-input");
-	//$("#save_button").insertAfter("#search_button");
+	/* Dynamically added script tags. */
+	// MAP API
+	var js_api = "<script src='https://www.google.com/jsapi'></script>";
+	var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI&libraries=visualization,places' async defer></script>";
+	var map_js = "<script src='js/map.js'></script>";
+	var client_api = "<script src='https://apis.google.com/js/client.js?onload=setAPIKey'></script>";
+	var news_js = "<script src='js/news.js'></script>";
+	var alert_js = "<script src='js/alerts.js'></script>";
+	
+	if ($page_id == "index") {
+		$("head script[src*='script']").before(map_api, client_api);
+		$("head script[src*='script']").after(map_js, client_api);
+	}
+	/*else if ($page_id == "news") {
+		//$("head script[src*='script']").before(js_api);
+		$("head script[src*='script']").after(news_js, alert_js);
+	}*/
 });
