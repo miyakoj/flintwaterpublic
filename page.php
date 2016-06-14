@@ -169,7 +169,7 @@ else {
 }
 
 $page = new webpageTemplate("includes/template.html");
-$page->set("PAGE_TITLE", " |" . $pagetitle);
+$page->set("PAGE_TITLE", " | " . $pagetitle);
 $page->set("PAGE_ID", $pid . "_page");
 $page->set("TOGGLES", "");
 $page->set("CONTENT", $content);
