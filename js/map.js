@@ -489,7 +489,7 @@ function bindInfoWindow(marker, map, infowindow, html){
 
 $(document).ready(function() {
 	/* Get the data from the database and save it into JSON files. */
-	/*$.ajax({
+	$.ajax({
 		method: "POST",
 		url: "includes/json_processing.php",
 		complete: function(resp) {
@@ -498,11 +498,11 @@ $(document).ready(function() {
 				$(".alert-warning").css("display", "block");
 			}
 		}
-	});*/
+	});
 	
 	//localStorage.clear();
 	
-	$("[name='heatmap']").on('click', function() {		
+	$("[id='heatmap']").on('click', function() {		
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
 		}
@@ -511,7 +511,7 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("[name='risk_factor']").on('click', function() {		
+	$("[id='risk_factor']").on('click', function() {		
 		/*if (riskmap.getMap() != null) {
 			riskmap.setMap(null);
 		}
@@ -520,7 +520,7 @@ $(document).ready(function() {
 		}*/
 	});
 
-	$("[name='water_pickup']").on('click', function(){
+	$("[id='water_pickup']").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
 		}
@@ -530,7 +530,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='recycling']").on('click', function(){
+	$("[id='recycling']").on('click', function(){
 		if (resourceActiveArray[2] == 1) {
 			resourceActiveArray[2] = 0;
 		}
@@ -540,7 +540,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='water_testing']").on('click', function(){
+	$("[id='water_testing']").on('click', function(){
 		if (resourceActiveArray[4] == 1) {
 			resourceActiveArray[4] = 0;
 		}
@@ -550,7 +550,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='blood_testing']").on('click', function(){
+	$("[id='blood_testing']").on('click', function(){
 		if (resourceActiveArray[5] == 1) {
 			resourceActiveArray[5] = 0;
 		}
@@ -560,7 +560,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='water_filters']").on('click', function(){
+	$("[id='water_filters']").on('click', function(){
 		if (resourceActiveArray[3] == 1) {
 			resourceActiveArray[3] = 0;
 		}
@@ -570,7 +570,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='construction']").on('click', function(){
+	$("[id='construction']").on('click', function(){
 		if (constructionToggle == 1) {
 			constructionToggle = 0;
 		}

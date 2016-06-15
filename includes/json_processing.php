@@ -3,8 +3,8 @@
 require_once "queries.php";
 
 /* Process lead level data. */
-json_output(queries("lead"), "leadLevels", "leadlevels.json");
-//json_output(queries("providers"), "providers", "providers.json");
+//json_output(queries("lead"), "leadLevels", "leadlevels.json");
+json_output(queries("providers"), "providers", "providers.json");
 
 function json_output($result, $array_name, $filename) {
 	$output = "{ \"" . $array_name . "\": [\n";

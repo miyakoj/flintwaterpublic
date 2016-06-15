@@ -61,17 +61,16 @@ $(document).ready(function() {
 	$("footer a").attr("href", "page.php?pid=" + page);
 	
 	/* Mark the tab of the current page as active. */
-	//$(this).parent().addClass("active");
-	/*$to_find = "[id='" + $page_id + "_link']";
-	console.log($("body").attr("id"));
-	$(".navbar").find($to_find).parent().addClass("active");*/
-	
 	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 	
-	/*if ($page_id.indexOf("index") != -1)
+	if ($page_id.indexOf("index") != -1)
 		$("#map_link").parent().addClass("active");
 	else
-		$("#" + page_id + "_link").parent().addClass("active");*/
+		$("#" + $page_id + "_link").parent().addClass("active");
+	
+	/* Change the navbar-brand to the page title. */
+	if ($page_id.indexOf("index") == -1)
+		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());
 	
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
@@ -86,7 +85,7 @@ $(document).ready(function() {
 	var news_js = "<script src='js/news.js'></script>";
 	var alert_js = "<script src='js/alerts.js'></script>";
 	
-	if ($page_id == "index") {
+	/*if ($page_id == "index") {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
 	}
