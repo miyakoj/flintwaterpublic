@@ -1,5 +1,5 @@
 /* Google Service Account info */
-var clientId = '807599170352-afiu7fosjp2hg4n6gs3ghc99momgfica.apps.googleusercontent.com';
+var clientId = "807599170352-afiu7fosjp2hg4n6gs3ghc99momgfica.apps.googleusercontent.com";
 var apiKey = "AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI";
 
 // Access Google Cloud Storage
@@ -139,13 +139,15 @@ function initMap() {
 	});
 	
 	$("#location_card").css({
-		"width": function() {return $("#search_input").outerWidth() + parseFloat($("#search_button").outerWidth());},
+		"width": function() {
+			return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
+		},
 		"top": function() {
-			return parseFloat($("#search_input").css("top")) + parseFloat($("#search_input").height()) + 20 + "px";
-			},
+			return parseInt($("#search_input").css("top")) + parseInt($("#search_input").height()) + 20 + "px";
+		},
 		"left": function() {
-			return parseFloat($("#search_input").css("left")) + parseFloat($("#search_input").css("margin-left")) + "px";
-			}
+			return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
+		}
 	});
 	
 	/* Saved Location Selection Card */
@@ -231,7 +233,6 @@ function initMap() {
 	
 	$("#search_button").css({
 		"top": function() {
-				//return parseFloat($("#search_input").css("top")) + "px";
 				return $("header").outerHeight() + $("#toggles").outerHeight() + 20;
 			   }
 	});
@@ -502,11 +503,7 @@ $(document).ready(function() {
 	
 	//localStorage.clear();
 	
-<<<<<<< HEAD
-	$("[id='heatmap']").on('click', function() {		
-=======
 	$("#heatmap_btn").on('click', function() {		
->>>>>>> origin/master
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
 			console.log("map = null");
@@ -517,21 +514,17 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("[id='risk_factor']").on('click', function() {		
-		/*if (riskmap.getMap() != null) {
+	/*$("[name='risk_factor']").on('click', function() {		
+		if (riskmap.getMap() != null) {
 			riskmap.setMap(null);
 		}
 		else {
 			riskmap.setMap(map);
-		}*/
-	});
+		}
+	});*/
 
-<<<<<<< HEAD
-	$("[id='water_pickup']").on('click', function(){
-=======
 	$("#water_pickup_btn").on('click', function(){
 		console.log("water pickup");
->>>>>>> origin/master
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
 		}
@@ -541,11 +534,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-<<<<<<< HEAD
-	$("[id='recycling']").on('click', function(){
-=======
 	$("#recycling_btn").on('click', function(){
->>>>>>> origin/master
 		if (resourceActiveArray[2] == 1) {
 			resourceActiveArray[2] = 0;
 		}
@@ -555,11 +544,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-<<<<<<< HEAD
-	$("[id='water_testing']").on('click', function(){
-=======
 	$("#water_testing_btn").on('click', function(){
->>>>>>> origin/master
 		if (resourceActiveArray[4] == 1) {
 			resourceActiveArray[4] = 0;
 		}
@@ -569,11 +554,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-<<<<<<< HEAD
-	$("[id='blood_testing']").on('click', function(){
-=======
 	$("#blood_testing_btn").on('click', function(){
->>>>>>> origin/master
 		if (resourceActiveArray[5] == 1) {
 			resourceActiveArray[5] = 0;
 		}
@@ -583,11 +564,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-<<<<<<< HEAD
-	$("[id='water_filters']").on('click', function(){
-=======
 	$("#water_filters_btn").on('click', function(){
->>>>>>> origin/master
 		if (resourceActiveArray[3] == 1) {
 			resourceActiveArray[3] = 0;
 		}
@@ -597,11 +574,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-<<<<<<< HEAD
-	$("[id='construction']").on('click', function(){
-=======
 	$("#construction_btn").on('click', function(){
->>>>>>> origin/master
 		if (constructionToggle == 1) {
 			constructionToggle = 0;
 		}
@@ -611,11 +584,11 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	/*when a saved location is clicked, puts the location in search bar and searches*/
-	$(document).on('click', 'button.saved-location',function(){
+	/* When a saved location is clicked, put the location in search bar and search. */
+	$(document).on('click', '.saved-location', function() {
 		$('#search_input').val($(this).text());
 		$('#search_button').click();
-	})
+	});
 
 	/* Set markers on the map based on type. */
 	function setMarkers() {  
