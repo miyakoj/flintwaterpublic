@@ -6,6 +6,8 @@ require_once "queries.php";
 //json_output(queries("lead"), "leadLevels", "leadlevels.json");
 json_output(queries("providers"), "providers", "providers.json");
 
+// array processing for providers
+
 function json_output($result, $array_name, $filename) {
 	$output = "{ \"" . $array_name . "\": [\n";
 

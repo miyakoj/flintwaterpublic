@@ -40,10 +40,14 @@ header {
 	margin-top:10px;
 }
 
+.navbar-toggle {
+	padding-top:8px!important;
+}
+
 .navbar-brand {
 	width:23rem;
 	margin:0!important;
-	padding:8px 0!important;
+	padding:8px 0 8px 15px!important;
 }
 
 .navbar, .navbar-default {
