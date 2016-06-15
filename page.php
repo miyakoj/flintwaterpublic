@@ -76,7 +76,7 @@ if (@isset($_GET["pid"])) {
 								<div class='stepper-vert-content'>
 								<!--- Step One Contents Here! ---> 
 									<label for='locationTextField'>Enter Your Location: </label><br>
-						        <input id='locationTextField' type='text' size='50'>
+						        <input id='locationTextField' type='text' size='50' style='max-width:75%;' style='width:75%;'>
 						        <script>
 						            function init() {
 						                var input = document.getElementById('locationTextField');
@@ -97,7 +97,7 @@ if (@isset($_GET["pid"])) {
 									<!-- Step Two Contents Here! --->
 									<div class='form-group form-group-label'>
 									<label for='ProblemSelector'> Select The Problem: </label>
-									<select class='form-control' id='ProblemSelector' style='max-width:250px;'>
+									<select class='form-control' id='ProblemSelector' style='max-width:75%;' style='width:75%;'>
 										<option value='...'> Discolored Water </option>
 										<option value='...'> Water Main Break </option>
 										<option value='...'> Other Infrastructure Issue </option>
@@ -116,13 +116,13 @@ if (@isset($_GET["pid"])) {
 								<!--- Step 3 Contents Here! --->
 						            <div class='form-group form-group-label'>
 									<label for='GrowBox'> Describe Problem: </label><br>
-									<textarea class='form-control textarea-autosize' id='GrowBox' rows='3' style='max-width:500px;'></textarea>
+									<textarea class='form-control textarea-autosize' id='GrowBox' rows='3' style='max-width:75%;' style='width:75%;'></textarea>
 									</div>
 						        </div>
 						    </div>
 						</div>
-
-						<br><a class='btn'> Submit </a><br>";
+						
+						<button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button></div>
 		break;
 		
 		case "submit":
