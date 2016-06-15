@@ -314,7 +314,7 @@ function initMap() {
 					
 					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
 					marker_img = "images/savedlocation.png";					
-					
+					card_location_img = "images/locationicon.png";
 					$("#location_card #saved_location_button span").text(saved_location_msg);
 				}
 				else { // remove location
@@ -332,12 +332,12 @@ function initMap() {
 					else if (localStorage.saved_location3 == searched_location) {
 						localStorage.removeItem("saved_location3");
 					}
-					
-					marker_img = "images/locationicon.png";
+					card_img = "images/savedlocation.png";
+					card_marker_img = "images/locationicon.png";
 				}
 				
 				location_marker[0].setIcon(marker_img);
-				
+				$("#location_card #saved_location_button img").attr("src",card_marker_img);
 				console.log(localStorage);
 			}
 			else {
