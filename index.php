@@ -3,29 +3,29 @@
 require_once "includes/template.php";
 
 $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle='buttons'>
-		  <label class='btn btn-primary active resource_buttons' name='heatmap'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/leadicon.png' class='resource_buttons_image' /> <span>Lead Levels</span>
+		  <label class='btn btn-primary active resource_buttons' id='heatmap_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/leadicon.png' class='resource_buttons_image' alt='Lead Levels' /> <span>Lead Levels</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='risk_factor'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/predictedleadtesticon.png' class='resource_buttons_image' /> <span>Risk Factor</span>
+		  <label class='btn btn-primary resource_buttons' id='risk_factor_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/predictedleadtesticon.png' class='resource_buttons_image' alt='Predicted Lead Levels' /> <span>Risk Factor</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='water_pickup'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/waterpickupicon.png' class='resource_buttons_image' /> <span>Water Pickup</span>
+		  <label class='btn btn-primary resource_buttons' id='water_pickup_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/waterpickupicon.png' class='resource_buttons_image' alt='Water Pickup Sites' /> <span>Water Pickup</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='recycling'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/recycleicon.png' class='resource_buttons_image' /> <span>Recycling</span>
+		  <label class='btn btn-primary resource_buttons' id='recycling_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/recycleicon.png' class='resource_buttons_image' alt='Recycling Sites' /> <span>Recycling</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='water_testing'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/leadtesticon.png' class='resource_buttons_image' /> <span>Water Testing</span>
+		  <label class='btn btn-primary resource_buttons' id='water_testing_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/leadtesticon.png' class='resource_buttons_image' alt='Water Testing Sites' /> <span>Water Testing</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='blood_testing'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/bloodtesticon.png' class='resource_buttons_image'> <span>Blood Testing</span>
+		  <label class='btn btn-primary resource_buttons' id='blood_testing_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/bloodtesticon.png' class='resource_buttons_image' alt='Blood Testing Sites' > <span>Blood Testing</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='water_filters'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/waterfiltericon.png' class='resource_buttons_image' /> <span>Water Filters</span>
+		  <label class='btn btn-primary resource_buttons' id='water_filters_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/waterfiltericon.png' class='resource_buttons_image' alt='Water Filters Sites' /> <span>Water Filters</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' name='construction'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/constructionicon.png' class='resource_buttons_image' /> <span>Construction</span>
+		  <label class='btn btn-primary resource_buttons' id='construction_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/constructionicon.png' class='resource_buttons_image' alt='Construction Sites' /> <span>Construction</span>
 		  </label>
 		</nav>";
 
