@@ -36,8 +36,14 @@ header {
 	z-index:1000;
 }
 
+.navbar-header {
+	margin-top:10px;
+}
+
 .navbar-brand {
-	margin-top:12px!important;
+	width:23rem;
+	margin:0!important;
+	padding:8px 0!important;
 }
 
 .navbar, .navbar-default {
@@ -59,6 +65,10 @@ header {
 
 #main_menu {
 	margin-top:10px!important;
+}
+
+#main_menu a {
+	padding:8px 15px!important;
 }
 
 .dropdown-menu .btn, .dropdown-menu .btn-flat {
