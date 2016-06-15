@@ -13,8 +13,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "news":
 			$pagetitle = "News and Alerts";
-			$content = "<div class='page-header'><h1>" . $pagetitle . "</h1></div>";
-			$content .= "<div id='page_card' class='card'>
+			$content = "<div id='page_card' class='card'>
 			<div class='card-main'>
 				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
@@ -41,8 +40,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "test":
 			$pagetitle = "Test My Water";
-			$content = "<div class='page-header'><h1>" . $pagetitle . "</h1></div>";
-			$content .="<div id='test_my_water'>
+			$content ="<div id='test_my_water'>
 						<div class='card'>
 					       <div class='card-main'><h3>Step 1: Get a water test kit</h3>
 					             <div class='card-inner'><p>Pick up a free water test kit from a water resource location.</p></div>
@@ -66,8 +64,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content = "<div class='page-header'><h1>" . $pagetitle . "</h1></div>";
-			$content .="<div class='stpper-vert'>
+			$content ="<div class='stpper-vert'>
 						    <div class='stpper-vert-inner'>
 						        <div class='stepper done'>
 						            <div class='stepper-step'>
@@ -130,8 +127,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "submit":
 			$pagetitle = "Submit Location Information";
-			$content = "<div class='page-header'><h1>" . $pagetitle . "</h1></div>";
-			$content .="<div class='stpper-horiz stepper_group_width'>
+			$content ="<div class='stpper-horiz stepper_group_width'>
 						    <div class='stepper-horiz-inner '>
 						        <div class='stepper active'>
 						            <div class='stepper-step'>
@@ -168,8 +164,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "about":
 			$pagetitle = "About This Site";
-			$content = "<div class='page-header'><h1>" . $pagetitle . "</h1></div>";
-			$content .= "<p>This website is a joint project between University of Michigan-Flint, University of Michigan-Ann Arbor, and Google.</p>";
+			$content = "<p>This website is a joint project between University of Michigan-Flint, University of Michigan-Ann Arbor, and Google.</p>";
 		break;
 	}
 }
