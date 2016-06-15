@@ -103,6 +103,10 @@ body[id="index_page"] main {
 	padding-top:12px;
 }
 
+#test_page #step2, #test_page #step3, #test_page #step4, #test_page #step5, #test_page #step6 {
+	display: none;
+}
+
 
 /* Map-Related Styles. */
 

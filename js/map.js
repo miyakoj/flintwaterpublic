@@ -416,7 +416,7 @@ function callStorageAPI(object) {
 								'rgba(128,0,0,1)']
 				});
 
-				//heatmap.setMap(map);
+				heatmap.setMap(map);
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
