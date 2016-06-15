@@ -40,16 +40,72 @@ if (@isset($_GET["pid"])) {
 		
 		case "test":
 			$pagetitle = "Test My Water";
-			$content ="<div id='test_my_water'>
-						<div class='card'>
-					       <div class='card-main'><h3>Step 1: Get a water test kit</h3>
-					             <div class='card-inner'><p>Pick up a free water test kit from a water resource location.</p></div>
-					           <div class='card-action'><a class='btn btn-flat' href='index.php'>VIEW PICK-UP LOCATIONS</a></div>
-					       </div>
-					   </div>
-					   <div><!--This button goes at the bottom of the screen-->
-					       <button id='test_water_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'-->I ALREADY HAVE A TEST KIT<!--</a>--></button>
-   						</div>";
+			$content ="<div id='step1'>
+							<div class='card'>
+						       <div class='card-main'><h3>Step 1: Get a water test kit</h3>
+						             <div class='card-inner'><p>Pick up a free water test kit from a water resource location.</p></div>
+						           <div class='card-action'><a class='btn btn-flat' href='index.php'>VIEW PICK-UP LOCATIONS</a></div>
+						       </div>
+						   	</div>
+					  		<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>I ALREADY HAVE A TEST KIT</button>
+					  	</div>
+					  	<div id='step2'> 
+						  	<div class='card'>
+						        <div class='card-main'><h3>Step 2: Fill out form</h3>
+						              <div class='card-inner'><p>Fill out the water test form that came with your water test kit.</p></div>
+						        </div>
+						    </div>
+						    <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
+					  	</div>
+					  	<div id='step3'>
+						  	<div class='card'>
+						       	<div class='card-main'><h3>Step 3: Plan to sample</h3>
+						            <div class='card-inner'>
+						              <ul>
+						                <li>The sample should be taken from either your kitchen (recommended) or bathroom sink.</li>
+						                <li>Water must not have been used at all for more than 6 hours before taking the sample. A good time to do this is first thing in the morning.</li>
+						              <ul>
+						            </div>
+					           </div>
+					       	</div>
+					    	<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
+					   	</div>
+					   	<div id='step4'>
+					   		<div class='card'>
+						        <div class='card-main'><h3>Step 4: Take the sample</h3>
+						              <div class='card-inner'>
+						              <ul>
+						                <li>Use cold water that has not been filtered.</li>
+						                <li>Fill the water jug almost to the top, leave about 2 inches for air at the top</li>
+						              </ul>
+						            </div>
+						        </div>
+						    </div>
+						    <button id='test_water_step4' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
+					   	</div>
+					   	<div id='step5'>
+						   	<div class='card'>
+						        <div class='card-main'><h3>Step 5: Drop off sample</h3>
+						              <div class='card-inner'>
+						              <p>Seal the water sample tightly and take it to a drop-off location.</p></div>
+						             <div class='card-action'><a class='btn btn-flat' href='index.php'>VIEW DROP-OFF LOCATIONS</a></div>    
+						        </div>
+						    </div>
+						    <div><!--This button needs to be at the bottom of the screen-->
+						        <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Getting your test results page'>-->CONTINUE<!--</a>--></button>
+						    </div>
+					   	</div>
+					   	<div id='step6'>
+							<div class='card'>
+						        <div class='card-main'><h3>Getting your test results</h3>
+						              <div class='card-inner'>
+						              <p>Once your test has been processed, you can find your results under the 'Residental Testing Results' tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</p></div>
+						             <div class='card-action'><a class='btn btn-flat'>NOTIFY ME WHEN MY RESULTS ARE READY</a></div>    
+						        </div>
+						    </div>
+						    <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>RETURN TO MAP</button>
+					   	</div>
+   						";
 		break;
 		
 		case "filter":
@@ -64,65 +120,64 @@ if (@isset($_GET["pid"])) {
 		
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content ="<div class='stpper-vert'>
-						    <div class='stpper-vert-inner'>
-						        <div class='stepper done'>
-						            <div class='stepper-step'>
-						                <i class='icon stepper-step-icon'>check</i>
-						                <span class='stepper-step-num'>1</span>
-						            </div>
-						            <span class='stepper-text'>Step 1</span>
-						        </div>
-								<div class='stepper-vert-content'>
-								<!--- Step One Contents Here! ---> 
-									<label for='locationTextField'>Enter Your Location: </label><br>
-						        <input id='locationTextField' type='text' size='50'>
-						        <script>
-						            function init() {
-						                var input = document.getElementById('locationTextField');
-						                var autocomplete = new google.maps.places.Autocomplete(input);
-						            }
-
-						            google.maps.event.addDomListener(window, 'load', init);
-						        </script>
-						        </div>
-						        <div class='stepper active'>
-						            <div class='stepper-step'>
-						                <i class='icon stepper-step-icon'>check</i>
-						                <span class='stepper-step-num'>2</span>
-						            </div>
-						            <span class='stepper-text'>Step 2</span>
-						        </div>
-						        <div class='stepper-vert-content'>
-									<!-- Step Two Contents Here! --->
-									<div class='form-group form-group-label'>
-									<label for='ProblemSelector'> Select The Problem: </label>
-									<select class='form-control' id='ProblemSelector' style='max-width:250px;'>
-										<option value='...'> Discolored Water </option>
-										<option value='...'> Water Main Break </option>
-										<option value='...'> Other Infrastructure Issue </option>
-										...
-									</select>
-									</div>
-						        </div>
-						        <div class='stepper'>
-						            <div class='stepper-step'>
-						                <i class='icon stepper-step-icon'>check</i>
-						                <span class='stepper-step-num'>3</span>
-						            </div>
-						            <span class='stepper-text'>Step 3</span>
-						        </div>
-						        <div class='stepper-vert-content'>
-								<!--- Step 3 Contents Here! --->
-						            <div class='form-group form-group-label'>
-									<label for='GrowBox'> Describe Problem: </label><br>
-									<textarea class='form-control textarea-autosize' id='GrowBox' rows='3' style='max-width:500px;'></textarea>
-									</div>
-						        </div>
-						    </div>
-						</div>
-
-						<br><a class='btn'> Submit </a><br>";
+			$content = "<div class='stpper-vert'>
+                            <div class='stpper-vert-inner'>
+                                <div class='stepper done'>
+                                    <div class='stepper-step'>
+                                        <i class='icon stepper-step-icon'>check</i>
+                                        <span class='stepper-step-num'>1</span>
+                                    </div>
+                                    <span class='stepper-text'>Step 1</span>
+                                </div>
+                                <div class='stepper-vert-content'>
+                                <!--- Step One Contents Here! ---> 
+                                    <label for='locationTextField'>Enter Your Location: </label><br>
+                                <input id='locationTextField' type='text' size='50' style='max-width:75%;' style='width:75%;'>
+                                <script>
+                                    function init() {
+                                        var input = document.getElementById('locationTextField');
+                                        var autocomplete = new google.maps.places.Autocomplete(input);
+                                    }
+                                    google.maps.event.addDomListener(window, 'load', init);
+                                </script>
+                                </div>
+                                <div class='stepper active'>
+                                    <div class='stepper-step'>
+                                        <i class='icon stepper-step-icon'>check</i>
+                                        <span class='stepper-step-num'>2</span>
+                                    </div>
+                                    <span class='stepper-text'>Step 2</span>
+                                </div>
+                                <div class='stepper-vert-content'>
+                                    <!-- Step Two Contents Here! --->
+                                    <div class='form-group form-group-label'>
+                                    <label for='ProblemSelector'> Select The Problem: </label>
+                                    <select class='form-control' id='ProblemSelector' style='max-width:75%;' style='width:75%;'>
+                                        <option value='...'> Discolored Water </option>
+                                        <option value='...'> Water Main Break </option>
+                                        <option value='...'> Other Infrastructure Issue </option>
+                                        ...
+                                    </select>
+                                    </div>
+                                </div>
+                                <div class='stepper'>
+                                    <div class='stepper-step'>
+                                        <i class='icon stepper-step-icon'>check</i>
+                                        <span class='stepper-step-num'>3</span>
+                                    </div>
+                                    <span class='stepper-text'>Step 3</span>
+                                </div>
+                                <div class='stepper-vert-content'>
+                                <!--- Step 3 Contents Here! --->
+                                    <div class='form-group form-group-label'>
+                                    <label for='GrowBox'> Describe Problem: </label><br>
+                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' style='max-width:75%;' style='width:75%;'></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button></div>";
 		break;
 		
 		case "submit":
