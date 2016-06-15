@@ -416,7 +416,7 @@ function callStorageAPI(object) {
 								'rgba(128,0,0,1)']
 				});
 
-				heatmap.setMap(map);
+				//heatmap.setMap(map);
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
@@ -503,12 +503,14 @@ $(document).ready(function() {
 	
 	//localStorage.clear();
 	
-	$("[name='heatmap']").on('click', function() {		
+	$("#heatmap_btn").on('click', function() {		
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
+			console.log("map = null");
 		}
 		else {
 			heatmap.setMap(map);
+			console.log("map = map");
 		}
 	});
 	
@@ -521,7 +523,8 @@ $(document).ready(function() {
 		}
 	});*/
 
-	$("[name='water_pickup']").on('click', function(){
+	$("#water_pickup_btn").on('click', function(){
+		console.log("water pickup");
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
 		}
@@ -531,7 +534,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='recycling']").on('click', function(){
+	$("#recycling_btn").on('click', function(){
 		if (resourceActiveArray[2] == 1) {
 			resourceActiveArray[2] = 0;
 		}
@@ -541,7 +544,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='water_testing']").on('click', function(){
+	$("#water_testing_btn").on('click', function(){
 		if (resourceActiveArray[4] == 1) {
 			resourceActiveArray[4] = 0;
 		}
@@ -551,7 +554,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='blood_testing']").on('click', function(){
+	$("#blood_testing_btn").on('click', function(){
 		if (resourceActiveArray[5] == 1) {
 			resourceActiveArray[5] = 0;
 		}
@@ -561,7 +564,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='water_filters']").on('click', function(){
+	$("#water_filters_btn").on('click', function(){
 		if (resourceActiveArray[3] == 1) {
 			resourceActiveArray[3] = 0;
 		}
@@ -571,7 +574,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("[name='construction']").on('click', function(){
+	$("#construction_btn").on('click', function(){
 		if (constructionToggle == 1) {
 			constructionToggle = 0;
 		}
