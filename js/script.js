@@ -94,4 +94,6 @@ $(document).ready(function() {
 		//$("head script[src*='script']").before(js_api);
 		$("head script[src*='script']").after(news_js, alert_js);
 	}*/
+
+	
 });
