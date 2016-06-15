@@ -313,7 +313,7 @@ function initMap() {
 					
 					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
 					marker_img = "images/savedlocation.png";					
-					
+					card_location_img = "images/locationicon.png";
 					$("#location_card #saved_location_button span").text(saved_location_msg);
 				}
 				else { // remove location
@@ -331,12 +331,12 @@ function initMap() {
 					else if (localStorage.saved_location3 == searched_location) {
 						localStorage.removeItem("saved_location3");
 					}
-					
-					marker_img = "images/locationicon.png";
+					card_img = "images/savedlocation.png";
+					card_marker_img = "images/locationicon.png";
 				}
 				
 				location_marker[0].setIcon(marker_img);
-				
+				$("#location_card #saved_location_button img").attr("src",card_marker_img);
 				console.log(localStorage);
 			}
 			else {
@@ -415,7 +415,7 @@ function callStorageAPI(object) {
 								'rgba(128,0,0,1)']
 				});
 
-				heatmap.setMap(map);
+				//heatmap.setMap(map);
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
@@ -502,12 +502,18 @@ $(document).ready(function() {
 	
 	//localStorage.clear();
 	
+<<<<<<< HEAD
 	$("[id='heatmap']").on('click', function() {		
+=======
+	$("#heatmap_btn").on('click', function() {		
+>>>>>>> origin/master
 		if (heatmap.getMap() != null) {
 			heatmap.setMap(null);
+			console.log("map = null");
 		}
 		else {
 			heatmap.setMap(map);
+			console.log("map = map");
 		}
 	});
 	
@@ -520,7 +526,12 @@ $(document).ready(function() {
 		}*/
 	});
 
+<<<<<<< HEAD
 	$("[id='water_pickup']").on('click', function(){
+=======
+	$("#water_pickup_btn").on('click', function(){
+		console.log("water pickup");
+>>>>>>> origin/master
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
 		}
@@ -530,7 +541,11 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
+<<<<<<< HEAD
 	$("[id='recycling']").on('click', function(){
+=======
+	$("#recycling_btn").on('click', function(){
+>>>>>>> origin/master
 		if (resourceActiveArray[2] == 1) {
 			resourceActiveArray[2] = 0;
 		}
@@ -540,7 +555,11 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
+<<<<<<< HEAD
 	$("[id='water_testing']").on('click', function(){
+=======
+	$("#water_testing_btn").on('click', function(){
+>>>>>>> origin/master
 		if (resourceActiveArray[4] == 1) {
 			resourceActiveArray[4] = 0;
 		}
@@ -550,7 +569,11 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
+<<<<<<< HEAD
 	$("[id='blood_testing']").on('click', function(){
+=======
+	$("#blood_testing_btn").on('click', function(){
+>>>>>>> origin/master
 		if (resourceActiveArray[5] == 1) {
 			resourceActiveArray[5] = 0;
 		}
@@ -560,7 +583,11 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
+<<<<<<< HEAD
 	$("[id='water_filters']").on('click', function(){
+=======
+	$("#water_filters_btn").on('click', function(){
+>>>>>>> origin/master
 		if (resourceActiveArray[3] == 1) {
 			resourceActiveArray[3] = 0;
 		}
@@ -570,7 +597,11 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
+<<<<<<< HEAD
 	$("[id='construction']").on('click', function(){
+=======
+	$("#construction_btn").on('click', function(){
+>>>>>>> origin/master
 		if (constructionToggle == 1) {
 			constructionToggle = 0;
 		}

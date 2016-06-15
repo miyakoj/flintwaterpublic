@@ -40,7 +40,20 @@ if (@isset($_GET["pid"])) {
 		
 		case "test":
 			$pagetitle = "Test My Water";
+<<<<<<< HEAD
 			$content = "";
+=======
+			$content ="<div id='test_my_water'>
+						<div class='card'>
+					       <div class='card-main'><h3>Step 1: Get a water test kit</h3>
+					             <div class='card-inner'><p>Pick up a free water test kit from a water resource location.</p></div>
+					           <div class='card-action'><a class='btn btn-flat' href='index.php'>VIEW PICK-UP LOCATIONS</a></div>
+					       </div>
+					   </div>
+					   <div><!--This button goes at the bottom of the screen-->
+					       <button id='test_water_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'-->I ALREADY HAVE A TEST KIT<!--</a>--></button>
+   						</div>";
+>>>>>>> origin/master
 		break;
 		
 		case "filter":
@@ -55,7 +68,11 @@ if (@isset($_GET["pid"])) {
 		
 		case "report":
 			$pagetitle = "Report a Problem";
+<<<<<<< HEAD
 			$content = "<div class='stpper-vert'>
+=======
+			$content ="<div class='stpper-vert'>
+>>>>>>> origin/master
 						    <div class='stpper-vert-inner'>
 						        <div class='stepper done'>
 						            <div class='stepper-step'>
@@ -118,7 +135,11 @@ if (@isset($_GET["pid"])) {
 		
 		case "submit":
 			$pagetitle = "Submit Location Information";
+<<<<<<< HEAD
 			$content = "<div class='stpper-horiz stepper_group_width'>
+=======
+			$content ="<div class='stpper-horiz stepper_group_width'>
+>>>>>>> origin/master
 						    <div class='stepper-horiz-inner '>
 						        <div class='stepper active'>
 						            <div class='stepper-step'>
