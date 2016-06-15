@@ -424,6 +424,50 @@ function callStorageAPI(object) {
 				
 				for(i=0; i<js_obj.providers.length; i++) {
 					var provider = js_obj.providers[i];
+					var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
+					var title = provider.locationName;
+					
+					var images = "";
+					
+					/*if (provider.hasWater === "true") {			
+						marker_img = "images/waterpickupicon.png";
+						images += "<img src='" + marker_img + "' class='marker_window_icons' />";
+					}
+					if (provider.hasRecycle === "true") {
+						marker_img = "images/recycleicon.png";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+					}
+					if (provider.hasBloodTesting === "true") {
+						marker_img = "images/bloodtesticon.png";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+					}
+					if (provider.hasFilters === "true") {
+						marker_img = "images/waterfiltericon.png";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+					}
+					if (provider.hasWaterTestKits === "true") {
+						marker_img = "images/leadtesticon.png";
+						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+					}*/
+					
+					allMarkersString.push(images);
+					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1> <p>" + provider.aidAddress + "</p><p>" + images + "</p></div>";
+
+
+					var marker = new google.maps.Marker({
+						position: latLng,
+						title: title,
+						map: map
+					});
+					
+					/* Store the markers in arrays for the add/remove functionality. */
+					allMarkers.push(marker);
+					
+					bindInfoWindow(marker, map, infoWindow, content);
+				}
+				
+				/*for(i=0; i<js_obj.providers.length; i++) {
+					var provider = js_obj.providers[i];
 					var latLng = new google.maps.LatLng(provider.lat, provider.long);
 					var title = provider.title;
 					
@@ -460,12 +504,11 @@ function callStorageAPI(object) {
 						map: map
 					});
 					
-					/* Store the markers in arrays for the add/remove functionality. */
+					/* Store the markers in arrays for the add/remove functionality. 
 					allMarkers.push(marker);
 					
 					bindInfoWindow(marker, map, infoWindow, content);
-
-				}
+				}*/
 
 				for(var i=0; i<allMarkers.length;i++){
 					allMarkers[i].setMap(null);
