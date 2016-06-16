@@ -123,5 +123,37 @@ $(document).ready(function() {
 		$(window).attr("location", "index.php");
 	});
 
+	//aerator page
+	$("#aerator_page #step1 button").on("click", function(){
+		$("#aerator_page #step1").css("display","none");
+		$("#aerator_page #step2").css("display","block");
+	});
 
+	$("#aerator_page #step2 button").on("click", function(){
+		$("#aerator_page #step2").css("display","none");
+		$("#aerator_page #step3").css("display","block");
+	});
+
+	$("#aerator_page #step3 button").on("click", function(){
+		$("#aerator_page #step3").css("display","none");
+		$("#aerator_page #step4").css("display","block");
+	});
+
+	$("#aerator_page #step4 button").on("click", function(){
+		$(window).attr("location", "index.php");
+	});
+
+	//report a problem
+	//steppers
+	$("#report_page #locationTextField").on("click", function(){
+		$("#stepper1").addClass("active");
+	});
+
+	$("#report_page #step2_stuff").on("click", function(){
+		$("#stepper2").addClass("active");
+	});
+
+	$("#report_page #step3_stuff").on("click", function(){
+		$("#stepper3").addClass("active");
+	});
 });

@@ -44,7 +44,7 @@ if (@isset($_GET["pid"])) {
 							<div class='card'>
 						       <div class='card-main'><h3>Step 1: Get a water test kit</h3>
 						             <div class='card-inner'><p>Pick up a free water test kit from a water resource location.</p></div>
-						           <div class='card-action'><a class='btn btn-flat' href='index.php'>VIEW PICK-UP LOCATIONS</a></div>
+						           <div class='card-action'><a class='btn btn-flat'>VIEW PICK-UP LOCATIONS</a></div>
 						       </div>
 						   	</div>
 					  		<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>I ALREADY HAVE A TEST KIT</button>
@@ -115,14 +115,69 @@ if (@isset($_GET["pid"])) {
 		
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
-			$content = "";
+			$content = "<div id='step1'>
+							<div class='card'>
+			                    <img src='../images/aerator.jpg' alt='aerator' width='200' height='200'>
+			                    <div class='card-main'><h3>Step 1: Protect the aerator</h3>
+			                        <div class='card-inner'>
+			                        <ul>
+			                            <li>Get a cloth or tape to wrap around the aerator.</li>
+			                            <li>Get a pair of pliers.</li>
+			                        </ul>
+			                        </div>
+			                    </div>
+			                </div>
+			                <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
+			            </div>
+			            <div id='step2'>
+				            <div class='card'>
+			                    <div class='card-main'><h3>Step 2: Remove the aerator</h3>
+			                        <div class='card-inner'>
+			                        <ul>
+			                            <li>Place the plier jaws around the aerator gently.</li>
+			                            <li>Grip the faucet handle.</li>
+			                            <li>Turn the aerator clockwise without crushing aerator.</li>
+			                        </ul>
+			                        </div>
+			                    </div>
+			                </div>
+	                		<button id='clean_aerator_step2' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
+			            </div>
+			            <div id='step3'>
+			            	<div class='card'>
+			                    <div class='card-main'><h3>Step 3: Clean the aerator</h3>
+			                        <div class='card-inner'>
+			                        <ul>
+			                            <li>Move the aerator over a flat surface.</li>
+			                            <li>Remove the parts inside the aerator by pushing them.(If stuck: place in a solution that can remove lime.)Remember the order in which you removed the parts.</li>
+			                            <li>Clean aerator by gently scrubbing with a toothbrush.</li>
+			                        </ul>
+			                        </div>
+			                    </div>
+			                </div>
+			                <button id='clean_aerator_step3' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
+			            </div>
+			            <div id='step4'>
+				            <div class='card'>
+			                    <div class='card-main'><h3>Step 4: Reinstall aerator</h3>
+			                        <div class='card-inner'>
+			                        <ul>
+			                            <li>Put the aerator back together in reverse order.</li>
+			                            <li>Screw the aerator back into the faucet counterclockwise.</li>
+			                            <li>Tighten with pliers but not too tight.</li>
+			                        </ul>
+			                        </div>
+			                    </div>
+			                </div>
+			                <button id='clean_aerator_step4' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>RETURN TO MAP</button>
+			            </div>";
 		break;
 		
 		case "report":
 			$pagetitle = "Report a Problem";
 			$content = "<div class='stpper-vert'>
                             <div class='stpper-vert-inner'>
-                                <div class='stepper done'>
+                                <div id='stepper1' class='stepper'>
                                     <div class='stepper-step'>
                                         <i class='icon stepper-step-icon'>check</i>
                                         <span class='stepper-step-num'>1</span>
@@ -141,7 +196,7 @@ if (@isset($_GET["pid"])) {
                                     google.maps.event.addDomListener(window, 'load', init);
                                 </script>
                                 </div>
-                                <div class='stepper active'>
+                                <div id='stepper2' class='stepper'>
                                     <div class='stepper-step'>
                                         <i class='icon stepper-step-icon'>check</i>
                                         <span class='stepper-step-num'>2</span>
@@ -150,7 +205,7 @@ if (@isset($_GET["pid"])) {
                                 </div>
                                 <div class='stepper-vert-content'>
                                     <!-- Step Two Contents Here! --->
-                                    <div class='form-group form-group-label'>
+                                    <div id='step2_stuff' class='form-group form-group-label'>
                                     <label for='ProblemSelector'> Select The Problem: </label>
                                     <select class='form-control' id='ProblemSelector' style='max-width:75%;' style='width:75%;'>
                                         <option value='...'> Discolored Water </option>
@@ -160,7 +215,7 @@ if (@isset($_GET["pid"])) {
                                     </select>
                                     </div>
                                 </div>
-                                <div class='stepper'>
+                                <div id='stepper3' class='stepper'>
                                     <div class='stepper-step'>
                                         <i class='icon stepper-step-icon'>check</i>
                                         <span class='stepper-step-num'>3</span>
@@ -169,7 +224,7 @@ if (@isset($_GET["pid"])) {
                                 </div>
                                 <div class='stepper-vert-content'>
                                 <!--- Step 3 Contents Here! --->
-                                    <div class='form-group form-group-label'>
+                                    <div id='step3_stuff' class='form-group form-group-label'>
                                     <label for='GrowBox'> Describe Problem: </label><br>
                                     <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' style='max-width:75%;' style='width:75%;'></textarea>
                                     </div>
