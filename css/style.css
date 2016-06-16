@@ -107,6 +107,11 @@ body[id="index_page"] main {
 	display: none;
 }
 
+#aerator_page #step2, #aerator_page #step3, #aerator_page #step4 {
+	display: none;
+}
+
+
 
 /* Map-Related Styles. */
 
