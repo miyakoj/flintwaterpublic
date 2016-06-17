@@ -115,6 +115,10 @@ body[id="index_page"] main {
 	display: none;
 }
 
+.card-main h3/*, .card-inner p, .card-action a*/{
+	margin-left: 16px;
+}
+
 
 
 /* Map-Related Styles. */
