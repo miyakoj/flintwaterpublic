@@ -13,8 +13,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "news":
 			$pagetitle = "News and Alerts";
-			$content = "<div id='page_card' class='card'>
-			<div class='card-main'>
+			$content = "<div id='page_card' >
 				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
 					<li role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
@@ -30,7 +29,6 @@ if (@isset($_GET["pid"])) {
 					</div>
 				  </div>
 				</div>
-			</div>
 			</div>";
 			
 			/*hidden-md hidden-lg col-md-6 
