@@ -108,7 +108,38 @@ if (@isset($_GET["pid"])) {
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
-			$content = "";
+			$content = "<div class='card'>
+						<div class='card-main'><h3>Step 1: Choose your filter type</h3>
+						<div class='card-inner'><p>From the choices below, select your water filter.</p></div>
+						<table style='width: 100%'>
+							<tr>
+								<td><img src='../images/PUR_filter.jpg' width='150' height='150'></td>
+								<td> <img src='../images/Brita_filter.jpg' width='150' height='150'></td>
+								<td><img src='../images/ZeroWater.jpg' width='150' height='150'></td>
+							</tr>
+							<tr>
+								<td>PUR</td>
+								<td>Brita</td>
+								<td>ZeroWater</td>
+							</tr>
+						</table>
+						<div class='card-action'>
+						<div class='dropdown-wrap'>
+						<div class='dropdown dropdown-inline'>
+						<a class='btn dropdown-toggle-btn' data-toggle='dropdown'>CHOOSE YOUR FILTER</a>
+							<ul class='dropdown-menu nav'>
+								<li>
+									<a> ZeroWater 23-Cup Dispenser, model number ZD-018 </a>
+									<a> Brita faucet filter, model SAFF-100 </a>
+									<a> PUR Faucet Mount, model number FM-3700B </a>
+								</li>
+							</ul>
+						</div>
+						</div>
+						</div>	
+					</div>
+				</div>
+			</div>";
 		break;
 		
 		case "aerator":
