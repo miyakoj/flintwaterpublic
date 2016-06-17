@@ -53,17 +53,17 @@
 				<h1 class="navbar-brand">Flint Water Info Site</h1>
 			   </div>
 			   
-			   <div id="main_menu">     
-				<ul class="nav navbar-nav">
+			   <div id="main_menu">
+				  <ul class="nav navbar-nav">
 					<li><a id="map_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">map</span> <span>Map</span></a></li>
 					<li><a id="news_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">markunread_mailbox</span> <span>News and Alerts</span></a></li>
 					
-					<li class="dropdown">
+					<li id="show_me_menu" class="dropdown">
 					  <a id="nav_dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 					  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how to... <span class="caret"></span></a>
 					  <ul class="dropdown-menu">
 						<li><a id="test_link" href="#"><span class="material-icons md-18" aria-hidden="true">local_drink</span> <span>Test My Water</span></a></li>
-						<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Filter</span></a></li>
+						<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Water Filter</span></a></li>
 						<li><a id="aerator_link" href="#"><span class="material-icons md-18" aria-hidden="true">bubble_chart</span> <span>Clean My Aerator</span></a></li>
 						<li><a id="report_link" href="#"><span class="material-icons md-18" aria-hidden="true">report_problem</span> <span>Report a Problem</span></a></li>
 						<li><a id="submit_link" href="#"><span class="material-icons md-18" aria-hidden="true">rate_review</span> <span>Submit Location Information</span></a></li>
@@ -71,10 +71,22 @@
 					</li>
 				  </ul>
 				  
-				  <ul class="nav navbar-nav navbar-right">
+				  <!--<ul class="nav navbar-nav navbar-right">
 					<li><a id="lang_en" href="#">EN</a></li>
 					<li><a id="lang_es" href="#">ES</a></li>
 					<li><a id="lang_ar" href="#">العربية</a></li>
+				  </ul>-->
+				  
+				  <ul id="language_menu" class="nav navbar-nav navbar-right dropdown">
+					<li>
+					<a id="lang_dropdown" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					  <span class="material-icons icon-lg" aria-hidden="true">chat</span> Languages <span class="caret"></span></a>
+					  <ul class="dropdown-menu">
+					  <li><a id="lang_en" href="#">EN</a></li>
+					  <li><a id="lang_es" href="#">ES</a></li>
+					  <li><a id="lang_ar" href="#">العربية</a></li>
+					  </ul>
+					</li>
 				  </ul>
 					  
 			   </div>

@@ -4,7 +4,7 @@ require_once "includes/template.php";
 
 $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle='buttons'>
 		  <label class='btn btn-primary resource_buttons' id='heatmap_btn'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/leadicon.png' class='resource_buttons_image' alt='Lead Levels' /> <span>Lead Levels</span>
+		    <input type='checkbox' autocomplete='off' /><img src='images/leadtesticon.png' class='resource_buttons_image' alt='Lead Levels' /> <span>Lead Levels</span>
 		  </label>
 		  <label class='btn btn-primary resource_buttons' id='risk_factor_btn'>
 		    <input type='checkbox' autocomplete='off' /><img src='images/predictedleadtesticon.png' class='resource_buttons_image' alt='Predicted Lead Levels' /> <span>Risk Factor</span>

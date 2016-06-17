@@ -488,7 +488,6 @@ function setUpInitialMap(){
      		var retrieveArray = localStorage.getItem("water_test_array");
        		resourceActiveArray = JSON.parse(retrieveArray);
 
-<<<<<<< HEAD
 
      		var temp = [1,0,0,0,0,0];
 			localStorage.setItem("water_test_array", JSON.stringify(temp));
@@ -498,17 +497,6 @@ function setUpInitialMap(){
     	}
     	setMarkers();
 
-=======
-
-     		var temp = [1,0,0,0,0,0];
-			localStorage.setItem("water_test_array", JSON.stringify(temp));
-     	}
-    	else {
-      		console.log("We suck");
-    	}
-    	setMarkers();
-
->>>>>>> origin/master
 		if(resourceActiveArray[0] == 1) {
 			$("#heatmap_btn").addClass("active");
 		}
@@ -639,10 +627,6 @@ $(document).ready(function() {
 		$('#search_input').val($(this).text());
 		$('#search_button').click();
 	});
-
-	
-
-
 	
 	$("#search_input").keyup(function() {
 		if($("#search_input").val()) {
@@ -709,9 +693,4 @@ $(document).ready(function() {
 				pipePolyLine.setMap(null);
 			}
 		}
-<<<<<<< HEAD
 	}
-=======
-	}
-	
->>>>>>> origin/master

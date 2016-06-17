@@ -102,8 +102,7 @@ if (@isset($_GET["pid"])) {
 						        </div>
 						    </div>
 						    <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>RETURN TO MAP</button>
-					   	</div>
-   						";
+					   	</div>";
 		break;
 		
 		case "filter":
