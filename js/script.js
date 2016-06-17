@@ -28,6 +28,13 @@ $(document).ready(function() {
 	$("#map").css("height", mapHeight);
 	$("#search_input").val(""); // clear the search input upon refresh
 	
+	/* Get rid of the dropdown menu on mobile. */
+	if (windowWidth < 992) {
+		$("#show_me_menu").removeClass("dropdown");
+		$("#show_me_menu .caret").css("display", "none");
+		$("#show_me_menu .dropdown-menu").removeClass("dropdown-menu");
+	}
+	
 	/* Dynamically generate page links. */
 	var id;
 	var page;
