@@ -58,8 +58,9 @@ function initMap() {
 	
 	infoWindow = new google.maps.InfoWindow();
 	
-	callStorageAPI("leadlevels.json");
+
 	callStorageAPI("providers.json");
+	callStorageAPI("leadlevels.json");
 	//callStorageAPI("construction.json");
 
 	allMarkers.forEach(function(marker) {
@@ -153,7 +154,7 @@ function initMap() {
 	/* Saved Location Selection Card */
 	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
 		$("#location_card .card-inner").html("<h6>Saved Locations</h6>");
-		$(".card-action").css("font-size", "0.5rem");
+		$("#location_card .card-action").css("font-size", "0.5rem");
 		
 		var saved_locations = "<div id=\"saved_locations\">";
 		
@@ -172,7 +173,7 @@ function initMap() {
 		saved_locations += "</div>";
 		
 		$("#location_buttons").css("display", "none");
-		$(".card-action").append(saved_locations);
+		$("#location_card .card-action").append(saved_locations);
 		$("#location_card").css("display", "block");
 	}
 	
@@ -415,8 +416,9 @@ function callStorageAPI(object) {
 								'rgba(255,0,0,1)',
 								'rgba(128,0,0,1)']
 				});
-
+				console.log("heatmap is initiatded");
 				//heatmap.setMap(map);
+				setUpInitialMap();
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
@@ -429,26 +431,26 @@ function callStorageAPI(object) {
 					
 					var images = "";
 					
-					/*if (provider.hasWater === "true") {			
+					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
 						images += "<img src='" + marker_img + "' class='marker_window_icons' />";
 					}
-					if (provider.hasRecycle === "true") {
+					if (provider.resType.indexOf("Recycle") != -1) {
 						marker_img = "images/recycleicon.png";
 						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
-					if (provider.hasBloodTesting === "true") {
+					if (provider.resType.indexOf("Blood Testing") != -1) {
 						marker_img = "images/bloodtesticon.png";
 						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
-					if (provider.hasFilters === "true") {
+					if (provider.resType.indexOf("Water Filters") != -1) {
 						marker_img = "images/waterfiltericon.png";
 						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
 					}
-					if (provider.hasWaterTestKits === "true") {
+					if (provider.resType.indexOf("Test Kits") != -1) {
 						marker_img = "images/leadtesticon.png";
 						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
-					}*/
+					}
 					
 					allMarkersString.push(images);
 					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1> <p>" + provider.aidAddress + "</p><p>" + images + "</p></div>";
@@ -465,52 +467,8 @@ function callStorageAPI(object) {
 					
 					bindInfoWindow(marker, map, infoWindow, content);
 				}
-				
-				/*for(i=0; i<js_obj.providers.length; i++) {
-					var provider = js_obj.providers[i];
-					var latLng = new google.maps.LatLng(provider.lat, provider.long);
-					var title = provider.title;
-					
-					var images = "";
-					
-					if (provider.hasWater === "true") {			
-						marker_img = "images/waterpickupicon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons' />";
-					}
-					if (provider.hasRecycle === "true") {
-						marker_img = "images/recycleicon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
-					}
-					if (provider.hasBloodTesting === "true") {
-						marker_img = "images/bloodtesticon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
-					}
-					if (provider.hasFilters === "true") {
-						marker_img = "images/waterfiltericon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
-					}
-					if (provider.hasWaterTestKits === "true") {
-						marker_img = "images/leadtesticon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
-					}
-					
-					allMarkersString.push(images);
-					var content = "<div id=\"provider_popup\"><h1>" + provider.title + "</h1> <p>" + provider.details + "</p><p>" + images + "</p></div>";
 
-
-					var marker = new google.maps.Marker({
-						position: latLng,
-						title: title,
-						map: map
-					});
-					
-					/* Store the markers in arrays for the add/remove functionality. 
-					allMarkers.push(marker);
-					
-					bindInfoWindow(marker, map, infoWindow, content);
-				}*/
-
-				for(var i=0; i<allMarkers.length;i++){
+				for(var i=0; i<allMarkers.length;i++) {
 					allMarkers[i].setMap(null);
 				}
 			}
@@ -522,10 +480,45 @@ function callStorageAPI(object) {
 			console.log('Error: ' + reason.result.error.message);
 		});
 	});
-
 }
 
+function setUpInitialMap(){
+	console.log("Get Array");
+		if (localStorage !== "undefined") {
+     		var retrieveArray = localStorage.getItem("water_test_array");
+       		resourceActiveArray = JSON.parse(retrieveArray);
 
+
+     		var temp = [1,0,0,0,0,0];
+			localStorage.setItem("water_test_array", JSON.stringify(temp));
+     	}
+    	else {
+      		console.log("We suck");
+    	}
+    	setMarkers();
+
+		if(resourceActiveArray[0] == 1) {
+			$("#heatmap_btn").addClass("active");
+		}
+		if(resourceActiveArray[1] == 1) {
+			$("#water_pickup_btn").addClass("active");
+		}
+		if(resourceActiveArray[2] == 1) {
+			$("#recycling_btn").addClass("active");
+		}
+		if(resourceActiveArray[3] == 1) {
+			$("#water_filters_btn").addClass("active");
+		}
+		if(resourceActiveArray[4] == 1) {
+			$("#water_testing_btn").addClass("active");
+		}
+		if(resourceActiveArray[5] == 1) {
+			$("#blood_testing_btn").addClass("active");
+		}
+		if(constructionToggle == 1) {
+			$("#construction_btn").addClass("active");
+		}
+}
 
 function bindInfoWindow(marker, map, infowindow, html){
 	marker.addListener("click", function(){
@@ -635,10 +628,40 @@ $(document).ready(function() {
 		$('#search_button').click();
 	});
 
+	
+
+
+	
+	$("#search_input").keyup(function() {
+		if($("#search_input").val()) {
+			$("#search_button").css("color", "#FFF");
+			activeSearch = 1;
+		}
+		else {
+			$("#search_button").css("color", "#61b1ff");
+			activeSearch = 0;
+		}
+	});
+
+	$("#test_page #step1 a").on("click", function(){
+		if (localStorage !== "undefined") {
+     		resourceActiveArray = [0,0,0,0,1,0];
+			localStorage.setItem("water_test_array", JSON.stringify(resourceActiveArray));
+     	}
+    	else {
+      		console.log("We suck");
+    	}
+		$(window).attr("location", "index.php");
+	}); 
+});
 	/* Set markers on the map based on type. */
 	function setMarkers() {  
-		if(resourceActiveArray[0] == 1) {
+		if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
+				console.log("heatmap is trying to be set");
 				heatmap.setMap(map);
+		}
+		else if (heatmap.getMap() == map) {
+			
 		}
 		else {
 			heatmap.setMap(null);
@@ -674,69 +697,4 @@ $(document).ready(function() {
 				pipePolyLine.setMap(null);
 			}
 		}
-		setButtonsActive();
 	}
-
-	function setButtonsActive(){
-		if(resourceActiveArray[0] == 1) {
-			$("#heatmap_btn").addClass("active");
-		}
-		if(resourceActiveArray[1] == 1) {
-			$("#water_pickup_btn").addClass("active");
-		}
-		if(resourceActiveArray[2] == 1) {
-			$("#recycling_btn").addClass("active");
-		}
-		if(resourceActiveArray[3] == 1) {
-			$("#water_filters_btn").addClass("active");
-		}
-		if(resourceActiveArray[4] == 1) {
-			$("#water_testing_btn").addClass("active");
-		}
-		if(resourceActiveArray[5] == 1) {
-			$("#blood_testing_btn").addClass("active");
-		}
-		if(constructionToggle == 1) {
-			$("#construction_btn").addClass("active");
-		}
-	}
-	
-	$("#search_input").keyup(function() {
-		if($("#search_input").val()) {
-			$("#search_button").css("color", "#FFF");
-			activeSearch = 1;
-		}
-		else {
-			$("#search_button").css("color", "#61b1ff");
-			activeSearch = 0;
-		}
-	});
-
-	$("#test_page #step1 a").on("click", function(){
-		if (localStorage !== "undefined") {
-     		resourceActiveArray = [0,0,0,0,1,0];
-			localStorage.setItem("water_test_array", JSON.stringify(resourceActiveArray));
-     	}
-    	else {
-      		console.log("We suck");
-    	}
-		$(window).attr("location", "index.php");
-	});
-
-	function getActiveArrayFromStorage(){
-		console.log("Get Array");
-		if (localStorage !== "undefined") {
-     		var retrieveArray = localStorage.getItem("water_test_array");
-       		resourceActiveArray = JSON.parse(retrieveArray);
-
-
-     		var temp = [1,0,0,0,0,0];
-			localStorage.setItem("water_test_array", JSON.stringify(temp));
-     	}
-    	else {
-      		console.log("We suck");
-    	}
-    	setMarkers();
-	}
-	getActiveArrayFromStorage(); 
-});
