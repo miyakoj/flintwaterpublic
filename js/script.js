@@ -4,8 +4,12 @@ $(document).ready(function() {
 	
 	/* Position alert in the middle of the page. */
 	$(".alert").css({
-		"top": (windowHeight - $(".alert").height()) / 2,
-		"left": (windowWidth - $(".alert").width()) / 2
+		"top": function() {
+			return this.top = (windowHeight - $(".alert").height()) / 2;
+		},
+		"left": function() {
+			return this.left = (windowWidth - $(".alert").width()) / 2;
+		}
 	});
 	
 	/* Activate tooltips. */
@@ -16,8 +20,16 @@ $(document).ready(function() {
 	/* Make the line-height of the navbar header h1 match the height of the navbar. */
 	//$(".navbar-brand").css("line-height", $("#main_menu ul").css("line-height"));
 	
-	/* Dynamically adjust the line-height of the dropdown links by the link height. */
+	/* Dynamically adjust the dropdown menu links. */
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
+	$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"))
+	
+	/* Get rid of the dropdown menus on mobile. */
+	/*if (windowWidth < 992) {
+		$("#show_me_menu").removeClass("dropdown");
+		$("#show_me_menu .caret").css("display", "none");
+		$("#show_me_menu .dropdown-menu").removeClass("dropdown-menu");
+	}*/
 	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
@@ -28,12 +40,8 @@ $(document).ready(function() {
 	$("#map").css("height", mapHeight);
 	$("#search_input").val(""); // clear the search input upon refresh
 	
-	/* Get rid of the dropdown menu on mobile. */
-	if (windowWidth < 992) {
-		$("#show_me_menu").removeClass("dropdown");
-		$("#show_me_menu .caret").css("display", "none");
-		$("#show_me_menu .dropdown-menu").removeClass("dropdown-menu");
-	}
+	/* Scale the popup markers based on screen size. */
+	$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
 	
 	/* Dynamically generate page links. */
 	var id;
