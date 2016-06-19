@@ -6,6 +6,9 @@ var apiKey = "AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI";
 var default_bucket = "flint-water-project.appspot.com";
 var scope = "https://www.googleapis.com/auth/devstorage.read_only";
 
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+
 var map;
 var infoWindow;
 var heatmap;
@@ -19,17 +22,25 @@ var location_marker = [];
 var marker_img;
 
 //for construction
-var constructionMarker ;
+var constructionMarker;
 var constructionToggle = 0;
 var pipePolyLine;
 
 //icons
-var bloodIcon ;
-var waterpickupIcon ;
-var leadTestIcon ;
-var recycleIcon ;
-var filterIcon ;
-var constructionIcon ;
+var bloodIcon;
+var waterpickupIcon;
+var leadTestIcon;
+var recycleIcon;
+var filterIcon;
+var constructionIcon;
+
+/* Size the icons based on whether the device is mobile or not. */
+var iconSize;
+
+if (windowWidth < 992)
+	iconSize = 25;
+else
+	iconSize = 30;
 
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
@@ -57,7 +68,6 @@ function initMap() {
 	});
 	
 	infoWindow = new google.maps.InfoWindow();
-	
 
 	callStorageAPI("providers.json");
 	callStorageAPI("leadlevels.json");
@@ -68,36 +78,48 @@ function initMap() {
 	});
 
 	//make icons for each resource
-	bloodIcon ={url: 'images/bloodtesticon.png',
-				size: new google.maps.Size(64,64),
-				origin: new google.maps.Point(0,0),
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(45,45)};
-	waterpickupIcon ={url: 'images/waterpickupicon.png',
-				size: new google.maps.Size(100,100),
-				origin: new google.maps.Point(0,0),
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(45,45)};
-	leadTestIcon ={url: 'images/leadtesticon.png',
-				size: new google.maps.Size(100,100),
-				origin: new google.maps.Point(0,0),
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(45,45)};
-	recycleIcon ={url: 'images/recycleicon.png',
-				size: new google.maps.Size(100,100),
-				origin: new google.maps.Point(0,0),
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(45,45)};
-	filterIcon ={url: 'images/waterfiltericon.png',
-				size: new google.maps.Size(100,100),
-				origin: new google.maps.Point(0,0),
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(45,45)};
-	constructionIcon ={url: 'images/constructionicon.png',
-				size: new google.maps.Size(100,100),
-				origin: new google.maps.Point(0,0),
-				anchor: new google.maps.Point(0,0),
-				scaledSize: new google.maps.Size(45,45)};
+	bloodIcon = {
+		url: 'images/bloodtesticon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	waterpickupIcon = {
+		url: 'images/waterpickupicon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	leadTestIcon = {
+		url: 'images/leadtesticon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	recycleIcon = {
+		url: 'images/recycleicon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	filterIcon = {
+		url: 'images/waterfiltericon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	constructionIcon = {
+		url: 'images/constructionicon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
 	
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
@@ -416,7 +438,7 @@ function callStorageAPI(object) {
 								'rgba(255,0,0,1)',
 								'rgba(128,0,0,1)']
 				});
-				console.log("heatmap is initiatded");
+				console.log("heatmap is initiated");
 				//heatmap.setMap(map);
 				setUpInitialMap();
 			}
@@ -433,34 +455,47 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons' />";
+						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Pickup' />";
 					}
 					if (provider.resType.indexOf("Recycle") != -1) {
 						marker_img = "images/recycleicon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Recycling' />";
 					}
 					if (provider.resType.indexOf("Blood Testing") != -1) {
 						marker_img = "images/bloodtesticon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Blood Testing' />";
 					}
 					if (provider.resType.indexOf("Water Filters") != -1) {
 						marker_img = "images/waterfiltericon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Filters' />";
 					}
 					if (provider.resType.indexOf("Test Kits") != -1) {
 						marker_img = "images/leadtesticon.png";
-						images += "<img src='" + marker_img + "' class='marker_window_icons'/>";
+						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Testing' />";
 					}
 					
 					allMarkersString.push(images);
-					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1> <p>" + provider.aidAddress + "</p><p>" + images + "</p></div>";
-
+					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1><p>" + provider.aidAddress + "<br />"
+									+ provider.city + ", " + provider.zipcode + "</p>";
+					
+					if (provider.phone.length > 0)
+						content += "<p><strong>Phone:</strong> " + provider.phone + "</p>";
+					
+					if (provider.hours.length > 0)
+						content += "<p><strong>Hours:</strong> " + provider.hours + "</p>";
+					
+					if (provider.notes.length > 0)
+						content += "<p><strong>Notes:</strong> " + provider.notes + "</p>";
+					
+					content += "<p>" + images + "</p></div>";
 
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
 						map: map
 					});
+					
+					/* Add tooltips to the popup images. */
 					
 					/* Store the markers in arrays for the add/remove functionality. */
 					allMarkers.push(marker);
