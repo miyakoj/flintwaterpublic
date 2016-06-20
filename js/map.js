@@ -691,10 +691,15 @@ $(document).ready(function() {
 				console.log("heatmap is trying to be set");
 				heatmap.setMap(map);
 		}
-		else if (heatmap.getMap() == map) {
-			
+		else if (resourceActiveArray[0] == 0 && heatmap.getMap() == map) {
+			console.log("heatmap is trying to go away");
+			heatmap.setMap(null);
+		}
+		else if (resourceActiveArray[0] == 1 && heatmap.getMap() == map){
+			console.log("heatmap is set and will stay set");
 		}
 		else {
+			console.log("heatmap error has occured");
 			heatmap.setMap(null);
 		}
 		for (var i = 0; i < allMarkers.length; i++){
