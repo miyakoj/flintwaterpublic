@@ -36,7 +36,7 @@ $content = "<div id='map_container'>
 				<div class='card-action'>
 					<div id='location_buttons' class='btn-group' role='group' aria-label='Location Info Buttons'>
 						<button id='saved_location_button' type='button' class='btn btn-flat btn-brand'><img src='images/savedlocation.png' /> <span></span></button>
-						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> 
+						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'>
 						<span>More Info</span></button>
 					</div>
 				</div>
