@@ -215,7 +215,7 @@ if (@isset($_GET["pid"])) {
                                 <div class='stepper-vert-content'>
                                 <!--- Step One Contents Here! ---> 
                                     <label for='locationTextField'>Enter Your Location: </label><br>
-                                <input id='locationTextField' type='text' size='50' style='max-width:75%;' style='width:75%;'>
+                                <input class='form-control' id='locationTextField' style='width=100%;'>
                                 <script>
                                     function init() {
                                         var input = document.getElementById('locationTextField');
@@ -235,7 +235,7 @@ if (@isset($_GET["pid"])) {
                                     <!-- Step Two Contents Here! --->
                                     <div id='step2_stuff' class='form-group form-group-label'>
                                     <label for='ProblemSelector'> Select The Problem: </label>
-                                    <select class='form-control' id='ProblemSelector' style='max-width:75%;' style='width:75%;'>
+                                    <select class='form-control' id='ProblemSelector' style='width:100%;'>
                                         <option value='...'> Discolored Water </option>
                                         <option value='...'> Water Main Break </option>
                                         <option value='...'> Other Infrastructure Issue </option>
@@ -253,9 +253,9 @@ if (@isset($_GET["pid"])) {
                                 <div class='stepper-vert-content'>
                                 <!--- Step 3 Contents Here! --->
                                     <div id='step3_stuff' class='form-group form-group-label'>
-                                    <label for='GrowBox'> Describe Problem: </label><br>
-                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' style='max-width:75%;' style='width:75%;'></textarea>
-                                    </div>
+                                    <label for='GrowBox'> Describe Problem: (500 Character Limit) </label><br>
+                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' maxlength='500' style='width:100%;'></textarea>								
+									</div>
                                 </div>
                             </div>
                         </div>
