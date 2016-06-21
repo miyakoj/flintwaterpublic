@@ -109,7 +109,7 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Install a Water Filter";
 			$content = "<div id='step1'>	
 						<div class='card'>
-						<div class='card-main'><h3>Step 1: Choose your filter type</h3></div>
+						<div class='card-main'><h3>Step 1: Choose your filter type</h3>
 						<div class='card-inner'><p>From the choices below, select your water filter.</p></div>
 						<table style='width: 100%'>
 							<tr>
@@ -123,11 +123,12 @@ if (@isset($_GET["pid"])) {
 								<td>ZeroWater</td>
 							</tr>
 						</table>
+						</div>
 					</div>
 				</div>
 				 <div id='PUR-Step2'>	
 					<div class='card'>
-						<div class='card-main'><h3>Step 2: Choose your adapter</h3></div>
+						<div class='card-main'><h3>Step 2: Choose your adapter</h3>
 						<div class='card-inner'>
 						  <ul>
 						    <li>Remove your aerator.</li>
@@ -137,11 +138,12 @@ if (@isset($_GET["pid"])) {
 						  </ul>
 						</div>
 						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+						</div>
 					</div>
 				</div>
 				 <div id='PUR-Step3'>	
 					<div class='card'>
-						<div class='card-main'><h3>Step 3: Install your filter</h3></div>
+						<div class='card-main'><h3>Step 3: Install your filter</h3>
 						<div class='card-inner'>
 						  <ul>
 						    <li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
@@ -151,12 +153,13 @@ if (@isset($_GET["pid"])) {
 							<li>Push the filter unit onto the adapter until you hear a click.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
+						</div>
 					</div>
 				</div>
 			<div id='Brita-Step2'>	
 					<div class='card'>
-						<div class='card-main'><h3>Step 2: Install your adapter</h3></div>
+						<div class='card-main'><h3>Step 2: Install your adapter</h3>
 						<div class='card-inner'>
 						  <ul>
 						    <li>Remove your aerator.</li>
@@ -167,11 +170,12 @@ if (@isset($_GET["pid"])) {
 						  </ul>
 						</div>
 						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+						</div>
 					</div>
 				</div>
 					<div id='Brita-Step3'>	
 					<div class='card'>
-						<div class='card-main'><h3>Step 3: Install your filter</h3></div>
+						<div class='card-main'><h3>Step 3: Install your filter</h3>
 						<div class='card-inner'>
 						  <ul>
 						    <li>Line up the hole in the filter base.</li>
@@ -180,12 +184,13 @@ if (@isset($_GET["pid"])) {
 							<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
+						</div>
 					</div>
 				</div>
 					<div id='ZeroWater-Step2'>	
 					<div class='card'>
-						<div class='card-main'><h3>Step 2: Install your filter</h3></div>
+						<div class='card-main'><h3>Step 2: Install your filter</h3>
 						<div class='card-inner'>
 						  <ul>
 						    <li>Remove lid and water reservoir from the pitcher.</li>
@@ -193,7 +198,8 @@ if (@isset($_GET["pid"])) {
 							<li>Screw the filter into the bottom of the reservoir.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+						<div class='card-action'><a href='index.php' class='btn btn-flat'>/Return to Map</a></div>
+						</div>
 					</div>
 				</div>";
 		break;
