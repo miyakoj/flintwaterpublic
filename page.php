@@ -107,14 +107,15 @@ if (@isset($_GET["pid"])) {
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
-			$content = "<div class='card'>
-						<div class='card-main'><h3>Step 1: Choose your filter type</h3>
+			$content = "<div id='step1'>	
+						<div class='card'>
+						<div class='card-main'><h3>Step 1: Choose your filter type</h3></div>
 						<div class='card-inner'><p>From the choices below, select your water filter.</p></div>
 						<table style='width: 100%'>
 							<tr>
-								<td><img src='../images/PUR_filter.jpg' width='150' height='150'></td>
-								<td> <img src='../images/Brita_filter.jpg' width='150' height='150'></td>
-								<td><img src='../images/ZeroWater.jpg' width='150' height='150'></td>
+								<td><button><img src='../images/PUR_filter.jpg' width='150' height='150'></button></td>
+								<td><button><img src='../images/Brita_filter.jpg' width='150' height='150'></button></td>
+								<td><button><img src='../images/ZeroWater.jpg' width='150' height='150'></button></td>
 							</tr>
 							<tr>
 								<td>PUR</td>
@@ -122,23 +123,79 @@ if (@isset($_GET["pid"])) {
 								<td>ZeroWater</td>
 							</tr>
 						</table>
-						<div class='card-action'>
-						<div class='dropdown-wrap'>
-						<div class='dropdown dropdown-inline'>
-						<a class='btn dropdown-toggle-btn' data-toggle='dropdown'>CHOOSE YOUR FILTER</a>
-							<ul class='dropdown-menu nav'>
-								<li>
-									<a> ZeroWater 23-Cup Dispenser, model number ZD-018 </a>
-									<a> Brita faucet filter, model SAFF-100 </a>
-									<a> PUR Faucet Mount, model number FM-3700B </a>
-								</li>
-							</ul>
-						</div>
-						</div>
-						</div>	
 					</div>
 				</div>
-			</div>";
+				 <div id='PUR-Step2'>	
+					<div class='card'>
+						<div class='card-main'><h3>Step 2: Choose your adapter</h3></div>
+						<div class='card-inner'>
+						  <ul>
+						    <li>Remove your aerator.</li>
+							<li>Choose an adapter from the PUR filter box that fits the missing aerator location.</li>
+							<li>Then put the rubber gasket that matches your adapter over the threads.</li>
+							<li>Next screw the adapter on.</li>
+						  </ul>
+						</div>
+						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+					</div>
+				</div>
+				 <div id='PUR-Step3'>	
+					<div class='card'>
+						<div class='card-main'><h3>Step 3: Install your filter</h3></div>
+						<div class='card-inner'>
+						  <ul>
+						    <li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
+							<li>Take the blue filter out of the wrapper.</li>
+							<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
+							<li>Screw the cap back on.</li>
+							<li>Push the filter unit onto the adapter until you hear a click.</li>
+						  </ul>
+						</div>
+						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+					</div>
+				</div>
+			<div id='Brita-Step2'>	
+					<div class='card'>
+						<div class='card-main'><h3>Step 2: Install your adapter</h3></div>
+						<div class='card-inner'>
+						  <ul>
+						    <li>Remove your aerator.</li>
+							<li>See if you have threads sticking out of the faucet head.</li>
+							<li>If you have threads sticking out you don't need an adapter.</li>
+							<li>If you don't have threads sticking out choose one of the adapters in the box that fit you faucet.</li>
+							<li>Screw in the adapter.</li>
+						  </ul>
+						</div>
+						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+					</div>
+				</div>
+					<div id='Brita-Step3'>	
+					<div class='card'>
+						<div class='card-main'><h3>Step 3: Install your filter</h3></div>
+						<div class='card-inner'>
+						  <ul>
+						    <li>Line up the hole in the filter base.</li>
+							<li>Twist the mounting collar to secure it to the faucet.</li>
+							<li>Line up the peg on the bottom of the filter cartridge with the hole in the filter base.</li>
+							<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
+						  </ul>
+						</div>
+						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+					</div>
+				</div>
+					<div id='ZeroWater-Step2'>	
+					<div class='card'>
+						<div class='card-main'><h3>Step 2: Install your filter</h3></div>
+						<div class='card-inner'>
+						  <ul>
+						    <li>Remove lid and water reservoir from the pitcher.</li>
+							<li>Remove filter from packaging.</li>
+							<li>Screw the filter into the bottom of the reservoir.</li>
+						  </ul>
+						</div>
+						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
+					</div>
+				</div>";
 		break;
 		
 		case "aerator":
