@@ -109,57 +109,62 @@ $(document).ready(function() {
 		$("head script[src*='script']").after(news_js, alert_js);
 	}*/
 
-	//Test Water
-	$("#test_page #step1 button").on("click", function(){
+	/* Test My Water page */
+	$("#test_page #step1 .btn").on("click", function(){
 		$("#test_page #step1").css("display","none");
 		$("#test_page #step2").css("display","block");
 	});
 
-	$("#test_page #step2 button").on("click", function(){
+	$("#test_page #step2 .btn").on("click", function(){
 		$("#test_page #step2").css("display","none");
 		$("#test_page #step3").css("display","block");
 	});
 
-	$("#test_page #step3 button").on("click", function(){
+	$("#test_page #step3 .btn").on("click", function(){
 		$("#test_page #step3").css("display","none");
 		$("#test_page #step4").css("display","block");
 	});
 
-	$("#test_page #step4 button").on("click", function(){
+	$("#test_page #step4 .btn").on("click", function(){
 		$("#test_page #step4").css("display","none");
 		$("#test_page #step5").css("display","block");
 	});
 
-	$("#test_page #step5 button").on("click", function(){
+	$("#test_page #step5 .btn").on("click", function(){
 		$("#test_page #step5").css("display","none");
 		$("#test_page #step6").css("display","block");
 	});
-	$("#test_page #step6 button").on("click", function(){
+	$("#test_page #step6 .btn").on("click", function(){
 		$(window).attr("location", "index.php");
 	});
+	
+	/* Install a Water page */
 
-	//aerator page
-	$("#aerator_page #step1 button").on("click", function(){
+	/* Clean My Aerator page */
+	$("#aerator_page #step1 .btn").on("click", function(){
 		$("#aerator_page #step1").css("display","none");
 		$("#aerator_page #step2").css("display","block");
 	});
 
-	$("#aerator_page #step2 button").on("click", function(){
+	$("#aerator_page #step2 .btn").on("click", function(){
 		$("#aerator_page #step2").css("display","none");
 		$("#aerator_page #step3").css("display","block");
 	});
 
-	$("#aerator_page #step3 button").on("click", function(){
+	$("#aerator_page #step3 .btn").on("click", function(){
 		$("#aerator_page #step3").css("display","none");
 		$("#aerator_page #step4").css("display","block");
 	});
 
-	$("#aerator_page #step4 button").on("click", function(){
+	$("#aerator_page #step4 .btn").on("click", function(){
 		$(window).attr("location", "index.php");
 	});
 
-	//report a problem
-	//steppers
+	/* Report a Problem page */
+	
+	
+	
+	/* Steppers for help pages */
 	$("#report_page #locationTextField").on("click", function(){
 		$("#stepper1").addClass("active");
 	});
