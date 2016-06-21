@@ -76,6 +76,7 @@ header {
 }
 
 .dropdown-menu {
+	/*position:static!important;*/
 	z-index:100;
 }
 
@@ -84,12 +85,20 @@ header {
 }
 
 @media only screen and (max-width: 992px) {
-	#show_me_menu {
+	.dropdown-menu {
+		/*position:absolute!important;*/
+		z-index:100;
+	}
+	/*#show_me_menu {
 		padding-left:20px;
 	}
     #show_me_menu a {
 		padding:0!important;
-	}
+	}*/
+}
+
+#lang_ar {
+	display:none;
 }
 
 

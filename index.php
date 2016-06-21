@@ -6,8 +6,8 @@ $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle=
 		  <label class='btn btn-primary resource_buttons' id='heatmap_btn'>
 		    <input type='checkbox' autocomplete='off' /><img src='images/leadinfoicon.png' class='resource_buttons_image' alt='Latest Lead Levels' /> <span>Lead Levels</span>
 		  </label>
-		  <label class='btn btn-primary resource_buttons' id='risk_factor_btn'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/riskinfoicon.png' class='resource_buttons_image' alt='Lead Risk Factor' /> <span>Risk Factor</span>
+		  <label class='btn btn-primary resource_buttons' id='pipes_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/riskinfoicon.png' class='resource_buttons_image' alt='View Main Pipes' /> <span>View Pipes</span>
 		  </label>
 		  <label class='btn btn-primary resource_buttons' id='water_pickup_btn'>
 		    <input type='checkbox' autocomplete='off' /><img src='images/waterpickupicon.png' class='resource_buttons_image' alt='Water Pickup Sites' /> <span>Water Pickup</span>
@@ -28,6 +28,10 @@ $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle=
 		    <input type='checkbox' autocomplete='off' /><img src='images/constructionicon.png' class='resource_buttons_image' alt='Construction Sites' /> <span>Construction</span>
 		  </label>
 		</nav>";
+		
+/*<label class='btn btn-primary resource_buttons' id='risk_factor_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='images/riskinfoicon.png' class='resource_buttons_image' alt='Lead Risk Factor' /> <span>Risk Factor</span>
+		  </label>*/
 
 $content = "<div id='map_container'>
 		<div id='location_card' class='card'>
