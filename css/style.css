@@ -59,7 +59,6 @@ header {
 }
 
 .navbar .navbar-right {
-	/*display:none;*/
 	margin-right:0px!important;
 }
 
@@ -71,8 +70,9 @@ header {
 	margin-top:10px!important;
 }
 
-#main_menu a {
-	padding:8px 15px!important;
+#show_me_menu .dropdown-menu a {
+	width:100%!important;
+	padding:5px 5px 5px 25px!important;
 }
 
 .dropdown-menu {
@@ -82,18 +82,6 @@ header {
 
 .dropdown-menu .btn, .dropdown-menu .btn-flat {
 	text-align:left!important;
-}
-
-@media only screen and (min-width: 992px) {
-	/*.dropdown-menu {
-		position:absolute!important;
-	}
-	#show_me_menu {
-		padding-left:20px;
-	}
-    #show_me_menu a {
-		padding:0!important;
-	}*/
 }
 
 #lang_ar {
@@ -116,16 +104,12 @@ body[id="index_page"] main {
 }
 
 #page_card {
-	margin:12px!important;
-	padding:3px;
+	/*margin:12px!important;
+	padding:3px;*/
 }
 
-#page_card .card-main {
-	
-}
-
-#news {
-	padding-top:12px;
+#page_card .card-inner {
+	margin:0!important;
 }
 
 #test_page #step2, #test_page #step3, #test_page #step4, #test_page #step5, #test_page #step6 {
@@ -146,12 +130,6 @@ body[id="index_page"] main {
 
 
 /* Map-Related Styles. */
-
-#toggles img {
-	width: auto;
-	height: 20px;
-	vertical-align:middle;
-}
 
 #search_input {
 	background-color: #fff;
@@ -229,24 +207,38 @@ body[id="index_page"] #map {
 	font-size:1.25em;
 }
 
-.resource_buttons{
+#provider_popup img {
+	width:25px;
+}
+
+#toggles img {
+	width: auto;
+	height: 20px;
+	vertical-align:middle;
+}
+
+#toggles span {
+	display: none;
+}
+
+.resource_buttons {
 	margin: 3px 5px;
 }
 
-.resource_buttons_image{
+.resource_buttons_image {
 	margin-right: 3px;
 }
 
-.stepper_group_width{
+.stepper_group_width {
 	max-width: 150px;
     margin: 0px auto;
 }
 
-#survey-get-started .btn{
+#survey-get-started .btn {
 	width: 99%;
 }
 
-.stepper_group_width .stepper{
+.stepper_group_width .stepper {
 	padding-left: 0px!important;
 }
 
@@ -311,17 +303,6 @@ body[id="index_page"] #map {
 	margin-right:8px;
 }
 
-@media only screen and (max-width: 992px) {
-	#toggles span {
-		display: none;
-	}
-	
-    #provider_popup img {
-		width:25px;
-	}
-}
-
-
 footer {
 	padding:4px;
 }
@@ -355,4 +336,28 @@ footer span {
   color: #000;
   background: #fff;
   border: solid 1px #fff;
+}
+
+
+/* Desktop/Laptop only. */
+@media only screen and (min-width: 992px) {
+	main {
+		padding:0 30%!important;
+	}
+	
+	.dropdown-menu {
+		position:absolute!important;
+	}
+	
+	#index_page main {
+		padding:0!important;
+	}
+	
+	#toggles span {
+		display: inline;
+	}
+	
+    #provider_popup img {
+		width:30px;
+	}
 }

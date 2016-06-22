@@ -24,13 +24,6 @@ $(document).ready(function() {
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
 	$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"))
 	
-	/* Get rid of the dropdown menus on mobile. */
-	/*if (windowWidth < 992) {
-		$("#show_me_menu").removeClass("dropdown");
-		$("#show_me_menu .caret").css("display", "none");
-		$("#show_me_menu .dropdown-menu").removeClass("dropdown-menu");
-	}*/
-	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
   
@@ -110,31 +103,32 @@ $(document).ready(function() {
 	}*/
 
 	/* Test My Water page */
-	$("#test_page #step1 .btn").on("click", function(){
+	$("#test_page #step1 button").on("click", function(){
 		$("#test_page #step1").css("display","none");
 		$("#test_page #step2").css("display","block");
 	});
 
-	$("#test_page #step2 .btn").on("click", function(){
+	$("#test_page #step2 button").on("click", function(){
 		$("#test_page #step2").css("display","none");
 		$("#test_page #step3").css("display","block");
 	});
 
-	$("#test_page #step3 .btn").on("click", function(){
+	$("#test_page #step3 button").on("click", function(){
 		$("#test_page #step3").css("display","none");
 		$("#test_page #step4").css("display","block");
 	});
 
-	$("#test_page #step4 .btn").on("click", function(){
+	$("#test_page #step4 button").on("click", function(){
 		$("#test_page #step4").css("display","none");
 		$("#test_page #step5").css("display","block");
 	});
 
-	$("#test_page #step5 .btn").on("click", function(){
+	$("#test_page #step5 button").on("click", function(){
 		$("#test_page #step5").css("display","none");
 		$("#test_page #step6").css("display","block");
 	});
-	$("#test_page #step6 .btn").on("click", function(){
+	
+	$("#test_page #step6 button").on("click", function(){
 		$(window).attr("location", "index.php");
 	});
 	
@@ -144,7 +138,7 @@ $(document).ready(function() {
 		$("#filter_page #PUR-Step2").css("display","block");
 	});
 
-	$("#filter_page #PUR-Step2 a").on("click", function() {
+	$("#filter_page #PUR-Step2 .btn").on("click", function() {
 		$("#filter_page #PUR-Step2").css("display", "none");
 		$("#filter_page #PUR-Step3").css("display", "block");
 	});
@@ -154,7 +148,7 @@ $(document).ready(function() {
 		$("#filter_page #Brita-Step2").css("display", "block");
 	});
 
-	$("#filter_page #Brita-Step2 a").on("click", function() {
+	$("#filter_page #Brita-Step2 .btn").on("click", function() {
 		$("#filter_page #Brita-Step2").css("display", "none");
 		$("#filter_page #Brita-Step3").css("display", "block");
 	});

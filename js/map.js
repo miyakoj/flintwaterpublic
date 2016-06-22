@@ -30,7 +30,6 @@ var pipePolyLine;
 var pipeToggle = 0;
 var testPolyLine;
 
-
 //icons
 var bloodIcon;
 var waterpickupIcon;
@@ -39,7 +38,7 @@ var recycleIcon;
 var filterIcon;
 var constructionIcon;
 
-/* Size the icons based on whether the device is mobile or not. */
+/* Size the map popup icons based on whether the device is mobile or not. */
 var iconSize;
 
 if (windowWidth < 992)
@@ -715,60 +714,61 @@ $(document).ready(function() {
 		$(window).attr("location", "index.php");
 	}); 
 });
-	/* Set markers on the map based on type. */
-	function setMarkers() {  
-		if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
-				console.log("heatmap is trying to be set");
-				heatmap.setMap(map);
+
+/* Set markers on the map based on type. */
+function setMarkers() {
+	if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
+			console.log("heatmap is trying to be set");
+			heatmap.setMap(map);
+	}
+	else if (resourceActiveArray[0] == 0 && heatmap.getMap() == map) {
+		console.log("heatmap is trying to go away");
+		heatmap.setMap(null);
+	}
+	else if (resourceActiveArray[0] == 1 && heatmap.getMap() == map){
+		console.log("heatmap is set and will stay set");
+	}
+	else {
+		console.log("heatmap error has occured");
+		heatmap.setMap(null);
+	}
+	
+	for (var i = 0; i < allMarkers.length; i++){
+		allMarkers[i].setMap(null);
+		if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
+			allMarkers[i].setIcon(bloodIcon);
+			allMarkers[i].setMap(map);
 		}
-		else if (resourceActiveArray[0] == 0 && heatmap.getMap() == map) {
-			console.log("heatmap is trying to go away");
-			heatmap.setMap(null);
+		else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
+			allMarkers[i].setIcon(leadTestIcon);
+			allMarkers[i].setMap(map);
 		}
-		else if (resourceActiveArray[0] == 1 && heatmap.getMap() == map){
-			console.log("heatmap is set and will stay set");
+		else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
+			allMarkers[i].setIcon(filterIcon);
+			allMarkers[i].setMap(map);
 		}
-		else {
-			console.log("heatmap error has occured");
-			heatmap.setMap(null);
+		else if(resourceActiveArray[2]==1 && allMarkersString[i].search("recycle") > -1){
+			allMarkers[i].setIcon(recycleIcon);
+			allMarkers[i].setMap(map);
 		}
-		for (var i = 0; i < allMarkers.length; i++){
-			allMarkers[i].setMap(null);
-			if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
-				allMarkers[i].setIcon(bloodIcon);
-				allMarkers[i].setMap(map);
-			}
-			else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
-				allMarkers[i].setIcon(leadTestIcon);
-				allMarkers[i].setMap(map);
-			}
-			else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
-				allMarkers[i].setIcon(filterIcon);
-				allMarkers[i].setMap(map);
-			}
-			else if(resourceActiveArray[2]==1 && allMarkersString[i].search("recycle") > -1){
-				allMarkers[i].setIcon(recycleIcon);
-				allMarkers[i].setMap(map);
-			}
-			else if(resourceActiveArray[1]==1 && allMarkersString[i].search("water") > -1){
-				allMarkers[i].setIcon(waterpickupIcon);
-				allMarkers[i].setMap(map);
-			}
-			if(constructionToggle==1){
-				constructionMarker.setMap(map);
-				pipePolyLine.setMap(map);
-			}
-			else{
-				constructionMarker.setMap(null);
-				pipePolyLine.setMap(null);
-				testPolyLine.setMap(null);
-			}
-			if(pipeToggle==1){
-				testPolyLine.setMap(map);
-			}
-			else{
-				testPolyLine.setMap(null);
-			}
-			
+		else if(resourceActiveArray[1]==1 && allMarkersString[i].search("water") > -1){
+			allMarkers[i].setIcon(waterpickupIcon);
+			allMarkers[i].setMap(map);
+		}
+		if(constructionToggle==1){
+			constructionMarker.setMap(map);
+			pipePolyLine.setMap(map);
+		}
+		else{
+			constructionMarker.setMap(null);
+			pipePolyLine.setMap(null);
+			testPolyLine.setMap(null);
+		}
+		if(pipeToggle==1){
+			testPolyLine.setMap(map);
+		}
+		else{
+			testPolyLine.setMap(null);
 		}
 	}
+}
