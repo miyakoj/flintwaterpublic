@@ -136,6 +136,10 @@ body[id="index_page"] main {
 	display: none;
 }
 
+#filter_page #PUR-Step2, #filter_page #PUR-Step3, #filter_page #Brita-Step2,#filter_page #Brita-Step3, #filter_page #ZeroWater-Step2, #filter_page #ZeroWater-Step3 {
+	display: none;
+}
+
 .card-main h3/*, .card-inner p, .card-action a*/{
 	margin-left: 16px;
 }

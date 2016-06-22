@@ -138,7 +138,31 @@ $(document).ready(function() {
 		$(window).attr("location", "index.php");
 	});
 	
-	/* Install a Water page */
+	/* Install a WaterFilter page */
+	$("#filter_page #step1 #PUR_btn").on("click", function() {
+		$("#filter_page #step1").css("display", "none");
+		$("#filter_page #PUR-Step2").css("display","block");
+	});
+
+	$("#filter_page #PUR-Step2 a").on("click", function() {
+		$("#filter_page #PUR-Step2").css("display", "none");
+		$("#filter_page #PUR-Step3").css("display", "block");
+	});
+
+	$("#filter_page #step1 #Brita_btn").on("click", function() {
+		$("#filter_page #step1").css("display", "none");
+		$("#filter_page #Brita-Step2").css("display", "block");
+	});
+
+	$("#filter_page #Brita-Step2 a").on("click", function() {
+		$("#filter_page #Brita-Step2").css("display", "none");
+		$("#filter_page #Brita-Step3").css("display", "block");
+	});
+
+	$("#filter_page #step1 #ZeroWater_btn").on("click", function() {
+		$("#filter_page #step1").css("display", "none");
+		$("#filter_page #ZeroWater-Step2").css("display", "block");
+	});
 
 	/* Clean My Aerator page */
 	$("#aerator_page #step1 .btn").on("click", function(){
