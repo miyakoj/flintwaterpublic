@@ -26,11 +26,6 @@ var constructionMarker;
 var constructionToggle = 0;
 var pipePolyLine;
 
-// for pipe visualization
-var pipeToggle = 0;
-var testPolyLine;
-
-
 //icons
 var bloodIcon;
 var waterpickupIcon;
@@ -151,20 +146,6 @@ function initMap() {
 	pipePolyLine = new google.maps.Polyline({
 		path: pipePlanCoordinates,
 		strokeColor: '#FF0000',
-		strokeOpacity: .9,
-		strokeWeight: 2
-	});
-	
-
-	// Pipeline Visulization
-	var testLine = [
-		{lat:43.060639, lng:-83.669126},
-		{lat:43.060639, lng:-83.693954}
-	];
-	
-	testPolyLine = new google.maps.Polyline({
-		path: testLine,
-		strokeColor: '#511883',
 		strokeOpacity: .9,
 		strokeWeight: 2
 	});
@@ -615,18 +596,7 @@ $(document).ready(function() {
 			riskmap.setMap(map);
 		}
 	});*/
-	
-	// View Pipes Placeholder Button
-	$("#pipes_btn").on('click', function() {		
-		if (pipeToggle == 1) {
-			pipeToggle = 0;
-		}
-		else {
-			pipeToggle = 1;
-		}
-		setMarkers();
-	});
-	
+
 	$("#water_pickup_btn").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
@@ -761,14 +731,6 @@ $(document).ready(function() {
 			else{
 				constructionMarker.setMap(null);
 				pipePolyLine.setMap(null);
-				testPolyLine.setMap(null);
 			}
-			if(pipeToggle==1){
-				testPolyLine.setMap(map);
-			}
-			else{
-				testPolyLine.setMap(null);
-			}
-			
 		}
 	}

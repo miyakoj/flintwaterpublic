@@ -76,7 +76,7 @@ header {
 }
 
 .dropdown-menu {
-	/*position:static!important;*/
+	position:static!important;
 	z-index:100;
 }
 
@@ -84,12 +84,11 @@ header {
 	text-align:left!important;
 }
 
-@media only screen and (max-width: 992px) {
-	.dropdown-menu {
-		/*position:absolute!important;*/
-		z-index:100;
+@media only screen and (min-width: 992px) {
+	/*.dropdown-menu {
+		position:absolute!important;
 	}
-	/*#show_me_menu {
+	#show_me_menu {
 		padding-left:20px;
 	}
     #show_me_menu a {
