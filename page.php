@@ -113,9 +113,9 @@ if (@isset($_GET["pid"])) {
 						<div class='card-inner'><p>From the choices below, select your water filter.</p></div>
 						<table style='width: 100%'>
 							<tr>
-								<td><button><img src='../images/PUR_filter.jpg' width='150' height='150'></button></td>
-								<td><button><img src='../images/Brita_filter.jpg' width='150' height='150'></button></td>
-								<td><button><img src='../images/ZeroWater.jpg' width='150' height='150'></button></td>
+								<td><button id = 'PUR_btn'><img src='../images/PUR_filter.jpg' width='150' height='150'></button></td>
+								<td><button id = 'Brita_btn'><img src='../images/Brita_filter.jpg' width='150' height='150'></button></td>
+								<td><button id = 'ZeroWater_btn'><img src='../images/ZeroWater.jpg' width='150' height='150'></button></td>
 							</tr>
 							<tr>
 								<td>PUR</td>
