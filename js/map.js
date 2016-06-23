@@ -466,18 +466,17 @@ function callStorageAPI(object) {
 				var heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
-				for(i=0; i<js_obj.leadLevels.length; i++) {
+				/*for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					var weightValue = assignWeight(info.leadLevel);
 					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
-				}
+				}*/
 				
-				/*for(i=0; i<js_obj.leadLevels.length; i++) {
+				for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({location: new google.maps.LatLng(info.lat, info.long), weight: weightValue});
 				}
-				*/
 				
 				function assignWeight(levelIn){
 					if (levelIn < 5){
