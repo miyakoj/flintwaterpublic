@@ -25,6 +25,7 @@ var marker_img;
 var constructionMarker;
 var constructionToggle = 0;
 var pipePolyLine;
+var pipePolyLine2;
 
 //for water plant
 var waterplantMarker;
@@ -171,7 +172,7 @@ function initMap() {
 	var pipePlanCoordinates = [
 		{lat:43.01826, lng:-83.66875},
 		{lat:43.01837, lng:-83.66106},
-		{lat:43.022, lng:-83.66128 }
+		{lat:43.022, lng:-83.66128}
 	];
 
 	pipePolyLine = new google.maps.Polyline({
@@ -181,11 +182,30 @@ function initMap() {
 		strokeWeight: 2
 	});
 	
+	var pipePlanCoordinates2 = [
+		{lat:43.043100, lng: -83.693805},
+		{lat:43.043100, lng: -83.673805}
+	];
+	
+	pipePolyLine2 = new google.maps.Polyline({
+		path: pipePlanCoordinates2,
+		strokeColor: '#FF0000',
+		strokeOpacity: .9,
+		strokeWeight: 2
+	});
+	
+	
+	
 
 	// Pipeline Visulization
+	// These are simply placeholders, based loosely off the map I was given,
+	// They will be replaced soon witha actual data. --Adam
 	var testLine = [
 		{lat:43.060639, lng:-83.669126},
-		{lat:43.060639, lng:-83.693954}
+		{lat:43.060639, lng:-83.693954},
+		{lat:43.01826, lng:-83.693954},
+		{lat:43.01826, lng:-83.66875},
+		{lat:43.01826, lng:-83.723954}
 	];
 	
 	testPolyLine = new google.maps.Polyline({
@@ -446,17 +466,18 @@ function callStorageAPI(object) {
 				var heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
-				/*for(i=0; i<js_obj.leadLevels.length; i++) {
+				for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					var weightValue = assignWeight(info.leadLevel);
 					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
-				}*/
+				}
 				
-				for(i=0; i<js_obj.leadLevels.length; i++) {
+				/*for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({location: new google.maps.LatLng(info.lat, info.long), weight: weightValue});
 				}
+				*/
 				
 				function assignWeight(levelIn){
 					if (levelIn < 5){
@@ -609,7 +630,7 @@ function bindInfoWindow(marker, map, infowindow, html){
 
 $(document).ready(function() {
 	/* Get the data from the database and save it into JSON files. */
-	$.ajax({
+	/*$.ajax({
 		method: "POST",
 		url: "includes/json_processing.php",
 		complete: function(resp) {
@@ -619,7 +640,7 @@ $(document).ready(function() {
 			}
 		}
 	});
-	
+	*/
 	//localStorage.clear();
 	
 	$("#heatmap_btn").on('click', function() {	
@@ -775,12 +796,14 @@ function setMarkers() {
 		if(constructionToggle==1){
 			constructionMarker.setMap(map);
 			pipePolyLine.setMap(map);
+			pipePolyLine2.setMap(map);
 			waterplantMarker.setMap(map);
 			testPolyLine.setMap(map);
 		}
 		else{
 			constructionMarker.setMap(null);
 			pipePolyLine.setMap(null);
+			pipePolyLine2.setMap(null);
 			waterplantMarker.setMap(null);
 			testPolyLine.setMap(null);
 		}
