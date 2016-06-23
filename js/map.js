@@ -26,6 +26,9 @@ var constructionMarker;
 var constructionToggle = 0;
 var pipePolyLine;
 
+//for water plant
+var waterplantMarker;
+
 // for pipe visualization
 var pipeToggle = 0;
 var testPolyLine;
@@ -37,6 +40,7 @@ var leadTestIcon;
 var recycleIcon;
 var filterIcon;
 var constructionIcon;
+var waterPlantIcon;
 
 /* Size the map popup icons based on whether the device is mobile or not. */
 var iconSize;
@@ -124,6 +128,13 @@ function initMap() {
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
+	waterplantIcon = {
+		url: 'images/waterplanticon.png',
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(0, 0),
+		size: new google.maps.Size(64, 64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
 	
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
@@ -135,11 +146,28 @@ function initMap() {
 		title: constructionTitle,
 		icon: constructionIcon
 	});
-
+	
 	var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
 	bindInfoWindow(constructionMarker,map, infoWindow,constructionContent);
 
 	constructionMarker.setMap(null);
+	
+	//Water Plant Junk
+	var waterplantLatLng = {lat:43.056269, lng:-83.669625};
+	var waterplantTitle = "City of Flint Water Plant";
+	var waterplantImage = "images/waterplanticon.png";
+	waterplantMarker = new google.maps.Marker({
+		position : waterplantLatLng,
+		map: map,
+		title: waterplantTitle,
+		icon: waterplantIcon
+	});
+	
+	var waterplantContent = "<h1>City of Flint Water Plant</h1> <p>4500 N Dort Hwy, Flint, MI 48505</p>";
+	bindInfoWindow(waterplantMarker,map, infoWindow,waterplantContent);
+	
+	waterplantMarker.setMap(null);
+	
 
 	var pipePlanCoordinates = [
 		{lat:43.01826, lng:-83.66875},
@@ -758,11 +786,13 @@ function setMarkers() {
 		if(constructionToggle==1){
 			constructionMarker.setMap(map);
 			pipePolyLine.setMap(map);
+			waterplantMarker.setMap(map);
+			console.log("test");
 		}
 		else{
 			constructionMarker.setMap(null);
 			pipePolyLine.setMap(null);
-			testPolyLine.setMap(null);
+			waterplantMarker.setMap(null);
 		}
 		if(pipeToggle==1){
 			testPolyLine.setMap(map);
