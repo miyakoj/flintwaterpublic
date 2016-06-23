@@ -30,7 +30,6 @@ var pipePolyLine;
 var waterplantMarker;
 
 // for pipe visualization
-var pipeToggle = 0;
 var testPolyLine;
 
 //icons
@@ -634,25 +633,15 @@ $(document).ready(function() {
 		setMarkers();
 	});
 	
-	/*$("[name='risk_factor']").on('click', function() {		
+	$("[name='risk_factor']").on('click', function() {		
 		if (riskmap.getMap() != null) {
 			riskmap.setMap(null);
 		}
 		else {
 			riskmap.setMap(map);
 		}
-	});*/
-	
-	// View Pipes Placeholder Button
-	$("#pipes_btn").on('click', function() {		
-		if (pipeToggle == 1) {
-			pipeToggle = 0;
-		}
-		else {
-			pipeToggle = 1;
-		}
-		setMarkers();
 	});
+	
 	
 	$("#water_pickup_btn").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
@@ -787,17 +776,12 @@ function setMarkers() {
 			constructionMarker.setMap(map);
 			pipePolyLine.setMap(map);
 			waterplantMarker.setMap(map);
-			console.log("test");
+			testPolyLine.setMap(map);
 		}
 		else{
 			constructionMarker.setMap(null);
 			pipePolyLine.setMap(null);
 			waterplantMarker.setMap(null);
-		}
-		if(pipeToggle==1){
-			testPolyLine.setMap(map);
-		}
-		else{
 			testPolyLine.setMap(null);
 		}
 	}
