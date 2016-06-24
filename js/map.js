@@ -182,19 +182,24 @@ function initMap() {
 		strokeWeight: 2
 	});
 	
+	// This is the beacher street data from the excel sheet we got from the city.
 	var pipePlanCoordinates2 = [
-		{lat:43.043100, lng: -83.693805},
-		{lat:43.043100, lng: -83.673805}
+		{lat:43.00505669900, lng: -83.68132877400},
+		{lat:43.00567185700, lng:-83.68197748300},
+		{lat:43.00574795800, lng:-83.68206881300},
+		{lat:43.00599339100, lng:-83.68234911500},
+		{lat:43.00633257700, lng:-83.68319926500},
+		{lat:43.00706348400, lng:-83.68399010100},
+		{lat:43.00764546400, lng: -83.68462966200},
+		{lat:43.00786078100, lng:-83.68486767300}	
 	];
 	
 	pipePolyLine2 = new google.maps.Polyline({
 		path: pipePlanCoordinates2,
-		strokeColor: '#FF0000',
+		strokeColor: '#511883',
 		strokeOpacity: .9,
 		strokeWeight: 2
 	});
-	
-	
 	
 
 	// Pipeline Visulization
