@@ -25,7 +25,7 @@ $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle=
 		    <input type='checkbox' autocomplete='off' /><img src='images/waterfiltericon.png' class='resource_buttons_image' alt='Water Filters Sites' /> <span>Water Filters</span>
 		  </label>
 		  <label class='btn btn-primary resource_buttons' id='construction_btn'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/constructionicon.png' class='resource_buttons_image' alt='Construction Sites' /> <span>Construction</span>
+		    <input type='checkbox' autocomplete='off' /><img src='images/pipesicon.png' class='resource_buttons_image' alt='Construction Sites' /> <span>View Pipes</span>
 		  </label>
 		</nav>";
 		
