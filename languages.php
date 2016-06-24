@@ -1,48 +1,35 @@
-/* Originally found on http://www.bitrepository.com/php-how-to-add-multi-language-support-to-a-website.html */
 <?php
-/*session_start();
-header("Cache-control: private"); // IE 6 FIX
+/* Originally found on http://www.bitrepository.com/php-how-to-add-multi-language-support-to-a-website.html */
+
+session_start();
+header('Cache-control: private'); // IE 6 FIX
+
+if(isset($_GET["lang"])) {
+	$lang = $_GET["lang"];
+	$_SESSION["lang"] = $lang;
+	
+	// set the cookie to expire in one year
+	setcookie("lang", $lang, time() + (60 * 60 * 24 * 30 * 12));
  
-if(isSet($_GET["lang"]))
-{
-$lang = $_GET["lang"];
- 
-// register the session and set the cookie
-$_SESSION["lang"] = $lang;
- 
-setcookie("lang", $lang, time() + (3600 * 24 * 30));
+	echo $_COOKIE["lang"];
 }
-else if(isSet($_SESSION["lang"]))
-{
-$lang = $_SESSION["lang"];
-}
-else if(isSet($_COOKIE["lang"]))
-{
-$lang = $_COOKIE["lang"];
-}
-else
-{
-$lang = "en";
-}*/
 
+switch ($lang) {
+	case "es":
+	$lang_file = "lang.es.php";
+	break;
 
+	/*case "ar":
+	$lang_file = "lang.ar.php";
+	break;*/
+	
+	case "en":
+	$lang_file = "lang.en.php";
+	break;
+
+	default:
+	$lang_file = "lang.en.php";
+}
  
-	switch ($lang) {
-		case "en":
-		$lang_file = "lang.en.php";
-		break;
-
-		case "es":
-		$lang_file = "lang.es.php";
-		break;
-
-		/*case "ar":
-		$lang_file = "lang.ar.php";
-		break;*/
-
-		default:
-		$lang_file = "lang.en.php";
-	}
-	 
-	include_once "languages/" . $lang_file;
+include_once "languages/" . $lang_file;
 ?>

@@ -4,10 +4,10 @@
 \*-------------------------------------------------------*/
 
 class webpageTemplate {
-
 	var $template;
 	var $html;
 	var $parameters = array();
+	var $lang_file;
 
 	function __construct($template) {
 		$this->template = $template;
@@ -22,6 +22,9 @@ class webpageTemplate {
 	function create() {
 		foreach ($this->parameters as $key => $value) {
 			$template_name = '{' . $key . '}';
+			
+			
+			
 			$this->html = str_replace($template_name, $value, $this->html);
 		}
 		echo header("Content-type: text/html;");

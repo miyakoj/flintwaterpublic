@@ -2,18 +2,46 @@ $(document).ready(function() {
 	var windowWidth = window.innerWidth;
 	var windowHeight = window.innerHeight;
 	
-	/* Set/get the user's language from localStorage. */
-	if (typeof(Storage) !== "undefined") {
-		if (localStorage.getItem("lang") !== null) {
-			
+	var save_location_msg = "Save This Location";
+	var saved_location_msg = "Saved Location";
+	
+	/* Set/get the user's language from localStorage and set dynamic language vars. */
+	$("#language_menu .dropdown-menu a").on("click", function(){
+		var $lang_choice = $("#language_menu .dropdown-menu a").attr("id");
+		
+		$.ajax({
+			method: "GET",
+			url: "languages.php",
+			complete: function(resp) {
+				if (resp.responseText == "error") {
+					$(".alert-warning").append("<strong>Error:</strong> The language file didn't load successfully.")
+					$(".alert-warning").css("display", "block");
+				}
+				else
+					console.log(resp.responseText);
+			}
+		});
+		
+		/*if (typeof(Storage) !== "undefined") {
+			if (localStorage.getItem("lang") !== null) {
+				if ($lang_choice.indexOf("es") != -1) {
+					localStorage.lang = "es";
+					//save_location_msg = "[insert Spanish text]";
+					//saved_location_msg = "[insert Spanish text]";
+				}
+				else if ($lang_choice.indexOf("ar") != -1) {
+					localStorage.lang = "ar";
+					//save_location_msg = "[insert Arabic text]";
+					//saved_location_msg = "[insert Arabic text]";
+				}
+				else if ($lang_choice.indexOf("en") != -1)
+					localStorage.lang = "en";
+			}
 		}
 		else {
-			localStorage.lang = "en";
-		}
-	}
-	else {
-		console.log("There is no local storage support.");
-	}
+			console.log("There is no local storage support.");
+		}*/
+	});
 	
 	/* Position alert in the middle of the page. */
 	$(".alert").css({
@@ -70,10 +98,10 @@ $(document).ready(function() {
 				page = id.slice(0, id.indexOf("_"));
 				$(this).attr("href", "page.php?pid=" + page);
 			}
-			else if (id.indexOf("lang") != -1) {
+			/*else if (id.indexOf("lang") != -1) {
 				page = id.slice(id.indexOf("_") + 1, id.length);
 				$(this).attr("href", page);
-			}
+			}*/
 		}
 	});
 	

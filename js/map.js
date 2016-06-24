@@ -344,9 +344,6 @@ function initMap() {
 			updateSaveButtons();
 		//}	
     });
-	
-	var save_location_msg = "Save This Location";
-	var saved_location_msg = "Saved Location";
 
 	
 	/* Disable the save button if there are already three saved locations. */
