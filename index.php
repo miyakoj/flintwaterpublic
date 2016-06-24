@@ -28,8 +28,6 @@ $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle=
 		    <input type='checkbox' autocomplete='off' /><img src='images/constructionicon.png' class='resource_buttons_image' alt='Construction Sites' /> <span>Construction</span>
 		  </label>
 		</nav>";
-		
-
 
 $content = "<div id='map_container'>
 		<div id='location_card' class='card'>

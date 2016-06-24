@@ -2,6 +2,19 @@ $(document).ready(function() {
 	var windowWidth = window.innerWidth;
 	var windowHeight = window.innerHeight;
 	
+	/* Set/get the user's language from localStorage. */
+	if (typeof(Storage) !== "undefined") {
+		if (localStorage.getItem("lang") !== null) {
+			
+		}
+		else {
+			localStorage.lang = "en";
+		}
+	}
+	else {
+		console.log("There is no local storage support.");
+	}
+	
 	/* Position alert in the middle of the page. */
 	$(".alert").css({
 		"top": function() {
