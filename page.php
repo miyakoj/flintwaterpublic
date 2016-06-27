@@ -137,9 +137,9 @@ if (@isset($_GET["pid"])) {
 							<li>Next screw the adapter on.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
 						</div>
 					</div>
+					<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
 				</div>
 				 <div id='PUR-Step3'>	
 					<div class='card'>
@@ -153,9 +153,9 @@ if (@isset($_GET["pid"])) {
 							<li>Push the filter unit onto the adapter until you hear a click.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
 						</div>
 					</div>
+					<button  type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>Return to Map</button>
 				</div>
 			<div id='Brita-Step2'>	
 					<div class='card'>
@@ -169,9 +169,9 @@ if (@isset($_GET["pid"])) {
 							<li>Screw in the adapter.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
 						</div>
 					</div>
+					<button  type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
 				</div>
 					<div id='Brita-Step3'>	
 					<div class='card'>
@@ -184,9 +184,9 @@ if (@isset($_GET["pid"])) {
 							<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
 						</div>
 					</div>
+					<button  type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><Return to Map</button>
 				</div>
 					<div id='ZeroWater-Step2'>	
 					<div class='card'>
@@ -198,9 +198,10 @@ if (@isset($_GET["pid"])) {
 							<li>Screw the filter into the bottom of the reservoir.</li>
 						  </ul>
 						</div>
-						<div class='card-action'><a href='index.php' class='btn btn-flat'>/Return to Map</a></div>
+						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
 						</div>
 					</div>
+					<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>RETURN TO MAP</button>
 				</div>";
 		break;
 		
@@ -208,7 +209,7 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='step1'>
 							<div class='card'>
-			                    <img src='../images/aerator.jpg' alt='aerator' width='200' height='200'>
+			                    <img src='/images/aerator.jpg' alt='aerator' width='200' height='200'>
 			                    <div class='card-main'><h3>Step 1: Protect the aerator</h3>
 			                        <div class='card-inner'>
 			                        <ul>
