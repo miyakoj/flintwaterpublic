@@ -13,12 +13,13 @@ function findEntries(result) {
 	   for (var i = 0; i < result.entries.length; i++) {
 		   var entry = result.entries[i];
 		   
-		   html += '<div class="panel panel-default">';
-		   html += '<div class="panel-heading"><a href="' + entry.link +'">' + entry.title + '</a></div>';
-		   html += '<div class="panel-body">' + entry.contentSnippet + '</div>';
+		   html += '<div class="card">';
+		   html += '<div class="card-main"><div class="card-inner">';
+		   html += '<a href="' + entry.link +'">' + entry.title + '</a> <p>' + entry.contentSnippet + '</p> </div> </div>';
 		   html += '</div>';
 	   }
 	   
 	   $("#news").html(html);
    }
 }
+
