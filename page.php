@@ -141,18 +141,18 @@ if (@isset($_GET["pid"])) {
 					</div>
 					<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
 				</div>
-				 <div id='PUR-Step3'>	
+				<div id='PUR-Step3'>	
 					<div class='card'>
 						<div class='card-main'><h3>Step 3: Install your filter</h3>
-						<div class='card-inner'>
-						  <ul>
-						    <li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
-							<li>Take the blue filter out of the wrapper.</li>
-							<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
-							<li>Screw the cap back on.</li>
-							<li>Push the filter unit onto the adapter until you hear a click.</li>
-						  </ul>
-						</div>
+							<div class='card-inner'>
+							  <ul>
+							    <li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
+								<li>Take the blue filter out of the wrapper.</li>
+								<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
+								<li>Screw the cap back on.</li>
+								<li>Push the filter unit onto the adapter until you hear a click.</li>
+							  </ul>
+							</div>
 						</div>
 					</div>
 					<button  type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>Return to Map</button>
@@ -186,7 +186,7 @@ if (@isset($_GET["pid"])) {
 						</div>
 						</div>
 					</div>
-					<button  type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><Return to Map</button>
+					<button  type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>Return to Map</button>
 				</div>
 					<div id='ZeroWater-Step2'>	
 					<div class='card'>
