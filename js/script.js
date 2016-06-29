@@ -196,7 +196,13 @@ $(document).ready(function() {
 	});
 
 	/* Report a Problem page */
-	
+	$("#report_page #report_info button").on("click", function() {
+		var location = $("#report_page #report_info #locationTextField").val();
+		var problemType = $("#report_page #report_info #ProblemSelector").val();
+		var description = $("#report_page #report_info textarea").val();
+
+		//TODO save these values to the db
+	});
 	
 	
 	/* Steppers for help pages */
