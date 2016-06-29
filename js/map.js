@@ -12,6 +12,7 @@ var windowHeight = window.innerHeight;
 var map;
 var infoWindow;
 var heatmap;
+var leadLayer; //fusion table layer to set up lead levels
 
 var $location_buttons;
 
@@ -78,8 +79,9 @@ function initMap() {
 	infoWindow = new google.maps.InfoWindow();
 
 	callStorageAPI("providers.json");
-	callStorageAPI("leadlevels.json");
+	//callStorageAPI("leadlevels.json");
 	//callStorageAPI("construction.json");
+	setUpFusionTable();
 
 	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
@@ -460,6 +462,42 @@ function initMap() {
 			$(".more-info").remove();
 		}
 	});
+
+
+	setUpInitialMap();
+}
+
+function setUpFusionTable() {
+	leadLayer = new google.maps.FusionTablesLayer({
+	    query: {
+	      select: '\'latitude\'',
+	      from: '1t8g2GZ0e3aIGYCjgcDpNtIJHICH_BPdCvkEXbKxf'
+	    }, 
+	    styles: [{
+			where: '\'Lead Level\' >= 15  AND \'Lead Level\' < 50',
+			markerOptions: {
+				iconName: "small_yellow"
+			}
+		}, {
+			where: '\'Lead Level\' >= 50 ',
+			markerOptions: {
+				iconName: "small_red"
+			}
+		}, {
+			where: '\'Lead Level\' >= 0 AND \'Lead Level\' < 15',
+			markerOptions: {
+				iconName: "small_green"
+		}
+		}]
+	  });
+
+	google.maps.event.addListener(leadLayer, 'click', function(e) {
+		e.infoWindowHtml = "<b>Address: </b>" + e.row['Address'].value + "<br>";
+		e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['Lead Level'].value + "<br>";
+		e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['Date Tested'].value;
+
+	});	
+
 }
 
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
@@ -516,7 +554,6 @@ function callStorageAPI(object) {
 				});
 				console.log("heatmap is initiated");
 				//heatmap.setMap(map);
-				setUpInitialMap();
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
@@ -606,6 +643,7 @@ function setUpInitialMap(){
     	else {
       		console.log("We suck");
     	}
+
     	setMarkers();
 
 		if(resourceActiveArray[0] == 1) {
@@ -655,7 +693,7 @@ $(document).ready(function() {
 	
 	$("#heatmap_btn").on('click', function() {	
     	console.log(resourceActiveArray);
-		if (resourceActiveArray[0] == 1) {
+		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			resourceActiveArray[0] = 0;
 		}
 		else {
@@ -765,7 +803,7 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
+	/*if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
 			console.log("heatmap is trying to be set");
 			heatmap.setMap(map);
 	}
@@ -779,6 +817,20 @@ function setMarkers() {
 	else {
 		console.log("heatmap error has occured");
 		heatmap.setMap(null);
+	}*/
+
+	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
+			leadLayer.setMap(map);
+	}
+	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
+		leadLayer.setMap(null);
+	}
+	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
+		console.log("heatmap is set and will stay set");
+	}
+	else {
+		console.log("heatmap error has occured");
+		leadLayer.setMap(null);
 	}
 	
 	for (var i = 0; i < allMarkers.length; i++){
