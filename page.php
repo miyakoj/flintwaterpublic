@@ -267,7 +267,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content = "<div class='stpper-vert'>
+			$content = "<div id='report_info'>
+							<div class='stpper-vert'>
                             <div class='stpper-vert-inner'>
                                 <div id='stepper1' class='stepper'>
                                     <div class='stepper-step'>
@@ -300,9 +301,9 @@ if (@isset($_GET["pid"])) {
                                     <div id='step2_stuff' class='form-group form-group-label'>
                                     <label for='ProblemSelector'> Select The Problem: </label>
                                     <select class='form-control' id='ProblemSelector' style='width:100%;'>
-                                        <option value='...'> Discolored Water </option>
-                                        <option value='...'> Water Main Break </option>
-                                        <option value='...'> Other Infrastructure Issue </option>
+                                        <option value='waterColor'> Discolored Water </option>
+                                        <option value='waterBreak'> Water Main Break </option>
+                                        <option value='other'> Other Infrastructure Issue </option>
                                         ...
                                     </select>
                                     </div>
@@ -324,7 +325,19 @@ if (@isset($_GET["pid"])) {
                             </div>
                         </div>
                         
-                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button></div>";
+                        <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>SUBMIT</button></div>
+                        </div>
+
+                        <div id='report_success'>
+                        	<div class='card'>
+                        		<div class='card-main'>
+                        			<div class='card-inner'>
+                        				<h5> Thank you for submitting a problem! </h5>
+                        				<p> We're going to notify the city who will promptly assess the situation</p>
+                        			</div>
+                        		</div>
+                        	</div>
+                        </div>";
 		break;
 		
 		case "submit":

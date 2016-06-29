@@ -372,12 +372,18 @@ function initMap() {
 		
 		marker_img = "images/savedlocation.png"; // saved location icon by default
 		
-		if (localStorage.saved_location1 === searched_location_sub)
+		if (localStorage.saved_location1 === searched_location_sub) {
 			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location2 === searched_location_sub)
+			//$("#saved_location_button img").src("images/locationicon.png");
+		}
+		else if (localStorage.saved_location2 === searched_location_sub) {
 			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location3 === searched_location_sub)
+			//$("#saved_location_button img").src("images/locationicon.png");
+		}
+		else if (localStorage.saved_location3 === searched_location_sub) {
 			$("#saved_location_button span").text(saved_location_msg);
+			//$("#saved_location_button img").src("images/locationicon.png");
+		}
 		else {
 			$("#saved_location_button span").text(save_location_msg);
 			marker_img = "images/locationicon.png";
@@ -407,7 +413,7 @@ function initMap() {
 					
 					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
 					marker_img = "images/savedlocation.png";					
-					card_location_img = "images/locationicon.png";
+					card_marker_img = "images/locationicon.png";
 					$("#location_card #saved_location_button span").text(saved_location_msg);
 				}
 				else { // remove location
@@ -425,8 +431,8 @@ function initMap() {
 					else if (localStorage.saved_location3 == searched_location) {
 						localStorage.removeItem("saved_location3");
 					}
-					card_img = "images/savedlocation.png";
-					card_marker_img = "images/locationicon.png";
+					marker_img = "images/locationicon.png";
+					card_marker_img = "images/savedlocation.png";
 				}
 				
 				location_marker[0].setIcon(marker_img);
@@ -443,14 +449,14 @@ function initMap() {
 
 
 	$("#more_info_button").on("click", function(){		
-		if($(this).text() === "More Info"){
+		if($("#more_info_button span").text() === "More Info"){
 			console.log("currently more info");
-			$(this).text("Less Info");
+			$("#more_info_button span").text("Less Info");
 			$("#location_card .card-inner").append("<p class=\"more-info\">More Info</p>");
 		}
 		else{
 			console.log("currently less info");
-			$(this).text("More Info");
+			$("#more_info_button span").text("More Info");
 			$(".more-info").remove();
 		}
 	});
