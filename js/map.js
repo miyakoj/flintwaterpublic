@@ -471,7 +471,7 @@ function setUpFusionTable() {
 	leadLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      select: '\'latitude\'',
-	      from: '1t8g2GZ0e3aIGYCjgcDpNtIJHICH_BPdCvkEXbKxf'
+	      from: '1dO36ANyD5kyN3gSZ0jzv5cEYkmH4WXR861ufmLMg'
 	    }, 
 	    styles: [{
 			where: '\'Lead Level\' >= 15  AND \'Lead Level\' < 50',
