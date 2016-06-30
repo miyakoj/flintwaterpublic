@@ -12,6 +12,7 @@ var windowHeight = window.innerHeight;
 var map;
 var infoWindow;
 var heatmap;
+var leadLayer; //fusion table layer to set up lead levels
 
 var $location_buttons;
 
@@ -78,8 +79,14 @@ function initMap() {
 	infoWindow = new google.maps.InfoWindow();
 
 	callStorageAPI("providers.json");
+<<<<<<< HEAD
 	callStorageAPI("leadlevels.json");
 	//callStorageAPI("pipedata.json");
+=======
+	//callStorageAPI("leadlevels.json");
+	//callStorageAPI("construction.json");
+	setUpFusionTable();
+>>>>>>> origin/master
 
 	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
@@ -182,14 +189,21 @@ function initMap() {
 		strokeWeight: 2
 	});
 	
+	// This is the beacher street data from the excel sheet we got from the city.
 	var pipePlanCoordinates2 = [
-		{lat:43.043100, lng: -83.693805},
-		{lat:43.043100, lng: -83.673805}
+		{lat:43.00505669900, lng: -83.68132877400},
+		{lat:43.00567185700, lng:-83.68197748300},
+		{lat:43.00574795800, lng:-83.68206881300},
+		{lat:43.00599339100, lng:-83.68234911500},
+		{lat:43.00633257700, lng:-83.68319926500},
+		{lat:43.00706348400, lng:-83.68399010100},
+		{lat:43.00764546400, lng: -83.68462966200},
+		{lat:43.00786078100, lng:-83.68486767300}	
 	];
 	
 	pipePolyLine2 = new google.maps.Polyline({
 		path: pipePlanCoordinates2,
-		strokeColor: '#FF0000',
+		strokeColor: '#511883',
 		strokeOpacity: .9,
 		strokeWeight: 2
 	});
@@ -396,12 +410,26 @@ function initMap() {
 		
 		marker_img = "images/savedlocation.png"; // saved location icon by default
 		
+<<<<<<< HEAD
 		if (localStorage.saved_location1 === searched_location)
 			$("#saved_location_button span").text(saved_location_msg);
 		else if (localStorage.saved_location2 === searched_location)
 			$("#saved_location_button span").text(saved_location_msg);
 		else if (localStorage.saved_location3 === searched_location)
+=======
+		if (localStorage.saved_location1 === searched_location_sub) {
 			$("#saved_location_button span").text(saved_location_msg);
+			//$("#saved_location_button img").src("images/locationicon.png");
+		}
+		else if (localStorage.saved_location2 === searched_location_sub) {
+			$("#saved_location_button span").text(saved_location_msg);
+			//$("#saved_location_button img").src("images/locationicon.png");
+		}
+		else if (localStorage.saved_location3 === searched_location_sub) {
+>>>>>>> origin/master
+			$("#saved_location_button span").text(saved_location_msg);
+			//$("#saved_location_button img").src("images/locationicon.png");
+		}
 		else {
 			$("#saved_location_button span").text(save_location_msg);
 			marker_img = "images/locationicon.png";
@@ -451,8 +479,8 @@ function initMap() {
 					else if (localStorage.saved_location3 == searched_location) {
 						localStorage.removeItem("saved_location3");
 					}
-					card_img = "images/savedlocation.png";
-					card_marker_img = "images/locationicon.png";
+					marker_img = "images/locationicon.png";
+					card_marker_img = "images/savedlocation.png";
 				}
 				
 				location_marker[0].setIcon(marker_img);
@@ -468,17 +496,53 @@ function initMap() {
 
 
 	$("#more_info_button").on("click", function(){		
-		if($(this).text() === "More Info"){
+		if($("#more_info_button span").text() === "More Info"){
 			console.log("currently more info");
-			$(this).text("Less Info");
+			$("#more_info_button span").text("Less Info");
 			$("#location_card .card-inner").append("<p class=\"more-info\">More Info</p>");
 		}
 		else{
 			console.log("currently less info");
-			$(this).text("More Info");
+			$("#more_info_button span").text("More Info");
 			$(".more-info").remove();
 		}
 	});
+
+
+	setUpInitialMap();
+}
+
+function setUpFusionTable() {
+	leadLayer = new google.maps.FusionTablesLayer({
+	    query: {
+	      select: '\'latitude\'',
+	      from: '1dO36ANyD5kyN3gSZ0jzv5cEYkmH4WXR861ufmLMg'
+	    }, 
+	    styles: [{
+			where: '\'Lead Level\' >= 15  AND \'Lead Level\' < 50',
+			markerOptions: {
+				iconName: "small_yellow"
+			}
+		}, {
+			where: '\'Lead Level\' >= 50 ',
+			markerOptions: {
+				iconName: "small_red"
+			}
+		}, {
+			where: '\'Lead Level\' >= 0 AND \'Lead Level\' < 15',
+			markerOptions: {
+				iconName: "small_green"
+		}
+		}]
+	  });
+
+	google.maps.event.addListener(leadLayer, 'click', function(e) {
+		e.infoWindowHtml = "<b>Address: </b>" + e.row['Address'].value + "<br>";
+		e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['Lead Level'].value + "<br>";
+		e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['Date Tested'].value;
+
+	});	
+
 }
 
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
@@ -535,7 +599,6 @@ function callStorageAPI(object) {
 				});
 				console.log("heatmap is initiated");
 				//heatmap.setMap(map);
-				setUpInitialMap();
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
@@ -625,6 +688,7 @@ function setUpInitialMap(){
     	else {
       		console.log("We suck");
     	}
+
     	setMarkers();
 
 		if(resourceActiveArray[0] == 1) {
@@ -674,7 +738,7 @@ $(document).ready(function() {
 	
 	$("#heatmap_btn").on('click', function() {	
     	console.log(resourceActiveArray);
-		if (resourceActiveArray[0] == 1) {
+		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			resourceActiveArray[0] = 0;
 		}
 		else {
@@ -784,7 +848,7 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
+	/*if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
 			console.log("heatmap is trying to be set");
 			heatmap.setMap(map);
 	}
@@ -798,6 +862,20 @@ function setMarkers() {
 	else {
 		console.log("heatmap error has occured");
 		heatmap.setMap(null);
+	}*/
+
+	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
+			leadLayer.setMap(map);
+	}
+	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
+		leadLayer.setMap(null);
+	}
+	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
+		console.log("heatmap is set and will stay set");
+	}
+	else {
+		console.log("heatmap error has occured");
+		leadLayer.setMap(null);
 	}
 	
 	for (var i = 0; i < allMarkers.length; i++){

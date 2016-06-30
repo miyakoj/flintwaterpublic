@@ -143,13 +143,20 @@ $(document).ready(function() {
 	
 	/* Install a WaterFilter page */
 	$("#filter_page #step1 #PUR_btn").on("click", function() {
+		console.log("filter selected");
 		$("#filter_page #step1").css("display", "none");
 		$("#filter_page #PUR-Step2").css("display","block");
 	});
 
-	$("#filter_page #PUR-Step2 .btn").on("click", function() {
+	$("#filter_page #PUR-Step2 button").on("click", function() {
+		console.log("pur step2 btn clicked");
 		$("#filter_page #PUR-Step2").css("display", "none");
 		$("#filter_page #PUR-Step3").css("display", "block");
+	});
+
+	$("#filter_page #PUR-Step3 button").on("click", function() {
+		console.log("back to map");
+		$(window).attr("location", "index.php");
 	});
 
 	$("#filter_page #step1 #Brita_btn").on("click", function() {
@@ -157,15 +164,25 @@ $(document).ready(function() {
 		$("#filter_page #Brita-Step2").css("display", "block");
 	});
 
-	$("#filter_page #Brita-Step2 .btn").on("click", function() {
+	$("#filter_page #Brita-Step2 button").on("click", function() {
 		$("#filter_page #Brita-Step2").css("display", "none");
 		$("#filter_page #Brita-Step3").css("display", "block");
+	});
+
+	$("#filter_page #Brita-Step3 button").on("click", function() {
+		$(window).attr("location", "index.php");
 	});
 
 	$("#filter_page #step1 #ZeroWater_btn").on("click", function() {
 		$("#filter_page #step1").css("display", "none");
 		$("#filter_page #ZeroWater-Step2").css("display", "block");
 	});
+
+	$("#filter_page #ZeroWater-Step2 button").on("click", function() {
+		$(window).attr("location", "index.php");
+	});
+
+
 
 	/* Clean My Aerator page */
 	$("#aerator_page #step1 .btn").on("click", function(){
@@ -188,7 +205,13 @@ $(document).ready(function() {
 	});
 
 	/* Report a Problem page */
-	
+	$("#report_page #report_info button").on("click", function() {
+		var location = $("#report_page #report_info #locationTextField").val();
+		var problemType = $("#report_page #report_info #ProblemSelector").val();
+		var description = $("#report_page #report_info textarea").val();
+
+		//TODO save these values to the db
+	});
 	
 	
 	/* Steppers for help pages */
