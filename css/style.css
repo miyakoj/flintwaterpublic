@@ -3,10 +3,6 @@ html, body {
   	height:100%;
 }
 
-header {
-	/*z-index:900;*/
-}
-
 header, .navbar-default {
 	background-image:none;
 	background-color:#252E56!important;
@@ -23,21 +19,23 @@ header, .navbar-default {
 }
 
 #header_top #logo {
-	margin:0 20%;
+	margin:30px 20% 0 20%;
 	text-align:center;
-}
-
-#header_top #logo img, #header_top #logo h1 {
-	display:inline;
 }
 
 #header_top #logo img {
-	width:75px;
-	height:75px;
+	width:6rem;
+	height:6rem;
+	margin:0 auto;
+	display:inline;
 	text-align:center;
+	vertical-align:middle;
 }
 
 #header_top #logo h1 {
+	margin:0!important;
+	font-size:25px;
+	display:inline;
 	vertical-align:middle;
 }
 
@@ -51,10 +49,18 @@ header, .navbar-default {
 }
 
 #header_top #language_menu .dropdown-menu {
+	width:auto!important;
 	padding-top:0!important;
 }
 
-#main_menu #language_menu, #language_menu #lang_ar {
+#header_top #language_menu .dropdown-menu a {
+	min-height:25px!important;
+	padding-top:0!important;
+	padding-bottom:0!important;
+	line-height:25px!important;
+}
+
+#language_menu #lang_ar {
 	display:none;
 }
 
@@ -145,7 +151,9 @@ header, .navbar-default {
 
 #show_me_menu .dropdown-menu a {
 	width:100%!important;
+	min-height:35px!important;
 	padding:5px 5px 5px 25px!important;
+	line-height:35px!important;
 	font-size:85%;
 	text-transform:uppercase;
 }
@@ -416,6 +424,20 @@ footer span {
 
 /* Desktop/Laptop only. */
 @media only screen and (min-width: 992px) {
+	#header_top #logo {
+		margin-top:0;
+		margin-bottom:25px;
+	}
+	
+	#header_top #logo img {
+		width:8rem;
+		height:8rem;
+	}
+	
+	#header_top #logo h1 {
+		font-size:30px;
+	}
+	
 	main {
 		padding:0 30%!important;
 	}
@@ -424,8 +446,13 @@ footer span {
 		/*width:100%;*/
 	}
 	
-	.dropdown-menu {
+	#show_me_menu .dropdown-menu{
 		position:absolute!important;
+	}
+	
+	#show_me_menu .dropdown-menu a {
+		padding:5px!important;
+		font-size:100%;
 	}
 	
 	#index_page main {
@@ -433,7 +460,7 @@ footer span {
 	}
 	
 	#toggles span {
-		display: inline;
+		display:inline;
 	}
 	
     #provider_popup img {
