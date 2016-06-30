@@ -16,7 +16,7 @@ $toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle=
 		    <input type='checkbox' autocomplete='off' /><img src='images/waterpickupicon.png' class='resource_buttons_image' alt='Water Pickup Sites' /> <span>Water Pickup</span>
 		  </label>
 		  <label class='btn btn-primary resource_buttons' id='water_filters_btn'>
-		    <input type='checkbox' autocomplete='off' /><img src='images/waterfiltericon.png' class='resource_buttons_image' alt='Water Filters Sites' /> <span>Water Filter Pickup</span>
+		    <input type='checkbox' autocomplete='off' /><img src='images/waterfiltericon.png' class='resource_buttons_image' alt='Water Filters Sites' /> <span>Water Filters</span>
 		  </label>
 		  <label class='btn btn-primary resource_buttons' id='blood_testing_btn'>
 		    <input type='checkbox' autocomplete='off' /><img src='images/bloodtesticon.png' class='resource_buttons_image' alt='Blood Testing Sites' > <span>Blood Testing</span>

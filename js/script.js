@@ -23,7 +23,7 @@ $(document).ready(function() {
 		//$("#main_menu ul").removeClass("nav-justified");
 	}
 	else {
-		$("#main_menu ul").addClass("nav-justified");
+		$("#main_menu .nav").addClass("nav-justified");
 	}
 	
 	/* Make the line-height of the navbar header h1 match the height of the navbar. */
@@ -82,8 +82,13 @@ $(document).ready(function() {
 	
 	if ($page_id.indexOf("index") != -1)
 		$("#map_link").parent().addClass("active");
-	else
+	else {
 		$("#" + $page_id + "_link").parent().addClass("active");
+		
+		// if the linked clicked is in the "show me" dropdown then also make the "show me" tab active
+		if ($("#" + $page_id + "_link").parent().parent().attr("class") == "dropdown-menu")
+			$("#show_me_menu").addClass("active");
+	}
 	
 	/* Change the navbar-brand to the page title. */
 	if ($page_id.indexOf("index") == -1)
