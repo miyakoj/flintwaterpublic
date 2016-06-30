@@ -24,7 +24,7 @@ var marker_img;
 
 //for construction
 var constructionMarker;
-var constructionToggle = 0;
+var pipeToggle = 0;
 
 //for water plant
 var waterplantMarker;
@@ -690,7 +690,7 @@ function setUpInitialMap(){
 		if(resourceActiveArray[5] == 1) {
 			$("#blood_testing_btn").addClass("active");
 		}
-		if(constructionToggle == 1) {
+		if(pipeToggle == 1) {
 			$("#construction_btn").addClass("active");
 		}
 }
@@ -788,12 +788,12 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("#construction_btn").on('click', function(){
-		if (constructionToggle == 1) {
-			constructionToggle = 0;
+	$("#pipe_btn").on('click', function(){
+		if (pipeToggle == 1) {
+			pipeToggle = 0;
 		}
 		else {
-			constructionToggle = 1;
+			pipeToggle = 1;
 		}
 		setMarkers();
 	});
@@ -882,7 +882,7 @@ function setMarkers() {
 			allMarkers[i].setMap(map);
 		}	
 	}
-	if(constructionToggle==1){
+	if(pipeToggle==1){
 			constructionMarker.setMap(map);
 			for(var i = 0; i < arrayOfLines.length; i++)
 			{
