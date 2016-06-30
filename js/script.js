@@ -17,6 +17,15 @@ $(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
+	/* Alter the navbar tabs and menu toggle depending on whether it's mobile or not. */
+	if (windowWidth < 992) {
+		$("#header_top").addClass("clearfix");
+		//$("#main_menu ul").removeClass("nav-justified");
+	}
+	else {
+		$("#main_menu ul").addClass("nav-justified");
+	}
+	
 	/* Make the line-height of the navbar header h1 match the height of the navbar. */
 	//$(".navbar-brand").css("line-height", $("#main_menu ul").css("line-height"));
 	

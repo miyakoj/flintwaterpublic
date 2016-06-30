@@ -79,7 +79,7 @@ function initMap() {
 
 	callStorageAPI("providers.json");
 	callStorageAPI("leadlevels.json");
-	//callStorageAPI("construction.json");
+	//callStorageAPI("pipedata.json");
 
 	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
@@ -148,7 +148,7 @@ function initMap() {
 	});
 	
 	var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
-	bindInfoWindow(constructionMarker,map, infoWindow,constructionContent);
+	bindInfoWindow(constructionMarker, map, infoWindow, constructionContent);
 
 	constructionMarker.setMap(null);
 	
@@ -164,7 +164,7 @@ function initMap() {
 	});
 	
 	var waterplantContent = "<h1>City of Flint Water Plant</h1> <p>4500 N Dort Hwy, Flint, MI 48505</p>";
-	bindInfoWindow(waterplantMarker,map, infoWindow,waterplantContent);
+	bindInfoWindow(waterplantMarker, map, infoWindow, waterplantContent);
 	
 	waterplantMarker.setMap(null);
 	
@@ -193,8 +193,6 @@ function initMap() {
 		strokeOpacity: .9,
 		strokeWeight: 2
 	});
-	
-	
 	
 
 	// Pipeline Visulization
@@ -269,29 +267,55 @@ function initMap() {
 	searchBox.addListener('places_changed', function() {
 		var places = searchBox.getPlaces();
 
-		if (places.length == 0) {
+		if (places.length == 0)
 			return;
-		}
 
 	  // For each place, get the icon, name and location.
 	  var bounds = new google.maps.LatLngBounds();
-	  places.forEach(function(place) {
-		var icon = {
-		  url: place.icon,
-		  size: new google.maps.Size(71, 71),
+	  
+	  var marker_icon = {
+		url: 'images/locationicon.png',
+		size: new google.maps.Size(64, 64),
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(17, 34),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	  };
+	  
+	  updateSaveButtons();
+
+	  // Create a marker for the place.
+	  location_marker.push(new google.maps.Marker({
+		position: place.geometry.location,
+		map: map,
+		title: place.name,
+		icon: marker_icon
+	  }));
+
+	  if (place.geometry.viewport) {
+		// Only geocodes have viewport.
+		bounds.union(place.geometry.viewport);
+	  }
+	  else {
+		bounds.extend(place.geometry.location);
+	  }
+	  
+	  /*places.forEach(function(place) {
+		var marker_icon = {
+		  url: 'images/locationicon.png',
+		  size: new google.maps.Size(64, 64),
 		  origin: new google.maps.Point(0, 0),
 		  anchor: new google.maps.Point(17, 34),
-		  scaledSize: new google.maps.Size(25, 25)
+		  scaledSize: new google.maps.Size(iconSize, iconSize)
 		};
 		
 		updateSaveButtons();
 
 		// Create a marker for the place.
 		location_marker.push(new google.maps.Marker({
+			position: place.geometry.location,
 			map: map,
-			icon: marker_img,
 			title: place.name,
-			position: place.geometry.location
+			icon: marker_icon
 		}));
 
 		if (place.geometry.viewport) {
@@ -301,7 +325,7 @@ function initMap() {
 		else {
 		  bounds.extend(place.geometry.location);
 		}
-	  });
+	  });*/
 	  
 	  map.fitBounds(bounds);
 	  
@@ -326,13 +350,19 @@ function initMap() {
 	});
 	
 	// Check the saved locations if enter is pressed while in the search box
-	$("#search_input").keydown(function( event ) {
+	$("#search_input").on("keydown", function(event) {
 		if (event.which == 13)
 			updateSaveButtons();
 	});
 	
+	// hide the location card if the search box is empty
+	$("#search_input").on("change", function(event) {
+		if ($(this).val() == "")
+			$("#location_card").css("display", "none");
+	});
+	
 	// Trigger search on button click
-    $("#search_button").click(function() {
+    $("#search_button").on("click", function() {
 		//if(activeSearch){
 			var input = document.getElementById('search_input');
 
@@ -347,7 +377,6 @@ function initMap() {
 	
 	var save_location_msg = "Save This Location";
 	var saved_location_msg = "Saved Location";
-
 	
 	/* Disable the save button if there are already three saved locations. */
 	if ((Number(localStorage.saved_locations_count) == 3) && ($("#saved_location_button span").text() == save_location_msg))
@@ -359,24 +388,26 @@ function initMap() {
 		$("#location_buttons").css("display", "block"); // unhide location buttons
 			
 		var searched_location = $("#search_input").val();
-		var searched_location_sub = searched_location.substring(1,searched_location.length);
+		//var searched_location_sub = searched_location.substring(1, searched_location.length);
 
 		console.log(localStorage.saved_location1);
-		console.log(searched_location_sub);
+		//console.log(searched_location_sub);
 		console.log(searched_location);
 		
 		marker_img = "images/savedlocation.png"; // saved location icon by default
 		
-		if (localStorage.saved_location1 === searched_location_sub)
+		if (localStorage.saved_location1 === searched_location)
 			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location2 === searched_location_sub)
+		else if (localStorage.saved_location2 === searched_location)
 			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location3 === searched_location_sub)
+		else if (localStorage.saved_location3 === searched_location)
 			$("#saved_location_button span").text(saved_location_msg);
 		else {
 			$("#saved_location_button span").text(save_location_msg);
 			marker_img = "images/locationicon.png";
 		}
+		
+		 // change the location card icon dynamically
 		
 		console.log(localStorage);
 	}
@@ -402,7 +433,7 @@ function initMap() {
 					
 					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
 					marker_img = "images/savedlocation.png";					
-					card_location_img = "images/locationicon.png";
+					card_marker_img = "images/locationicon.png";
 					$("#location_card #saved_location_button span").text(saved_location_msg);
 				}
 				else { // remove location
@@ -425,7 +456,6 @@ function initMap() {
 				}
 				
 				location_marker[0].setIcon(marker_img);
-				$("#location_card #saved_location_button img").attr("src",card_marker_img);
 				console.log(localStorage);
 			}
 			else {

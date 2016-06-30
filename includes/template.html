@@ -43,17 +43,117 @@
   <div class="row">
   	<div id="header" class="col-md-12">
 		<header>
-			<nav id="slide-nav" class="navbar navbar-default">
+			<nav id="slide-nav" class="navbar navbar-default clearfix">
 			  <div class="container-fluid">
 			   <div class="navbar-header">
 				<a class="navbar-toggle"> 
 				  <span class="sr-only">Toggle navigation</span>
 				  <span class="material-icons icon-lg">menu</span>
-				 </a>
-				<h1 class="navbar-brand">Flint Water Info Site</h1>
+				</a>
+				
+				<div id="header_top">
+				<div id="made_in_Flint">Made in Flint</div>
+				
+				<div id="language_menu" class="dropdown-wrap">
+					<div class="dropdown dropdown-inline">
+						<a class="dropdown-toggle-btn" data-toggle="dropdown">Languages <span class="caret"></span></a>
+						<ul class="dropdown-menu nav">
+							<li><a id="lang_en" href="#">EN</a></li>
+							<li><a id="lang_es" href="#">ES</a></li>
+							<li><a id="lang_ar" href="#">العربية</a></li>
+						</ul>
+					</div>
+				</div>
+				
+				<div id="logo" class="center-block"><img src="images/logo.png" alt="H2O Flint logo" /> <h1>H2O Flint</h1></div>
+				</div>
 			   </div>
 			   
-			   <div id="main_menu">
+			   <div id="main_menu" class="tab-nav">
+				  <ul class="nav navbar-nav">
+					<li data-toggle="tab"><a id="map_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">map</span> <span>Map</span></a></li>
+					<li data-toggle="tab"><a id="news_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">markunread_mailbox</span> <span>News and Alerts</span></a></li>
+					
+					<li id="show_me_menu" class="dropdown" data-toggle="tab">
+					  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how... <span class="caret"></span></a>
+					  <ul class="dropdown-menu">
+						<li><a id="test_link" href="#"><span class="material-icons md-18" aria-hidden="true">local_drink</span> <span>Test My Water</span></a></li>
+						<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Water Filter</span></a></li>
+						<li><a id="aerator_link" href="#"><span class="material-icons md-18" aria-hidden="true">bubble_chart</span> <span>Clean My Aerator</span></a></li>
+						<li><a id="report_link" href="#"><span class="material-icons md-18" aria-hidden="true">report_problem</span> <span>Report a Problem</span></a></li>
+						<li><a id="submit_link" href="#"><span class="material-icons md-18" aria-hidden="true">rate_review</span> <span>Submit Location Information</span></a></li>
+					  </ul>
+					</li>
+				  </ul>					  
+			   </div>
+			  </div>
+			</nav>
+			
+			<!--
+			<div id="header_top">
+			<div id="made_in_Flint">Made in Flint</div>
+			
+			<div id="language_menu" class="dropdown-wrap">
+				<div class="dropdown dropdown-inline">
+					<a class="dropdown-toggle-btn" data-toggle="dropdown">Languages <span class="caret"></span></a>
+					<ul class="dropdown-menu nav">
+						<li><a id="lang_en" href="#">EN</a></li>
+						<li><a id="lang_es" href="#">ES</a></li>
+						<li><a id="lang_ar" href="#">العربية</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div id="logo" class="center-block"><img src="images/logo.png" alt="H2O Flint logo" /> <h1>H2O Flint</h1></div>
+			</div>
+			
+			<nav id="main_menu" class="tab-nav clearfix">
+				<ul class="nav nav-list nav-justified" role="tablist">
+				<li class="active" role="presentation"><a id="map_link" data-toggle="tab" href="#"><span class="material-icons icon-lg" aria-hidden="true">map</span> <span>Map</span></a></li>
+				<li role="presentation"><a id="news_link" data-toggle="tab" href="#"><span class="material-icons icon-lg" aria-hidden="true">markunread_mailbox</span> <span>News &amp; Alerts</span></a></li>
+				<li id="show_me_menu" class="dropdown" data-toggle="tab" role="presentation">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+				  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how to... <span class="caret"></span></a>
+				  <ul class="dropdown-menu nav">
+					<li><a id="test_link" href="#"><span class="material-icons md-18" aria-hidden="true">local_drink</span> <span>Test My Water</span></a></li>
+					<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Water Filter</span></a></li>
+					<li><a id="aerator_link" href="#"><span class="material-icons md-18" aria-hidden="true">bubble_chart</span> <span>Clean My Aerator</span></a></li>
+					<li><a id="report_link" href="#"><span class="material-icons md-18" aria-hidden="true">report_problem</span> <span>Report a Problem</span></a></li>
+					<li><a id="submit_link" href="#"><span class="material-icons md-18" aria-hidden="true">rate_review</span> <span>Submit Location Information</span></a></li>
+				  </ul>
+				</li>
+				</ul>
+			</nav>-->
+			   
+			<!--<nav id="slide-nav" class="navbar navbar-default">
+			  <div class="container-fluid">
+			   <div class="navbar-header">
+				<a class="navbar-toggle"> 
+				  <span class="sr-only">Toggle navigation</span>
+				  <span class="material-icons icon-lg">menu</span>
+				</a>
+				<h1 class="navbar-brand">Flint Water Info Site</h1>
+				
+				<div id="header_top">
+				<div id="made_in_Flint">Made in Flint</div>
+				
+				<div id="language_menu" class="dropdown-wrap">
+					<div class="dropdown dropdown-inline">
+						<a class="dropdown-toggle-btn" data-toggle="dropdown">Languages <span class="caret"></span></a>
+						<ul class="dropdown-menu nav">
+							<li><a id="lang_en" href="#">EN</a></li>
+							<li><a id="lang_es" href="#">ES</a></li>
+							<li><a id="lang_ar" href="#">العربية</a></li>
+						</ul>
+					</div>
+				</div>
+				
+				<div id="logo" class="center-block"><img src="images/logo.png" alt="H2O Flint logo" /> <h1>H2O Flint</h1></div>
+				</div>
+			   </div>
+			   
+			   <div id="main_menu" class="clearfix">
 				  <ul class="nav navbar-nav">
 					<li><a id="map_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">map</span> <span>Map</span></a></li>
 					<li><a id="news_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">markunread_mailbox</span> <span>News and Alerts</span></a></li>
@@ -85,10 +185,10 @@
 					  
 			   </div>
 			  </div>
-			  </nav>
+			  </nav>-->
 		</header>
 
-		{TOGGLES}		
+		{TOGGLES}
     </div>
 	
 	<main class="col-md-12">
