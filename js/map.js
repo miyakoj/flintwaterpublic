@@ -25,14 +25,14 @@ var marker_img;
 //for construction
 var constructionMarker;
 var constructionToggle = 0;
-var pipePolyLine;
-var pipePolyLine2;
 
 //for water plant
 var waterplantMarker;
 
 // for pipe visualization
-var testPolyLine;
+var arrayOfLines = new Array();
+var masterPipeArray = new Array();
+var autoPolyLine;
 
 //icons
 var bloodIcon;
@@ -80,7 +80,7 @@ function initMap() {
 
 	//callStorageAPI("leadlevels.json");
 	callStorageAPI("providers.json");
-	//callStorageAPI("pipeinfo.json");
+	callStorageAPI("pipedata.json");
 	setUpFusionTable();
 
 	allMarkers.forEach(function(marker) {
@@ -169,59 +169,6 @@ function initMap() {
 	bindInfoWindow(waterplantMarker, map, infoWindow, waterplantContent);
 	
 	waterplantMarker.setMap(null);
-	
-
-	var pipePlanCoordinates = [
-		{lat:43.01826, lng:-83.66875},
-		{lat:43.01837, lng:-83.66106},
-		{lat:43.022, lng:-83.66128}
-	];
-
-	pipePolyLine = new google.maps.Polyline({
-		path: pipePlanCoordinates,
-		strokeColor: '#FF0000',
-		strokeOpacity: .9,
-		strokeWeight: 2
-	});
-	
-	// This is the beacher street data from the excel sheet we got from the city.
-	var pipePlanCoordinates2 = [
-		{lat:43.00505669900, lng: -83.68132877400},
-		{lat:43.00567185700, lng:-83.68197748300},
-		{lat:43.00574795800, lng:-83.68206881300},
-		{lat:43.00599339100, lng:-83.68234911500},
-		{lat:43.00633257700, lng:-83.68319926500},
-		{lat:43.00706348400, lng:-83.68399010100},
-		{lat:43.00764546400, lng: -83.68462966200},
-		{lat:43.00786078100, lng:-83.68486767300}	
-	];
-	
-	pipePolyLine2 = new google.maps.Polyline({
-		path: pipePlanCoordinates2,
-		strokeColor: '#511883',
-		strokeOpacity: .9,
-		strokeWeight: 2
-	});
-	
-
-	// Pipeline Visulization
-	// These are simply placeholders, based loosely off the map I was given,
-	// They will be replaced soon witha actual data. --Adam
-	var testLine = [
-		{lat:43.060639, lng:-83.669126},
-		{lat:43.060639, lng:-83.693954},
-		{lat:43.01826, lng:-83.693954},
-		{lat:43.01826, lng:-83.66875},
-		{lat:43.01826, lng:-83.723954}
-	];
-	
-	testPolyLine = new google.maps.Polyline({
-		path: testLine,
-		strokeColor: '#511883',
-		strokeOpacity: .9,
-		strokeWeight: 2
-	});
-
 	
 	// Create the search box and link it to the UI element.
 	var input = document.getElementById('search_input');
@@ -652,9 +599,56 @@ function callStorageAPI(object) {
 					allMarkers[i].setMap(null);
 				}
 			}
-			/* Construction Data */
-			/*else if (object == "construction.json") {
-			}*/
+			
+			// Uploading Pipe Data From JSON in bucket
+			else if(object == "pipedata.json"){
+				js_obj = $.parseJSON(resp.body);
+				var tempArr;
+				for(i=0; i<js_obj.pipedata.length; i++) {
+					var pipe = js_obj.pipedata[i];
+					var tempArray = new Array();
+					var currentName = pipe.streetName;
+					
+					for(j=i; j<js_obj.pipedata.length; j++){
+						var newPipe = js_obj.pipedata[j];
+						if(newPipe.streetName == currentName){
+							// Make the 3rd deminsion Array
+							var lngLat = new Array();
+							lngLat[0] = parseFloat(newPipe.lat);
+							lngLat[1] = parseFloat(newPipe.lng);
+							tempArray.push(lngLat);	//Add it to temp arr
+						}
+						else if(newPipe.streetName == "endOfFile")
+						{
+							masterPipeArray.push(tempArray);
+						}
+						else{
+							masterPipeArray.push(tempArray);	
+							i = j - 1;	
+							j = js_obj.pipedata.length;	
+						}
+					}
+				}
+				var pipeObject = new Object();
+				var pipeLine = new Array();
+				for(var i = 0; i <= masterPipeArray.length; i++)
+				{
+					for(var k = 0; k < masterPipeArray[i].length; k++){
+						pipeObject = {lat: masterPipeArray[i][k][0], lng: masterPipeArray[i][k][1]};
+						pipeLine.push(pipeObject);}
+						
+						autoPolyLine = new google.maps.Polyline({
+						path: pipeLine,
+						strokeColor: '#511883',
+						strokeOpacity: .9,
+						strokeWeight: 2
+						});
+						
+						arrayOfLines.push(autoPolyLine);
+						pipeLine = [];
+				}
+			}
+			
 				
 		}, function(reason) {
 			console.log('Error: ' + reason.result.error.message);
@@ -886,20 +880,25 @@ function setMarkers() {
 		else if(resourceActiveArray[1]==1 && allMarkersString[i].search("water") > -1){
 			allMarkers[i].setIcon(waterpickupIcon);
 			allMarkers[i].setMap(map);
-		}
-		if(constructionToggle==1){
+		}	
+	}
+	if(constructionToggle==1){
 			constructionMarker.setMap(map);
-			pipePolyLine.setMap(map);
-			pipePolyLine2.setMap(map);
+			for(var i = 0; i < arrayOfLines.length; i++)
+			{
+				arrayOfLines[i].setMap(map);
+			}
+			
 			waterplantMarker.setMap(map);
-			testPolyLine.setMap(map);
 		}
 		else{
 			constructionMarker.setMap(null);
-			pipePolyLine.setMap(null);
-			pipePolyLine2.setMap(null);
 			waterplantMarker.setMap(null);
-			testPolyLine.setMap(null);
+			for(var i = 0; i < arrayOfLines.length; i++)
+			{
+				arrayOfLines[i].setMap(null);
+			}
 		}
-	}
+	
+	
 }
