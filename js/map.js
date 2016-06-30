@@ -78,15 +78,10 @@ function initMap() {
 	
 	infoWindow = new google.maps.InfoWindow();
 
-	callStorageAPI("providers.json");
-<<<<<<< HEAD
-	callStorageAPI("leadlevels.json");
-	//callStorageAPI("pipedata.json");
-=======
 	//callStorageAPI("leadlevels.json");
-	//callStorageAPI("construction.json");
+	callStorageAPI("providers.json");
+	//callStorageAPI("pipeinfo.json");
 	setUpFusionTable();
->>>>>>> origin/master
 
 	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
@@ -410,13 +405,6 @@ function initMap() {
 		
 		marker_img = "images/savedlocation.png"; // saved location icon by default
 		
-<<<<<<< HEAD
-		if (localStorage.saved_location1 === searched_location)
-			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location2 === searched_location)
-			$("#saved_location_button span").text(saved_location_msg);
-		else if (localStorage.saved_location3 === searched_location)
-=======
 		if (localStorage.saved_location1 === searched_location_sub) {
 			$("#saved_location_button span").text(saved_location_msg);
 			//$("#saved_location_button img").src("images/locationicon.png");
@@ -426,7 +414,6 @@ function initMap() {
 			//$("#saved_location_button img").src("images/locationicon.png");
 		}
 		else if (localStorage.saved_location3 === searched_location_sub) {
->>>>>>> origin/master
 			$("#saved_location_button span").text(saved_location_msg);
 			//$("#saved_location_button img").src("images/locationicon.png");
 		}
