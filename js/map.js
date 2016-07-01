@@ -13,6 +13,7 @@ var map;
 var infoWindow;
 var heatmap;
 var leadLayer; //fusion table layer to set up lead levels
+var heatmapData;
 
 var $location_buttons;
 
@@ -78,7 +79,7 @@ function initMap() {
 	
 	infoWindow = new google.maps.InfoWindow();
 
-	//callStorageAPI("leadlevels.json");
+	callStorageAPI("leadlevels.json");
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
 	setUpFusionTable();
@@ -222,7 +223,7 @@ function initMap() {
 	// more details for that place.
 	searchBox.addListener('places_changed', function() {
 		var places = searchBox.getPlaces();
-
+		var place = places[0];
 		if (places.length == 0)
 			return;
 
@@ -281,16 +282,35 @@ function initMap() {
 		else {
 		  bounds.extend(place.geometry.location);
 		}
-	  });*/
+	  }); */
+
 	  
 	  map.fitBounds(bounds);
-	  
+
 	  /* Location Info Card */
 	  $("#location_card").css("display", "block");
 		
+	  
+	  var inputAddress = place.formatted_address.split(',');
+	  var streetAddress = inputAddress[0].toUpperCase();
+	  console.log(streetAddress);
+
+	  	var lead_meter;
+
+	  	for(var i=0; i < heatmapData.length; i++){
+	  		var tempAddr = heatmapData[i].address;
+	  		if(tempAddr.valueOf() == streetAddress){
+	  			lead_meter = heatmapData[i].lead + " ppb";
+	  			break;
+	  		}
+	  		else{
+				 lead_meter = "No Reported Reading";
+	  		}
+	  	}
+
+
 		/* Display appropriate lead rating and message. */
 		var lead_prediction = "Predicted low lead levels";
-		var lead_meter = "[lead rating]";
 		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";		
 		$("#location_card .card-inner").html("<h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
 	});
@@ -346,21 +366,21 @@ function initMap() {
 		var searched_location = $("#search_input").val();
 		//var searched_location_sub = searched_location.substring(1, searched_location.length);
 
-		console.log(localStorage.saved_location1);
+		//console.log(localStorage.saved_location1);
 		//console.log(searched_location_sub);
-		console.log(searched_location);
+		//console.log(searched_location);
 		
 		marker_img = "images/savedlocation.png"; // saved location icon by default
 		
-		if (localStorage.saved_location1 === searched_location_sub) {
+		if (localStorage.saved_location1 === searched_location) {
 			$("#saved_location_button span").text(saved_location_msg);
 			//$("#saved_location_button img").src("images/locationicon.png");
 		}
-		else if (localStorage.saved_location2 === searched_location_sub) {
+		else if (localStorage.saved_location2 === searched_location) {
 			$("#saved_location_button span").text(saved_location_msg);
 			//$("#saved_location_button img").src("images/locationicon.png");
 		}
-		else if (localStorage.saved_location3 === searched_location_sub) {
+		else if (localStorage.saved_location3 === searched_location) {
 			$("#saved_location_button span").text(saved_location_msg);
 			//$("#saved_location_button img").src("images/locationicon.png");
 		}
@@ -491,7 +511,7 @@ function callStorageAPI(object) {
 		request.then(function(resp) {
 			/* Heatmap Data */
 			if (object == "leadlevels.json") {
-				var heatmapData = [];
+				 heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
 				/*for(i=0; i<js_obj.leadLevels.length; i++) {
@@ -500,13 +520,13 @@ function callStorageAPI(object) {
 					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
 				}*/
 				
-				for(i=0; i<js_obj.leadLevels.length; i++) {
-					var info = js_obj.leadLevels[i];
-					var weightValue = assignWeight(info.lead_ppb);
-					heatmapData.push({location: new google.maps.LatLng(info.lat, info.long), weight: weightValue});
+				for(i=0; i<js_obj.length; i++) {
+					var info = js_obj[i];
+					//var weightValue = assignWeight(info.lead_ppb);
+					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
 				}
 				
-				function assignWeight(levelIn){
+				/*function assignWeight(levelIn){
 					if (levelIn < 5){
 						return 0;
 					}
@@ -532,7 +552,7 @@ function callStorageAPI(object) {
 								'rgba(128,0,0,1)']
 				});
 				console.log("heatmap is initiated");
-				//heatmap.setMap(map);
+				//heatmap.setMap(map);*/
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
