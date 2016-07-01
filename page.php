@@ -270,7 +270,7 @@ if (@isset($_GET["pid"])) {
                             <div class='stpper-vert-inner'>
                                 <div id='stepper1' class='stepper'>
                                     <div class='stepper-step'>
-                                        <i class='icon stepper-step-icon'>check</i>
+                                        <span class='icon stepper-step-icon'>check</span>
                                         <span class='stepper-step-num'>1</span>
                                     </div>
                                     <span class='stepper-text'>Step 1</span>
@@ -289,7 +289,7 @@ if (@isset($_GET["pid"])) {
                                 </div>
                                 <div id='stepper2' class='stepper'>
                                     <div class='stepper-step'>
-                                        <i class='icon stepper-step-icon'>check</i>
+                                        <span class='icon stepper-step-icon'>check</span>
                                         <span class='stepper-step-num'>2</span>
                                     </div>
                                     <span class='stepper-text'>Step 2</span>
@@ -308,7 +308,7 @@ if (@isset($_GET["pid"])) {
                                 </div>
                                 <div id='stepper3' class='stepper'>
                                     <div class='stepper-step'>
-                                        <i class='icon stepper-step-icon'>check</i>
+                                        <span class='icon stepper-step-icon'>check</span>
                                         <span class='stepper-step-num'>3</span>
                                     </div>
                                     <span class='stepper-text'>Step 3</span>
@@ -332,19 +332,19 @@ if (@isset($_GET["pid"])) {
 						    <div class='stepper-horiz-inner '>
 						        <div class='stepper active'>
 						            <div class='stepper-step'>
-						                <i class='icon stepper-step-icon'>check</i>
+						                <span class='icon stepper-step-icon'>check</span>
 						                <span class='stepper-step-num'>1</span>
 						            </div>
 						        </div>
 						        <div class='stepper'>
 						            <div class='stepper-step'>
-						                <i class='icon stepper-step-icon'>check</i>
+						                <span class='icon stepper-step-icon'>check</span>
 						                <span class='stepper-step-num'>2</span>
 						            </div>
 						        </div>
 						        <div class='stepper'>
 						            <div class='stepper-step'>
-						                <i class='icon stepper-step-icon'>check</i>
+						                <span class='icon stepper-step-icon'>check</span>
 						                <span class='stepper-step-num'>3</span>
 						            </div>
 						        </div>

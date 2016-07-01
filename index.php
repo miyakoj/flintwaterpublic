@@ -2,7 +2,7 @@
 
 require_once "includes/template.php";
 
-$toggles = "<nav id='toggles' class='btn-group btn-group-justified' data-toggle='buttons'>
+$toggles = "<nav id='toggles' class='col-md-12 btn-group btn-group-justified' data-toggle='buttons'>
 		  <label class='btn btn-primary resource_buttons' id='heatmap_btn'>
 		    <input type='checkbox' autocomplete='off' /><img src='images/leadinfoicon.png' class='resource_buttons_image' alt='Latest Lead Levels' /> <span>Lead Levels</span>
 		  </label>

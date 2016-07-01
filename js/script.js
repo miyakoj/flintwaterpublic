@@ -17,21 +17,13 @@ $(document).ready(function() {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
 	
-	/* Alter the navbar tabs and menu toggle depending on whether it's mobile or not. */
-	if (windowWidth < 992) {
-		$("#header_top").addClass("clearfix");
-		//$("#main_menu ul").removeClass("nav-justified");
-	}
-	else {
-		$("#main_menu .nav").addClass("nav-justified");
-	}
-	
 	/* Make the line-height of the navbar header h1 match the height of the navbar. */
 	//$(".navbar-brand").css("line-height", $("#main_menu ul").css("line-height"));
 	
 	/* Dynamically adjust the dropdown menu links. */
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
-	$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"))
+	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
+	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
@@ -93,6 +85,19 @@ $(document).ready(function() {
 	/* Change the navbar-brand to the page title. */
 	if ($page_id.indexOf("index") == -1)
 		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());
+	
+	/* Layout mods for differences between desktop and mobile. */
+	if (windowWidth < 992) {
+		$("#header_top").addClass("clearfix");
+		$("#main_menu ul").removeClass("nav-justified");
+		// change the z-index of toggles so that they aren't on top of the side menu
+		//$("#toggles").css("z-index", "-1");
+	}
+	else {
+		// Justify the main tabs only on desktop
+		$("#main_menu .nav").addClass("nav-justified");
+		//$("#toggles").css("z-index", "inherit");
+	}
 	
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
