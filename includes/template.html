@@ -34,7 +34,7 @@
 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 </div>
 
-<input id="search_input" class="controls" type="text" placeholder="Search">
+<input id="search_input" class="controls" type="text" placeholder="Search for an address">
 <button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
 
 <div id="map"></div>
@@ -54,15 +54,13 @@
 				<div id="header_top">
 				<div id="made_in_Flint">Made in Flint</div>
 				
-				<div id="language_menu" class="dropdown-wrap">
-					<div class="dropdown dropdown-inline">
-						<a class=""btn dropdown-toggle-btn" data-toggle="dropdown">Languages <span class="caret"></span></a>
-						<ul class="dropdown-menu nav">
-							<li><a id="lang_en" href="#">EN</a></li>
-							<li><a id="lang_es" href="#">ES</a></li>
-							<li><a id="lang_ar" href="#">العربية</a></li>
-						</ul>
-					</div>
+				<div id="language_menu" class="dropdown dropdown-inline">
+					<a id="language_toggle" class="btn dropdown-toggle" href="#" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">Languages <span class="caret"></span></a>
+					<ul class="dropdown-menu nav" aria-labelledby="language_toggle">
+						<li><a id="lang_en" href="#">EN</a></li>
+						<li><a id="lang_es" href="#">ES</a></li>
+						<li><a id="lang_ar" href="#">العربية</a></li>
+					</ul>
 				</div>
 				
 				<div id="logo" class="center-block"><img src="images/logo.png" alt="H2O Flint logo" /> <h1>H2O Flint</h1></div>
@@ -187,9 +185,9 @@
 			  </div>
 			  </nav>-->
 		</header>
-
-		{TOGGLES}
     </div>
+	
+	{TOGGLES}
 	
 	<main class="col-md-12">
 	{CONTENT}
