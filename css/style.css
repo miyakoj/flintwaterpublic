@@ -71,8 +71,10 @@ header {
 	margin-top:10px!important;
 }
 
-#main_menu a {
-	padding:8px 15px!important;
+#show_me_menu .dropdown-menu a {
+	width:100%!important;
+	padding:5px 0 5px 25px!important;
+	line-height:25px!important;
 }
 
 .dropdown-menu {
@@ -85,10 +87,10 @@ header {
 }
 
 @media only screen and (min-width: 992px) {
-	/*.dropdown-menu {
+	.dropdown-menu {
 		position:absolute!important;
 	}
-	#show_me_menu {
+	/*#show_me_menu {
 		padding-left:20px;
 	}
     #show_me_menu a {
@@ -153,6 +155,10 @@ body[id="index_page"] main {
 	vertical-align:middle;
 }
 
+#toggles nav {
+	position: relative;
+	min-height: 22px!important;
+}
 #search_input {
 	background-color: #fff;
 	width: 250px;
@@ -231,6 +237,7 @@ body[id="index_page"] #map {
 
 .resource_buttons{
 	margin: 3px 5px;
+	width: 240px;
 }
 
 .resource_buttons_image{
@@ -312,14 +319,34 @@ body[id="index_page"] #map {
 }
 
 @media only screen and (max-width: 992px) {
-	#toggles span {
-		display: none;
-	}
-	
+	/*#toggles .resource_buttons {
+		width: 124px;
+	}*/
+
     #provider_popup img {
 		width:25px;
 	}
 }
+
+/* News Page */
+#news_page .panel-heading img{
+	width: 4em;
+	height: auto;
+	vertical-align: middle;
+}
+
+#news_page .panel-heading span{
+	padding-left: 10px;
+	vertical-align: middle;
+}
+#news_page .panel-heading h5{
+	vertical-align: top;
+}
+
+#news_page .panel-body p {
+	padding-top: 12px;
+} 
+
 
 
 footer {
@@ -355,4 +382,55 @@ footer span {
   color: #000;
   background: #fff;
   border: solid 1px #fff;
+}
+
+.wrapper {
+    position:relative;
+    margin:0 auto;
+    overflow:hidden;
+  	height: 36px;
+	min-height: 35px!important;
+}
+
+.list {
+    position:absolute;
+    left:0px;
+    top:0px;
+    margin-top:0px;
+}
+
+.list label{
+	display:table-cell;
+    position:relative;
+    text-align:center;
+    cursor:grab;
+    cursor:-webkit-grab;
+    color:#efefef;
+    vertical-align:middle;
+}
+
+.scroller {
+  text-align:center;
+  cursor:pointer;
+  display:none;
+  padding:7px;
+  padding-top:7.5px;
+  white-space:no-wrap;
+  vertical-align:top;
+  background-color:#fff;
+  z-index: 500;
+}
+
+.scroller-right{
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.scroller-left {
+  float:left;
+}
+
+input[type='checkbox'] {
+	display: none;
 }

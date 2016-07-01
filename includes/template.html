@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Flint Water Info Site {PAGE_TITLE}</title>
 
-<link rel="stylesheet" href="css/base.min.css">
-<link rel="stylesheet" href="css/project.min.css">
+<link rel="stylesheet" href="../css/base.min.css">
+<link rel="stylesheet" href="../css/project.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet" href="css/nav_drawer.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="../css/style.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 <!--<script src="js/base.min.js"></script>-->
@@ -22,8 +22,8 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7HOgmlOJWmtlAZL4XGhItNJzWA0nUW0&libraries=visualization,places" async defer></script>
 <script src="https://www.google.com/jsapi"></script>
 <script src="../js/nav_drawer.js"></script>
-<script src="js/script.js"></script>
-<script src="js/map.js"></script>
+<script src="../js/script.js"></script>
+<script src="../js/map.js"></script>
 <script src="js/news.js"></script>
 <script src="js/alerts.js"></script>
 <script src="https://apis.google.com/js/client.js?onload=setAPIKey"></script>
@@ -87,9 +87,115 @@
 			  </div>
 			  </nav>
 		</header>
+<div id='scale'>
+  <nav id='toggles' class='btn-group btn-group-justified ' data-toggle='buttons'>
+  <div class='scroller scroller-left'><i class='glyphicon glyphicon-chevron-left'></i></div>
+  <div class='wrapper nav nav-tabs'>
+      <div class='list'>
+			<label class='btn btn-primary resource_buttons' id='heatmap_btn'>
+		   <input type='checkbox' autocomplete='off' /><img src='../images/leadinfoicon.png' class='resource_buttons_image' alt='Latest Lead Levels' /> <span>Lead Levels</span>
+		  </label>	  
+			<label class='btn btn-primary resource_buttons' id='pipes_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='../images/riskinfoicon.png' class='resource_buttons_image' alt='View Main Pipes' /> <span>Risk Factor</span>
+		  </label>
+			<label class='btn btn-primary resource_buttons' id='water_pickup_btn'><input type='checkbox' autocomplete='off' /><img src='../images/waterpickupicon.png' class='resource_buttons_image' alt='Water Pickup Sites' /><span>Water Pickup</span>
+		  </label>		  
+			<label class='btn btn-primary resource_buttons' id='recycling_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='../images/recycleicon.png' class='resource_buttons_image' alt='Recycling Sites' /> <span>Recycling</span>
+		  </label>		  
+			<label class='btn btn-primary resource_buttons' id='water_testing_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='../images/leadtesticon.png' class='resource_buttons_image' alt='Water Testing Sites' /> <span>Water Testing</span>
+		  </label>	  
+			<label class='btn btn-primary resource_buttons' id='blood_testing_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='../images/bloodtesticon.png' class='resource_buttons_image' alt='Blood Testing Sites' > <span>Blood Testing</span>
+		  </label>	  
+			<label class='btn btn-primary resource_buttons' id='water_filters_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='../images/waterfiltericon.png' class='resource_buttons_image' alt='Water Filters Sites' /> <span>Water Filters</span>
+		  </label>		  
+			<label class='btn btn-primary resource_buttons' id='construction_btn'>
+		    <input type='checkbox' autocomplete='off' /><img src='../images/constructionicon.png' class='resource_buttons_image' alt='Construction Sites' /> <span>Construction</span>
+		  </label>
+		  </div>
+	   <div class='scroller scroller-right'><i class='glyphicon glyphicon-chevron-right'></i></div>	 
+   </div>
 
-		{TOGGLES}		
-    </div>
+  </nav>
+		   
+</div>
+ <script>
+ var hidWidth;
+var scrollBarWidths = 40;
+
+var widthOfList = function(){
+  var itemsWidth = 0;
+  $('.list label').each(function(){
+    var itemWidth = $(this).outerWidth();
+    itemsWidth+=itemWidth;
+  });
+  return itemsWidth;
+};
+
+/*var numOfItems = function(){
+   $(.list label').each(function(){
+     var numItems = $(this);
+	 numItems+=numItems;
+	 });
+	return numItems;
+};
+alert(numItems);*/
+var widthOfHidden = function(){
+  return (($('.wrapper').outerWidth())-widthOfList()-getLeftPosi())-scrollBarWidths;
+};
+
+var getLeftPosi = function(){
+  return $('.list').position().left;
+};
+
+var reAdjust = function(){
+  if (($('.wrapper').outerWidth()) < widthOfList()) {
+    $('.scroller-right').show();
+  }
+  else {
+    $('.scroller-right').hide();
+  }
+  
+  if (getLeftPosi()<0) {
+    $('.scroller-left').show();
+  }
+  else {
+    $('.item').animate({left:"-="+getLeftPosi()+"px"},'slow');
+  	$('.scroller-left').hide();
+  }
+}
+
+reAdjust();
+
+$(window).on('resize',function(e){  
+  	reAdjust();
+});
+
+$('.scroller-right').click(function() {
+  
+  $('.scroller-left').fadeIn('slow');
+  $('.scroller-right').fadeOut('slow');
+  
+  $('.list').animate({left:"+="+widthOfHidden()+"px"},'slow',function(){
+
+  });
+});
+
+$('.scroller-left').click(function() {
+  
+	$('.scroller-right').fadeIn('slow');
+	$('.scroller-left').fadeOut('slow');
+  
+  	$('.list').animate({left:"-="+getLeftPosi()+"px"},'slow',function(){
+  	
+  	});
+});   
+</script>
+	
+ </div>
 	
 	<main class="col-md-12">
 	{CONTENT}
