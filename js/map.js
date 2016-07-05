@@ -788,7 +788,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$("#pipe_btn").on('click', function(){
+	$("#pipes_btn").on('click', function(){
 		if (pipeToggle == 1) {
 			pipeToggle = 0;
 		}
@@ -882,23 +882,21 @@ function setMarkers() {
 			allMarkers[i].setMap(map);
 		}	
 	}
-	if(pipeToggle==1){
-			constructionMarker.setMap(map);
-			for(var i = 0; i < arrayOfLines.length; i++)
-			{
-				arrayOfLines[i].setMap(map);
-			}
-			
-			waterplantMarker.setMap(map);
+	if (pipeToggle == 1) {
+		constructionMarker.setMap(map);
+		for(var i = 0; i < arrayOfLines.length; i++)
+		{
+			arrayOfLines[i].setMap(map);
 		}
-		else{
-			constructionMarker.setMap(null);
-			waterplantMarker.setMap(null);
-			for(var i = 0; i < arrayOfLines.length; i++)
-			{
-				arrayOfLines[i].setMap(null);
-			}
+		
+		waterplantMarker.setMap(map);
+	}
+	else {
+		constructionMarker.setMap(null);
+		waterplantMarker.setMap(null);
+		for(var i = 0; i < arrayOfLines.length; i++)
+		{
+			arrayOfLines[i].setMap(null);
 		}
-	
-	
+	}
 }
