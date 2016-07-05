@@ -242,6 +242,11 @@ function initMap() {
 	  
 	  updateSaveButtons();
 
+	  //get rid of previous markers if they exist
+	  if(location_marker.length > 0){
+	  		location_marker[0].setMap(null);
+	  		location_marker = [];
+		}
 	  // Create a marker for the place.
 	  location_marker.push(new google.maps.Marker({
 		position: place.geometry.location,
@@ -296,7 +301,6 @@ function initMap() {
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
 	  	console.log(streetAddress);
-	  	console.log(heatmapData[1]);
 	  	var lead_meter;
 		var lead_prediction;
 		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";	
@@ -304,7 +308,6 @@ function initMap() {
 
 	  	for(var i=0; i < heatmapData.length; i++) {
 	  		var tempAddr = heatmapData[i].address.valueOf();
-	  		console.log(tempAddr);
 	  		if(tempAddr === streetAddress) {
 	  			lead_meter = heatmapData[i].lead + " ppb";
 	  			leadLevelOfInput = heatmapData[i].lead;
@@ -316,10 +319,10 @@ function initMap() {
 	  		}
 	  	}
 
-	  	if(leadLevelOfInput >= 0 || leadLevelOfInput < 15){
+	  	if(leadLevelOfInput >= 0 && leadLevelOfInput < 15){
 	  		lead_prediction = "Predicted low lead levels";
 	  	}
-	  	else if(leadLevelOfInput >= 15){
+	  	else if(leadLevelOfInput >= 15 && leadLevelOfInput < 150){
 	  		lead_prediction = "Predicted medium lead levels";
 	  	}
 	  	else if(leadLevelOfInput >= 150){
