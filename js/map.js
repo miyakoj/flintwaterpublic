@@ -44,6 +44,8 @@ var filterIcon;
 var constructionIcon;
 var waterPlantIcon;
 
+var leadLevelOfInput;
+
 /* Size the map popup icons based on whether the device is mobile or not. */
 var iconSize;
 
@@ -291,27 +293,41 @@ function initMap() {
 	  $("#location_card").css("display", "block");
 		
 	  
-	  var inputAddress = place.formatted_address.split(',');
-	  var streetAddress = inputAddress[0].toUpperCase();
-	  console.log(streetAddress);
-
+	  	var inputAddress = place.formatted_address.split(',');
+	  	var streetAddress = inputAddress[0].toUpperCase();
+	  	console.log(streetAddress);
+	  	console.log(heatmapData[1]);
 	  	var lead_meter;
+		var lead_prediction;
+		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";	
 
-	  	for(var i=0; i < heatmapData.length; i++){
-	  		var tempAddr = heatmapData[i].address;
-	  		if(tempAddr.valueOf() == streetAddress){
+
+	  	for(var i=0; i < heatmapData.length; i++) {
+	  		var tempAddr = heatmapData[i].address.valueOf();
+	  		console.log(tempAddr);
+	  		if(tempAddr === streetAddress) {
 	  			lead_meter = heatmapData[i].lead + " ppb";
+	  			leadLevelOfInput = heatmapData[i].lead;
 	  			break;
 	  		}
 	  		else{
 				 lead_meter = "No Reported Reading";
+				 leadLevelOfInput = -1;
 	  		}
 	  	}
 
+	  	if(leadLevelOfInput >= 0 || leadLevelOfInput < 15){
+	  		lead_prediction = "Predicted low lead levels";
+	  	}
+	  	else if(leadLevelOfInput >= 15){
+	  		lead_prediction = "Predicted medium lead levels";
+	  	}
+	  	else if(leadLevelOfInput >= 150){
+	  		lead_prediction = "Predicted high lead levels";
+	  		lead_msg = "Not safe to drink even if filtered."
+	  	}
 
-		/* Display appropriate lead rating and message. */
-		var lead_prediction = "Predicted low lead levels";
-		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";		
+		/* Display appropriate lead rating and message. */		
 		$("#location_card .card-inner").html("<h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
 	});
 	
@@ -451,12 +467,10 @@ function initMap() {
 
 	$("#more_info_button").on("click", function(){		
 		if($("#more_info_button span").text() === "More Info"){
-			console.log("currently more info");
 			$("#more_info_button span").text("Less Info");
-			$("#location_card .card-inner").append("<p class=\"more-info\">More Info</p>");
+			$("#location_card .card-inner").append("<p class=\"more-info\">More Info About " + leadLevelOfInput + "</p>");
 		}
 		else{
-			console.log("currently less info");
 			$("#more_info_button span").text("More Info");
 			$(".more-info").remove();
 		}
@@ -511,7 +525,7 @@ function callStorageAPI(object) {
 		request.then(function(resp) {
 			/* Heatmap Data */
 			if (object == "leadlevels.json") {
-				 heatmapData = [];
+				heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
 				/*for(i=0; i<js_obj.leadLevels.length; i++) {
@@ -519,9 +533,8 @@ function callStorageAPI(object) {
 					var weightValue = assignWeight(info.leadLevel);
 					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
 				}*/
-				
-				for(i=0; i<js_obj.length; i++) {
-					var info = js_obj[i];
+				for(i=0; i<js_obj.leadLevels.length; i++) {
+					var info = js_obj.leadLevels[i];
 					//var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
 				}
@@ -564,42 +577,49 @@ function callStorageAPI(object) {
 					var title = provider.locationName;
 					
 					var images = "";
-					
+					var resourcesAvailable = ""; 
+
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Pickup' />";
+						resourcesAvailable += "Water Pickup, ";
 					}
 					if (provider.resType.indexOf("Recycle") != -1) {
 						marker_img = "images/recycleicon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Recycling' />";
+						resourcesAvailable += "Recycling, ";
 					}
 					if (provider.resType.indexOf("Blood Testing") != -1) {
 						marker_img = "images/bloodtesticon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Blood Testing' />";
+						resourcesAvailable += "Blood Testing, ";
 					}
 					if (provider.resType.indexOf("Water Filters") != -1) {
 						marker_img = "images/waterfiltericon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Filters' />";
+						resourcesAvailable += "Water Filters, ";
 					}
 					if (provider.resType.indexOf("Test Kits") != -1) {
 						marker_img = "images/leadtesticon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Testing' />";
+						resourcesAvailable += "Water Testing";
 					}
 					
 					allMarkersString.push(images);
-					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1><p>" + provider.aidAddress + "<br />"
-									+ provider.city + ", " + provider.zipcode + "</p>";
+					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1><p id=\"providerAddress\">" + provider.aidAddress + "</p>";
 					
 					if (provider.phone.length > 0)
-						content += "<p><strong>Phone:</strong> " + provider.phone + "</p>";
+						content += "<p>" + provider.phone + "<br />";
 					
 					if (provider.hours.length > 0)
-						content += "<p><strong>Hours:</strong> " + provider.hours + "</p>";
+						content += "<p>" + provider.hours + "<br />";
 					
 					if (provider.notes.length > 0)
-						content += "<p><strong>Notes:</strong> " + provider.notes + "</p>";
+						content += "<p>" + provider.notes + "<br />";
 					
-					content += "<p>" + images + "</p></div>";
+					//content += "<p>" + images + "</p></div>";
+					content += "<p>" + resourcesAvailable + "</p>";
+					content += "<a class=\"btn btn-flat\"> Get Directions </a></div>"
 
 					var marker = new google.maps.Marker({
 						position: latLng,
@@ -816,6 +836,11 @@ $(document).ready(function() {
 			pipeToggle = 1;
 		}
 		setMarkers();
+	});
+
+	$(document).on("click", "#provider_popup a",function(){
+		term = $("#providerAddress").text();
+        window.open('http://maps.google.com/?q='+term,'_blank');
 	});
 
 	/* When a saved location is clicked, put the location in search bar and search. */
