@@ -19,7 +19,7 @@ header, .navbar-default {
 }
 
 #header {
-	z-index:1;
+	z-index:1!important;
 }
 
 #header_top {
@@ -94,6 +94,7 @@ header, .navbar-default {
 
 /* Navigation */
 #slide-nav {
+	background-color:red!important;
 	z-index:500!important;
 }
 
@@ -139,12 +140,21 @@ header, .navbar-default {
 	margin-right:0px!important;
 }
 
+.container-fluid, #main_menu {
+	z-index:inherit!important;
+}
+
 #main_menu {
 	width:70rem;
 	padding-top:15px!important;
 	margin-left:auto!important;
 	margin-right:auto!important;
 	margin-bottom:0!important;
+}
+
+#main_menu a {
+	min-height:auto!important;
+	padding:6px 0!important;
 }
 
 #show_me_menu .dropdown-menu {
@@ -215,46 +225,45 @@ body[id="index_page"] main {
 	/*border-top:1px solid #000;*/
 }
 
-#toggles label {
+#toggles, #toggles .list, #toggles label, #toggles img {
 	z-index:1!important;
 }
 
-#toggles nav {
+/*#toggles nav {
 	position: relative;
 	min-height: 22px!important;
-}
+}*/
 
 #toggles img {
 	width: auto;
 	height: 20px;
 	vertical-align:middle;
-	z-index:1!important;
 }
 
 #toggles #pipes_btn {
 	display: none;
 }
 
-/*#toggles span {
-	display: none;
-}*/
+#toggles .nav-tabs {
+	border:none;
+}
 
-.wrapper {
+#toggles .wrapper {
     position:relative;
     margin:0 auto;
     overflow:hidden;
-  	height: 36px;
-	min-height: 35px!important;
+	box-shadow:none;
+	/*min-height: 35px!important;*/
 }
 
-.list {
+#toggles .list {
     position:absolute;
     left:0px;
     top:0px;
     margin-top:0px;
 }
 
-.list label{
+#toggles .list label{
 	display:table-cell;
     position:relative;
     text-align:center;
@@ -264,7 +273,7 @@ body[id="index_page"] main {
     vertical-align:middle;
 }
 
-.scroller {
+#toggles .scroller {
   text-align:center;
   cursor:pointer;
   display:none;
@@ -273,24 +282,20 @@ body[id="index_page"] main {
   white-space:no-wrap;
   vertical-align:top;
   background-color:#fff;
-  z-index: 500;
+  z-index: 5!important;
 }
 
-.scroller-right{
+#toggles .scroller-right{
   position: absolute;
   right: 0;
   top: 0;
 }
 
-.scroller-left {
+#toggles .scroller-left {
   float:left;
 }
 
 input[type='checkbox'] {
-	display: none;
-}
-
-#toggles #risk_factor_btn {
 	display: none;
 }
 
