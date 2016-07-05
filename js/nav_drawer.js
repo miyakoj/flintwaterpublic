@@ -1,7 +1,6 @@
 $(document).ready(function () {
 	if (window.innerWidth < 992) {
 		//stick in the fixed 100% height behind the navbar but don't wrap it
-		$('#slide-nav.navbar-inverse').after($('<div class="inverse" id="navbar-height-col"></div>'));
 		$('#slide-nav.navbar-default').after($('<div id="navbar-height-col"></div>'));  
 
 		// Enter your ids or classes

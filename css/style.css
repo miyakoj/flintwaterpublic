@@ -94,7 +94,7 @@ header, .navbar-default {
 
 /* Navigation */
 #slide-nav {
-	background-color:red!important;
+	/*background-color:red!important;*/
 	z-index:500!important;
 }
 
@@ -238,10 +238,6 @@ body[id="index_page"] main {
 	width: auto;
 	height: 20px;
 	vertical-align:middle;
-}
-
-#toggles #pipes_btn {
-	display: none;
 }
 
 #toggles .nav-tabs {
