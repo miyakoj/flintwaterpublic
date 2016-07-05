@@ -1,12 +1,12 @@
 $(document).ready(function () {
 	if (window.innerWidth < 992) {
 		//stick in the fixed 100% height behind the navbar but don't wrap it
-		/*$('#slide-nav.navbar-default').after($('<div class="inverse" id="navbar-height-col"></div>'));*/
+		$('#slide-nav.navbar-inverse').after($('<div class="inverse" id="navbar-height-col"></div>'));
 		$('#slide-nav.navbar-default').after($('<div id="navbar-height-col"></div>'));  
 
 		// Enter your ids or classes
 		var toggler = '.navbar-toggle';
-		var pagewrapper = 'main';
+		var pagewrapper = '#page-content';
 		var navigationwrapper = '.navbar-header';
 		var menuwidth = '100%'; // the menu inside the slide menu itself
 		var slidewidth = '80%';
@@ -39,13 +39,13 @@ $(document).ready(function () {
 			$('#main_menu').toggleClass('slide-active');
 
 
-			$('main, .navbar, body, .navbar-header').toggleClass('slide-active');
+			$('#page-content, .navbar, body, .navbar-header').toggleClass('slide-active');
 
 
 		});
 
 
-		var selected = '#main_menu, main, body, .navbar, .navbar-header';
+		var selected = '#main_menu, #page-content, body, .navbar, .navbar-header';
 
 
 		$(window).on("resize", function () {
