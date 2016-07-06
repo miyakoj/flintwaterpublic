@@ -173,13 +173,13 @@ $(document).ready(function() {
 		$("#filter_page #PUR-Step2").css("display","block");
 	});
 
-	$("#filter_page #PUR-Step2 button").on("click", function() {
+	$("#filter_page #PUR-Step2 a").on("click", function() {
 		console.log("pur step2 btn clicked");
 		$("#filter_page #PUR-Step2").css("display", "none");
 		$("#filter_page #PUR-Step3").css("display", "block");
 	});
 
-	$("#filter_page #PUR-Step3 button").on("click", function() {
+	$("#filter_page #PUR-Step3 a").on("click", function() {
 		console.log("back to map");
 		$(window).attr("location", "index.php");
 	});
@@ -189,12 +189,12 @@ $(document).ready(function() {
 		$("#filter_page #Brita-Step2").css("display", "block");
 	});
 
-	$("#filter_page #Brita-Step2 button").on("click", function() {
+	$("#filter_page #Brita-Step2 a").on("click", function() {
 		$("#filter_page #Brita-Step2").css("display", "none");
 		$("#filter_page #Brita-Step3").css("display", "block");
 	});
 
-	$("#filter_page #Brita-Step3 button").on("click", function() {
+	$("#filter_page #Brita-Step3 a").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
 
