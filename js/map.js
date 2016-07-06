@@ -203,15 +203,15 @@ function initMap() {
 		var saved_locations = "<div id=\"saved_locations\">";
 		
 		if (localStorage.getItem("saved_location1") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
 		}
 		
 		if (localStorage.getItem("saved_location2") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location2\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location2\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
 		}
 		
 		if (localStorage.getItem("saved_location3") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" name=\"saved_location3\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location3") + "</span></button></div>";
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location3\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location3") + "</span></button></div>";
 		}
 		
 		saved_locations += "</div>";
@@ -331,7 +331,7 @@ function initMap() {
 	  	}
 
 		/* Display appropriate lead rating and message. */		
-		$("#location_card .card-inner").html("<h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
+		$("#location_card .card-inner").html("<button type=\"button\" class=\"close\" >&times;</button> <h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
 	});
 	
 	//303 E Kearsley St, Flint, MI, United States
@@ -745,6 +745,60 @@ function bindInfoWindow(marker, map, infowindow, html){
 	});
 }
 
+function unsaveLocation(locationInput) {
+		localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
+
+		if (localStorage.saved_location1 == locationInput) {
+			localStorage.removeItem("saved_location1");
+		}
+		else if (localStorage.saved_location2 == locationInput) {
+			localStorage.removeItem("saved_location2");
+		}
+		else if (localStorage.saved_location3 == locationInput) {
+			localStorage.removeItem("saved_location3");
+		}
+}
+
+function displaySavedLocations() {
+	$("#location_card").css({
+		"width": function() {
+			return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
+		},
+		"top": function() {
+			return parseInt($("#search_input").css("top")) + parseInt($("#search_input").height()) + 20 + "px";
+		},
+		"left": function() {
+			return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
+		}
+	});
+	
+	/* Saved Location Selection Card */
+	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
+		$("#location_card .card-inner").html("<h6>Saved Locations</h6>");
+		$("#location_card .card-action").css("font-size", "0.5rem");
+		
+		var saved_locations = "<div id=\"saved_locations\">";
+		
+		if (localStorage.getItem("saved_location1") !== null) {
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
+		}
+		
+		if (localStorage.getItem("saved_location2") !== null) {
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location2\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
+		}
+		
+		if (localStorage.getItem("saved_location3") !== null) {
+			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location3\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location3") + "</span></button></div>";
+		}
+		
+		saved_locations += "</div>";
+		
+		$("#location_buttons").css("display", "none");
+		$("#location_card .card-action").append(saved_locations);
+		$("#location_card").css("display", "block");
+	}
+}
+
 $(document).ready(function() {
 	/* Get the data from the database and save it into JSON files. */
 	/*$.ajax({
@@ -759,7 +813,7 @@ $(document).ready(function() {
 	});
 	*/
 	//localStorage.clear();
-	
+	console.log(localStorage);
 	$("#heatmap_btn").on('click', function() {	
     	console.log(resourceActiveArray);
 		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
@@ -851,6 +905,21 @@ $(document).ready(function() {
 		$('#search_input').val($(this).text());
 		$('#search_button').click();
 	});
+
+	//closes the location card and removes the marker
+	$(document).on('click', '#location_card .card-inner button', function() {
+		location_marker[0].setMap(null);
+		$("#location_card").css("display", "none");
+		$("#search_input").val('');
+		displaySavedLocations();
+	});
+
+	$(document).on('click', '#saved_locations .close', function() {
+		var addressToUnsave = $(this).parent().children('.saved-location').children('span').text();
+		$(this).parent().css('display', 'none');
+		unsaveLocation(addressToUnsave);
+		//todo if no locations saved get rid of card
+	});
 	
 	$("#search_input").keyup(function() {
 		if($("#search_input").val()) {
@@ -892,7 +961,6 @@ function setMarkers() {
 		console.log("heatmap error has occured");
 		heatmap.setMap(null);
 	}*/
-
 	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
 			leadLayer.setMap(map);
 	}
@@ -900,10 +968,10 @@ function setMarkers() {
 		leadLayer.setMap(null);
 	}
 	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
-		console.log("heatmap is set and will stay set");
+		//console.log("heatmap is set and will stay set");
 	}
 	else {
-		console.log("heatmap error has occured");
+		//console.log("heatmap is not set and will stay not set");
 		leadLayer.setMap(null);
 	}
 	
@@ -916,6 +984,7 @@ function setMarkers() {
 		else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
 			allMarkers[i].setIcon(leadTestIcon);
 			allMarkers[i].setMap(map);
+			console.log("good sign");
 		}
 		else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
 			allMarkers[i].setIcon(filterIcon);
