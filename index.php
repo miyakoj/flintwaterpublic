@@ -2,8 +2,6 @@
 
 require_once "includes/template.php";
 
-//col-md-12 btn-group btn-group-justified
-
 $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 			<div class='scroller scroller-left'><span class='glyphicon glyphicon-chevron-left'></span></div>
 				<div class='wrapper nav nav-tabs tile'>
