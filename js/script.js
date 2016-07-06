@@ -33,7 +33,11 @@ $(document).ready(function() {
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	var mapHeight = windowHeight - $("header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
+	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
+	console.log("windowHeight: " + windowHeight);
+	console.log("#header outerHeight: " + $("header").outerHeight());
+	console.log("#toggles outerHeight: " + $("#toggles").outerHeight());
+	console.log("footer outerHeight: " + $("footer").outerHeight());
 	
 	$("#map").css("height", mapHeight);
 	$("#search_input").val(""); // clear the search input upon refresh
@@ -50,7 +54,7 @@ $(document).ready(function() {
 		var dropdown = $(this).siblings(".dropdown-menu");
 		
 		/* If the dropdown is a sibling of the current <a> then generate the links for the items. */
-		if (dropdown.length > 0) {			
+		if (dropdown.length > 0) {
 			dropdown.each(function () {
 				id = dropdown.find("a").attr("id");
 				page = id.slice(0, id.indexOf("_"));
@@ -87,28 +91,27 @@ $(document).ready(function() {
 	}
 	
 	/* Change the navbar-brand to the page title. */
-	if ($page_id.indexOf("index") == -1)
-		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());
-	
-	console.log("windowWidth: " + windowWidth)
+	/*if ($page_id.indexOf("index") == -1)
+		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());*/
 	
 	/* Layout mods for differences between desktop and mobile. */
 	if (windowWidth < 992) {
 		$("#header_top").addClass("clearfix");
-		$("#main_menu ul").removeClass("nav-justified");
+		$("#main_menu .nav").removeClass("nav-justified");
 		$("#toggles").removeClass("btn-group btn-group-justified");
-		// change the z-index of toggles so that they aren't on top of the side menu
-		//$("#toggles").css("z-index", "-1");
-		
-		/* Set the width of the toggle buttons. */
-		$(".resource_buttons").css("width", $(".resource_buttons").width()+"px");
-		console.log($(".resource_buttons").css("width"));
+		$("#show_me_menu").removeClass("dropdown");
+		$("#show_me_menu ul").removeClass("dropdown-menu");
 	}
 	else {
 		// Justify the main tabs only on desktop
-		$("#main_menu ul").addClass("nav-justified");
+		$("#main_menu .nav").addClass("nav-justified");
 		$("#toggles").addClass("btn-group btn-group-justified");
-		//$("#toggles").css("z-index", "inherit");
+		$("#show_me_menu").addClass("dropdown");
+		$("#show_me_menu ul").addClass("dropdown-menu");
+		
+		/* Set the width of the toggle buttons. 
+		$(".resource_buttons").css("width", $(".resource_buttons").width()+"px");
+		console.log($(".resource_buttons").css("width"));*/
 	}
 	
 	/* Resize the provider info popups. */

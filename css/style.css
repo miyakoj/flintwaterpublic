@@ -91,6 +91,11 @@ header, .navbar-default {
 	background-color:transparent!important;
 }
 
+#page_content {
+	position:relative;
+	z-index:1!important;
+}
+
 
 /* Navigation */
 #slide-nav {
@@ -145,7 +150,7 @@ header, .navbar-default {
 }
 
 #main_menu {
-	width:70rem;
+	width:75rem;
 	padding-top:15px!important;
 	margin-left:auto!important;
 	margin-right:auto!important;
@@ -480,6 +485,8 @@ body[id="index_page"] #map {
 
 footer {
 	padding:4px;
+	
+	z-index:1!important;
 }
 
 footer span {
