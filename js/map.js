@@ -13,6 +13,7 @@ var map;
 var infoWindow;
 var heatmap;
 var leadLayer; //fusion table layer to set up lead levels
+var predictiveLayer; //fusion table layer to show predicted lead levels
 var heatmapData;
 
 var $location_buttons;
@@ -182,6 +183,18 @@ function initMap() {
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
 	});
+
+	google.maps.event.addListener(map, 'zoom_changed', function() {
+	    zoomLevel = map.getZoom();
+	    console.log(zoomLevel);
+	    if (zoomLevel >= 17) {
+	    	console.log("zoomed"+ zoomLevel);
+	        predictiveLayer.setMap(map);
+	        leadLayer.setMap(map);
+	    } else {
+	        predictiveLayer.setMap(null);
+	    }
+	});
 	
 	console.log("search input top: " + $("#search_input").css("top") + " - search input height: " + $("#search_input").height());
 	
@@ -301,7 +314,6 @@ function initMap() {
 		
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
-	  	console.log(streetAddress);
 	  	var lead_meter;
 		var lead_prediction;
 		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";	
@@ -337,7 +349,6 @@ function initMap() {
 	
 	//303 E Kearsley St, Flint, MI, United States
 	
-	console.log(localStorage);
 	
 	$("#search_button").css({
 		"top": function() {
@@ -412,6 +423,10 @@ function initMap() {
 		 // change the location card icon dynamically
 		
 		console.log(localStorage);
+
+
+		map.setZoom(25);
+		console.log("zooming");
 	}
 	
 	/*if (localStorage.getItem("saved_location2") !== null) {
@@ -485,6 +500,26 @@ function initMap() {
 }
 
 function setUpFusionTable() {
+	
+
+	predictiveLayer = new google.maps.FusionTablesLayer({
+	    query: {
+	      select: '\'Latitude\'',
+	      from: '1R_o5DbTIn73NQwaZvCw9V-I1zHh1FMk44p4ofwHJ'
+	    }/*, 
+	    styles: [{
+			markerOptions: {
+				iconName: "measle_grey"
+			}
+		}]*/
+	  });
+
+	google.maps.event.addListener(predictiveLayer, 'click', function(e) {
+		e.infoWindowHtml = "<b>Address: </b>" + e.row['goog_address'].value + "<br>";
+		e.infoWindowHtml += "<b>Probability: </b>" + e.row['Probability'].value + "<br>";
+
+	});	
+
 	leadLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      select: '\'latitude\'',
@@ -701,7 +736,6 @@ function callStorageAPI(object) {
 }
 
 function setUpInitialMap(){
-	console.log("Get Array");
 		if (localStorage !== "undefined") {
      		var retrieveArray = localStorage.getItem("water_test_array");
        		resourceActiveArray = JSON.parse(retrieveArray);
@@ -816,7 +850,6 @@ $(document).ready(function() {
 	//localStorage.clear();
 	console.log(localStorage);
 	$("#heatmap_btn").on('click', function() {	
-    	console.log(resourceActiveArray);
 		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			resourceActiveArray[0] = 0;
 		}
@@ -985,7 +1018,6 @@ function setMarkers() {
 		else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
 			allMarkers[i].setIcon(leadTestIcon);
 			allMarkers[i].setMap(map);
-			console.log("good sign");
 		}
 		else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
 			allMarkers[i].setIcon(filterIcon);
