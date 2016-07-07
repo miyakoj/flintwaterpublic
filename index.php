@@ -4,14 +4,14 @@ require_once "includes/template.php";
 
 //col-md-12 btn-group btn-group-justified
 
-$toggles = "<nav id='toggles' class='col-md-12 btn-group' data-toggle='buttons'>
+$toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 			<div class='scroller scroller-left'><span class='glyphicon glyphicon-chevron-left'></span></div>
 				<div class='wrapper nav nav-tabs tile'>
 					<div class='list'>
 						<label class='btn btn-primary resource_buttons' id='heatmap_btn'><input type='checkbox' autocomplete='off' /><img src='../images/leadinfoicon.png' class='resource_buttons_image' alt='Latest Lead Levels' /> <span>Lead Levels</span>
 						</label>	  
-						<label class='btn btn-primary resource_buttons' id='pipes_btn'><input type='checkbox' autocomplete='off' /><img src='../images/riskinfoicon.png' class='resource_buttons_image' alt='View Main Pipes' /> <span>Risk Factor</span>
-						</label>
+						<!--<label class='btn btn-primary resource_buttons' id='risk_factor_btn'><input type='checkbox' autocomplete='off' /><img src='../images/riskinfoicon.png' class='resource_buttons_image' alt='View Main Pipes' /> <span>Risk Factor</span>
+						</label>-->
 						<label class='btn btn-primary resource_buttons' id='water_pickup_btn'><input type='checkbox' autocomplete='off' /><img src='../images/waterpickupicon.png' class='resource_buttons_image' alt='Water Pickup Sites' /><span>Water Pickup</span>
 						</label>		  
 						<label class='btn btn-primary resource_buttons' id='recycling_btn'><input type='checkbox' autocomplete='off' /><img src='../images/recycleicon.png' class='resource_buttons_image' alt='Recycling Sites' /> <span>Recycling</span>
@@ -22,7 +22,7 @@ $toggles = "<nav id='toggles' class='col-md-12 btn-group' data-toggle='buttons'>
 						</label>	  
 						<label class='btn btn-primary resource_buttons' id='water_filters_btn'><input type='checkbox' autocomplete='off' /><img src='../images/waterfiltericon.png' class='resource_buttons_image' alt='Water Filters Sites' /> <span>Water Filters</span>
 						</label>		  
-						<label class='btn btn-primary resource_buttons' id='construction_btn'><input type='checkbox' autocomplete='off' /><img src='../images/constructionicon.png' class='resource_buttons_image' alt='Pipe Info' /> <span>Pipe Info</span>
+						<label class='btn btn-primary resource_buttons' id='pipes_btn'><input type='checkbox' autocomplete='off' /><img src='../images/constructionicon.png' class='resource_buttons_image' alt='Pipe Info' /> <span>Pipe Info</span>
 						</label>
 					</div>
 				<div class='scroller scroller-right'><span class='glyphicon glyphicon-chevron-right'></span></div>	 
