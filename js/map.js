@@ -186,14 +186,13 @@ function initMap() {
 
 	google.maps.event.addListener(map, 'zoom_changed', function() {
 	    zoomLevel = map.getZoom();
-	    console.log(zoomLevel);
-	    if (zoomLevel >= 17) {
-	    	console.log("zoomed"+ zoomLevel);
+	    if (zoomLevel >= 17 && resourceActiveArray[0] == 1) {
 	        predictiveLayer.setMap(map);
 	        leadLayer.setMap(map);
-	    } else {
-	        predictiveLayer.setMap(null);
-	    }
+	    } 
+	    else if (zoomLevel < 17) {
+	    	predictiveLayer.setMap(null);
+	    } 
 	});
 	
 	console.log("search input top: " + $("#search_input").css("top") + " - search input height: " + $("#search_input").height());
@@ -496,7 +495,9 @@ function initMap() {
 	});
 
 
+
 	setUpInitialMap();
+	setMarkers();
 }
 
 function setUpFusionTable() {
@@ -663,7 +664,7 @@ function callStorageAPI(object) {
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
-						map: map
+						map: null
 					});
 					
 					/* Add tooltips to the popup images. */
@@ -672,11 +673,10 @@ function callStorageAPI(object) {
 					allMarkers.push(marker);
 					
 					bindInfoWindow(marker, map, infoWindow, content);
+
 				}
 
-				for(var i=0; i<allMarkers.length;i++) {
-					allMarkers[i].setMap(null);
-				}
+				setMarkers();
 			}
 			
 			// Uploading Pipe Data From JSON in bucket
@@ -980,26 +980,13 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	/*if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
-			console.log("heatmap is trying to be set");
-			heatmap.setMap(map);
-	}
-	else if (resourceActiveArray[0] == 0 && heatmap.getMap() == map) {
-		console.log("heatmap is trying to go away");
-		heatmap.setMap(null);
-	}
-	else if (resourceActiveArray[0] == 1 && heatmap.getMap() == map){
-		console.log("heatmap is set and will stay set");
-	}
-	else {
-		console.log("heatmap error has occured");
-		heatmap.setMap(null);
-	}*/
 	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
 			leadLayer.setMap(map);
 	}
 	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
 		leadLayer.setMap(null);
+		if(predictiveLayer.getMap() == map)
+			predictiveLayer.setMap(null);
 	}
 	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
 		//console.log("heatmap is set and will stay set");
@@ -1009,6 +996,7 @@ function setMarkers() {
 		leadLayer.setMap(null);
 	}
 	
+	console.log(allMarkers.length);
 	for (var i = 0; i < allMarkers.length; i++){
 		allMarkers[i].setMap(null);
 		if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){

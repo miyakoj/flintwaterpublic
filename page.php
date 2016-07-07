@@ -323,7 +323,8 @@ if (@isset($_GET["pid"])) {
                             </div>
                         </div>
                         
-                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button></div>";
+                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button>
+                        </div>";
 		break;
 		
 		case "submit":
