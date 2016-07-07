@@ -228,12 +228,14 @@ $(document).ready(function() {
 	});
 
 	/* Report a Problem page */
-	$("#report_page #report_info button").on("click", function() {
-		var location = $("#report_page #report_info #locationTextField").val();
-		var problemType = $("#report_page #report_info #ProblemSelector").val();
-		var description = $("#report_page #report_info textarea").val();
-
+	$("#report_page button").on("click", function() {
+		//var location = $("#report_page #report_info #locationTextField").val();
+		//var problemType = $("#report_page #report_info #ProblemSelector").val();
+		//var description = $("#report_page #report_info textarea").val();
+		console.log("click worked");
 		//TODO save these values to the db
+		alert("Thank you for your submission!");
+		$(window).attr("location", "index.php");
 	});
 	
 	
