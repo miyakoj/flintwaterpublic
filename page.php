@@ -30,79 +30,64 @@ if (@isset($_GET["pid"])) {
 				  </div>
 				</div>
 			</div>";
-			
-			/*hidden-md hidden-lg col-md-6 
-			<h2 class='hidden-xs hidden-sm'>News</h2>
-			<h2 class='hidden-xs hidden-sm'>Alerts</h2>*/
 		break;
 		
 		case "test":
 			$pagetitle = "Test My Water";
-			$content ="<div id='step1'>
-							<div class='card'>
-						       <div class='card-main'><h3>Step 1: Get a water test kit</h3>
-						             <div class='card-inner'><p>Pick up a free water test kit from a water resource location.</p></div>
-						           <div class='card-action'><a class='btn btn-flat'>VIEW PICK-UP LOCATIONS</a></div>
-						       </div>
-						   	</div>
-					  		<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>I ALREADY HAVE A TEST KIT</button>
-					  	</div>
-					  	<div id='step2'> 
-						  	<div class='card'>
-						        <div class='card-main'><h3>Step 2: Fill out form</h3>
-						              <div class='card-inner'><p>Fill out the water test form that came with your water test kit.</p></div>
-						        </div>
-						    </div>
-						    <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
-					  	</div>
-					  	<div id='step3'>
-						  	<div class='card'>
-						       	<div class='card-main'><h3>Step 3: Plan to sample</h3>
-						            <div class='card-inner'>
-						              <ul>
-						                <li>The sample should be taken from either your kitchen (recommended) or bathroom sink.</li>
-						                <li>Water must not have been used at all for more than 6 hours before taking the sample. A good time to do this is first thing in the morning.</li>
-						              <ul>
-						            </div>
-					           </div>
-					       	</div>
-					    	<button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
-					   	</div>
-					   	<div id='step4'>
-					   		<div class='card'>
-						        <div class='card-main'><h3>Step 4: Take the sample</h3>
-						              <div class='card-inner'>
-						              <ul>
-						                <li>Use cold water that has not been filtered.</li>
-						                <li>Fill the water jug almost to the top, leave about 2 inches for air at the top</li>
-						              </ul>
-						            </div>
-						        </div>
-						    </div>
-						    <button id='test_water_step4' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
-					   	</div>
-					   	<div id='step5'>
-						   	<div class='card'>
-						        <div class='card-main'><h3>Step 5: Drop off sample</h3>
-						              <div class='card-inner'>
-						              <p>Seal the water sample tightly and take it to a drop-off location.</p></div>
-						             <div class='card-action'><a class='btn btn-flat' href='index.php'>VIEW DROP-OFF LOCATIONS</a></div>    
-						        </div>
-						    </div>
-						    <div><!--This button needs to be at the bottom of the screen-->
-						        <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Getting your test results page'>-->CONTINUE<!--</a>--></button>
-						    </div>
-					   	</div>
-					   	<div id='step6'>
-							<div class='card'>
-						        <div class='card-main'><h3>Getting your test results</h3>
-						              <div class='card-inner'>
-						              <p>Once your test has been processed, you can find your results under the 'Residental Testing Results' tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</p></div>
-						             <div class='card-action'><a class='btn btn-flat'>NOTIFY ME WHEN MY RESULTS ARE READY</a></div>    
-						        </div>
-						    </div>
-						    <button type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>RETURN TO MAP</button>
-					   	</div>";
+			$content = "<div id='water_test' class='stpper-vert'><h2>Test your water</h2>
+							<div class='stpper-vert-inner'>
+								<div id='water_step1' class='stepper active'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>1</span>
+									</div>
+									<span class='stepper-text'>Get a water test kit</span>
+								</div>
+								<div id='water_step1_content' class='stepper-vert-content'>
+								  <ul>
+									<li>Pick up a free test kit from a water resource location.</li>
+									<li>Resident who need transportation or any other assistance can call 211.</li>
+								  </ul>
+								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
+								  <a id='cancel_button' class='btn btn-flat btn-primary'>Cancel</a>
+								</div>
+								<div id='water_step2' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>2</span>
+									</div>
+									<span class='stepper-text'>Take the water sample</span>
+								</div>
+								<div id='water_step2_content' class='stepper-vert-content hide'>
+									<iframe id='help_video' class='embed-responsive-item' src='https://www.youtube.com/embed/KMaAZA1c3oA'></iframe>
+								
+								   <ul>
+									 <li>Fill out the water test form that came with your water test kit.</li>
+									 <li>The sample should be taken from either your kitchen(recommended) or bathroom sink.</li>
+									 <li>Water must not have been used at all for more than 6 hours before taking the sample. A good time to do this is first thing in the morning.</li>
+									 <li>Use cold water that has not been filtered.</li>
+									 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
+								   </ul>
+								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
+								  <a id='cancel_button' class='btn btn-flat btn-primary'>Cancel</a>
+								</div>
+								
+								<div id='water_step3' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>3</span>
+									</div>
+									<span class='stepper-text'>Drop off test results</span>
+								</div>
+								<div id='water_step3_content' class='stepper-vert-content hide'>
+								  <ul>
+									 <li>Seal the water sample tightly and take it to a drop-off location.</li>
+									 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
+								  </ul>
+								 <a id='cancel_button' class='btn btn-flat btn-primary'>Return to map</a>
+								</div>
+							</div>
+						</div>";
 		break;
 		
 		case "filter":
