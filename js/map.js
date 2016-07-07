@@ -13,6 +13,7 @@ var map;
 var infoWindow;
 var heatmap;
 var leadLayer; //fusion table layer to set up lead levels
+var predictiveLayer; //fusion table layer to show predicted lead levels
 var heatmapData;
 
 var $location_buttons;
@@ -182,6 +183,17 @@ function initMap() {
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
 	});
+
+	google.maps.event.addListener(map, 'zoom_changed', function() {
+	    zoomLevel = map.getZoom();
+	    if (zoomLevel >= 17 && resourceActiveArray[0] == 1) {
+	        predictiveLayer.setMap(map);
+	        leadLayer.setMap(map);
+	    } 
+	    else if (zoomLevel < 17) {
+	    	predictiveLayer.setMap(null);
+	    } 
+	});
 	
 	/* Saved Location Selection Card */
 	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
@@ -311,7 +323,6 @@ function initMap() {
 		
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
-	  	console.log(streetAddress);
 	  	var lead_meter;
 		var lead_prediction;
 		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";	
@@ -347,7 +358,6 @@ function initMap() {
 	
 	//303 E Kearsley St, Flint, MI, United States
 	
-	console.log(localStorage);
 	
 	$("#search_button").css({
 		"top": function() {
@@ -422,6 +432,10 @@ function initMap() {
 		 // change the location card icon dynamically
 		
 		console.log(localStorage);
+
+
+		map.setZoom(25);
+		console.log("zooming");
 	}
 	
 	/*if (localStorage.getItem("saved_location2") !== null) {
@@ -490,10 +504,36 @@ function initMap() {
 		}
 	});
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/master
 	setUpInitialMap();
+	setMarkers();
 }
 
 function setUpFusionTable() {
+	
+
+	predictiveLayer = new google.maps.FusionTablesLayer({
+	    query: {
+	      select: '\'Latitude\'',
+	      from: '1R_o5DbTIn73NQwaZvCw9V-I1zHh1FMk44p4ofwHJ'
+	    }/*, 
+	    styles: [{
+			markerOptions: {
+				iconName: "measle_grey"
+			}
+		}]*/
+	  });
+
+	google.maps.event.addListener(predictiveLayer, 'click', function(e) {
+		e.infoWindowHtml = "<b>Address: </b>" + e.row['goog_address'].value + "<br>";
+		e.infoWindowHtml += "<b>Probability: </b>" + e.row['Probability'].value + "<br>";
+
+	});	
+
 	leadLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      select: '\'latitude\'',
@@ -641,7 +681,7 @@ function callStorageAPI(object) {
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
-						map: map
+						map: null
 					});
 					
 					/* Add tooltips to the popup images. */
@@ -650,11 +690,10 @@ function callStorageAPI(object) {
 					allMarkers.push(marker);
 					
 					bindInfoWindow(marker, map, infoWindow, content);
+
 				}
 
-				for(var i=0; i<allMarkers.length;i++) {
-					allMarkers[i].setMap(null);
-				}
+				setMarkers();
 			}
 			
 			// Uploading Pipe Data From JSON in bucket
@@ -714,7 +753,6 @@ function callStorageAPI(object) {
 }
 
 function setUpInitialMap(){
-	console.log("Get Array");
 		if (localStorage !== "undefined") {
      		var retrieveArray = localStorage.getItem("water_test_array");
        		resourceActiveArray = JSON.parse(retrieveArray);
@@ -829,7 +867,6 @@ $(document).ready(function() {
 	//localStorage.clear();
 	console.log(localStorage);
 	$("#heatmap_btn").on('click', function() {	
-    	console.log(resourceActiveArray);
 		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			resourceActiveArray[0] = 0;
 		}
@@ -960,26 +997,13 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	/*if(resourceActiveArray[0] == 1 && heatmap.getMap() != map) {
-			console.log("heatmap is trying to be set");
-			heatmap.setMap(map);
-	}
-	else if (resourceActiveArray[0] == 0 && heatmap.getMap() == map) {
-		console.log("heatmap is trying to go away");
-		heatmap.setMap(null);
-	}
-	else if (resourceActiveArray[0] == 1 && heatmap.getMap() == map){
-		console.log("heatmap is set and will stay set");
-	}
-	else {
-		console.log("heatmap error has occured");
-		heatmap.setMap(null);
-	}*/
 	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
 			leadLayer.setMap(map);
 	}
 	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
 		leadLayer.setMap(null);
+		if(predictiveLayer.getMap() == map)
+			predictiveLayer.setMap(null);
 	}
 	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
 		//console.log("heatmap is set and will stay set");
@@ -989,6 +1013,7 @@ function setMarkers() {
 		leadLayer.setMap(null);
 	}
 	
+	console.log(allMarkers.length);
 	for (var i = 0; i < allMarkers.length; i++){
 		allMarkers[i].setMap(null);
 		if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
@@ -998,7 +1023,6 @@ function setMarkers() {
 		else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
 			allMarkers[i].setIcon(leadTestIcon);
 			allMarkers[i].setMap(map);
-			console.log("good sign");
 		}
 		else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
 			allMarkers[i].setIcon(filterIcon);
