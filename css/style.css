@@ -334,6 +334,10 @@ body[id="index_page"] #search_input {
 	font-weight: 300;
 }
 
+#map_container {
+	position:relative;
+}
+
 #map {
 	width:100%;
 	display:none;

@@ -183,12 +183,14 @@ function initMap() {
 		searchBox.setBounds(map.getBounds());
 	});
 	
+	console.log("search input top: " + $("#search_input").css("top") + " - search input height: " + $("#search_input").height());
+	
 	$("#location_card").css({
 		"width": function() {
 			return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
 		},
 		"top": function() {
-			return parseInt($("#search_input").css("top")) + parseInt($("#search_input").height()) + 20 + "px";
+			return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height()) + 20) + "px";
 		},
 		"left": function() {
 			return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
@@ -297,7 +299,6 @@ function initMap() {
 	  /* Location Info Card */
 	  $("#location_card").css("display", "block");
 		
-	  
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
 	  	console.log(streetAddress);
