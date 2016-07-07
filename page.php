@@ -193,7 +193,7 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='step1'>
 							<div class='card'>
-			                    <img src='images/aerator.jpg' alt='aerator' width='200' height='200'>
+			                    <img src='../images/aerator.JPG' alt='aerator' width='200' height='200'>
 			                    <div class='card-main'><h3>Step 1: Protect the aerator</h3>
 			                        <div class='card-inner'>
 			                        <ul>
@@ -308,7 +308,8 @@ if (@isset($_GET["pid"])) {
                             </div>
                         </div>
                         
-                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button></div>";
+                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button>
+                        </div>";
 		break;
 		
 		case "submit":
