@@ -34,10 +34,6 @@ $(document).ready(function() {
   
 	/* Size the map based on the window size. */
 	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
-	console.log("windowHeight: " + windowHeight);
-	console.log("header outerHeight: " + $("#header").outerHeight());
-	console.log("#toggles outerHeight: " + $("#toggles").outerHeight());
-	console.log("footer outerHeight: " + $("footer").outerHeight());
 	
 	$("#map").css("height", mapHeight + "px");
 	$("#search_input").val(""); // clear the search input upon refresh
