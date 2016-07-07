@@ -25,6 +25,10 @@ $(document).ready(function() {
 	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
+	/* Toggles styles */
+	$("#toggles .wrapper, #toggles .list").css("height", $("#toggles label").css("height"));
+	$("#toggles .tile").css("min-height", $("#toggles label").css("height"));
+	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
   
@@ -86,16 +90,24 @@ $(document).ready(function() {
 	if ($page_id.indexOf("index") == -1)
 		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());
 	
+	console.log("windowWidth: " + windowWidth)
+	
 	/* Layout mods for differences between desktop and mobile. */
 	if (windowWidth < 992) {
 		$("#header_top").addClass("clearfix");
 		$("#main_menu ul").removeClass("nav-justified");
+		$("#toggles").removeClass("btn-group btn-group-justified");
 		// change the z-index of toggles so that they aren't on top of the side menu
 		//$("#toggles").css("z-index", "-1");
+		
+		/* Set the width of the toggle buttons. */
+		$(".resource_buttons").css("width", $(".resource_buttons").width()+"px");
+		console.log($(".resource_buttons").css("width"));
 	}
 	else {
 		// Justify the main tabs only on desktop
-		$("#main_menu .nav").addClass("nav-justified");
+		$("#main_menu ul").addClass("nav-justified");
+		$("#toggles").addClass("btn-group btn-group-justified");
 		//$("#toggles").css("z-index", "inherit");
 	}
 	
