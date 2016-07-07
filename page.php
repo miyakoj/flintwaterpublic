@@ -208,7 +208,7 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='step1'>
 							<div class='card'>
-			                    <img src='images/aerator.jpg' alt='aerator' width='200' height='200'>
+			                    <img src='../images/aerator.JPG' alt='aerator' width='200' height='200'>
 			                    <div class='card-main'><h3>Step 1: Protect the aerator</h3>
 			                        <div class='card-inner'>
 			                        <ul>
