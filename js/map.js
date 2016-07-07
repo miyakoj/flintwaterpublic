@@ -330,7 +330,7 @@ function initMap() {
 	  		lead_msg = "Not safe to drink even if filtered."
 	  	}
 
-		/* Display appropriate lead rating and message. */		
+		/* Display appropriate lead rating and message. */
 		$("#location_card .card-inner").html("<button type=\"button\" class=\"close\" >&times;</button> <h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
 	});
 	

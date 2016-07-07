@@ -13,7 +13,7 @@ header, .navbar-default {
 	padding:0!important;
 }
 
-#main, .col-md-12 {
+.col-md-12 {
 	padding:0!important;
 }
 
@@ -89,6 +89,14 @@ header, .navbar-default {
 
 .btn::after, .btn-flat::after {
 	background-color:transparent!important;
+}
+
+main {
+	margin:0 25%;
+}
+
+main .col-md-12 {
+	width:auto!important;
 }
 
 #page_content {
@@ -401,6 +409,7 @@ body[id="index_page"] main {
 	padding:5px;
 	position:absolute;
 	display:none;
+	z-index:100!important;
 }
 
 #index_page .card {
