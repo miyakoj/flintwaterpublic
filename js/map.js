@@ -183,20 +183,6 @@ function initMap() {
 		searchBox.setBounds(map.getBounds());
 	});
 	
-	console.log("search input top: " + $("#search_input").css("top") + " - search input height: " + $("#search_input").height());
-	
-	$("#location_card").css({
-		"width": function() {
-			return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
-		},
-		"top": function() {
-			return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height()) + 20) + "px";
-		},
-		"left": function() {
-			return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
-		}
-	});
-	
 	/* Saved Location Selection Card */
 	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
 		$("#location_card .card-inner").html("<h6>Saved Locations</h6>");
@@ -297,7 +283,31 @@ function initMap() {
 	  map.fitBounds(bounds);
 
 	  /* Location Info Card */
-	  $("#location_card").css("display", "block");
+	  $("#location_card").css({
+			"display": "block"
+		});
+		
+		if (windowWidth < 992) {
+			$("#location_card").css({
+				"margin": "0 5px",
+				"bottom": "5px"
+			});
+			
+			$("#location_card").appendTo("body");
+		}
+		else {
+			$("#location_card").css({
+				"width": function() {
+					return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
+				},
+				"top": function() {
+					return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height()) + 20) + "px";
+				},
+				"left": function() {
+					return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
+				}
+			});
+		}
 		
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
@@ -434,7 +444,7 @@ function initMap() {
 						localStorage.saved_locations_count = 1;
 					
 					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
-					marker_img = "images/savedlocation.png";					
+					marker_img = "images/savedlocation.png";
 					card_marker_img = "images/locationicon.png";
 					$("#location_card #saved_location_button span").text(saved_location_msg);
 				}
@@ -479,7 +489,6 @@ function initMap() {
 			$(".more-info").remove();
 		}
 	});
-
 
 	setUpInitialMap();
 }
@@ -575,13 +584,16 @@ function callStorageAPI(object) {
 			else if (object == "providers.json") {
 				js_obj = $.parseJSON(resp.body);
 				
+				
+				console.log(js_obj.providers[27].locationName);
+				
 				for(i=0; i<js_obj.providers.length; i++) {
 					var provider = js_obj.providers[i];
 					var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
 					var title = provider.locationName;
 					
 					var images = "";
-					var resourcesAvailable = ""; 
+					var resourcesAvailable = "";
 
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
@@ -610,20 +622,21 @@ function callStorageAPI(object) {
 					}
 					
 					allMarkersString.push(images);
-					var content = "<div id=\"provider_popup\"><h1>" + provider.locationName + "</h1><p id=\"providerAddress\">" + provider.aidAddress + "</p>";
+					
+					var content = "<div id=\"provider_popup\"><h1>" + title + "</h1> <p id=\"provider_address\">" + provider.aidAddress + "</p>";
 					
 					if (provider.phone.length > 0)
-						content += "<p>" + provider.phone + "<br />";
+						content += "<p id=\"provider_phone\">" + provider.phone + "</p>";
 					
 					if (provider.hours.length > 0)
-						content += "<p>" + provider.hours + "<br />";
+						content += "<p id=\"provider_hours\">" + provider.hours + "</p>";
 					
 					if (provider.notes.length > 0)
-						content += "<p>" + provider.notes + "<br />";
+						content += "<p id=\"provider_notes\">" + provider.notes + "</p>";
 					
 					//content += "<p>" + images + "</p></div>";
-					content += "<p>" + resourcesAvailable + "</p>";
-					content += "<a class=\"btn btn-flat\"> Get Directions </a></div>"
+					content += "<p id=\"provider_resources\">" + resourcesAvailable + "</p>";
+					content += "<div><a id=\"directions_btn\" class=\"btn btn-flat\">Get Directions</a></div></div>"
 
 					var marker = new google.maps.Marker({
 						position: latLng,
@@ -826,7 +839,7 @@ $(document).ready(function() {
 		setMarkers();
 	});
 	
-	$("[name='risk_factor']").on('click', function() {		
+	$("#risk_factor_btn").on('click', function() {		
 		if (riskmap.getMap() != null) {
 			riskmap.setMap(null);
 		}
@@ -896,8 +909,8 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$(document).on("click", "#provider_popup a",function(){
-		term = $("#providerAddress").text();
+	$(document).on("click", "#provider_popup #directions_btn", function(){
+		term = $("#provider_address").text();
         window.open('http://maps.google.com/?q='+term,'_blank');
 	});
 

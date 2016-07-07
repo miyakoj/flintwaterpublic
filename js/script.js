@@ -57,15 +57,19 @@ $(document).ready(function() {
 				$(this).attr("href", "page.php?pid=" + page);
 			});
 		}
-		else {
+		else {			
 			if (id.indexOf("link") != -1) {
 				page = id.slice(0, id.indexOf("_"));
-				$(this).attr("href", "page.php?pid=" + page);
+
+				if (page != "map")
+					$(this).attr("href", "page.php?pid=" + page);
+				else
+					$(this).attr("href", "index.php");
 			}
-			else if (id.indexOf("lang") != -1) {
+			/*else if (id.indexOf("lang") != -1) {
 				page = id.slice(id.indexOf("_") + 1, id.length);
 				$(this).attr("href", page);
-			}
+			}*/
 		}
 	});
 	
@@ -77,8 +81,10 @@ $(document).ready(function() {
 	else {
 		$("#" + $page_id + "_link").parent().addClass("active");
 		
+		console.log($("#" + $page_id + "_link").parent().parent().parent().attr("id"));
+		
 		// if the linked clicked is in the "show me" dropdown then also make the "show me" tab active
-		if ($("#" + $page_id + "_link").parent().parent().attr("class") == "dropdown-menu")
+		if ($("#" + $page_id + "_link").parent().parent().parent().attr("id") == "show_me_menu")
 			$("#show_me_menu").addClass("active");
 	}
 	
@@ -99,6 +105,7 @@ $(document).ready(function() {
 		$("#toggles").removeClass("btn-group btn-group-justified");
 		$("#show_me_menu").removeClass("dropdown");
 		$("#show_me_menu ul").removeClass("dropdown-menu");
+		$("#help_video").prependTo("main");
 	}
 	else {
 		// Justify the main tabs only on desktop
@@ -135,32 +142,29 @@ $(document).ready(function() {
 	}*/
 
 	/* Test My Water page */
-	$("#test_page #step1 button").on("click", function(){
-		$("#test_page #step1").css("display","none");
-		$("#test_page #step2").css("display","block");
-	});
-
-	$("#test_page #step2 button").on("click", function(){
-		$("#test_page #step2").css("display","none");
-		$("#test_page #step3").css("display","block");
-	});
-
-	$("#test_page #step3 button").on("click", function(){
-		$("#test_page #step3").css("display","none");
-		$("#test_page #step4").css("display","block");
-	});
-
-	$("#test_page #step4 button").on("click", function(){
-		$("#test_page #step4").css("display","none");
-		$("#test_page #step5").css("display","block");
-	});
-
-	$("#test_page #step5 button").on("click", function(){
-		$("#test_page #step5").css("display","none");
-		$("#test_page #step6").css("display","block");
+	$("#test_link").on("click", function() {
+	    $("#water_step1").addClass("active");
+		$("#water_step1_content").removeClass("hide");
+		$("#water_step2_content").addClass("hide");
+		$("#water_step3_content").addClass("hide");
 	});
 	
-	$("#test_page #step6 button").on("click", function(){
+    $("#water_test #step1_click").click(function() {
+		$("#water_step1").removeClass("active").addClass("done");
+		$("#water_step1_content").addClass("hide");
+		$("#water_step2_content").removeClass("hide");
+		$("#water_step2").addClass("active");
+	});
+	
+	$("#water_test #step2_click").on("click", function() {
+		$("#water_step2").removeClass("active");
+		$("#water_step2").addClass("done");
+		$("water_step2_content").addClass("hide");
+		$("#water_step3").addClass("active");
+		$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	});
+	
+	$("#water_test #cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
 	

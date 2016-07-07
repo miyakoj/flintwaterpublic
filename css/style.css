@@ -91,12 +91,10 @@ header, .navbar-default {
 	background-color:transparent!important;
 }
 
-main {
-	margin:0 25%;
-}
-
-main .col-md-12 {
-	width:auto!important;
+.btn-primary {
+	background-color:#252E56!important;
+	color:#FFF;
+	border-color:#5A72D6;
 }
 
 #page_content {
@@ -161,11 +159,12 @@ main .col-md-12 {
 	margin-left:auto!important;
 	margin-right:auto!important;
 	margin-bottom:0!important;
+	color:#5A72D6!important;
 }
 
-/*#slide-nav, #main_menu, #main_menu ul, #show_me_menu {
-	z-index:10000!important;
-}*/
+#main_menu li .active {
+	background-color:transparent!important;
+}
 
 #language_menu, #show_me_menu {
 	z-index:100!important;
@@ -352,6 +351,13 @@ body[id="index_page"] #map {
 	font-size:1.25em;
 }
 
+#location_card {
+	padding:5px;
+	position:absolute;
+	display:none;
+	z-index:100!important;
+}
+
 #provider_popup img {
 	width:25px;
 }
@@ -380,8 +386,8 @@ body[id="index_page"] main {
 	margin:0!important;
 }
 
-#test_page #step2, #test_page #step3, #test_page #step4, #test_page #step5, #test_page #step6 {
-	display: none;
+#help_video {
+	/*margin:0 auto;*/
 }
 
 #aerator_page #step2, #aerator_page #step3, #aerator_page #step4 {
@@ -409,11 +415,13 @@ body[id="index_page"] main {
 	padding-left: 0px!important;
 }
 
-#location_card {
-	padding:5px;
-	position:absolute;
-	display:none;
-	z-index:100!important;
+
+.btn {
+	text-transform: uppercase;
+}
+
+.cancel-stepper-border {
+	border-left: 0px!important;
 }
 
 #index_page .card {
@@ -497,7 +505,8 @@ body[id="index_page"] main {
 
 #news_page .panel-body p {
 	padding-top: 12px;
-} 
+}
+
 
 footer {
 	padding:4px;
@@ -573,7 +582,19 @@ footer a {
 	}
 	
 	main {
-		/*margin:0 25%!important;*/
+		margin:0 25%;
+	}
+
+	main[id="index_page"] {
+		margin:0;
+	}
+
+	main .col-md-12 {
+		width:auto!important;
+	}
+
+	main .col-md-12[id="index_page"] {
+		width:100%!important;
 	}
 	
 	#index_page main {
