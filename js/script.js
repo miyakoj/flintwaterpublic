@@ -35,11 +35,11 @@ $(document).ready(function() {
 	/* Size the map based on the window size. */
 	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
 	console.log("windowHeight: " + windowHeight);
-	console.log("#header outerHeight: " + $("header").outerHeight());
+	console.log("header outerHeight: " + $("#header").outerHeight());
 	console.log("#toggles outerHeight: " + $("#toggles").outerHeight());
 	console.log("footer outerHeight: " + $("footer").outerHeight());
 	
-	$("#map").css("height", mapHeight);
+	$("#map").css("height", mapHeight + "px");
 	$("#search_input").val(""); // clear the search input upon refresh
 	
 	/* Scale the popup markers based on screen size. */
@@ -73,10 +73,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	id = $("footer a").attr("id");
-	page = id.slice(0, id.indexOf("_"));
-	$("footer a").attr("href", "page.php?pid=" + page);
-	
 	/* Mark the tab of the current page as active. */
 	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 	
@@ -89,6 +85,12 @@ $(document).ready(function() {
 		if ($("#" + $page_id + "_link").parent().parent().attr("class") == "dropdown-menu")
 			$("#show_me_menu").addClass("active");
 	}
+	
+	/* Footer slide functionality. */
+	//id = $("footer a").attr("id");
+	//page = id.slice(0, id.indexOf("_"));
+	/*$("footer a").on("click", function() {
+	});*/
 	
 	/* Change the navbar-brand to the page title. */
 	/*if ($page_id.indexOf("index") == -1)

@@ -38,8 +38,6 @@
 <input id="search_input" class="controls" type="text" placeholder="Search for an address">
 <button id="search_button" class="glyphicon glyphicon-search" data-toggle="tooltip" title="Search" ></button>
 
-<div id="map"></div>
-
 <div id="main" class="container-fluid">
   <div class="row">
   	<div id="header" class="col-md-12">
@@ -58,7 +56,7 @@
 				<div id="language_menu" class="dropdown dropdown-inline">
 					<a id="language_toggle" class="btn dropdown-toggle" href="#" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">Languages <span class="caret"></span></a>
 					<ul class="dropdown-menu nav" aria-labelledby="language_toggle">
-						<li><a id="lang_en" href="#">EN</a></li>
+						<li><a id="lang_en" href="#" class="active">EN</a></li>
 						<li><a id="lang_es" href="#">ES</a></li>
 						<li><a id="lang_ar" href="#">العربية</a></li>
 					</ul>
@@ -75,8 +73,8 @@
 				
 				<li id="show_me_menu">
 				  <a id="show_me_toggle" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how... <span class="caret"></span></a>
-				  <ul>
+				  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how to... <span class="caret"></span></a>
+				  <ul aria-labelledby="show_me_toggle">
 					<li><a id="test_link" href="#"><span class="material-icons md-18" aria-hidden="true">local_drink</span> <span>Test My Water</span></a></li>
 					<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Water Filter</span></a></li>
 					<li><a id="aerator_link" href="#"><span class="material-icons md-18" aria-hidden="true">bubble_chart</span> <span>Clean My Aerator</span></a></li>
@@ -96,12 +94,13 @@
 		{TOGGLES}
 		
 		<main class="col-md-12">
+		<div id="map"></div>
 		{CONTENT}
 		</main>
 	</div>
   </div>
 </div>
 
-<footer>H2O Flint was created to provide the latest water information and resources to the people of Flint. <a id="about_link" href="#">More</a></footer>
+<footer><p>H2O Flint was created to provide the latest water information and resources to the people of Flint.</p> <a id="about_link" href="#">More</a></footer>
 </body>
 </html>
