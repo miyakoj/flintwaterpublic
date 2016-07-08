@@ -526,8 +526,10 @@ function setUpFusionTable() {
 	google.maps.event.addListener(predictiveLayer, 'click', function(e) {
 		e.infoWindowHtml = "<b>Address: </b>" + e.row['goog_address'].value + "<br>";
 		var riskLevel;
+		if(e.row['Probability'].value < .057){
 			riskLevel = 'Low';
 		}
+		else if (e.row['Probability'].value < .10){
 			riskLevel = 'Medium';
 		}
 		else {
