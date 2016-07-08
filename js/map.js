@@ -937,7 +937,16 @@ $(document).ready(function() {
 	/* When a saved location is clicked, put the location in search bar and search. */
 	$(document).on('click', '.saved-location', function() {
 		$('#search_input').val($(this).text());
-		$('#search_button').click();
+		//$('#search_button').click();
+
+		var input = $(this).text();
+
+		google.maps.event.trigger(input, 'focus');
+		google.maps.event.trigger(input, 'keydown', {
+			keyCode: 13
+		});
+			
+		updateSaveButtons();
 	});
 
 	//closes the location card and removes the marker
