@@ -503,7 +503,17 @@ function setUpFusionTable() {
 
 	google.maps.event.addListener(predictiveLayer, 'click', function(e) {
 		e.infoWindowHtml = "<b>Address: </b>" + e.row['goog_address'].value + "<br>";
-		e.infoWindowHtml += "<b>Probability: </b>" + e.row['Probability'].value + "<br>";
+		var riskLevel;
+		if(e.row['Probability'].value < .057){
+			riskLevel = 'Low';
+		}
+		else if (e.row['Probability'].value < .10){
+			riskLevel = 'Medium';
+		}
+		else {
+			riskLevel = 'High';
+		}
+		e.infoWindowHtml += "<b>Predicted Risk: </b>" + riskLevel + "<br>";
 
 	});	
 
