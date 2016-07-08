@@ -525,7 +525,15 @@ function setUpFusionTable() {
 
 	google.maps.event.addListener(predictiveLayer, 'click', function(e) {
 		e.infoWindowHtml = "<b>Address: </b>" + e.row['goog_address'].value + "<br>";
-		e.infoWindowHtml += "<b>Probability: </b>" + e.row['Probability'].value + "<br>";
+		var riskLevel;
+			riskLevel = 'Low';
+		}
+			riskLevel = 'Medium';
+		}
+		else {
+			riskLevel = 'High';
+		}
+		e.infoWindowHtml += "<b>Predicted Risk: </b>" + riskLevel + "<br>";
 
 	});	
 
