@@ -213,6 +213,10 @@ html, body {
 	position:static;
 }
 
+#show_me_menu .dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover {
+	color:#FFF!important;
+}
+
 #show_me_menu a {
 	color:#000!important;
 }
@@ -244,7 +248,7 @@ html, body {
 #toggles .wrapper {
     position:relative;
     margin:0 auto;
-    overflow:hidden;
+    overflow:auto;
 	box-shadow:none;
 }
 
@@ -282,6 +286,10 @@ html, body {
 
 #toggles .scroller-left {
 	float:left;
+}
+
+.tile {
+	background-color:transparent!important;
 }
 
 input[type='checkbox'] {
@@ -444,10 +452,6 @@ body[id="index_page"] main {
 .stepper_group_width {
 	max-width: 150px;
     margin: 0px auto;
-}
-
-#survey-get-started .btn {
-	width: 99%;
 }
 
 .stepper_group_width .stepper {

@@ -111,6 +111,37 @@ $(document).ready(function() {
 		$("#show_me_menu ul").addClass("dropdown-menu");
 	}
 	
+	console.log("windowWidth: " + windowWidth);
+		
+	if (windowWidth < 600) {
+		$("#location_card").appendTo("body");
+		
+		console.log("location_card spacing: " + ($("#location_card").width() / 2));
+		
+		$("#location_card").css({
+			"margin": "0 5px",
+			"left": function () {
+				($("#location_card").width() / 2) + "px";
+			},
+			"bottom": "5px"
+		});
+		
+		console.log("location_card left: " + $("#location_card").css("left"));
+	}
+	else {
+		$("#location_card").css({
+			"width": function() {
+				return $("#search_input").outerWidth();
+			},
+			"top": function() {
+				return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height()) + 20) + "px";
+			},
+			"left": function() {
+				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
+			}
+		});
+	}
+	
 	if (windowWidth < 1200) {
 		$("#header_top").addClass("clearfix");
 		$("#toggles").removeClass("btn-group btn-group-justified");
@@ -223,33 +254,34 @@ $(document).ready(function() {
 	});
 
 
-	/* Clean My Aerator page */
-	$("#aerator_link").on("click", function() {
-	    $("#aerator_step1").addClass("active");
-		$("#aerator_step1_content").removeClass("hide");
-		$("#aerator_step2_content").addClass("hide");
-		$("#aerator_step3_content").addClass("hide");
+	/* Steppers for Clean My Aerator */
+    $("#aerator_link").on("click", function() {
+	  $("#aerator_step1").addClass("active");
+	  $("#aerator_step1_content").removeClass("hide");
+	  $("#aerator_step2").addClass("hide");
+	  $("#aerator_step3").addClass("hide");
+	  $("#aerator_step4").addClass("hide");
 	});
 	
-    $("#clean_aerator #step1_click").click(function() {
-		$("#aerator_step1").removeClass("active").addClass("done");
-		$("#aerator_step1_content").addClass("hide");
-		$("#aerator_step2_content").removeClass("hide");
-		$("#aerator_step2").addClass("active");
+	$("#aerator_step1_click").on("click", function() {
+	  $("#aerator_step1").removeClass("active").addClass("done");
+	  $("#aerator_step1_content").addClass("hide");
+	  $("#aerator_step2_content").removeClass("hide");
+	  $("#aerator_step2").addClass("active");
 	});
 	
-	$("#clean_aerator #step2_click").on("click", function() {
-		$("#aerator_step2").removeClass("active").addClass("done");
-		$("#aerator_step2_content").addClass("hide");
-		$("#aerator_step3").addClass("active");
-		$("#aerator_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+    $("#aerator_step2_click").on("click", function() {
+	  $("#aerator_step2").removeClass("active").addClass("done");
+	  $("#aerator_step2_content").addClass("hide");
+	  $("#aerator_step3_content").removeClass("hide");
+	  $("#aerator_step3").addClass("active");
 	});
 	
-	$("#clean_aerator #step3_click").on("click", function() {
-		$("#aerator_step3").removeClass("active").addClass("done");
-		$("#aerator_step3_content").addClass("hide");
-		$("#aerator_step4").addClass("active");
-		$("#aerator_step4_content").removeClass("hide").addClass("cancel-stepper-border");
+    $("#aerator_step3_click").on("click", function() {
+	  $("#aerator_step3").removeClass("active").addClass("done");
+	  $("#aerator_step3_content").addClass("hide");
+	  $("#aerator_step4_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#aerator_step4").addClass("active");
 	});
 	
 	$("#clean_aerator .cancel_button").on("click", function() {

@@ -5,7 +5,6 @@ $(document).ready(function() {
 		var hidWidth;
 		var scrollBarWidths = 40;
 		var numItems = $(".list").children().length;
-		console.log("numItems: " + numItems);
 		var placeCounter = 0;
 
 		var lengthOfScroll = function(){
