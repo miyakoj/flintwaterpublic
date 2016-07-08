@@ -45,7 +45,6 @@ body.slide-active {
 	    z-index: 1000;
 	}
 	#slide-nav #main_menu {
-	    background: #f7f7f7;
 	    left: -100%;
 	    width: 80%;
 	    min-width: 0;
@@ -79,7 +78,6 @@ body.slide-active {
         bottom:0;
 	    width: 80%;
 	    left: -80%;
-	    background: #f7f7f7;
 	}
 	#navbar-height-col.inverse {
 	    background: #333;

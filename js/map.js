@@ -504,11 +504,6 @@ function initMap() {
 		}
 	});
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/master
 	setUpInitialMap();
 	setMarkers();
 }
