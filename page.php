@@ -90,7 +90,7 @@ if (@isset($_GET["pid"])) {
 									 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a id='cancel_button' class='btn btn-flat btn-primary'>Return to map</a>
+								 <a class='cancel_button btn btn-flat btn-primary'>Return to map</a>
 								 </div>
 								</div>
 							</div>
@@ -141,7 +141,7 @@ if (@isset($_GET["pid"])) {
 								   </ul>
 								   <div class='btn_group'>
 								  <a id='PUR_step2_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a id='cancel_button' class='btn btn-primary btn-flat'>Cancel</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								
@@ -157,7 +157,7 @@ if (@isset($_GET["pid"])) {
 								   </ul>
 								   <div class='btn_group'>
 								  <a id='Brita_step2_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a id='cancel_button' class='btn btn-primary btn-flat'>Cancel</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								
@@ -166,7 +166,7 @@ if (@isset($_GET["pid"])) {
 								   
 								   <div class='btn_group'>
 								  <a id='ZeroWater_step2_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a id='cancel_button' class='btn btn-primary btn-flat'>Cancel</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								<div id='filter_step3' class='stepper'>
@@ -185,7 +185,7 @@ if (@isset($_GET["pid"])) {
 										<li>Push the filter unit onto the adapter until you hear a click.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a id='cancel_button' class='btn btn-primary btn-flat'>Return to map</a>
+								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
 								
@@ -198,7 +198,7 @@ if (@isset($_GET["pid"])) {
 										<li>Push the filter unit onto the adapter until you hear a click.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a id='cancel_button' class='btn btn-primary btn-flat'>Return to map</a>
+								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
 								
@@ -210,7 +210,7 @@ if (@isset($_GET["pid"])) {
 										<li>Screw the filter into the bottom of the reservoir.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a id='cancel_button' class='btn btn-primary btn-flat'>Return to map</a>
+								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
 							</div>
@@ -219,7 +219,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
-			$content = "<div id='clean_aerator' class='stpper-vert'><h2>Clean your aerator</h2>
+			$content = "<div id='clean_aerator' class='stpper-vert'><h2>Clean My Aerator</h2>
 							<div class='stpper-vert-inner'>
 								<div id='aerator_step1' class='stepper active'>
 									<div class='stepper-step'>
@@ -229,15 +229,14 @@ if (@isset($_GET["pid"])) {
 									<span class='stepper-text'>Protect the aerator</span>
 								</div>
 								<div id='aerator_step1_content' class='stepper-vert-content'>
-									<img id='aerator_img' clas='center-block' src='images/aerator.jpg' />
-									
 								  <ul>
 									<li>Get a cloth or tape to wrap around the aerator.</li>
 									<li>Get a pair of pliers.</li>
 								  </ul>
+								  
 								  <div class='btn_group'>
-								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  <a id='aerator_step1_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								<div id='aerator_step2' class='stepper'>
@@ -245,20 +244,20 @@ if (@isset($_GET["pid"])) {
 										<span class='icon stepper-step-icon'>check</span>
 										<span class='stepper-step-num'>2</span>
 									</div>
-									<span class='stepper-text'>Remove the aerator</span>
+									<span class='stepper-text'>Take the water sample</span>
 								</div>
-								<div id='aerator_step2_content' class='stepper-vert-content hide'>								
+								<div id='aerator_step2_content' class='stepper-vert-content hide'>
 								   <ul>
-									 <li>Place the plier jaws around the aerator gently.</li>
-									 <li>Grip the faucet handle.</li>
-									 <li>Turn the aerator clockwise without crushing aerator.</li>
+									  <li>Place the plier jaws around the aerator gently.</li>
+									  <li>Grip the faucet arm.</li>
+									  <li>Turn the aerator clockwise without crushing aerator.</li>
 								   </ul>
+								   
 								   <div class='btn_group'>
-								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  <a id='aerator_step2_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
-								
 								<div id='aerator_step3' class='stepper'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -270,16 +269,16 @@ if (@isset($_GET["pid"])) {
 									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/7P9L2b8v5VM'></iframe>
 									
 								  <ul>
-									 <li>Move the aerator over a flat surface.</li>
-									 <li>Remove the parts inside the aerator by pushing them.(If stuck: place in a solution that can remove lime.)Remember the order in which you removed the parts.</li>
-									 <li>Clean aerator by gently scrubbing with a toothbrush.</li>
+									<li>Move the aerator over a flat surface.</li>
+									<li>Remove the parts inside the aerator by pushing them. If stuck, place in a solution that can remove lime. Remember the order in which you removed the parts.</li>
+									<li>Clean aerator by gently scrubbing with a toothbrush.</li>
 								  </ul>
+								  
 								  <div class='btn_group'>
-								  <a id='step3_click' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  <a id='aerator_step3_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
-								
 								<div id='aerator_step4' class='stepper'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -289,13 +288,13 @@ if (@isset($_GET["pid"])) {
 								</div>
 								<div id='aerator_step4_content' class='stepper-vert-content hide'>
 								  <ul>
-									 <li>Put the aerator back together in reverse order.</li>
-									 <li>Screw the aerator back into the faucet counterclockwise.</li>
-									 <li>Tighten with pliers but not too tight.</li>
+									<li>Put the aerator back together in reverse order.</li>
+									<li>Screw the aerator back into the faucet counterclockwise.</li>
+									<li>Tighten with pliers but not too tight.</li>
 								  </ul>
+								  
 								  <div class='btn_group'>
-								 <a id='cancel_button' class='btn btn-flat btn-primary'>Return to map</a>
-								 </div>
+								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
 								</div>
 							</div>
 						</div>";

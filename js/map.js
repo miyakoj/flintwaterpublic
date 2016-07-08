@@ -299,28 +299,6 @@ function initMap() {
 			"display": "block"
 		});
 		
-		if (windowWidth < 992) {
-			$("#location_card").css({
-				"margin": "0 5px",
-				"bottom": "5px"
-			});
-			
-			$("#location_card").appendTo("body");
-		}
-		else {
-			$("#location_card").css({
-				"width": function() {
-					return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
-				},
-				"top": function() {
-					return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height()) + 20) + "px";
-				},
-				"left": function() {
-					return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
-				}
-			});
-		}
-		
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
 	  	var lead_meter;
