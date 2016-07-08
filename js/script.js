@@ -99,24 +99,24 @@ $(document).ready(function() {
 		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());*/
 	
 	/* Layout mods for differences between desktop and mobile. */
-	if (windowWidth < 992) {
-		$("#header_top").addClass("clearfix");
+	if (windowWidth < 768) {
 		$("#main_menu .nav").removeClass("nav-justified");
-		$("#toggles").removeClass("btn-group btn-group-justified");
 		$("#show_me_menu").removeClass("dropdown");
 		$("#show_me_menu ul").removeClass("dropdown-menu");
 		$("#help_video").prependTo("main");
 	}
 	else {
-		// Justify the main tabs only on desktop
 		$("#main_menu .nav").addClass("nav-justified");
-		$("#toggles").addClass("btn-group btn-group-justified");
 		$("#show_me_menu").addClass("dropdown");
 		$("#show_me_menu ul").addClass("dropdown-menu");
+	}
+	
+	if (windowWidth < 1200) {
+		$("#header_top").addClass("clearfix");
+		$("#toggles").removeClass("btn-group btn-group-justified");
+	}
+	else {
 		
-		/* Set the width of the toggle buttons. 
-		$(".resource_buttons").css("width", $(".resource_buttons").width()+"px");
-		console.log($(".resource_buttons").css("width"));*/
 	}
 	
 	/* Resize the provider info popups. */
@@ -157,82 +157,129 @@ $(document).ready(function() {
 	});
 	
 	$("#water_test #step2_click").on("click", function() {
-		$("#water_step2").removeClass("active");
-		$("#water_step2").addClass("done");
-		$("water_step2_content").addClass("hide");
+		$("#water_step2").removeClass("active").addClass("done");
+		$("#water_step2_content").addClass("hide");
 		$("#water_step3").addClass("active");
 		$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
 	});
 	
-	$("#water_test #cancel_button").on("click", function() {
+	$("#water_test .cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
 	
-	/* Install a WaterFilter page */
-	$("#filter_page #step1 #PUR_btn").on("click", function() {
-		console.log("filter selected");
-		$("#filter_page #step1").css("display", "none");
-		$("#filter_page #PUR-Step2").css("display","block");
+	
+	/* Steppers for Install water filter */
+	$("#filter_link").on("click", function() {
+	  $("#filter_step1").addClass("active");
+	  $("#allFilters_step1_content").removeClass("hide");
+	  $("#filter_step2").addClass("hide");
+	  $("#filter_step3").addClass("hide");
+	});
+	
+	$("#install_filter #PUR_btn").on("click", function() {
+	  $("#filter_step1").removeClass("active").addClass("done");
+	  $("#allFilters_step1_content").addClass("hide");
+	  $("#PUR_step2_content").removeClass("hide");
+	  $("#filter_step2").addClass("active");
+	});
+	
+	$("#install_filter #Brita_btn").on("click", function() {
+	  $("#filter_step1").removeClass("active").addClass("done");
+	  $("#allFilters_step1_content").addClass("hide");
+	  $("#Brita_step2_content").removeClass("hide");
+	  $("#filter_step2").addClass("active");
+	});
+	
+    $("#install_filter #ZeroWater_btn").on("click", function() {
+	  $("#filter_step1").removeClass("active").addClass("done");
+	  $("#allFilters_step1_content").addClass("hide");
+	  $("#ZeroWater_step2_content").removeClass("hide");
+	  $("#filter_step2").addClass("active");
+	});
+	
+	$("#PUR_step2_click").on("click", function() {
+	  $("#filter_step2").removeClass("active").addClass("done");
+	  $("#PUR_step2_content").addClass("hide");
+	  $("#PUR_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#filter_step3").addClass("active");
+	});
+	
+    $("#Brita_step2_click").on("click", function() {
+	  $("#filter_step2").removeClass("active").addClass("done");
+	  $("#Brita_step2_content").addClass("hide");
+	  $("#Brita_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#filter_step3").addClass("active");
+	});
+	
+	$("#ZeroWater_step2_click").on("click", function() {
+	  $("#filter_step2").removeClass("active").addClass("done");
+	  $("#ZeroWater_step2_content").addClass("hide");
+	  $("#ZeroWater_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#filter_step3").addClass("active");
 	});
 
-	$("#filter_page #PUR-Step2 a").on("click", function() {
-		console.log("pur step2 btn clicked");
-		$("#filter_page #PUR-Step2").css("display", "none");
-		$("#filter_page #PUR-Step3").css("display", "block");
-	});
-
-	$("#filter_page #PUR-Step3 a").on("click", function() {
-		console.log("back to map");
+    $("#install_filter .cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
-
-	$("#filter_page #step1 #Brita_btn").on("click", function() {
-		$("#filter_page #step1").css("display", "none");
-		$("#filter_page #Brita-Step2").css("display", "block");
-	});
-
-	$("#filter_page #Brita-Step2 a").on("click", function() {
-		$("#filter_page #Brita-Step2").css("display", "none");
-		$("#filter_page #Brita-Step3").css("display", "block");
-	});
-
-	$("#filter_page #Brita-Step3 a").on("click", function() {
-		$(window).attr("location", "index.php");
-	});
-
-	$("#filter_page #step1 #ZeroWater_btn").on("click", function() {
-		$("#filter_page #step1").css("display", "none");
-		$("#filter_page #ZeroWater-Step2").css("display", "block");
-	});
-
-	$("#filter_page #ZeroWater-Step2 button").on("click", function() {
-		$(window).attr("location", "index.php");
-	});
-
 
 
 	/* Clean My Aerator page */
-	$("#aerator_page #step1 .btn").on("click", function(){
-		$("#aerator_page #step1").css("display","none");
-		$("#aerator_page #step2").css("display","block");
+	$("#aerator_link").on("click", function() {
+	    $("#aerator_step1").addClass("active");
+		$("#aerator_step1_content").removeClass("hide");
+		$("#aerator_step2_content").addClass("hide");
+		$("#aerator_step3_content").addClass("hide");
 	});
-
-	$("#aerator_page #step2 .btn").on("click", function(){
-		$("#aerator_page #step2").css("display","none");
-		$("#aerator_page #step3").css("display","block");
+	
+    $("#clean_aerator #step1_click").click(function() {
+		$("#aerator_step1").removeClass("active").addClass("done");
+		$("#aerator_step1_content").addClass("hide");
+		$("#aerator_step2_content").removeClass("hide");
+		$("#aerator_step2").addClass("active");
 	});
-
-	$("#aerator_page #step3 .btn").on("click", function(){
-		$("#aerator_page #step3").css("display","none");
-		$("#aerator_page #step4").css("display","block");
+	
+	$("#clean_aerator #step2_click").on("click", function() {
+		$("#aerator_step2").removeClass("active").addClass("done");
+		$("#aerator_step2_content").addClass("hide");
+		$("#aerator_step3").addClass("active");
+		$("#aerator_step3_content").removeClass("hide").addClass("cancel-stepper-border");
 	});
-
-	$("#aerator_page #step4 .btn").on("click", function(){
+	
+	$("#clean_aerator #step3_click").on("click", function() {
+		$("#aerator_step3").removeClass("active").addClass("done");
+		$("#aerator_step3_content").addClass("hide");
+		$("#aerator_step4").addClass("active");
+		$("#aerator_step4_content").removeClass("hide").addClass("cancel-stepper-border");
+	});
+	
+	$("#clean_aerator .cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
+	
 
 	/* Report a Problem page */
-	$("#report_page button").on("click", function() {
+	$("#report_link").on("click", function() {
+	    $("#report_step1").addClass("active");
+		$("#report_step1_content").removeClass("hide");
+		$("#report_step2_content").addClass("hide");
+		$("#report_step3_content").addClass("hide");
+	});
+	
+    $("#report_problem #step1_click").click(function() {
+		$("#report_step1").removeClass("active").addClass("done");
+		$("#report_step1_content").addClass("hide");
+		$("#report_step2_content").removeClass("hide");
+		$("#report_step2").addClass("active");
+	});
+	
+	$("#report_problem #step2_click").on("click", function() {
+		$("#report_step2").removeClass("active").addClass("done");
+		$("#report_step2_content").addClass("hide");
+		$("#report_step3").addClass("active");
+		$("#report_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	});
+	
+	$("#report_problem #submit_button").on("click", function() {
 		//var location = $("#report_page #report_info #locationTextField").val();
 		//var problemType = $("#report_page #report_info #ProblemSelector").val();
 		//var description = $("#report_page #report_info textarea").val();
@@ -243,16 +290,35 @@ $(document).ready(function() {
 	});
 	
 	
-	/* Steppers for help pages */
-	$("#report_page #locationTextField").on("click", function(){
-		$("#stepper1").addClass("active");
+	/* Steppers for the submit information page. */
+	$("#submit_link").on("click", function() {
+	    $("#submit_step1").addClass("active");
+		$("#submit_step1_content").removeClass("hide");
+		$("#submit_step2_content").addClass("hide");
+		$("#submit_step3_content").addClass("hide");
 	});
-
-	$("#report_page #step2_stuff").on("click", function(){
-		$("#stepper2").addClass("active");
+	
+    $("#submit_info #step1_click").click(function() {
+		$("#submit_step1").removeClass("active").addClass("done");
+		$("#submit_step1_content").addClass("hide");
+		$("#submit_step2_content").removeClass("hide");
+		$("#submit_step2").addClass("active");
 	});
-
-	$("#report_page #step3_stuff").on("click", function(){
-		$("#stepper3").addClass("active");
+	
+	$("#submit_info #step2_click").on("click", function() {
+		$("#submit_step2").removeClass("active").addClass("done");
+		$("#submit_step2_content").addClass("hide");
+		$("#submit_step3").addClass("active");
+		$("#submit_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	});
+	
+	$("#submit_info #submit_button").on("click", function() {
+		//var location = $("#report_page #report_info #locationTextField").val();
+		//var problemType = $("#report_page #report_info #ProblemSelector").val();
+		//var description = $("#report_page #report_info textarea").val();
+		console.log("click worked");
+		//TODO save these values to the db
+		alert("Thank you for your submission!");
+		$(window).attr("location", "index.php");
 	});
 });

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var windowWidth = window.innerWidth;
 	
-	if (windowWidth < 992) {
+	if (windowWidth < 1200) {
 		var hidWidth;
 		var scrollBarWidths = 40;
 		var numItems = $(".list").children().length;

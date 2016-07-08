@@ -46,11 +46,14 @@ if (@isset($_GET["pid"])) {
 								<div id='water_step1_content' class='stepper-vert-content'>
 								  <ul>
 									<li>Pick up a free test kit from a water resource location.</li>
-									<li>Resident who need transportation or any other assistance can call 211.</li>
+									<li>Residents who need transportation or any other assistance can call 211.</li>
 								  </ul>
+								  <div class='btn_group'>
 								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
-								  <a id='cancel_button' class='btn btn-flat btn-primary'>Cancel</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
 								</div>
+								
 								<div id='water_step2' class='stepper'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -59,7 +62,7 @@ if (@isset($_GET["pid"])) {
 									<span class='stepper-text'>Take the water sample</span>
 								</div>
 								<div id='water_step2_content' class='stepper-vert-content hide'>
-									<iframe id='help_video' class='embed-responsive-item' src='https://www.youtube.com/embed/KMaAZA1c3oA'></iframe>
+									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/KMaAZA1c3oA'></iframe>
 								
 								   <ul>
 									 <li>Fill out the water test form that came with your water test kit.</li>
@@ -68,8 +71,10 @@ if (@isset($_GET["pid"])) {
 									 <li>Use cold water that has not been filtered.</li>
 									 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 								   </ul>
+								   <div class='btn_group'>
 								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
-								  <a id='cancel_button' class='btn btn-flat btn-primary'>Cancel</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
 								</div>
 								
 								<div id='water_step3' class='stepper'>
@@ -84,7 +89,9 @@ if (@isset($_GET["pid"])) {
 									 <li>Seal the water sample tightly and take it to a drop-off location.</li>
 									 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 								  </ul>
+								  <div class='btn_group'>
 								 <a id='cancel_button' class='btn btn-flat btn-primary'>Return to map</a>
+								 </div>
 								</div>
 							</div>
 						</div>";
@@ -92,197 +99,294 @@ if (@isset($_GET["pid"])) {
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
-			$content = "<div id='step1'>	
-						<div class='card'>
-						<div class='card-main'><h3>Step 1: Choose your filter type</h3>
-						<div class='card-inner'><p>From the choices below, select your water filter.</p></div>
-						<table style='width: 100%'>
-							<tr>
-								<td><button id = 'PUR_btn'><img src='../images/PUR_filter.jpg' width='150' height='150'></button></td>
-								<td><button id = 'Brita_btn'><img src='../images/Brita_filter.jpg' width='150' height='150'></button></td>
-								<td><button id = 'ZeroWater_btn'><img src='../images/ZeroWater.jpg' width='150' height='150'></button></td>
-							</tr>
-							<tr>
-								<td>PUR</td>
-								<td>Brita</td>
-								<td>ZeroWater</td>
-							</tr>
-						</table>
-						</div>
-					</div>
-				</div>
-				 <div id='PUR-Step2'>	
-					<div class='card'>
-						<div class='card-main'><h3>Step 2: Choose your adapter</h3>
-						<div class='card-inner'>
-						  <ul>
-						    <li>Remove your aerator.</li>
-							<li>Choose an adapter from the PUR filter box that fits the missing aerator location.</li>
-							<li>Then put the rubber gasket that matches your adapter over the threads.</li>
-							<li>Next screw the adapter on.</li>
-						  </ul>
-						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
-						</div>
-					</div>
-				</div>
-				 <div id='PUR-Step3'>	
-					<div class='card'>
-						<div class='card-main'><h3>Step 3: Install your filter</h3>
-						<div class='card-inner'>
-						  <ul>
-						    <li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
-							<li>Take the blue filter out of the wrapper.</li>
-							<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
-							<li>Screw the cap back on.</li>
-							<li>Push the filter unit onto the adapter until you hear a click.</li>
-						  </ul>
-						</div>
-						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
-						</div>
-					</div>
-				</div>
-			<div id='Brita-Step2'>	
-					<div class='card'>
-						<div class='card-main'><h3>Step 2: Install your adapter</h3>
-						<div class='card-inner'>
-						  <ul>
-						    <li>Remove your aerator.</li>
-							<li>See if you have threads sticking out of the faucet head.</li>
-							<li>If you have threads sticking out you don't need an adapter.</li>
-							<li>If you don't have threads sticking out choose one of the adapters in the box that fit you faucet.</li>
-							<li>Screw in the adapter.</li>
-						  </ul>
-						</div>
-						<div class='card-action'><a class='btn btn-flat'>Continue</a></div>
-						</div>
-					</div>
-				</div>
-					<div id='Brita-Step3'>	
-					<div class='card'>
-						<div class='card-main'><h3>Step 3: Install your filter</h3>
-						<div class='card-inner'>
-						  <ul>
-						    <li>Line up the hole in the filter base.</li>
-							<li>Twist the mounting collar to secure it to the faucet.</li>
-							<li>Line up the peg on the bottom of the filter cartridge with the hole in the filter base.</li>
-							<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
-						  </ul>
-						</div>
-						<div class='card-action'><a href='index.php' class='btn btn-flat'>Return to Map</a></div>
-						</div>
-					</div>
-				</div>
-					<div id='ZeroWater-Step2'>	
-					<div class='card'>
-						<div class='card-main'><h3>Step 2: Install your filter</h3>
-						<div class='card-inner'>
-						  <ul>
-						    <li>Remove lid and water reservoir from the pitcher.</li>
-							<li>Remove filter from packaging.</li>
-							<li>Screw the filter into the bottom of the reservoir.</li>
-						  </ul>
-						</div>
-						<div class='card-action'><a href='index.php' class='btn btn-flat'>/Return to Map</a></div>
-						</div>
-					</div>
-				</div>";
+			$content = "<div id='install_filter' class='stpper-vert'><h2>Install Water Filter</h2>
+							<div class='stpper-vert-inner'>
+								<div id='filter_step1' class='stepper active'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>1</span>
+									</div>
+									<span class='stepper-text'>Choose your filter type</span>
+								</div>
+								<div id='allFilters_step1_content' class='stepper-vert-content'>
+								   <figure>
+									<button id='PUR_btn' class='filter-buttons'><img src='images/PUR_filter.jpg' /></button>
+									<figcaption><h4>PUR</h4></figcaption>
+								   </figure>
+								   <figure>
+									<button id='Brita_btn' class='filter-buttons'><img src='images/Brita_filter.jpg' /></button>
+									<figcaption><h4>Brita</h4></figcaption>
+								   </figure>
+								   <figure>
+									<button id='ZeroWater_btn' class='filter-buttons'><img src='images/ZeroWater.jpg' /></button>
+									<figcaption><h4>ZeroWater</h4></figcaption>
+									</figure>
+								</div>
+								
+								<div id='filter_step2' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>2</span>
+									</div>
+									<span class='stepper-text'>Install your adapter</span>
+								</div>
+								<div id='PUR_step2_content' class='stepper-vert-content hide'>
+									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/r3Xm34EkQLY'></iframe>
+								
+								   <ul>
+									 <li>Remove your aerator.</li>
+									 <li>Choose an adater from the PUR filter box that fits the missing aerator location.</li>
+									 <li>The put the rubber gasket that matches your adapter over the threads.</li>
+									 <li>Next screw the adapter on.</li>
+								   </ul>
+								   <div class='btn_group'>
+								  <a id='PUR_step2_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a id='cancel_button' class='btn btn-primary btn-flat'>Cancel</a>
+								  </div>
+								</div>
+								
+								 <div id='Brita_step2_content' class='stepper-vert-content hide'>
+									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/Y0hfK6E8R18'></iframe>
+									
+								   <ul>
+										<li>Remove your aerator.</li>
+										<li>See if you have threads sticking out of the faucet head.</li>
+										<li>If you have threads sticking out you don't need an adapter.</li>
+										<li>If you don't have threads sticking out choose one of the adapters in the box that fit you faucet.</li>
+										<li>Screw in the adapter.</li>
+								   </ul>
+								   <div class='btn_group'>
+								  <a id='Brita_step2_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a id='cancel_button' class='btn btn-primary btn-flat'>Cancel</a>
+								  </div>
+								</div>
+								
+								 <div id='ZeroWater_step2_content' class='stepper-vert-content hide'>
+								   ZeroWater pitchers do not require an adapter.
+								   
+								   <div class='btn_group'>
+								  <a id='ZeroWater_step2_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a id='cancel_button' class='btn btn-primary btn-flat'>Cancel</a>
+								  </div>
+								</div>
+								<div id='filter_step3' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>3</span>
+									</div>
+									<span class='stepper-text'>Install your filter</span>
+								</div>
+								<div id='PUR_step3_content' class='stepper-vert-content hide'>
+								  <ul>
+										<li>Remove filter from packaging.</li>
+										<li>Remove the cap from the filter unit by unscrewing the top half of the cylindrical shape.</li>
+										<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
+										<li>Screw the cap back on.</li>
+										<li>Push the filter unit onto the adapter until you hear a click.</li>
+								  </ul>
+								  <div class='btn_group'>
+								 <a id='cancel_button' class='btn btn-primary btn-flat'>Return to map</a>
+								 </div>
+								</div>
+								
+								<div id='Brita_step3_content' class='stepper-vert-content hide'>
+								  <ul>
+										<li>Remove filter from packaging.</li>
+										<li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
+										<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
+										<li>Screw the cap back on.</li>
+										<li>Push the filter unit onto the adapter until you hear a click.</li>
+								  </ul>
+								  <div class='btn_group'>
+								 <a id='cancel_button' class='btn btn-primary btn-flat'>Return to map</a>
+								 </div>
+								</div>
+								
+								<div id='ZeroWater_step3_content' class='stepper-vert-content hide'>
+								  <ul>
+										<li>Remove lid from the pitcher</li>
+										<li>Remove water reservoir from the pitcher.</li>
+										<li>Remove filter from packaging.</li>
+										<li>Screw the filter into the bottom of the reservoir.</li>
+								  </ul>
+								  <div class='btn_group'>
+								 <a id='cancel_button' class='btn btn-primary btn-flat'>Return to map</a>
+								 </div>
+								</div>
+							</div>
+						</div>";
 		break;
 		
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
-			$content = "<div id='step1'>
-							<div class='card'>
-			                    <img src='../images/aerator.JPG' alt='aerator' width='200' height='200'>
-			                    <div class='card-main'><h3>Step 1: Protect the aerator</h3>
-			                        <div class='card-inner'>
-			                        <ul>
-			                            <li>Get a cloth or tape to wrap around the aerator.</li>
-			                            <li>Get a pair of pliers.</li>
-			                        </ul>
-			                        </div>
-			                    </div>
-			                </div>
-			                <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
-			            </div>
-			            <div id='step2'>
-				            <div class='card'>
-			                    <div class='card-main'><h3>Step 2: Remove the aerator</h3>
-			                        <div class='card-inner'>
-			                        <ul>
-			                            <li>Place the plier jaws around the aerator gently.</li>
-			                            <li>Grip the faucet handle.</li>
-			                            <li>Turn the aerator clockwise without crushing aerator.</li>
-			                        </ul>
-			                        </div>
-			                    </div>
-			                </div>
-	                		<button id='clean_aerator_step2' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
-			            </div>
-			            <div id='step3'>
-			            	<div class='card'>
-			                    <div class='card-main'><h3>Step 3: Clean the aerator</h3>
-			                        <div class='card-inner'>
-			                        <ul>
-			                            <li>Move the aerator over a flat surface.</li>
-			                            <li>Remove the parts inside the aerator by pushing them.(If stuck: place in a solution that can remove lime.)Remember the order in which you removed the parts.</li>
-			                            <li>Clean aerator by gently scrubbing with a toothbrush.</li>
-			                        </ul>
-			                        </div>
-			                    </div>
-			                </div>
-			                <button id='clean_aerator_step3' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>CONTINUE</button>
-			            </div>
-			            <div id='step4'>
-				            <div class='card'>
-			                    <div class='card-main'><h3>Step 4: Reinstall aerator</h3>
-			                        <div class='card-inner'>
-			                        <ul>
-			                            <li>Put the aerator back together in reverse order.</li>
-			                            <li>Screw the aerator back into the faucet counterclockwise.</li>
-			                            <li>Tighten with pliers but not too tight.</li>
-			                        </ul>
-			                        </div>
-			                    </div>
-			                </div>
-			                <button id='clean_aerator_step4' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'>RETURN TO MAP</button>
-			            </div>";
+			$content = "<div id='clean_aerator' class='stpper-vert'><h2>Clean your aerator</h2>
+							<div class='stpper-vert-inner'>
+								<div id='aerator_step1' class='stepper active'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>1</span>
+									</div>
+									<span class='stepper-text'>Protect the aerator</span>
+								</div>
+								<div id='aerator_step1_content' class='stepper-vert-content'>
+									<img id='aerator_img' clas='center-block' src='images/aerator.jpg' />
+									
+								  <ul>
+									<li>Get a cloth or tape to wrap around the aerator.</li>
+									<li>Get a pair of pliers.</li>
+								  </ul>
+								  <div class='btn_group'>
+								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+								<div id='aerator_step2' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>2</span>
+									</div>
+									<span class='stepper-text'>Remove the aerator</span>
+								</div>
+								<div id='aerator_step2_content' class='stepper-vert-content hide'>								
+								   <ul>
+									 <li>Place the plier jaws around the aerator gently.</li>
+									 <li>Grip the faucet handle.</li>
+									 <li>Turn the aerator clockwise without crushing aerator.</li>
+								   </ul>
+								   <div class='btn_group'>
+								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+								
+								<div id='aerator_step3' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>3</span>
+									</div>
+									<span class='stepper-text'>Clean the aerator</span>
+								</div>
+								<div id='aerator_step3_content' class='stepper-vert-content hide'>
+									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/7P9L2b8v5VM'></iframe>
+									
+								  <ul>
+									 <li>Move the aerator over a flat surface.</li>
+									 <li>Remove the parts inside the aerator by pushing them.(If stuck: place in a solution that can remove lime.)Remember the order in which you removed the parts.</li>
+									 <li>Clean aerator by gently scrubbing with a toothbrush.</li>
+								  </ul>
+								  <div class='btn_group'>
+								  <a id='step3_click' class='btn btn-flat btn-primary'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+								
+								<div id='aerator_step4' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>4</span>
+									</div>
+									<span class='stepper-text'>Reinstall the aerator</span>
+								</div>
+								<div id='aerator_step4_content' class='stepper-vert-content hide'>
+								  <ul>
+									 <li>Put the aerator back together in reverse order.</li>
+									 <li>Screw the aerator back into the faucet counterclockwise.</li>
+									 <li>Tighten with pliers but not too tight.</li>
+								  </ul>
+								  <div class='btn_group'>
+								 <a id='cancel_button' class='btn btn-flat btn-primary'>Return to map</a>
+								 </div>
+								</div>
+							</div>
+						</div>";
+		break;
+		
+		case "submit":
+			$pagetitle = "Submit Location Information";
+			$content ="<div id='submit_info' class='stpper-vert'><h2>Submit Location Information</h2>
+							<div class='stpper-vert-inner'>
+								<div id='submit_step1' class='stepper active'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>1</span>
+									</div>
+									<span class='stepper-text'>Introduction</span>
+								</div>
+								<div id='submit_step1_content' class='stepper-vert-content'>								
+								  <p></p>Submitting more information about a location helps make lead level predictions more accurate for the entire community.</p>
+								  
+								  <h6>Thank you for doing your part!</h6>
+								  
+								  <div class='btn_group'>
+								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+								
+								<div id='submit_step2' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>2</span>
+									</div>
+									<span class='stepper-text'>Enter your location</span>
+								</div>
+								<div id='submit_step2_content' class='stepper-vert-content hide'>
+									<label for='locationTextField' style='display:none;'>Enter Your Location: </label><br />
+									<input class='form-control' id='locationTextField' style='width=100%;'>
+									<script>
+										function init() {
+											var input = document.getElementById('locationTextField');
+											var autocomplete = new google.maps.places.Autocomplete(input);
+										}
+										google.maps.event.addDomListener(window, 'load', init);
+									</script>
+									
+								   <div class='btn_group'>
+								  <a id='step2_click' class='btn btn-flat btn-primary disabled'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+							</div>
+						</div>";
 		break;
 		
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content = "<div class='stpper-vert'>
-                            <div class='stpper-vert-inner'>
-                                <div id='stepper1' class='stepper'>
-                                    <div class='stepper-step'>
-                                        <span class='icon stepper-step-icon'>check</span>
-                                        <span class='stepper-step-num'>1</span>
-                                    </div>
-                                    <span class='stepper-text'>Step 1</span>
-                                </div>
-                                <div class='stepper-vert-content'>
-                                <!--- Step One Contents Here! ---> 
-                                    <label for='locationTextField'>Enter Your Location: </label><br>
-                                <input class='form-control' id='locationTextField' style='width=100%;'>
-                                <script>
-                                    function init() {
-                                        var input = document.getElementById('locationTextField');
-                                        var autocomplete = new google.maps.places.Autocomplete(input);
-                                    }
-                                    google.maps.event.addDomListener(window, 'load', init);
-                                </script>
-                                </div>
-                                <div id='stepper2' class='stepper'>
-                                    <div class='stepper-step'>
-                                        <span class='icon stepper-step-icon'>check</span>
-                                        <span class='stepper-step-num'>2</span>
-                                    </div>
-                                    <span class='stepper-text'>Step 2</span>
-                                </div>
-                                <div class='stepper-vert-content'>
-                                    <!-- Step Two Contents Here! --->
-                                    <div id='step2_stuff' class='form-group form-group-label'>
-                                    <label for='ProblemSelector'> Select The Problem: </label>
+			$content = "<div id='report_problem' class='stpper-vert'><h2>Report a Problem</h2>
+							<div class='stpper-vert-inner'>
+								<div id='report_step1' class='stepper active'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>1</span>
+									</div>
+									<span class='stepper-text'>Enter your location</span>
+								</div>
+								<div id='report_step1_content' class='stepper-vert-content'>								
+								  <label for='locationTextField' style='display:none;'>Enter Your Location: </label><br />
+									<input class='form-control' id='locationTextField' style='width=100%;'>
+									<script>
+										function init() {
+											var input = document.getElementById('locationTextField');
+											var autocomplete = new google.maps.places.Autocomplete(input);
+										}
+										google.maps.event.addDomListener(window, 'load', init);
+									</script>
+								  <div class='btn_group'>
+								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+								
+								<div id='report_step2' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>2</span>
+									</div>
+									<span class='stepper-text'>Select the problem</span>
+								</div>
+								<div id='report_step2_content' class='stepper-vert-content hide'>
+									<div id='step2_stuff' class='form-group form-group-label'>
+                                    <label for='ProblemSelector' style='display:none;'> Select The Problem: </label>
                                     <select class='form-control' id='ProblemSelector' style='width:100%;'>
                                         <option value='...'> Discolored Water </option>
                                         <option value='...'> Water Main Break </option>
@@ -290,62 +394,29 @@ if (@isset($_GET["pid"])) {
                                         ...
                                     </select>
                                     </div>
-                                </div>
-                                <div id='stepper3' class='stepper'>
-                                    <div class='stepper-step'>
-                                        <span class='icon stepper-step-icon'>check</span>
-                                        <span class='stepper-step-num'>3</span>
-                                    </div>
-                                    <span class='stepper-text'>Step 3</span>
-                                </div>
-                                <div class='stepper-vert-content'>
-                                <!--- Step 3 Contents Here! --->
-                                    <div id='step3_stuff' class='form-group form-group-label'>
-                                    <label for='GrowBox'> Describe Problem: (500 Character Limit) </label><br>
-                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' maxlength='500' style='width:100%;'></textarea>								
+								   <div class='btn_group'>
+								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
+								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  </div>
+								</div>
+								
+								<div id='report_step3' class='stepper'>
+									<div class='stepper-step'>
+										<span class='icon stepper-step-icon'>check</span>
+										<span class='stepper-step-num'>3</span>
 									</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button id='clean_aerator_step1' type='button' class='btn btn-primary btn-lg btn-block btn-bottom'><!--<a href='Step 2'>-->SUBMIT<!--</a>--></button>
-                        </div>";
-		break;
-		
-		case "submit":
-			$pagetitle = "Submit Location Information";
-			$content ="<div class='stpper-horiz stepper_group_width'>
-						    <div class='stepper-horiz-inner '>
-						        <div class='stepper active'>
-						            <div class='stepper-step'>
-						                <span class='icon stepper-step-icon'>check</span>
-						                <span class='stepper-step-num'>1</span>
-						            </div>
-						        </div>
-						        <div class='stepper'>
-						            <div class='stepper-step'>
-						                <span class='icon stepper-step-icon'>check</span>
-						                <span class='stepper-step-num'>2</span>
-						            </div>
-						        </div>
-						        <div class='stepper'>
-						            <div class='stepper-step'>
-						                <span class='icon stepper-step-icon'>check</span>
-						                <span class='stepper-step-num'>3</span>
-						            </div>
-						        </div>
-						    </div>
-						</div>
-						<div class='card' id='index_page'>
-						    <div class='card-main'>
-						        <div class='card-inner'> 
-						        	<p>Submitting more information about a location helps make lead level predictions more accurate for the entire community.</p>
-						        	<h6>Thank you for doing your part!</h6>
-						        </div>
-						    </div>
-						</div>
-						<div id='survey-get-started' >
-						<a class='btn btn-brand'> <span>GET STARTED</span> </a>
+									<span class='stepper-text'>Describe the problem</span>
+								</div>
+								<div id='report_step3_content' class='stepper-vert-content hide'>
+								  <div id='step3_stuff' class='form-group form-group-label'>
+                                    <label for='GrowBox' style='display:none;'> Describe Problem: (500 Character Limit) </label><br>
+                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' maxlength='500' style='width:100%;'></textarea>						
+									</div>
+								  <div class='btn_group'>
+								 <a id='submit_button' class='btn btn-flat btn-primary'>Submit</a>
+								 </div>
+								</div>
+							</div>
 						</div>";
 		break;
 		
