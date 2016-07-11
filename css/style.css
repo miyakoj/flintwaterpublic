@@ -248,7 +248,7 @@ html, body {
 #toggles .wrapper {
     position:relative;
     margin:0 auto;
-    overflow:auto;
+    overflow:hidden;
 	box-shadow:none;
 }
 
@@ -374,6 +374,7 @@ body[id="index_page"] #search_input {
 
 #map {
 	width:100%;
+	height:28em;
 	display:none;
 	z-index:1!important;
 }
@@ -574,7 +575,7 @@ figcaption h4 {
 
 
 
-footer {
+/*footer {
 	padding:4px;
 	z-index:1!important;
 }
@@ -587,7 +588,56 @@ footer p {
 footer a {
 	display:none;
 	text-align:center;
+}*/
+
+footer row:nth-child(2) .col-md-12 {
+	padding:0 40px!important;
 }
+
+footer h5 {
+	margin:25px 0;
+	text-align:center;
+}
+
+footer .col-md-4 {
+	padding:0 20px;
+}
+
+footer .card img {
+	display:none;
+}
+
+footer p {
+	margin-top:10px!important;
+	text-align:center;
+}
+
+footer .card-inner h3 {
+	margin:10px 0 20px 0!important;
+	text-align:center;
+}
+
+footer .card-inner p {
+	margin:12px 0;
+	text-align:left;
+}
+
+footer .card-action {
+	width:100%;
+}
+
+footer .card-action btn {
+	font-size:14px!important;
+}
+
+body[id="index_page"] footer p {
+	margin-top:0!important;
+}
+
+footer #copyright {
+	margin-top:12px;
+}
+	
 
 /* Alert Box */
 .alert {
@@ -727,15 +777,5 @@ footer a {
 		margin-top:24px!important;
 	}
 	
-	footer p {
-		margin-top:10px!important;
-	}
 	
-	body[id="index_page"] footer p {
-		margin-top:0!important;
-	}
-	
-	footer p, footer a {
-		text-align:center!important;
-	}
 }

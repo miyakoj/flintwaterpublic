@@ -942,7 +942,8 @@ $(document).ready(function() {
 		var input = $(this).text();
 
 		google.maps.event.trigger(input, 'focus');
-		google.maps.event.trigger(input, 'keydown', {
+		
+		google.maps.event.trigger(input, 'keydown', function() {
 			keyCode: 13
 		});
 			
