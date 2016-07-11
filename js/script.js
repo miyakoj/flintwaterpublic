@@ -33,10 +33,10 @@ $(document).ready(function() {
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
+	/*var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
 	
 	$("#map").css("height", mapHeight + "px");
-	$("#search_input").val(""); // clear the search input upon refresh
+	$("#search_input").val(""); // clear the search input upon refresh*/
 	
 	/* Scale the popup markers based on screen size. */
 	$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
