@@ -24,6 +24,9 @@ var resourceActiveArray = [1, 0, 0, 0, 0, 0];  //heatmap, water pickup, recycle,
 var location_marker = [];
 var marker_img;
 
+//resource marker that is clicked or last clicked
+var resource_marker;
+
 //for construction
 var constructionMarker;
 var pipeToggle = 0;
@@ -65,6 +68,7 @@ function checkAuth() {
 }
 
 function initMap() {
+	$("#resource_card").hide();
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
 	  zoom: 13,
@@ -183,6 +187,11 @@ function initMap() {
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
 	});
+
+	//If map center is changed hide resource card
+	 map.addListener('click', function() {
+    	$("#resource_card").hide();
+  	});
 
 	google.maps.event.addListener(map, 'zoom_changed', function() {
 	    zoomLevel = map.getZoom();
@@ -646,20 +655,19 @@ function callStorageAPI(object) {
 					
 					allMarkersString.push(images);
 					
-					var content = "<div id=\"provider_popup\"><h1>" + title + "</h1> <p id=\"provider_address\">" + provider.aidAddress + "</p>";
+					var content = "<p><b>" + title + "</b> <br /> " + provider.aidAddress + "</p>";
 					
 					if (provider.phone.length > 0)
-						content += "<p id=\"provider_phone\">" + provider.phone + "</p>";
+						content += "<p>" + provider.phone + "<br />";
 					
 					if (provider.hours.length > 0)
-						content += "<p id=\"provider_hours\">" + provider.hours + "</p>";
+						content += provider.hours + "<br />";
 					
 					if (provider.notes.length > 0)
-						content += "<p id=\"provider_notes\">" + provider.notes + "</p>";
+						content += provider.notes + "</p>";
 					
 					//content += "<p>" + images + "</p></div>";
 					content += "<p id=\"provider_resources\">" + resourcesAvailable + "</p>";
-					content += "<div><a id=\"directions_btn\" class=\"btn btn-flat\">Get Directions</a></div></div>"
 
 					var marker = new google.maps.Marker({
 						position: latLng,
@@ -775,8 +783,14 @@ function setUpInitialMap(){
 
 function bindInfoWindow(marker, map, infowindow, html){
 	marker.addListener("click", function(){
-		infowindow.setContent(html);
-		infowindow.open(map, this);
+		//infowindow.setContent(html);
+		//infowindow.open(map, this);
+		map.panTo(marker.getPosition());
+		$("#resource_card .card-inner").empty();
+		$("#resource_card .card-inner").append(html);
+		$("#resource_card").show();
+		resource_marker = marker;
+
 	});
 }
 
@@ -806,6 +820,7 @@ function displaySavedLocations() {
 			return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 		}
 	});
+
 	
 	/* Saved Location Selection Card */
 	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
@@ -929,9 +944,22 @@ $(document).ready(function() {
 		setMarkers();
 	});
 
-	$(document).on("click", "#provider_popup #directions_btn", function(){
-		term = $("#provider_address").text();
-        window.open('http://maps.google.com/?q='+term,'_blank');
+	//gives directions to a resource location when get dircetions is clicked
+	$(document).on("click", "#resource_card .resource-card-directions", function(){
+		resource_directions = resource_marker.getPosition();
+        window.open('http://maps.google.com/?q='+resource_directions,'_blank');
+	});
+
+	//saves resource location when save button is clicked on #resource_card
+	$(document).on("click", "#resource_card .resource-card-save", function(){
+		//todo save resource_marker
+		//todo reflect change in saved image
+	});
+
+	//sends problem reported to db when report issue is selected from #resource_card
+	$("#resource_card .dropdown-menu li").on("click", function(){
+		//todo get rid of extra spaces at begining of $(this).text()
+		//todo submit to db the issue selected and resource_marker or 
 	});
 
 	/* When a saved location is clicked, put the location in search bar and search. */
@@ -1006,7 +1034,6 @@ function setMarkers() {
 		leadLayer.setMap(null);
 	}
 	
-	console.log(allMarkers.length);
 	for (var i = 0; i < allMarkers.length; i++){
 		allMarkers[i].setMap(null);
 		if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){

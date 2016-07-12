@@ -44,13 +44,16 @@ $content = "<div id='map_container'>
 		<div id='resource_card' class='card'>
 			<div class='card_main'>
 				<div class='card-inner'>
-					<p><b id='title'> Resource Title </b> <br /> <p id='address'> address </p> </p>
-					<p> <p id='notes'> notes  </p> <br /> <p id='hours'> hours  </p> <br /> <p id='resources'> available resources  </p> </p>
+					<h5> Resource Title </h5>
+					<p> address </p>
+					<p> notes </p>
+					<p> hours </p>
+					<p> available resources </p>
 				 </div>
 				<div class='card-action'>
-					<button class='btn btn-flat resource-card-directions'>  Get Directions </button>
-					<button class='btn btn-flat resource-card-save'> <img src='../images/ic_star.png'/> </button>
-					<span class='dropdown'>
+					<button class='btn btn-flat'>  Get Directions </button>
+					<button class='btn btn-flat'> <img src='../images/ic_star.png'/> </button>
+					<div class='dropdown'>
 					    <a class='dropdown-toggle' data-toggle='dropdown'> <img src='../images/ic_report.png'/></a>
 					    <ul class='dropdown-menu'>
 					        <li>
@@ -69,7 +72,7 @@ $content = "<div id='map_container'>
 					            <a> Doesn't have Test Kits </a>
 					        </li>
 					    </ul>
-					</span>
+					</div>
 				</div>
 			</div>
 		</div>
