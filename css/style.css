@@ -394,6 +394,39 @@ body[id="index_page"] #map {
 	z-index:100!important;
 }
 
+#resource_card {
+	padding:5px;
+	position:fixed;
+	z-index:100!important;
+	bottom:45%;
+	left: 50%;
+	width: 300px;
+}
+
+
+#resource_card .card-inner, #resource_card .card-action {
+	width: 300px
+}
+
+.resource-card-directions {
+	margin-left: 10px;
+	position: absolute;
+	left: 0%;
+}
+
+#resource_card .dropdown {
+	margin-left: 10px;
+	padding: 10px;
+	position: absolute;
+	right: 0%;
+}
+
+.resource-card-save {
+	margin-right: 10px;
+	position: absolute;
+	right: 20px;
+}
+
 #provider_popup img {
 	width:25px;
 }
