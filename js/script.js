@@ -46,7 +46,7 @@ $(document).ready(function() {
 	var page;
 	
 	$("#main_menu a").each(function(i) {
-		id = $(this).attr("id");		
+		id = $(this).attr("id");
 		var dropdown = $(this).siblings(".dropdown-menu");
 		
 		/* If the dropdown is a sibling of the current <a> then generate the links for the items. */
@@ -73,6 +73,13 @@ $(document).ready(function() {
 		}
 	});
 	
+	$("footer .card-action a").each(function(i) {
+		id = $(this).attr("id");
+		page = id.slice(0, id.indexOf("_"));
+		
+		$(this).attr("href", "page.php?pid=" + page);
+	});
+	
 	/* Mark the tab of the current page as active. */
 	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 	
@@ -80,8 +87,6 @@ $(document).ready(function() {
 		$("#map_link").parent().addClass("active");
 	else {
 		$("#" + $page_id + "_link").parent().addClass("active");
-		
-		console.log($("#" + $page_id + "_link").parent().parent().parent().attr("id"));
 		
 		// if the linked clicked is in the "show me" dropdown then also make the "show me" tab active
 		if ($("#" + $page_id + "_link").parent().parent().parent().attr("id") == "show_me_menu")
@@ -104,14 +109,18 @@ $(document).ready(function() {
 		$("#show_me_menu").removeClass("dropdown");
 		$("#show_me_menu ul").removeClass("dropdown-menu");
 		$("#help_video").prependTo("main");
+		
+		/* Move the map into the steppers for phone/small tablet. */
+		$("#test_page #water_step1_content").prepend("#map");
 	}
 	else {
 		$("#main_menu .nav").addClass("nav-justified");
 		$("#show_me_menu").addClass("dropdown");
 		$("#show_me_menu ul").addClass("dropdown-menu");
+		
+		/* Move the map into the sidebar for large tablet/laptop/desktop. */
+		$("#map").prependTo("#test_page #sidebar");
 	}
-	
-	console.log("windowWidth: " + windowWidth);
 		
 	if (windowWidth < 600) {
 		$("#location_card").appendTo("body");
@@ -185,6 +194,9 @@ $(document).ready(function() {
 		$("#water_step1_content").addClass("hide");
 		$("#water_step2_content").removeClass("hide");
 		$("#water_step2").addClass("active");
+		
+		$("#test_page #map").remove();
+		$("#water_step2_content iframe").prependTo("#test_page #sidebar");
 	});
 	
 	$("#water_test #step2_click").on("click", function() {

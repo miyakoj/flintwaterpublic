@@ -40,13 +40,11 @@ body.slide-active {
 	}
 	#slide-nav .navbar.slide-active {
 	    position: absolute;
-	    width: 80%;
 	    top: -1px;
 	    z-index: 1000;
 	}
 	#slide-nav #main_menu {
 	    left: -100%;
-	    width: 80%;
 	    min-width: 0;
 	    position: absolute;
 	    padding-left: 0;

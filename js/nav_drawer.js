@@ -7,13 +7,22 @@ $(document).ready(function () {
 	var pagewrapper = '#page_content';
 	var navigationwrapper = '.navbar-header';
 	var menuwidth = '100%'; // the menu inside the slide menu itself
-	var slidewidth = '80%';
-	var menuneg = '-100%';
-	var slideneg = '-80%';
-
+    var slidewidth = '80%';
+    var menuneg = '-100%';
+    var slideneg = '-80%';
+	
+	if ($(window).width() <= 320) {
+		slidewidth = '80%';
+		slideneg = '-80%';
+	}
+	else {
+		slidewidth = '50%';
+		slideneg = '-50%';
+	}
+	
+	$("#slide-nav .navbar.slide-active, #slide-nav #main_menu").css("width", slidewidth);
 
 	$("#slide-nav").on("click", toggler, function (e) {
-
 		var selected = $(this).hasClass('slide-active');
 
 		$('#main_menu').stop().animate({
