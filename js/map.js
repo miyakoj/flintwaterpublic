@@ -569,13 +569,14 @@ function callStorageAPI(object) {
 					var weightValue = assignWeight(info.leadLevel);
 					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
 				}*/
-				for(i=0; i<js_obj.leadLevels.length; i++) {
+				
+				/*for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					//var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
 				}
 				
-				/*function assignWeight(levelIn){
+				function assignWeight(levelIn){
 					if (levelIn < 5){
 						return 0;
 					}
@@ -683,6 +684,7 @@ function callStorageAPI(object) {
 			else if(object == "pipedata.json"){
 				js_obj = $.parseJSON(resp.body);
 				var tempArr;
+				
 				for(i=0; i<js_obj.pipedata.length; i++) {
 					var pipe = js_obj.pipedata[i];
 					var tempArray = new Array();
@@ -690,29 +692,28 @@ function callStorageAPI(object) {
 					
 					for(j=i; j<js_obj.pipedata.length; j++){
 						var newPipe = js_obj.pipedata[j];
-						if(newPipe.streetName == currentName){
+						if (newPipe.streetName == currentName) {
 							// Make the 3rd deminsion Array
 							var lngLat = new Array();
 							lngLat[0] = parseFloat(newPipe.lat);
 							lngLat[1] = parseFloat(newPipe.lng);
 							tempArray.push(lngLat);	//Add it to temp arr
 						}
-						else if(newPipe.streetName == "endOfFile")
-						{
+						else if (newPipe.streetName == "endOfFile") {
 							masterPipeArray.push(tempArray);
 						}
-						else{
+						else {
 							masterPipeArray.push(tempArray);	
 							i = j - 1;	
 							j = js_obj.pipedata.length;	
 						}
 					}
 				}
+				
 				var pipeObject = new Object();
 				var pipeLine = new Array();
-				for(var i = 0; i <= masterPipeArray.length; i++)
-				{
-					for(var k = 0; k < masterPipeArray[i].length; k++){
+				for(var i = 0; i <= masterPipeArray.length; i++) {					
+					for(var k = 0; k < masterPipeArray[i].length; k++) {
 						pipeObject = {lat: masterPipeArray[i][k][0], lng: masterPipeArray[i][k][1]};
 						pipeLine.push(pipeObject);}
 						
@@ -727,7 +728,6 @@ function callStorageAPI(object) {
 						pipeLine = [];
 				}
 			}
-			
 				
 		}, function(reason) {
 			console.log('Error: ' + reason.result.error.message);
@@ -737,12 +737,11 @@ function callStorageAPI(object) {
 
 function setUpInitialMap(){
 		if (localStorage !== "undefined") {
-     		var retrieveArray = localStorage.getItem("water_test_array");
+     		var retrieveArray = localStorage.getItem("resource_array");
        		resourceActiveArray = JSON.parse(retrieveArray);
 
-
      		var temp = [1,0,0,0,0,0];
-			localStorage.setItem("water_test_array", JSON.stringify(temp));
+			localStorage.setItem("resource_array", JSON.stringify(temp));
      	}
     	else {
       		console.log("We suck");
@@ -868,7 +867,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	
 	$("#water_pickup_btn").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
@@ -975,64 +973,59 @@ $(document).ready(function() {
 			activeSearch = 0;
 		}
 	});
-
-	$("#test_page #step1 a").on("click", function(){
-		if (localStorage !== "undefined") {
-     		resourceActiveArray = [0,0,0,0,1,0];
-			localStorage.setItem("water_test_array", JSON.stringify(resourceActiveArray));
-     	}
-    	else {
-      		console.log("We suck");
-    	}
-		$(window).attr("location", "index.php");
-	}); 
 });
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
+	if (leadLayer) {
+		if (resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
 			leadLayer.setMap(map);
-	}
-	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
-		leadLayer.setMap(null);
-		if(predictiveLayer.getMap() == map)
-			predictiveLayer.setMap(null);
-	}
-	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
-		//console.log("heatmap is set and will stay set");
-	}
-	else {
-		//console.log("heatmap is not set and will stay not set");
-		leadLayer.setMap(null);
+		}
+		else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
+			leadLayer.setMap(null);
+			if (predictiveLayer.getMap() == map)
+				predictiveLayer.setMap(null);
+		}
+		else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
+			//console.log("heatmap is set and will stay set");
+		}
+		else {
+			//console.log("heatmap is not set and will stay not set");
+			leadLayer.setMap(null);
+		}
 	}
 	
+	var i;
+	
 	console.log(allMarkers.length);
-	for (var i = 0; i < allMarkers.length; i++){
+	for (i = 0; i < allMarkers.length; i++){
 		allMarkers[i].setMap(null);
-		if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
-			allMarkers[i].setIcon(bloodIcon);
+		
+		if (resourceActiveArray[1]==1 && allMarkersString[i].search("water") > -1){
+			allMarkers[i].setIcon(waterpickupIcon);
 			allMarkers[i].setMap(map);
 		}
-		else if(resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
-			allMarkers[i].setIcon(leadTestIcon);
-			allMarkers[i].setMap(map);
-		}
-		else if(resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
-			allMarkers[i].setIcon(filterIcon);
-			allMarkers[i].setMap(map);
-		}
-		else if(resourceActiveArray[2]==1 && allMarkersString[i].search("recycle") > -1){
+		else if (resourceActiveArray[2]==1 && allMarkersString[i].search("recycle") > -1){
 			allMarkers[i].setIcon(recycleIcon);
 			allMarkers[i].setMap(map);
 		}
-		else if(resourceActiveArray[1]==1 && allMarkersString[i].search("water") > -1){
-			allMarkers[i].setIcon(waterpickupIcon);
+		else if (resourceActiveArray[3]==1 && allMarkersString[i].search("filter") >-1){
+			allMarkers[i].setIcon(filterIcon);
 			allMarkers[i].setMap(map);
-		}	
+		}
+		else if (resourceActiveArray[4]==1 && allMarkersString[i].search("lead") >-1){
+			allMarkers[i].setIcon(leadTestIcon);
+			allMarkers[i].setMap(map);
+		}
+		else if (resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
+			allMarkers[i].setIcon(bloodIcon);
+			allMarkers[i].setMap(map);
+		}
 	}
+	
 	if (pipeToggle == 1) {
 		constructionMarker.setMap(map);
-		for(var i = 0; i < arrayOfLines.length; i++)
+		for(i = 0; i < arrayOfLines.length; i++)
 		{
 			arrayOfLines[i].setMap(map);
 		}
@@ -1042,7 +1035,7 @@ function setMarkers() {
 	else {
 		constructionMarker.setMap(null);
 		waterplantMarker.setMap(null);
-		for(var i = 0; i < arrayOfLines.length; i++)
+		for(i = 0; i < arrayOfLines.length; i++)
 		{
 			arrayOfLines[i].setMap(null);
 		}

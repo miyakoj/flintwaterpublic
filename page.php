@@ -33,13 +33,13 @@ if (@isset($_GET["pid"])) {
 		break;
 		
 		case "test":
-			$pagetitle = "Test My Water";
+			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
 				<div class='row'>
 					<div class='col-md-4'>
-						<div class='stpper-vert'>
+						<div id='steppers' class='stepper-vert'>
 									<h2>Test your water</h2>
-									<div class='stpper-vert-inner'>
+									<div class='stepper-vert-inner'>
 										<div id='water_step1' class='stepper active'>
 											<div class='stepper-step'>
 												<span class='icon stepper-step-icon'>check</span>
@@ -66,7 +66,9 @@ if (@isset($_GET["pid"])) {
 											<span class='stepper-text'>Take the water sample</span>
 										</div>
 										<div id='water_step2_content' class='stepper-vert-content hide'>
-											<iframe class='help_video embed-responsive-item center-block' src='https://www.youtube.com/embed/KMaAZA1c3oA'></iframe>
+											<div id='help_video' class='embed-responsive embed-responsive-16by9 center-block'>
+											<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/KMaAZA1c3oA' allowfullscreen></iframe>
+											</div>
 										
 										   <ul>
 											 <li>Fill out the water test form that came with your water test kit.</li>
@@ -110,8 +112,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
-			$content = "<div id='install_filter' class='stpper-vert'><h2>Install Water Filter</h2>
-							<div class='stpper-vert-inner'>
+			$content = "<div id='install_filter' class='stepper-vert'><h2>Install Water Filter</h2>
+							<div class='stepper-vert-inner'>
 								<div id='filter_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -230,8 +232,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
-			$content = "<div id='clean_aerator' class='stpper-vert'><h2>Clean My Aerator</h2>
-							<div class='stpper-vert-inner'>
+			$content = "<div id='clean_aerator' class='stepper-vert'><h2>Clean My Aerator</h2>
+							<div class='stepper-vert-inner'>
 								<div id='aerator_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -313,8 +315,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "submit":
 			$pagetitle = "Submit Location Information";
-			$content ="<div id='submit_info' class='stpper-vert'><h2>Submit Location Information</h2>
-							<div class='stpper-vert-inner'>
+			$content ="<div id='submit_info' class='stepper-vert'><h2>Submit Location Information</h2>
+							<div class='stepper-vert-inner'>
 								<div id='submit_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -362,8 +364,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content = "<div id='report_problem' class='stpper-vert'><h2>Report a Problem</h2>
-							<div class='stpper-vert-inner'>
+			$content = "<div id='report_problem' class='stepper-vert'><h2>Report a Problem</h2>
+							<div class='stepper-vert-inner'>
 								<div id='report_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
