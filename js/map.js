@@ -18,6 +18,7 @@ var heatmapData;
 
 var $location_buttons;
 
+var savedMarkers = [];
 var allMarkers = [];
 var allMarkersString = [];
 var resourceActiveArray = [1, 0, 0, 0, 0, 0];  //heatmap, water pickup, recycle, filter, lead, blood
@@ -617,40 +618,54 @@ function callStorageAPI(object) {
 				js_obj = $.parseJSON(resp.body);
 				
 				
-				console.log(js_obj.providers[27].locationName);
 				
 				for(i=0; i<js_obj.providers.length; i++) {
 					var provider = js_obj.providers[i];
 					var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
 					var title = provider.locationName;
-					
+					var isSaved = false;
+					if(checkIfSaved(title))
+						isSaved = true;
+
+					var icon;
 					var images = "";
 					var resourcesAvailable = "";
 
+					console.log(icon);
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Pickup' />";
 						resourcesAvailable += "Water Pickup, ";
+						if(icon == null)
+							icon = waterpickupIcon;
 					}
 					if (provider.resType.indexOf("Recycle") != -1) {
 						marker_img = "images/recycleicon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Recycling' />";
 						resourcesAvailable += "Recycling, ";
+						if(icon == null)
+							icon = recycleIcon;
 					}
 					if (provider.resType.indexOf("Blood Testing") != -1) {
 						marker_img = "images/bloodtesticon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Blood Testing' />";
 						resourcesAvailable += "Blood Testing, ";
+						if(icon == null)
+							icon = bloodIcon;
 					}
 					if (provider.resType.indexOf("Water Filters") != -1) {
 						marker_img = "images/waterfiltericon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Filters' />";
 						resourcesAvailable += "Water Filters, ";
+						if(icon == null)
+							icon = filterIcon
 					}
 					if (provider.resType.indexOf("Test Kits") != -1) {
 						marker_img = "images/leadtesticon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Testing' />";
 						resourcesAvailable += "Water Testing";
+						if(icon == null)
+							icon = leadTestIcon;
 					}
 					
 					allMarkersString.push(images);
@@ -669,16 +684,27 @@ function callStorageAPI(object) {
 					//content += "<p>" + images + "</p></div>";
 					content += "<p id=\"provider_resources\">" + resourcesAvailable + "</p>";
 
+					/*If the resource is saved, display on map always if not then do not display*/
+					if(isSaved)
+						isDisplayMap = map;
+					else
+						isDisplayMap = null;
+					console.log(icon);
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
-						map: null
+						map: isDisplayMap,
+						icon: icon
 					});
 					
 					/* Add tooltips to the popup images. */
 					
-					/* Store the markers in arrays for the add/remove functionality. */
-					allMarkers.push(marker);
+					/* Store the markers in arrays for the add/remove functionality. 
+						if saved, put in savedMarkers if not put in allMarkers*/
+					if(isSaved)
+						savedMarkers.push(marker);
+					else
+						allMarkers.push(marker);
 					
 					bindInfoWindow(marker, map, infoWindow, content);
 
@@ -953,7 +979,27 @@ $(document).ready(function() {
 	//saves resource location when save button is clicked on #resource_card
 	$(document).on("click", "#resource_card .resource-card-save", function(){
 		//todo save resource_marker
-		//todo reflect change in saved image
+		var locationTitle = resource_marker.getTitle();
+		var isSaved = checkIfSaved(locationTitle);
+		if(isSaved){
+			//remove from saved
+			removeFromSaved(locationTitle);
+			//todo change picture on card to star outline
+			//todo remove from savedMarkers 
+			//add to all markers and reset map
+			allMarkers.push(resource_marker);
+
+		}
+		else{
+			saveLocation(locationTitle);
+			//todo change picture on card to filled star
+			//todo remove from allMarkers 
+			//for(var i = 0; i < allMarkers.length; i++){
+				//if(allMarkers[i].getTitle() == locationTitle)
+			//}
+			//todo add to savedMarkers
+			savedMarkers.push(resource_marker);
+		}
 	});
 
 	//sends problem reported to db when report issue is selected from #resource_card
@@ -1074,4 +1120,63 @@ function setMarkers() {
 			arrayOfLines[i].setMap(null);
 		}
 	}
+}
+
+jQuery.extend({
+stringify : function stringify(obj) {
+	if(JSON && JSON.stringify)
+		return JSON.stringify(obj);
+ 
+	var t = typeof (obj);
+	if (t != "object" || obj === null) {
+		// simple data type
+		if (t == "string") obj = '"' + obj + '"';
+			return String(obj);
+	} else {
+		// recurse array or object
+		var n, v, json = [], arr = (obj && obj.constructor == Array);
+ 
+		for (n in obj) {
+			v = obj[n];
+			t = typeof(v);
+			if (obj.hasOwnProperty(n)) {
+				if (t == "string") v = '"' + v + '"'; else if (t == "object" && v !== null) v = jQuery.stringify(v);
+				json.push((arr ? "" : '"' + n + '":') + String(v));
+			}
+		}
+		return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+	}
+}
+});
+
+function checkIfSaved(obj) {
+
+		var tempNumberSaved = parseInt(localStorage["numberSaved"]);
+		var returnVal = false;
+		for(var i=0; i <= tempNumberSaved; i++){
+			if(localStorage["savedLocation"+i].includes(obj.toString()))
+				returnVal = true;
+		}
+		return returnVal;
+}
+
+function removeFromSaved(obj) {
+		var tempNumberSaved = parseInt(localStorage["numberSaved"]);
+		for(var i=0; i <= tempNumberSaved; i++){
+			if(localStorage["savedLocation"+i].includes(obj.toString()))
+				localStorage["savedLocation"+i] = null;
+		}
+}
+
+function saveLocation(obj) {
+		var tempNumberSaved = localStorage["numberSaved"];
+		if(tempNumberSaved == null) {
+			tempNumberSaved = 0;
+		}
+		else {
+			tempNumberSaved = parseInt(tempNumberSaved)++;
+		}
+		localStorage["numberSaved"] = tempNumberSaved;
+		localStorage["savedLocation"+tempNumberSaved] = resource_marker.getTitle();
+		console.log(localStorage["savedLocation"+tempNumberSaved]);
 }
