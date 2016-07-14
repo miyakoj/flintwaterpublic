@@ -49,7 +49,7 @@ $content = "<div id='map_container'>
 				 </div>
 				<div class='card-action'>
 					<button class='btn btn-flat resource-card-directions'>  Get Directions </button>
-					<button class='btn btn-flat resource-card-save'> <img src='../images/ic_star.png'/> </button>
+					<button class='btn btn-flat resource-card-save'> <img src='../images/ic_star_border.png'/> </button>
 					<span class='dropdown'>
 					    <a class='dropdown-toggle' data-toggle='dropdown'> <img src='../images/ic_report.png'/></a>
 					    <ul class='dropdown-menu'>
