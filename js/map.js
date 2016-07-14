@@ -419,11 +419,8 @@ function initMap() {
 		
 		 // change the location card icon dynamically
 		
-		console.log(localStorage);
-
 
 		map.setZoom(25);
-		console.log("zooming");
 	}
 	
 	/*if (localStorage.getItem("saved_location2") !== null) {
@@ -631,7 +628,6 @@ function callStorageAPI(object) {
 					var images = "";
 					var resourcesAvailable = "";
 
-					console.log(icon);
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Pickup' />";
@@ -689,7 +685,7 @@ function callStorageAPI(object) {
 						isDisplayMap = map;
 					else
 						isDisplayMap = null;
-					console.log(icon);
+					
 					var marker = new google.maps.Marker({
 						position: latLng,
 						title: title,
@@ -706,7 +702,7 @@ function callStorageAPI(object) {
 					else
 						allMarkers.push(marker);
 					
-					bindInfoWindow(marker, map, infoWindow, content);
+					bindInfoWindow(marker, map, infoWindow, content, isSaved);
 
 				}
 
@@ -820,6 +816,22 @@ function bindInfoWindow(marker, map, infowindow, html){
 	});
 }
 
+//needed a function to be able to change if it's saved or not
+function bindInfoWindow(marker, map, infowindow, html, isSaved){
+	marker.addListener("click", function(){
+		//infowindow.setContent(html);
+		//infowindow.open(map, this);
+		map.panTo(marker.getPosition());
+		if(isSaved)
+			$("#resource_card .resource-card-save img").attr("src", "../images/ic_star.png");
+		$("#resource_card .card-inner").empty();
+		$("#resource_card .card-inner").append(html);
+		$("#resource_card").show();
+		resource_marker = marker;
+
+	});
+}
+
 function unsaveLocation(locationInput) {
 		localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
 
@@ -889,7 +901,6 @@ $(document).ready(function() {
 	});
 	*/
 	//localStorage.clear();
-	console.log(localStorage);
 	$("#heatmap_btn").on('click', function() {	
 		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			resourceActiveArray[0] = 0;
@@ -984,26 +995,36 @@ $(document).ready(function() {
 		if(isSaved){
 			//remove from saved
 			removeFromSaved(locationTitle);
-			//todo change picture on card to star outline
-			//todo remove from savedMarkers 
+			//change picture on card to star outline
+			$("#resource_card .resource-card-save img").attr("src", "../images/ic_star_border.png");
+			//remove from savedMarkers 
+			for(var i = 0; i < savedMarkers.length; i++){
+				if(savedMarkers[i].getTitle() == locationTitle)
+					savedMarkers.splice(i,1);
+			}
 			//add to all markers and reset map
-			allMarkers.push(resource_marker);
+			var temp = resource_marker;
+			allMarkers.push(temp);
+			setMarkers();
 
 		}
 		else{
 			saveLocation(locationTitle);
 			//todo change picture on card to filled star
-			//todo remove from allMarkers 
-			//for(var i = 0; i < allMarkers.length; i++){
-				//if(allMarkers[i].getTitle() == locationTitle)
-			//}
-			//todo add to savedMarkers
-			savedMarkers.push(resource_marker);
+			$("#resource_card .resource-card-save img").attr("src", "../images/ic_star.png");
+			//remove from allMarkers 
+			for(var i = 0; i < allMarkers.length; i++){
+				if(allMarkers[i].getTitle() == locationTitle)
+					allMarkers.splice(i,1);
+			}
+			//add to savedMarkers
+			var temp = resource_marker;
+			savedMarkers.push(temp);
 		}
 	});
 
 	//sends problem reported to db when report issue is selected from #resource_card
-	$("#resource_card .dropdown-menu li").on("click", function(){
+	$("#resource_card .dropdown-menu li").on("click", function() {
 		//todo get rid of extra spaces at begining of $(this).text()
 		//todo submit to db the issue selected and resource_marker or 
 	});
@@ -1174,7 +1195,8 @@ function saveLocation(obj) {
 			tempNumberSaved = 0;
 		}
 		else {
-			tempNumberSaved = parseInt(tempNumberSaved)++;
+			tempNumberSaved = parseInt(tempNumberSaved);
+			tempNumberSaved++;
 		}
 		localStorage["numberSaved"] = tempNumberSaved;
 		localStorage["savedLocation"+tempNumberSaved] = resource_marker.getTitle();

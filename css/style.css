@@ -396,10 +396,10 @@ body[id="index_page"] #map {
 
 #resource_card {
 	padding:5px;
-	position:fixed;
+	position:absolute;
 	z-index:100!important;
 	bottom:45%;
-	left: 50%;
+	left: 52%;
 	width: 300px;
 }
 
