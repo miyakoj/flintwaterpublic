@@ -26,8 +26,8 @@ $(document).ready(function() {
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
 	/* Toggles styles */
-	$("#toggles .wrapper, #toggles .list").css("height", $("#toggles label").css("height"));
-	$("#toggles .tile").css("min-height", $("#toggles label").css("height"));
+	$("#toggles .list").css("height", $("#toggles label").css("height"));
+	//$("#toggles .tile").css("min-height", $("#toggles label").css("height"));
 	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
@@ -134,6 +134,7 @@ $(document).ready(function() {
 	
 	/* Layout mods for differences between desktop and mobile. */
 	if (windowWidth < 768) {
+		//$(".navbar-header #made_in_Flint").prependTo("#slide-nav");
 		$("#main_menu .nav").removeClass("nav-justified");
 		$("#show_me_menu").removeClass("dropdown");
 		$("#show_me_menu ul").removeClass("dropdown-menu");
@@ -145,7 +146,7 @@ $(document).ready(function() {
 		$("#help_video").prependTo("main");
 		
 		/* Move the map into the steppers for phone/small tablet. */
-		//$("#test_page #water_step1_content").prepend("#map");
+		$("#test_page #water_step1_content").prepend("#map");
 	}
 	else {
 		$("#main_menu .nav").addClass("nav-justified");
@@ -179,55 +180,51 @@ $(document).ready(function() {
 	var news_js = "<script src='js/news.js'></script>";
 	var alert_js = "<script src='js/alerts.js'></script>";
 	
-	/*if ($page_id == "index") {
+	/*if ($page_id.indexOf("index") != -1) {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
 	}
-	/*else if ($page_id == "news") {
+	/*else if ($page_id.indexOf("news")) {
 		//$("head script[src*='script']").before(js_api);
 		$("head script[src*='script']").after(news_js, alert_js);
 	}*/
 	
+	/* Test My Water page */
 	if ($page_id.indexOf("test") != -1) {
 		$("#water_step1").addClass("active");
 		$("#water_step1_content").removeClass("hide");
 		$("#water_step2_content").addClass("hide");
 		$("#water_step3_content").addClass("hide");
+		$("#help_video").addClass("hide");
 		
 		/* Set the map to display only test kits. */
-		if (typeof(Storage) !== "undefined") {
-			resourceActiveArray = [0,0,0,0,1,0];
-			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-			setMarkers();
-		}
+		resourceActiveArray = [0,0,0,0,1,0];
+		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+		
+		$("#water_step1_content .continue_btn").on("click", function() {
+			$("#water_step1").removeClass("active").addClass("done");
+			$("#water_step1_content").addClass("hide");
+			$("#water_step2_content").removeClass("hide");
+			$("#water_step2").addClass("active");
+			
+			$("#map").addClass("hide");
+			$("#help_video").removeClass("hide").prependTo("#sidebar");
+		});
+		
+		$("#water_step2_content .continue_btn").on("click", function() {
+			$("#water_step2").removeClass("active").addClass("done");
+			$("#water_step2_content").addClass("hide");
+			$("#water_step3").addClass("active");
+			$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+			
+			$("#help_video").remove();
+			$("#map").removeClass("hide");
+		});
 	}
 	
 	$(".cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
-
-	/* Test My Water page */	
-    $("#water_test #step1_click").click(function() {
-		console.log("test test");
-		
-		$("#water_step1").removeClass("active").addClass("done");
-		$("#water_step1_content").addClass("hide");
-		$("#water_step2_content").removeClass("hide");
-		$("#water_step2").addClass("active");
-		
-		$("#test_page #map").hide();
-		$("#test_page #help_video").prependTo("#test_page #sidebar");
-	});
-	
-	$("#water_test #step2_click").on("click", function() {
-		$("#water_step2").removeClass("active").addClass("done");
-		$("#water_step2_content").addClass("hide");
-		$("#water_step3").addClass("active");
-		$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
-		
-		$("#test_page #help_video").remove();
-		$("#test_page #map").show();
-	});	
 	
 	/* Steppers for Install water filter */
 	$("#filter_link").on("click", function() {

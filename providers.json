@@ -1,0 +1,564 @@
+{ "providers": [
+{
+    "locationName": "Flint Pantry Food and Water Winter Distribution",
+    "aidAddress": "4400 S Saginaw St",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48507,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 42.9838790894,
+    "longitude": -83.6771469116
+},
+{
+    "locationName": "Fire Station 8",
+    "aidAddress": "202 E Atherton Rd",
+    "hours": "9 AM to 9 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48507,
+    "resType": [
+        "Recycle",
+        "Test Kits",
+        "Water Filters",
+        "Water Pickup"
+    ],
+    "notes": "All bottles must be returned in clear plastic bags; solid color bags and grocery bags will not be accepted.",
+    "latitude": 42.9886474609,
+    "longitude": -83.6722106934
+},
+{
+    "locationName": "Genesee County Human Society",
+    "aidAddress": "G-3325 South Dort Highway",
+    "hours": "Mon-Fri 12 noon-6 pm;Sat 10 am-4 pm",
+    "phone": "",
+    "city": "Burton",
+    "zipcode": 48529,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "City of Flint residents with pets",
+    "latitude": 42.9928092957,
+    "longitude": -83.6535568237
+},
+{
+    "locationName": "Genesee County Health Department",
+    "aidAddress": "G-3373 South Saginaw Street",
+    "hours": "Mon-Fri, 8 am-11 am; 1 pm-3 pm",
+    "phone": "(810) 257-3833",
+    "city": "Burton",
+    "zipcode": 48529,
+    "resType": [
+        "Blood Testing"
+    ],
+    "notes": "",
+    "latitude": 42.9935188293,
+    "longitude": -83.6771697998
+},
+{
+    "locationName": "Bill Carr Signs",
+    "aidAddress": "719 W 12th St",
+    "hours": "8 AM to 4 PM (M-F)",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Recycle"
+    ],
+    "notes": "Bottles and caps only.",
+    "latitude": 43.0018959045,
+    "longitude": -83.6893920898
+},
+{
+    "locationName": "Quinn Chapel AME Church",
+    "aidAddress": "2101 Lippincott Boulevard",
+    "hours": "Tues-Thurs 9 am-4:30 am",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0049591064,
+    "longitude": -83.6566772461
+},
+{
+    "locationName": "Greater Flint Outreach",
+    "aidAddress": "1938 S Dort Hwy",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0068016052,
+    "longitude": -83.6551513672
+},
+{
+    "locationName": "Second Chance Baptist",
+    "aidAddress": "1950 Burr Blvd",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0069084167,
+    "longitude": -83.6646499634
+},
+{
+    "locationName": "Brennan Community Center",
+    "aidAddress": "1301 Pingree Ave",
+    "hours": "M-F 9-11 AM, 1-4 PM",
+    "phone": "(810) 766-7238",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Water Filters",
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0071105957,
+    "longitude": -83.6668777466
+},
+{
+    "locationName": "First Trinity Missionary Baptist Church of Flint",
+    "aidAddress": "1226 Beach Street",
+    "hours": "Tuesday and Friday, 10 a.m. - noon",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0089454651,
+    "longitude": -83.6861038208
+},
+{
+    "locationName": "Dover & Company ",
+    "aidAddress": "651 Hall St",
+    "hours": "8 AM to 4 PM (M-F)",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Recycle"
+    ],
+    "notes": "",
+    "latitude": 43.0106964111,
+    "longitude": -83.6977615356
+},
+{
+    "locationName": "Court Street United Methodist Church",
+    "aidAddress": "225 West Court Street",
+    "hours": "Mon-Fri 8 am - 4 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0111732483,
+    "longitude": -83.6898422241
+},
+{
+    "locationName": "Flint City Hall",
+    "aidAddress": "1101 S Saginaw St",
+    "hours": "9 AM to 4 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Test Kits",
+        "Water Filters"
+    ],
+    "notes": "Room 310",
+    "latitude": 43.011516571,
+    "longitude": -83.6849517822
+},
+{
+    "locationName": "Fire Station 1",
+    "aidAddress": "310 E 5th St",
+    "hours": "9 AM to 9 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Recycle",
+        "Test Kits",
+        "Water Filters",
+        "Water Pickup"
+    ],
+    "notes": "All bottles must be returned in clear plastic bags; solid color bags and grocery bags will not be accepted.",
+    "latitude": 43.0127830505,
+    "longitude": -83.6837158203
+},
+{
+    "locationName": "Bernie Sanders Flint Campaign Office",
+    "aidAddress": "600 Harrison St",
+    "hours": "9 AM to 9 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "Contact info@flint4bernie.org for information about arranging for water deliveries.",
+    "latitude": 43.0153388977,
+    "longitude": -83.6885528564
+},
+{
+    "locationName": "Michigan Department of Health and Human Services",
+    "aidAddress": "125 E Union St",
+    "hours": "9 AM to 4 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Water Filters"
+    ],
+    "notes": "",
+    "latitude": 43.0185966492,
+    "longitude": -83.6916122437
+},
+{
+    "locationName": "The Local Grocer",
+    "aidAddress": "601 Martin Luther King Ave",
+    "hours": "7 AM to 7 PM (M-Sat), 7 AM to 2 PM (Sun)",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Recycle"
+    ],
+    "notes": "",
+    "latitude": 43.0211181641,
+    "longitude": -83.695640564
+},
+{
+    "locationName": "Hurley Medical Center",
+    "aidAddress": "1 Hurley Plaza",
+    "hours": "",
+    "phone": "(810) 262-9000",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Blood Testing"
+    ],
+    "notes": "",
+    "latitude": 43.0212020874,
+    "longitude": -83.7047271729
+},
+{
+    "locationName": "Fire Station 3",
+    "aidAddress": "1525 Martin Luther King Ave",
+    "hours": "9 AM to 9 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Recycle",
+        "Test Kits",
+        "Water Filters",
+        "Water Pickup"
+    ],
+    "notes": "PUR and BRITA filter recycling.",
+    "latitude": 43.0298347473,
+    "longitude": -83.7030029297
+},
+{
+    "locationName": "St Andrews Episcopal",
+    "aidAddress": "1922 Iowa Ave",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48506,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0338363647,
+    "longitude": -83.6699066162
+},
+{
+    "locationName": "Mount Zion Missionary Baptist Church",
+    "aidAddress": "2109 Martin Luther King Avenue",
+    "hours": "Tues-Fri 10 am-4 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48503,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0351409912,
+    "longitude": -83.7048721313
+},
+{
+    "locationName": "Christ Enrichment Center",
+    "aidAddress": "322 East Hamilton",
+    "hours": "Fridays, 7:30 am-10:30 am",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 49505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0356788635,
+    "longitude": -83.7006912231
+},
+{
+    "locationName": "Christ Enrichment Center",
+    "aidAddress": "332 E Hamilton Ave",
+    "hours": "Fridays 7:30 am-10:30 am",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0359687805,
+    "longitude": -83.7004470825
+},
+{
+    "locationName": "Christ Fellowship Baptist Church",
+    "aidAddress": "317 East Hamilton Avenue",
+    "hours": "Wednesdays 11 am-3 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0363006592,
+    "longitude": -83.7002334595
+},
+{
+    "locationName": "St. Luke's Catholic",
+    "aidAddress": "3115 Lawndale Ave",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48504,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0439147949,
+    "longitude": -83.7194442749
+},
+{
+    "locationName": "Fire Station 5",
+    "aidAddress": "3402 Western Rd",
+    "hours": "9 AM to 9 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48506,
+    "resType": [
+        "Recycle",
+        "Test Kits",
+        "Water Filters",
+        "Water Pickup"
+    ],
+    "notes": "All bottles must be returned in clear plastic bags; solid color bags and grocery bags will not be accepted",
+    "latitude": 43.0451965332,
+    "longitude": -83.654876709
+},
+{
+    "locationName": "Berston Field House",
+    "aidAddress": "3300 Saginaw Street",
+    "hours": "Mon-Fri, 12 noon-4 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0459442139,
+    "longitude": -83.6924285889
+},
+{
+    "locationName": "Genesee County Community Action Resource Department Office",
+    "aidAddress": "601 N Saginaw St",
+    "hours": "9 AM to 4 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48502,
+    "resType": [
+        "Water Filters"
+    ],
+    "notes": "",
+    "latitude": 43.0474472046,
+    "longitude": -83.6928100586
+},
+{
+    "locationName": "Metropolitan Baptist Church",
+    "aidAddress": "930 East Myrtle Avenue",
+    "hours": "Mon-Fri 8 am-5 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0515785217,
+    "longitude": -83.6883773804
+},
+{
+    "locationName": "Flint Water Plant",
+    "aidAddress": "4500 N Dort Hwy",
+    "hours": "7 AM to 4 PM (M-F)",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Test Kits"
+    ],
+    "notes": "",
+    "latitude": 43.0562438965,
+    "longitude": -83.6696548462
+},
+{
+    "locationName": "Mission of Hope",
+    "aidAddress": "4618 Roberts Street",
+    "hours": "Mon-Sat 8 am - 4 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0574455261,
+    "longitude": -83.6882171631
+},
+{
+    "locationName": "Michigan Department of Health and Human Services",
+    "aidAddress": "4809 Clio Rd",
+    "hours": "9 AM to 4 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48504,
+    "resType": [
+        "Water Filters"
+    ],
+    "notes": "",
+    "latitude": 43.0575180054,
+    "longitude": -83.7349777222
+},
+{
+    "locationName": "Fire Station 6",
+    "aidAddress": "716 W Pierson Rd",
+    "hours": "9 AM to 9 PM",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Test Kits",
+        "Water Filters",
+        "Water Pickup"
+    ],
+    "notes": "PUR and BRITA filter recycling.",
+    "latitude": 43.0612831116,
+    "longitude": -83.7147903442
+},
+{
+    "locationName": "Vernon Chapel AME Church",
+    "aidAddress": "5802 Dupont Street",
+    "hours": "Mon-Fri 11 am - 4 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0657234192,
+    "longitude": -83.7141113281
+},
+{
+    "locationName": "Flint Hasselbring Senior Center",
+    "aidAddress": "1002 West Home Avenue",
+    "hours": "Mon-Fri 8 am - 5 pm",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.067150116,
+    "longitude": -83.7149734497
+},
+{
+    "locationName": "Foss Avenue Baptist Church",
+    "aidAddress": "1159 E Foss Ave",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0719909668,
+    "longitude": -83.6823501587
+},
+{
+    "locationName": "New Jerusalem Baptist Church",
+    "aidAddress": "1035 E Carpenter Rd",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0761489868,
+    "longitude": -83.6922454834
+},
+{
+    "locationName": "Young Environmental Offices",
+    "aidAddress": "5305 N Dort Hwy",
+    "hours": "8 AM to 6 PM (M-F)",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Recycle"
+    ],
+    "notes": "",
+    "latitude": 43.0841369629,
+    "longitude": -83.6751708984
+},
+{
+    "locationName": "Salvation Army",
+    "aidAddress": "1475 Coldwater Rd",
+    "hours": "",
+    "phone": "",
+    "city": "Flint",
+    "zipcode": 48505,
+    "resType": [
+        "Water Pickup"
+    ],
+    "notes": "",
+    "latitude": 43.0898933411,
+    "longitude": -83.7124328613
+}
+]}

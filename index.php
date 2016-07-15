@@ -6,7 +6,7 @@ require_once "includes/template.php";
 						</label>-->*/
 
 $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
-			<div class='scroller scroller-left'><span class='glyphicon glyphicon-chevron-left'></span></div>
+			<!--<div class='scroller scroller-left'><span class='glyphicon glyphicon-chevron-left'></span></div>-->
 				<div class='wrapper nav nav-tabs tile'>
 					<div class='list'>
 						<label class='btn btn-primary resource_buttons' id='heatmap_btn'><input type='checkbox' autocomplete='off' /><img src='../images/leadinfoicon.png' class='resource_buttons_image' alt='Latest Lead Levels' /> <span>Lead Levels</span>
@@ -24,7 +24,7 @@ $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 						<label class='btn btn-primary resource_buttons' id='pipes_btn'><input type='checkbox' autocomplete='off' /><img src='../images/constructionicon.png' class='resource_buttons_image' alt='Pipe Info' /> <span>Pipe Info</span>
 						</label>
 					</div>
-				<div class='scroller scroller-right'><span class='glyphicon glyphicon-chevron-right'></span></div>	 
+				<!--<div class='scroller scroller-right'><span class='glyphicon glyphicon-chevron-right'></span></div>-->	 
 			</div>
 			</nav>";
 

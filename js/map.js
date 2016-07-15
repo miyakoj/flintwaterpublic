@@ -1,9 +1,9 @@
 /* Google Service Account info */
-var clientId = "807599170352-afiu7fosjp2hg4n6gs3ghc99momgfica.apps.googleusercontent.com";
-var apiKey = "AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI";
+var clientId = "322504400471-ou3nftefgmhpnbj4v3nv08b16nepdngg.apps.googleusercontent.com";
+var apiKey = "a9bae115820dc77ee278bd6729d8cd49acc225a8";
 
 // Access Google Cloud Storage
-var default_bucket = "flint-water-project.appspot.com";
+var default_bucket = "h2o-flint.appspot.com";
 var scope = "https://www.googleapis.com/auth/devstorage.read_only";
 
 var windowWidth = window.innerWidth;
@@ -61,7 +61,17 @@ function setAPIKey() {
 }
 
 function checkAuth() {
-	gapi.auth.authorize({client_id: clientId, scope: scope, immediate: true}, initMap);
+	gapi.auth.authorize({
+		client_id: clientId,
+		scope: scope,
+		immediate: true
+	}, initMap);
+	
+	/*gapi.auth2.init({
+		client_id: clientId,
+		fetch_basic_profile: false,
+		scope: scope
+    }).then(initMap);*/
 }
 
 function initMap() {
@@ -570,13 +580,13 @@ function callStorageAPI(object) {
 					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
 				}*/
 				
-				/*for(i=0; i<js_obj.leadLevels.length; i++) {
+				for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					//var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
 				}
 				
-				function assignWeight(levelIn){
+				/*function assignWeight(levelIn){
 					if (levelIn < 5){
 						return 0;
 					}
