@@ -451,9 +451,27 @@ body[id="index_page"] main {
 	padding:3px;*/
 }
 
+#page_card .card-inner img {
+	height: 24px;
+ 	width: auto;
+ 	margin-right: 10px;
+ 	margin-bottom: 10px;
+}
+
+#page_card .card-inner {
+	position: relative;
+	width: 100%;
+}
+
+#page_card .news_date {
+	position: absolute;
+	right: 0;
+}
+
+/*
 #page_card .card-inner {
 	margin:0!important;
-}
+}*/
 
 .help_video {
 	margin-bottom:12px;

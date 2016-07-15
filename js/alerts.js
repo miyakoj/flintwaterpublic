@@ -15,7 +15,9 @@ function onStartup() {
 	   while(i < jsonFeed.length - 1) {			//output all of the alerts found for a given query (currently all alerts in database) HTML
 		   i += 1;
 		   html += '<div class="card">';
-		   html += '<div class="card-inner">'
+		   html += '<aside class="card-side pull-left"> 
+		   				+<img src="../images/ic_report.png"/> </aside>';
+		   html += '<div class="card-main">'
 						+'<li> '+ jsonFeed[i].alertType.toString() +'</li>'
 						+'<div>'+ jsonFeed[i].description.toString()+'</div>'
 						+'<div>' + jsonFeed[i].alertDate.toString() + '</div></div>';
@@ -25,3 +27,4 @@ function onStartup() {
 	};
 
 }
+
