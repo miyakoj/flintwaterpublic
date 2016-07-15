@@ -18,9 +18,9 @@ function mLive() {
 	   for (var i = 0; i < result.feed.entries.length; i++) {
 		   var entry = result.feed.entries[i];
 			if(entry.categories.indexOf("tag:flint-water") != -1){
-				html += '<div class="panel panel-default">';
-				html += '<div class="panel-heading"><img class="pull-left" src="../images/Mlive.jpg" alt="Mlive">' + '<span>Mlive</span>' + '<h5 class="text-right">' + date(entry.publishedDate) + '</h5></div>';
-				html += '<div class="panel-body"><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div>';
+				html += '<div class="card">';
+				html += '<div class="card-inner"><img src="../images/Mlive.jpg" alt="Mlive">' + '<span>Mlive</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
+				html += '<div><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div> </div>';
 				html += '</div>';
 			}
 	   }
@@ -43,9 +43,9 @@ function michiganRadio()  {
 	   for (var i = 0; i < result.feed.entries.length; i++) {
 		   var entry = result.feed.entries[i];
 			if(entry.title.search(/(Flint)+(')*[\w\s\d]+(water)*/) > 0){
-				html += '<div class="panel panel-default">';
-				html += '<div class="panel-heading"><img class="pull-left" src="../images/michigan_radio.png" alt="Michigan radio">' + '<span>Michigan Radio</span>' + '<h5 class="text-right">' + date(entry.publishedDate) + '</h5></div>';
-				html += '<div class="panel-body"><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div>';
+				html += '<div class="card">';
+				html += '<div class="card-inner"><img src="../images/michigan_radio.png" alt="Michigan radio">' + '<span>Michigan Radio</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
+				html += '<div><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div>';
 				html += '</div>';
 			}
 	   }
@@ -58,3 +58,4 @@ function michiganRadio()  {
 function date(input) {
 	return input.substring(0,16);
 }
+
