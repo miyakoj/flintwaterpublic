@@ -7,7 +7,7 @@ require_once "includes/template.php";
 
 $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 			<!--<div class='scroller scroller-left'><span class='glyphicon glyphicon-chevron-left'></span></div>-->
-				<div class='wrapper nav nav-tabs tile'>
+				<div class='wrapper nav tile'>
 					<div class='list'>
 						<label class='btn btn-primary resource_buttons' id='heatmap_btn'><input type='checkbox' autocomplete='off' /><img src='../images/leadinfoicon.png' class='resource_buttons_image' alt='Latest Lead Levels' /> <span>Lead Levels</span>
 						</label>

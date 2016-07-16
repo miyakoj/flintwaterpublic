@@ -25,10 +25,6 @@ $(document).ready(function() {
 	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
-	/* Toggles styles */
-	$("#toggles .list").css("height", $("#toggles label").css("height"));
-	//$("#toggles .tile").css("min-height", $("#toggles label").css("height"));
-	
 	/* Position the map element in the correct column. */
 	$("#map_container").prepend($("#map"));
   
@@ -80,6 +76,8 @@ $(document).ready(function() {
 		$(this).attr("href", "page.php?pid=" + page);
 	});
 	
+	//$("footer #about_link").attr("href", "page.php?pid=" + about);
+	
 	/* Mark the tab of the current page as active. */
 	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 	
@@ -93,18 +91,12 @@ $(document).ready(function() {
 			$("#show_me_menu").addClass("active");
 	}
 	
-	/* Footer slide functionality. */
-	//id = $("footer a").attr("id");
-	//page = id.slice(0, id.indexOf("_"));
-	/*$("footer a").on("click", function() {
-	});*/
-	
 	/* Change the navbar-brand to the page title. */
 	/*if ($page_id.indexOf("index") == -1)
 		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());*/
 		
 	if (windowWidth < 600) {
-		$("#location_card").appendTo("body");
+		$("#location_card").appendTo($("body"));
 		
 		console.log("location_card spacing: " + ($("#location_card").width() / 2));
 		
@@ -146,7 +138,7 @@ $(document).ready(function() {
 		$("#help_video").prependTo("main");
 		
 		/* Move the map into the steppers for phone/small tablet. */
-		$("#test_page #water_step1_content").prepend("#map");
+		$("#test_page #water_step1_content").prepend($("#map"));
 	}
 	else {
 		$("#main_menu .nav").addClass("nav-justified");
@@ -163,7 +155,7 @@ $(document).ready(function() {
 	}
 	else {
 		/* Move the map into the sidebar for laptop and desktop. */
-		$("#map").prependTo("#test_page #sidebar");
+		$("#map").prependTo($("#test_page #sidebar"));
 		$("#map").css("height", "100%");
 	}
 	
@@ -188,6 +180,11 @@ $(document).ready(function() {
 		//$("head script[src*='script']").before(js_api);
 		$("head script[src*='script']").after(news_js, alert_js);
 	}*/
+	
+	/* Cancel button for all "show me" pages. */
+	$(".cancel_button").on("click", function() {
+		$(window).attr("location", "index.php");
+	});
 	
 	/* Test My Water page */
 	if ($page_id.indexOf("test") != -1) {
@@ -221,10 +218,6 @@ $(document).ready(function() {
 			$("#map").removeClass("hide");
 		});
 	}
-	
-	$(".cancel_button").on("click", function() {
-		$(window).attr("location", "index.php");
-	});
 	
 	/* Steppers for Install water filter */
 	$("#filter_link").on("click", function() {

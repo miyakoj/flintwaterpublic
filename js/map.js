@@ -1,6 +1,6 @@
 /* Google Service Account info */
 var clientId = "322504400471-ou3nftefgmhpnbj4v3nv08b16nepdngg.apps.googleusercontent.com";
-var apiKey = "a9bae115820dc77ee278bd6729d8cd49acc225a8";
+var apiKey = "AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM";
 
 // Access Google Cloud Storage
 var default_bucket = "h2o-flint.appspot.com";
@@ -58,6 +58,7 @@ else
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
 	window.setTimeout(checkAuth, 1);
+	//gapi.load("client:auth2", checkAuth);
 }
 
 function checkAuth() {

@@ -242,9 +242,9 @@ body[id='index_page'] #header_top #logo img {
 
 
 /* Map-Related Styles. */
-#toggle {
-	height:39px!important;
-	margin-bottom:-15px;
+#toggles {
+	background-color:#252E56;
+	margin-bottom:-16px;
 	position:relative;
 	overflow:hidden!important;
 }
@@ -270,8 +270,7 @@ body[id='index_page'] #header_top #logo img {
 #toggles .wrapper {
 	width:100%;
 	height:100%;
-	height:39px!important;
-    margin-top:0!important;
+    margin:0 auto!important;
 	overflow-y:hidden!important;
     overflow-x:scroll!important;
 	box-shadow:none;
@@ -280,23 +279,24 @@ body[id='index_page'] #header_top #logo img {
 }
 
 #toggles .list {
+	width:100%;
 	margin-top:0px;
-    position:absolute;
-    left:0px;
-    top:0px;
-    border-spacing: 10px 2px;
-	border-collapse: separate;
+    /*position:absolute;
+    left:0;
+    top:0;*/
+    border-spacing:10px 3px;
+	border-collapse:separate;
 }
 
 #toggles .list label {
 	display:table-cell;
     position:relative;
     text-align:center;
-    color:#efefef;
+    color:#EFEFEF;
     vertical-align:middle;
 }
 
-#toggles .scroller {
+/*#toggles .scroller {
 	text-align:center;
 	display:none;
 	padding:7px;
@@ -307,7 +307,7 @@ body[id='index_page'] #header_top #logo img {
 	z-index:5!important;
 }
 
-/*#toggles .scroller-right{
+#toggles .scroller-right{
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -325,18 +325,22 @@ input[type='checkbox'] {
 	display: none;
 }
 
-.resource_buttons {
+#toggles .btn {
+	border-color:#A4A8B9!important;
+}
+
+/*.resource_buttons {
 	width: 240px;
 	margin: 3px 5px;
-}
+}*/
 
 .resource_buttons_image {
 	margin-right: 3px;
 }
 
-::-webkit-scrollbar { 
+/*::-webkit-scrollbar { 
 	display: none; 
-}
+}*/
 
 #search_input {
 	background-color: #fff;
@@ -402,12 +406,12 @@ body[id="index_page"] #search_input {
 }
 
 #map_container {
+	width:100%;
+	height:22em;
 	position:relative;
 }
 
 #map {
-	width:100%;
-	height:22em;
 	display:none;
 	z-index:1!important;
 }
@@ -740,7 +744,6 @@ footer #copyright p span:first-child {
 
 footer #copyright p span:last-child {
 	padding-left:10px;
-	display:none;
 }
 	
 
