@@ -15,7 +15,7 @@ $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 						</label>		  
 						<label class='btn btn-primary resource_buttons' id='recycling_btn'><input type='checkbox' autocomplete='off' /><img src='../images/recycleicon.png' class='resource_buttons_image' alt='Recycling Sites' /> <span>Recycling</span>
 						</label>		  
-						<label class='btn btn-primary resource_buttons' id='water_testing_btn'><input type='checkbox' autocomplete='off' /><img src='../images/leadtesticon.png' class='resource_buttons_image' alt='Water Testing Sites' /> <span>Water Testing</span>
+						<label class='btn btn-primary resource_buttons' id='water_testing_btn'><input type='checkbox' autocomplete='off' /><img src='../images/leadtesticon.png' class='resource_buttons_image' alt='Water Test Kits' /> <span>Water Test Kits</span>
 						</label>	  
 						<label class='btn btn-primary resource_buttons' id='blood_testing_btn'><input type='checkbox' autocomplete='off' /><img src='../images/bloodtesticon.png' class='resource_buttons_image' alt='Blood Testing Sites' > <span>Blood Testing</span>
 						</label>	  

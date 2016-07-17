@@ -32,7 +32,7 @@ html, body {
 }
 
 #made_in_Flint {
-	/*display:none;*/
+	text-align:center;
 }
 
 #made_in_Flint img {
@@ -268,8 +268,8 @@ body[id='index_page'] #header_top #logo img {
 }
 
 #toggles .wrapper {
-	width:100%;
-	height:100%;
+	/*width:100%;
+	height:100%;*/
     margin:0 auto!important;
 	overflow-y:hidden!important;
     overflow-x:scroll!important;
@@ -284,13 +284,15 @@ body[id='index_page'] #header_top #logo img {
     /*position:absolute;
     left:0;
     top:0;*/
+	display:table;
     border-spacing:10px 3px;
-	border-collapse:separate;
+	/*border-collapse:separate;*/
 }
 
 #toggles .list label {
 	display:table-cell;
     position:relative;
+	font-size:1em;
     text-align:center;
     color:#EFEFEF;
     vertical-align:middle;
@@ -407,11 +409,12 @@ body[id="index_page"] #search_input {
 
 #map_container {
 	width:100%;
-	height:22em;
 	position:relative;
 }
 
 #map {
+	width:100%;
+	height:100%;
 	display:none;
 	z-index:1!important;
 }
@@ -828,10 +831,6 @@ footer #copyright p span:last-child {
 		color:#337ab7!important;
 	}
 	
-	#map {
-		height:30em;
-	}
-	
 	#steppers .done .stepper-step::before {
 		background-color:#9A9A9A!important;
 	}
@@ -921,5 +920,4 @@ footer #copyright p span:last-child {
 	footer h5 {
 		text-align:center;
 	}
-	
 }

@@ -25,14 +25,13 @@ $(document).ready(function() {
 	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
-	/* Position the map element in the correct column. */
+	/* Position the map in the correct element. */
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	/*var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
-	
-	$("#map").css("height", mapHeight + "px");
-	$("#search_input").val(""); // clear the search input upon refresh*/
+	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").height() - $("footer").outerHeight();
+	$("#map_container").css("height", mapHeight + "px");
+	$("#search_input").val(""); // clear the search input upon refresh
 	
 	/* Scale the popup markers based on screen size. */
 	$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
@@ -126,7 +125,13 @@ $(document).ready(function() {
 	
 	/* Layout mods for differences between desktop and mobile. */
 	if (windowWidth < 768) {
-		//$(".navbar-header #made_in_Flint").prependTo("#slide-nav");
+		$("#made_in_Flint").appendTo($("#main_menu"));
+		$("#made_in_Flint img").css({
+			"margin-left": "auto",
+			"margin-right": "auto",
+			"margin-top": "20px"			
+		});
+		
 		$("#main_menu .nav").removeClass("nav-justified");
 		$("#show_me_menu").removeClass("dropdown");
 		$("#show_me_menu ul").removeClass("dropdown-menu");
@@ -135,7 +140,7 @@ $(document).ready(function() {
 		$("#steppers div:first").removeClass("stepper-vert-inner").addClass("stepper-horiz-inner");
 		
 		//$("main #map").css("height", "");
-		$("#help_video").prependTo("main");
+		$("#help_video").prependTo($("main"));
 		
 		/* Move the map into the steppers for phone/small tablet. */
 		$("#test_page #water_step1_content").prepend($("#map"));
