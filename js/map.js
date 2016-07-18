@@ -54,6 +54,7 @@ var leadLevelOfInput;
 /* Size the map popup icons based on whether the device is mobile or not. */
 var iconSize;
 
+
 if (windowWidth < 992)
 	iconSize = 25;
 else
@@ -81,7 +82,7 @@ function initMap() {
 		var center = map.getCenter();
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(center);
-		
+
 		$("#map").css("height", window.innerHeight - $("header").height());
 	});
 	
@@ -262,7 +263,7 @@ function initMap() {
 		position: place.geometry.location,
 		map: map,
 		title: place.name,
-		icon: marker_icon
+		icon: marker_icon,
 	  }));
 
 	  if (place.geometry.viewport) {
@@ -920,13 +921,16 @@ $(document).ready(function() {
 		}
 	});
 	
-	
+
 	$("#water_pickup_btn").on('click', function(){
 		if (resourceActiveArray[1] == 1) {
 			resourceActiveArray[1] = 0;
 		}
 		else {
 			resourceActiveArray[1] = 1;
+		}
+		if (map.getZoom() > 15){
+			map.setZoom(15);
 		}
 		setMarkers();
 	});
@@ -938,6 +942,9 @@ $(document).ready(function() {
 		else {
 			resourceActiveArray[2] = 1;
 		}
+		if (map.getZoom() > 15){
+			map.setZoom(15);
+		}
 		setMarkers();
 	});
 
@@ -947,6 +954,9 @@ $(document).ready(function() {
 		}
 		else {
 			resourceActiveArray[4] = 1;
+		}
+		if (map.getZoom() > 15){
+			map.setZoom(15);
 		}
 		setMarkers();
 	});
@@ -958,6 +968,9 @@ $(document).ready(function() {
 		else {
 			resourceActiveArray[5] = 1;
 		}
+		if (map.getZoom() > 14){
+			map.setZoom(14);
+		}
 		setMarkers();
 	});
 
@@ -968,6 +981,9 @@ $(document).ready(function() {
 		else {
 			resourceActiveArray[3] = 1;
 		}
+		if (map.getZoom() > 15){
+			map.setZoom(15);
+		}
 		setMarkers();
 	});
 
@@ -977,6 +993,9 @@ $(document).ready(function() {
 		}
 		else {
 			resourceActiveArray[6] = 1;
+		}
+		if (map.getZoom() > 15){
+			map.setZoom(15);
 		}
 		setMarkers();
 	});
@@ -1175,3 +1194,10 @@ function saveLocation(obj) {
 		localStorage["savedLocation"+tempNumberSaved] = resource_marker.getTitle();
 		console.log(localStorage["savedLocation"+tempNumberSaved]);
 }
+
+function whats_active(){
+	  for (i=0; i < resourceActiveArray.length; i++){
+		  newValue += resourceActiveArray[i];
+	  }
+	  return newValue;
+};
