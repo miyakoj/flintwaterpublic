@@ -13,7 +13,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "news":
 			$pagetitle = "News and Alerts";
-			$content = "<div id='page_card' >
+			$content = "<div id='page_card'>
 				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
 					<li role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
@@ -33,74 +33,87 @@ if (@isset($_GET["pid"])) {
 		break;
 		
 		case "test":
-			$pagetitle = "Test My Water";
-			$content = "<div id='water_test' class='stpper-vert'><h2>Test your water</h2>
-							<div class='stpper-vert-inner'>
-								<div id='water_step1' class='stepper active'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>1</span>
+			$pagetitle = "Test Your Water";
+			$content = "<div id='water_test' class='container-fluid'>
+				<div class='row'>
+					<div class='col-md-4'>
+						<div id='steppers' class='stepper-vert'>
+									<h2>Test your water</h2>
+									<div class='stepper-vert-inner'>
+										<div id='water_step1' class='stepper active'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>1</span>
+											</div>
+											<span class='stepper-text'>Get a water test kit</span>
+										</div>
+										<div id='water_step1_content' class='stepper-vert-content'>										
+										  <ul>
+											<li>Pick up a free test kit from a water resource location.</li>
+											<li>Residents who need transportation or any other assistance can call 211.</li>
+										  </ul>
+										  <div class='btn_group'>
+										  <a class='continue_btn btn btn-flat btn-primary' href='#'>Continue</a>
+										  <a class='cancel_button btn btn-flat btn-primary' href='#'>Cancel</a>
+										  </div>
+										</div>
+										
+										<div id='water_step2' class='stepper'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>2</span>
+											</div>
+											<span class='stepper-text'>Take the water sample</span>
+										</div>
+										<div id='water_step2_content' class='stepper-vert-content hide'>
+											<div id='help_video' class='embed-responsive embed-responsive-16by9 center-block'>
+											<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/KMaAZA1c3oA' allowfullscreen></iframe>
+											</div>
+										
+										   <ul>
+											 <li>Fill out the water test form that came with your water test kit.</li>
+											 <li>The sample should be taken from either your kitchen(recommended) or bathroom sink.</li>
+											 <li>Water must not have been used at all for more than 6 hours before taking the sample. A good time to do this is first thing in the morning.</li>
+											 <li>Use cold water that has not been filtered.</li>
+											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
+										   </ul>
+										   <div class='btn_group'>
+										  <a class='continue_btn btn btn-flat btn-primary' href='#'>Continue</a>
+										  <a class='cancel_button btn btn-flat btn-primary' href='#'>Cancel</a>
+										  </div>
+										</div>
+										
+										<div id='water_step3' class='stepper'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>3</span>
+											</div>
+											<span class='stepper-text'>Drop off test results</span>
+										</div>
+										<div id='water_step3_content' class='stepper-vert-content hide'>
+										  <ul>
+											 <li>Seal the water sample tightly and take it to a drop-off location.</li>
+											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
+										  </ul>
+										  <div class='btn_group'>
+										 <a class='cancel_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										 </div>
+										</div>
 									</div>
-									<span class='stepper-text'>Get a water test kit</span>
-								</div>
-								<div id='water_step1_content' class='stepper-vert-content'>
-								  <ul>
-									<li>Pick up a free test kit from a water resource location.</li>
-									<li>Residents who need transportation or any other assistance can call 211.</li>
-								  </ul>
-								  <div class='btn_group'>
-								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
-								  </div>
-								</div>
-								
-								<div id='water_step2' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>2</span>
-									</div>
-									<span class='stepper-text'>Take the water sample</span>
-								</div>
-								<div id='water_step2_content' class='stepper-vert-content hide'>
-									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/KMaAZA1c3oA'></iframe>
-								
-								   <ul>
-									 <li>Fill out the water test form that came with your water test kit.</li>
-									 <li>The sample should be taken from either your kitchen(recommended) or bathroom sink.</li>
-									 <li>Water must not have been used at all for more than 6 hours before taking the sample. A good time to do this is first thing in the morning.</li>
-									 <li>Use cold water that has not been filtered.</li>
-									 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
-								   </ul>
-								   <div class='btn_group'>
-								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
-								  </div>
-								</div>
-								
-								<div id='water_step3' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>3</span>
-									</div>
-									<span class='stepper-text'>Drop off test results</span>
-								</div>
-								<div id='water_step3_content' class='stepper-vert-content hide'>
-								  <ul>
-									 <li>Seal the water sample tightly and take it to a drop-off location.</li>
-									 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater' target='_blank'>Michigan.gov/flintwater</a> website.</li>
-								  </ul>
-								  <div class='btn_group'>
-								 <a class='cancel_button btn btn-flat btn-primary'>Return to map</a>
-								 </div>
 								</div>
 							</div>
-						</div>";
+							
+							<div id='sidebar' class='col-md-8'>
+							
+							</div>
+						</div>
+					</div>";
 		break;
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
-			$content = "<div id='install_filter' class='stpper-vert'><h2>Install Water Filter</h2>
-							<div class='stpper-vert-inner'>
+			$content = "<div id='install_filter' class='stepper-vert'><h2>Install Water Filter</h2>
+							<div class='stepper-vert-inner'>
 								<div id='filter_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -219,8 +232,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
-			$content = "<div id='clean_aerator' class='stpper-vert'><h2>Clean My Aerator</h2>
-							<div class='stpper-vert-inner'>
+			$content = "<div id='clean_aerator' class='stepper-vert'><h2>Clean My Aerator</h2>
+							<div class='stepper-vert-inner'>
 								<div id='aerator_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -302,8 +315,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "submit":
 			$pagetitle = "Submit Location Information";
-			$content ="<div id='submit_info' class='stpper-vert'><h2>Submit Location Information</h2>
-							<div class='stpper-vert-inner'>
+			$content ="<div id='submit_info' class='stepper-vert'><h2>Submit Location Information</h2>
+							<div class='stepper-vert-inner'>
 								<div id='submit_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -351,8 +364,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content = "<div id='report_problem' class='stpper-vert'><h2>Report a Problem</h2>
-							<div class='stpper-vert-inner'>
+			$content = "<div id='report_problem' class='stepper-vert'><h2>Report a Problem</h2>
+							<div class='stepper-vert-inner'>
 								<div id='report_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>

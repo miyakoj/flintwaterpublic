@@ -25,12 +25,14 @@ $(document).ready(function() {
 	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
-	/* Position the map in the correct element. */
-	$("#map_container").prepend($("#map"));
+	/* Position the map in the correct element if it exists on the page. */
+	if($("#search_input").length != 0)
+		$("#map_container #search_input").after($("#map"));
   
 	/* Size the map based on the window size. */
-	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").height() - $("footer").outerHeight();
+	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight() + 10;
 	$("#map_container").css("height", mapHeight + "px");
+	
 	$("#search_input").val(""); // clear the search input upon refresh
 	
 	/* Scale the popup markers based on screen size. */
@@ -145,30 +147,28 @@ $(document).ready(function() {
 		/* Move the map into the steppers for phone/small tablet. */
 		$("#test_page #water_step1_content").prepend($("#map"));
 	}
+	else if (windowWidth < 1024) {
+		$("#header_top").addClass("clearfix");
+		$("#toggles").removeClass("btn-group btn-group-justified");
+	}
 	else {
 		$("#main_menu .nav").addClass("nav-justified");
 		$("#show_me_menu").addClass("dropdown");
 		$("#show_me_menu ul").addClass("dropdown-menu");
 		
-		$("#steppers").removeClass("stepper-horiz").addClass("stepper-vert");
-		$("#steppers div:first").removeClass("stepper-horiz-inner").addClass("stepper-vert-inner");
-	}
-	
-	if (windowWidth < 1024) {
-		$("#header_top").addClass("clearfix");
-		$("#toggles").removeClass("btn-group btn-group-justified");
-	}
-	else {
 		/* Move the map into the sidebar for laptop and desktop. */
 		$("#map").prependTo($("#test_page #sidebar"));
 		$("#map").css("height", "100%");
+		
+		$("#steppers").removeClass("stepper-horiz").addClass("stepper-vert");
+		$("#steppers div:first").removeClass("stepper-horiz-inner").addClass("stepper-vert-inner");
 	}
 	
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
 	//$("#provider_popup").parent().parent().css("width", "300px");
 	
-	/* Dynamically added script tags. */
+	/* Dynamically add script tags only to pages where they're relevant. */
 	// MAP API
 	var js_api = "<script src='https://www.google.com/jsapi'></script>";
 	var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI&libraries=visualization,places' async defer></script>";
@@ -180,10 +180,13 @@ $(document).ready(function() {
 	/*if ($page_id.indexOf("index") != -1) {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
-	}
-	/*else if ($page_id.indexOf("news")) {
+	}*/
+	console.log($page_id);
+	
+	/*if ($page_id.indexOf("news") != -1) {
 		//$("head script[src*='script']").before(js_api);
-		$("head script[src*='script']").after(news_js, alert_js);
+		$("head").append(news_js);
+		// + "\n" + alert_js
 	}*/
 	
 	/* Cancel button for all "show me" pages. */
@@ -222,6 +225,8 @@ $(document).ready(function() {
 			$("#help_video").remove();
 			$("#map").removeClass("hide");
 		});
+		
+		$("#water_step3").addClass("cancel-stepper-border");
 	}
 	
 	/* Steppers for Install water filter */
