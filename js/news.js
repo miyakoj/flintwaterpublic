@@ -20,7 +20,7 @@ function mLive() {
 			if(entry.categories.indexOf("tag:flint-water") != -1){
 				html += '<div class="card">';
 				html += '<div class="card-inner"><img src="../images/Mlive.jpg" alt="Mlive">' + '<span>Mlive</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
-				html += '<div><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div> </div>';
+				html += '<div><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div> </div>';
 				html += '</div>';
 			}
 	   }
@@ -45,7 +45,7 @@ function michiganRadio()  {
 			if(entry.title.search(/(Flint)+(')*[\w\s\d]+(water)*/) > 0){
 				html += '<div class="card">';
 				html += '<div class="card-inner"><img src="../images/michigan_radio.png" alt="Michigan radio">' + '<span>Michigan Radio</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
-				html += '<div><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div>';
+				html += '<div><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div>';
 				html += '</div>';
 			}
 	   }
