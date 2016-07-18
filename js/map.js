@@ -82,7 +82,11 @@ function initMap() {
 		google.maps.event.trigger(map, "resize");
 		map.setCenter(center);
 		
-		$("#map").css("height", window.innerHeight - $("header").height());
+		$("#map").css({
+			"height": function() {
+				window.innerHeight - $("header").outerHeight() - $("#toggles .list").outerHeight();
+			}
+		});
 	});
 	
 	infoWindow = new google.maps.InfoWindow();
@@ -183,7 +187,7 @@ function initMap() {
 	var input = document.getElementById('search_input');
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-
+	
 	// Bias the SearchBox results towards current map's viewport.
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
@@ -494,8 +498,6 @@ function initMap() {
 }
 
 function setUpFusionTable() {
-	
-
 	predictiveLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      select: '\'Latitude\'',
@@ -767,12 +769,12 @@ function callStorageAPI(object) {
 
 function setUpInitialMap(){
 		if (localStorage !== "undefined") {
-     		var retrieveArray = localStorage.getItem("water_test_array");
+     		var retrieveArray = localStorage.getItem("resource_array");
        		resourceActiveArray = JSON.parse(retrieveArray);
 
 
      		var temp = [1,0,0,0,0,0];
-			localStorage.setItem("water_test_array", JSON.stringify(temp));
+			localStorage.setItem("resource_array", JSON.stringify(temp));
      	}
     	else {
       		console.log("We suck");
@@ -900,6 +902,9 @@ $(document).ready(function() {
 		}
 	});
 	*/
+	
+	$("#search_input").css("display", "block"); // display the search box after the page has loaded
+	
 	//localStorage.clear();
 	$("#heatmap_btn").on('click', function() {	
 		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
@@ -1074,7 +1079,7 @@ $(document).ready(function() {
 	$("#test_page #step1 a").on("click", function(){
 		if (localStorage !== "undefined") {
      		resourceActiveArray = [0,0,0,0,1,0];
-			localStorage.setItem("water_test_array", JSON.stringify(resourceActiveArray));
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
      	}
     	else {
       		console.log("We suck");

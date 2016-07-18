@@ -51,6 +51,10 @@
 		color:#337ab7!important;
 	}
 	
+	#toggles {
+		margin-bottom:-16px;
+	}
+	
 	#steppers .done .stepper-step::before {
 		background-color:#9A9A9A!important;
 	}
