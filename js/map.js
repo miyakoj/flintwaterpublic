@@ -21,7 +21,7 @@ var $location_buttons;
 var savedMarkers = [];
 var allMarkers = [];
 var allMarkersString = [];
-var resourceActiveArray = [1, 0, 0, 0, 0, 0];  //heatmap, water pickup, recycle, filter, lead, blood
+var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0];  //lead levels, water pickup, recycle, filter, lead, blood, construction
 var location_marker = [];
 var marker_img;
 
@@ -972,11 +972,11 @@ $(document).ready(function() {
 	});
 
 	$("#pipes_btn").on('click', function(){
-		if (pipeToggle == 1) {
-			pipeToggle = 0;
+		if (resourceActiveArray[6] == 1) {
+			resourceActiveArray[6] = 0;
 		}
 		else {
-			pipeToggle = 1;
+			resourceActiveArray[6] = 1;
 		}
 		setMarkers();
 	});
@@ -1124,7 +1124,7 @@ function setMarkers() {
 			allMarkers[i].setMap(map);
 		}	
 	}
-	if (pipeToggle == 1) {
+	if (resourceActiveArray[6] == 1) {
 		constructionMarker.setMap(map);
 		for(var i = 0; i < arrayOfLines.length; i++)
 		{

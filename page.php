@@ -87,7 +87,7 @@ if (@isset($_GET["pid"])) {
 								<div id='water_step3_content' class='stepper-vert-content hide'>
 								  <ul>
 									 <li>Seal the water sample tightly and take it to a drop-off location.</li>
-									 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
+									 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater' target='_blank'>Michigan.gov/flintwater</a> website.</li>
 								  </ul>
 								  <div class='btn_group'>
 								 <a class='cancel_button btn btn-flat btn-primary'>Return to map</a>

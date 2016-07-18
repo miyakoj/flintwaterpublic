@@ -307,7 +307,8 @@ input[type='checkbox'] {
 
 #search_input {
 	background-color: #fff;
-	width: 250px;
+	width: 300px;
+	height: 40px; 
 	margin-left: 12px;
 	padding: 0 11px 0 13px;
 	font-size: 15px;
@@ -412,6 +413,7 @@ body[id="index_page"] #map {
 	margin-left: 10px;
 	position: absolute;
 	left: 0%;
+	color: blue;
 }
 
 #resource_card .dropdown {
