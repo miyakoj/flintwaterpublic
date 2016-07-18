@@ -1,9 +1,9 @@
 /* Google Service Account info */
-var clientId = "807599170352-afiu7fosjp2hg4n6gs3ghc99momgfica.apps.googleusercontent.com";
-var apiKey = "AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI";
+var clientId = "322504400471-ou3nftefgmhpnbj4v3nv08b16nepdngg.apps.googleusercontent.com";
+var apiKey = "AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM";
 
 // Access Google Cloud Storage
-var default_bucket = "flint-water-project.appspot.com";
+var default_bucket = "h2o-flint.appspot.com";
 var scope = "https://www.googleapis.com/auth/devstorage.read_only";
 
 var windowWidth = window.innerWidth;

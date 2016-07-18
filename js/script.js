@@ -25,18 +25,13 @@ $(document).ready(function() {
 	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
-	/* Toggles styles */
-	$("#toggles .wrapper, #toggles .list").css("height", $("#toggles label").css("height"));
-	$("#toggles .tile").css("min-height", $("#toggles label").css("height"));
-	
-	/* Position the map element in the correct column. */
+	/* Position the map in the correct element. */
 	$("#map_container").prepend($("#map"));
   
 	/* Size the map based on the window size. */
-	/*var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
-	
-	$("#map").css("height", mapHeight + "px");
-	$("#search_input").val(""); // clear the search input upon refresh*/
+	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").height() - $("footer").outerHeight();
+	$("#map_container").css("height", mapHeight + "px");
+	$("#search_input").val(""); // clear the search input upon refresh
 	
 	/* Scale the popup markers based on screen size. */
 	$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
@@ -46,7 +41,7 @@ $(document).ready(function() {
 	var page;
 	
 	$("#main_menu a").each(function(i) {
-		id = $(this).attr("id");		
+		id = $(this).attr("id");
 		var dropdown = $(this).siblings(".dropdown-menu");
 		
 		/* If the dropdown is a sibling of the current <a> then generate the links for the items. */
@@ -73,6 +68,15 @@ $(document).ready(function() {
 		}
 	});
 	
+	$("footer .card-action a").each(function(i) {
+		id = $(this).attr("id");
+		page = id.slice(0, id.indexOf("_"));
+		
+		$(this).attr("href", "page.php?pid=" + page);
+	});
+	
+	//$("footer #about_link").attr("href", "page.php?pid=" + about);
+	
 	/* Mark the tab of the current page as active. */
 	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 	
@@ -81,40 +85,17 @@ $(document).ready(function() {
 	else {
 		$("#" + $page_id + "_link").parent().addClass("active");
 		
-		console.log($("#" + $page_id + "_link").parent().parent().parent().attr("id"));
-		
 		// if the linked clicked is in the "show me" dropdown then also make the "show me" tab active
 		if ($("#" + $page_id + "_link").parent().parent().parent().attr("id") == "show_me_menu")
 			$("#show_me_menu").addClass("active");
 	}
 	
-	/* Footer slide functionality. */
-	//id = $("footer a").attr("id");
-	//page = id.slice(0, id.indexOf("_"));
-	/*$("footer a").on("click", function() {
-	});*/
-	
 	/* Change the navbar-brand to the page title. */
 	/*if ($page_id.indexOf("index") == -1)
 		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());*/
-	
-	/* Layout mods for differences between desktop and mobile. */
-	if (windowWidth < 768) {
-		$("#main_menu .nav").removeClass("nav-justified");
-		$("#show_me_menu").removeClass("dropdown");
-		$("#show_me_menu ul").removeClass("dropdown-menu");
-		$("#help_video").prependTo("main");
-	}
-	else {
-		$("#main_menu .nav").addClass("nav-justified");
-		$("#show_me_menu").addClass("dropdown");
-		$("#show_me_menu ul").addClass("dropdown-menu");
-	}
-	
-	console.log("windowWidth: " + windowWidth);
 		
 	if (windowWidth < 600) {
-		$("#location_card").appendTo("body");
+		$("#location_card").appendTo($("body"));
 		
 		console.log("location_card spacing: " + ($("#location_card").width() / 2));
 		
@@ -142,12 +123,45 @@ $(document).ready(function() {
 		});
 	}
 	
-	if (windowWidth < 1200) {
+	/* Layout mods for differences between desktop and mobile. */
+	if (windowWidth < 768) {
+		$("#made_in_Flint").appendTo($("#main_menu"));
+		$("#made_in_Flint img").css({
+			"margin-left": "auto",
+			"margin-right": "auto",
+			"margin-top": "20px"			
+		});
+		
+		$("#main_menu .nav").removeClass("nav-justified");
+		$("#show_me_menu").removeClass("dropdown");
+		$("#show_me_menu ul").removeClass("dropdown-menu");
+		
+		$("#steppers").removeClass("stepper-vert").addClass("stepper-horiz");
+		$("#steppers div:first").removeClass("stepper-vert-inner").addClass("stepper-horiz-inner");
+		
+		//$("main #map").css("height", "");
+		$("#help_video").prependTo($("main"));
+		
+		/* Move the map into the steppers for phone/small tablet. */
+		$("#test_page #water_step1_content").prepend($("#map"));
+	}
+	else {
+		$("#main_menu .nav").addClass("nav-justified");
+		$("#show_me_menu").addClass("dropdown");
+		$("#show_me_menu ul").addClass("dropdown-menu");
+		
+		$("#steppers").removeClass("stepper-horiz").addClass("stepper-vert");
+		$("#steppers div:first").removeClass("stepper-horiz-inner").addClass("stepper-vert-inner");
+	}
+	
+	if (windowWidth < 1024) {
 		$("#header_top").addClass("clearfix");
 		$("#toggles").removeClass("btn-group btn-group-justified");
 	}
 	else {
-		
+		/* Move the map into the sidebar for laptop and desktop. */
+		$("#map").prependTo($("#test_page #sidebar"));
+		$("#map").css("height", "100%");
 	}
 	
 	/* Resize the provider info popups. */
@@ -163,41 +177,52 @@ $(document).ready(function() {
 	var news_js = "<script src='js/news.js'></script>";
 	var alert_js = "<script src='js/alerts.js'></script>";
 	
-	/*if ($page_id == "index") {
+	/*if ($page_id.indexOf("index") != -1) {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
 	}
-	/*else if ($page_id == "news") {
+	/*else if ($page_id.indexOf("news")) {
 		//$("head script[src*='script']").before(js_api);
 		$("head script[src*='script']").after(news_js, alert_js);
 	}*/
-
-	/* Test My Water page */
-	$("#test_link").on("click", function() {
-	    $("#water_step1").addClass("active");
-		$("#water_step1_content").removeClass("hide");
-		$("#water_step2_content").addClass("hide");
-		$("#water_step3_content").addClass("hide");
-	});
 	
-    $("#water_test #step1_click").click(function() {
-		$("#water_step1").removeClass("active").addClass("done");
-		$("#water_step1_content").addClass("hide");
-		$("#water_step2_content").removeClass("hide");
-		$("#water_step2").addClass("active");
-	});
-	
-	$("#water_test #step2_click").on("click", function() {
-		$("#water_step2").removeClass("active").addClass("done");
-		$("#water_step2_content").addClass("hide");
-		$("#water_step3").addClass("active");
-		$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
-	});
-	
-	$("#water_test .cancel_button").on("click", function() {
+	/* Cancel button for all "show me" pages. */
+	$(".cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
 	
+	/* Test My Water page */
+	if ($page_id.indexOf("test") != -1) {
+		$("#water_step1").addClass("active");
+		$("#water_step1_content").removeClass("hide");
+		$("#water_step2_content").addClass("hide");
+		$("#water_step3_content").addClass("hide");
+		$("#help_video").addClass("hide");
+		
+		/* Set the map to display only test kits. */
+		resourceActiveArray = [0,0,0,0,1,0];
+		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+		
+		$("#water_step1_content .continue_btn").on("click", function() {
+			$("#water_step1").removeClass("active").addClass("done");
+			$("#water_step1_content").addClass("hide");
+			$("#water_step2_content").removeClass("hide");
+			$("#water_step2").addClass("active");
+			
+			$("#map").addClass("hide");
+			$("#help_video").removeClass("hide").prependTo("#sidebar");
+		});
+		
+		$("#water_step2_content .continue_btn").on("click", function() {
+			$("#water_step2").removeClass("active").addClass("done");
+			$("#water_step2_content").addClass("hide");
+			$("#water_step3").addClass("active");
+			$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+			
+			$("#help_video").remove();
+			$("#map").removeClass("hide");
+		});
+	}
 	
 	/* Steppers for Install water filter */
 	$("#filter_link").on("click", function() {
