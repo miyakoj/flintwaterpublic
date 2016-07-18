@@ -3,7 +3,7 @@ google.setOnLoadCallback(onStartup);
 
 function onStartup() {
 	mLive();
-	michiganRadio();
+    michiganRadio();
 }
 
 function mLive() {
@@ -17,19 +17,19 @@ function mLive() {
 			});
 	   for (var i = 0; i < result.feed.entries.length; i++) {
 		   var entry = result.feed.entries[i];
-			if(entry.categories.indexOf("tag:flint-water") != -1){
+			if(entry.categories.indexOf("tag:flint-water") != -1) {
+				placeholder = entry;
 				html += '<div class="card">';
-				html += '<div class="card-inner"><img src="../images/Mlive.jpg" alt="Mlive">' + '<span>Mlive</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
-				html += '<div><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div> </div>';
-				html += '<div class="card-inner"><img src="../images/Mlive.jpg" alt="MLive">' + '<span>MLive</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
-				html += '<div><a href="' + entry.link +'">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div> </div>';
+				html += '<div class="card-main">';
+				html += '<div class="card-inner"><p><img class="pull-left" src="../images/Mlive.jpg" alt="MLive"></p>' + '<span>MLive</span>' + '<h5>' + date(entry.publishedDate) + '</h5></div>';
+				html += '<p><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a></p><h6>' + entry.contentSnippet + '</h6></div>';
 				html += '</div>';
 			}
 	   }
 	   $("#news").html(html);
-		
-		}	
-	})
+
+	   }	
+	});
 }
 
 
@@ -45,12 +45,15 @@ function michiganRadio()  {
 	   for (var i = 0; i < result.feed.entries.length; i++) {
 		   var entry = result.feed.entries[i];
 			if(entry.title.search(/(Flint)+(')*[\w\s\d]+(water)*/) > 0){
+				placeholder = entry;
 				html += '<div class="card">';
-				html += '<div class="card-inner"><img src="../images/michigan_radio.png" alt="Michigan radio">' + '<span>Michigan Radio</span>' + '<span class="news_date">' + date(entry.publishedDate) + '</span>';
-				html += '<div><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a><p>' + entry.contentSnippet + '</p></div>';
+				html += '<div class="card-main">';
+				html += '<div class="card-inner"><p><img class="pull-left" src="../images/michigan_radio.png" alt="Michigan Radio"></p>' + '<span>Michigan Radio</span>' + '<h5>' + date(entry.publishedDate) + '</h5></div>';
+				html += '<p><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a></p><h6>' + entry.contentSnippet + '</h6></div>';
 				html += '</div>';
 			}
 	   }
+
 	   $("#news").append(html);
 		
 		}	
@@ -60,4 +63,3 @@ function michiganRadio()  {
 function date(input) {
 	return input.substring(0,16);
 }
-
