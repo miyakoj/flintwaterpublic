@@ -36,7 +36,9 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
 				<div class='row'>
-					<div class='col-md-4'>
+					<div id='topbar' class='col-md-12'></div>
+				
+					<div id='stepper_content' class='col-md-12'>
 						<div id='steppers' class='stepper-vert'>
 									<h2>Test your water</h2>
 									<div class='stepper-vert-inner'>
@@ -53,12 +55,12 @@ if (@isset($_GET["pid"])) {
 											<li>Residents who need transportation or any other assistance can call 211.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <a class='continue_btn btn btn-flat btn-primary' href='#'>Continue</a>
-										  <a class='cancel_button btn btn-flat btn-primary' href='#'>Cancel</a>
+										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
+										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
 										  </div>
 										</div>
 										
-										<div id='water_step2' class='stepper'>
+										<div id='water_step2' class='stepper hide'>
 											<div class='stepper-step'>
 												<span class='icon stepper-step-icon'>check</span>
 												<span class='stepper-step-num'>2</span>
@@ -78,12 +80,12 @@ if (@isset($_GET["pid"])) {
 											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 										   </ul>
 										   <div class='btn_group'>
-										  <a class='continue_btn btn btn-flat btn-primary' href='#'>Continue</a>
-										  <a class='cancel_button btn btn-flat btn-primary' href='#'>Cancel</a>
+										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
+										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
 										  </div>
 										</div>
 										
-										<div id='water_step3' class='stepper'>
+										<div id='water_step3' class='stepper hide'>
 											<div class='stepper-step'>
 												<span class='icon stepper-step-icon'>check</span>
 												<span class='stepper-step-num'>3</span>
@@ -103,9 +105,7 @@ if (@isset($_GET["pid"])) {
 								</div>
 							</div>
 							
-							<div id='sidebar' class='col-md-8'>
-							
-							</div>
+							<div id='sidebar' class='col-md-8'></div>
 						</div>
 					</div>";
 		break;
