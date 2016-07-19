@@ -22,11 +22,15 @@
 		color:#FFF!important;
 	}
 	
+	#header_top {
+		padding:10px;
+	}
+	
 	#logo img {
 		display:inline;
 	}
 	
-	#header_top #logo h1 {
+	#logo h1 {
 		font-size:1.75em;
 	}
 	
@@ -53,6 +57,10 @@
 	
 	#toggles {
 		margin-bottom:-16px;
+	}
+	
+	#topbar {
+		display:none;
 	}
 	
 	#steppers .done .stepper-step::before {
