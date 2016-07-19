@@ -202,11 +202,11 @@ function initMap() {
 	google.maps.event.addListener(map, 'zoom_changed', function() {
 	    zoomLevel = map.getZoom();
 	    if (zoomLevel >= 17 && resourceActiveArray[0] == 1) {
-	        predictiveLayer.setMap(map);
+	        //predictiveLayer.setMap(map);
 	        leadLayer.setMap(map);
 	    } 
 	    else if (zoomLevel < 17) {
-	    	predictiveLayer.setMap(null);
+	    	//predictiveLayer.setMap(null);
 	    } 
 	});
 	
@@ -499,51 +499,29 @@ function initMap() {
 }
 
 function setUpFusionTable() {
-	predictiveLayer = new google.maps.FusionTablesLayer({
-	    query: {
-	      select: '\'Latitude\'',
-	      from: '1R_o5DbTIn73NQwaZvCw9V-I1zHh1FMk44p4ofwHJ'
-	    }/*, 
-	    styles: [{
-			markerOptions: {
-				iconName: "measle_grey"
-			}
-		}]*/
-	  });
-
-	google.maps.event.addListener(predictiveLayer, 'click', function(e) {
-		e.infoWindowHtml = "<b>Address: </b>" + e.row['goog_address'].value + "<br>";
-		var riskLevel;
-		if(e.row['Probability'].value < .057){
-			riskLevel = 'Low';
-		}
-		else if (e.row['Probability'].value < .10){
-			riskLevel = 'Medium';
-		}
-		else {
-			riskLevel = 'High';
-		}
-		e.infoWindowHtml += "<b>Predicted Risk: </b>" + riskLevel + "<br>";
-
-	});	
+	
 
 	leadLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      select: '\'latitude\'',
-	      from: '1dO36ANyD5kyN3gSZ0jzv5cEYkmH4WXR861ufmLMg'
+	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
 	    }, 
 	    styles: [{
-			where: '\'Lead Level\' >= 15  AND \'Lead Level\' < 50',
+			markerOptions: {
+				iconName: "measle_grey"
+			}
+		}, {
+			where: '\'leadlevel\' >= 15  AND \'leadlevel\' < 50',
 			markerOptions: {
 				iconName: "small_yellow"
 			}
 		}, {
-			where: '\'Lead Level\' >= 50 ',
+			where: '\'leadlevel\' >= 50 ',
 			markerOptions: {
 				iconName: "small_red"
 			}
 		}, {
-			where: '\'Lead Level\' >= 0 AND \'Lead Level\' < 15',
+			where: '\'leadlevel\' >= 0 AND \'leadlevel\' < 15',
 			markerOptions: {
 				iconName: "small_green"
 		}
@@ -552,8 +530,11 @@ function setUpFusionTable() {
 
 	google.maps.event.addListener(leadLayer, 'click', function(e) {
 		e.infoWindowHtml = "<b>Address: </b>" + e.row['Address'].value + "<br>";
-		e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['Lead Level'].value + "<br>";
-		e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['Date Tested'].value;
+		if(e.row['leadlevel'].value != "")
+			e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
+		e.infoWindowHtml += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+		if(e.row['testDate'].value != "")
+			e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['testDate'].value;
 
 	});	
 
@@ -1114,8 +1095,8 @@ function setMarkers() {
 	}
 	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
 		leadLayer.setMap(null);
-		if(predictiveLayer.getMap() == map)
-			predictiveLayer.setMap(null);
+		//if(predictiveLayer.getMap() == map)
+			//predictiveLayer.setMap(null);
 	}
 	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
 		//console.log("heatmap is set and will stay set");
