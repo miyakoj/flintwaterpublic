@@ -386,7 +386,7 @@ function initMap() {
 	function updateSaveButtons() {
 		$("#saved_locations").css("display", "none"); // hide saved locations
 		$("#location_buttons").css("display", "block"); // unhide location buttons
-			
+		
 		var searched_location = $("#search_input").val();
 		//var searched_location_sub = searched_location.substring(1, searched_location.length);
 
@@ -416,7 +416,13 @@ function initMap() {
 		 // change the location card icon dynamically
 		
 
-		map.setZoom(25);
+	    if (map.getZoom() < 14){
+			map.setZoom(25);
+		}
+		else {
+			map.setZoom(20);
+		}
+
 	}
 	
 	/*if (localStorage.getItem("saved_location2") !== null) {
@@ -484,7 +490,6 @@ function initMap() {
 			$(".more-info").remove();
 		}
 	});
-
 	setUpInitialMap();
 	setMarkers();
 }
