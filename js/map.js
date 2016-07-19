@@ -14,6 +14,7 @@ var infoWindow;
 var heatmap;
 var leadLayer; //fusion table layer to set up lead levels
 var predictiveLayer; //fusion table layer to show predicted lead levels
+var leadAndPredictiveLayer; //fusion table layer to show both lead and predicted layer
 var heatmapData;
 
 var $location_buttons;
@@ -494,6 +495,7 @@ function setUpFusionTable() {
 	leadLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      select: '\'latitude\'',
+	      where: '\'leadlevel\' >= 0',
 	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
 	    }, 
 	    styles: [{
@@ -514,20 +516,76 @@ function setUpFusionTable() {
 			where: '\'leadlevel\' >= 0 AND \'leadlevel\' < 15',
 			markerOptions: {
 				iconName: "small_green"
-		}
+			}
 		}]
 	  });
 
-	google.maps.event.addListener(leadLayer, 'click', function(e) {
-		e.infoWindowHtml = "<b>Address: </b>" + e.row['Address'].value + "<br>";
-		if(e.row['leadlevel'].value != "")
-			e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
-		e.infoWindowHtml += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-		if(e.row['testDate'].value != "")
-			e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['testDate'].value;
+	predictiveLayer = new google.maps.FusionTablesLayer({
+	    query: {
+	      select: '\'latitude\'',
+	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
+	    }, 
+	    styles: [{
+	    	where:'\'Prediction\' <= 0.05',
+			markerOptions: {
+				iconName: "measle_grey"
+			}
+		}, {
+			where: '\'Prediction\' > 0.05',
+			markerOptions: {
+				iconName: "small_purple"
+			}
+		}]
+	  });
 
-	});	
+	leadAndPredictiveLayer = new google.maps.FusionTablesLayer({
+	    query: {
+	      select: '\'latitude\'',
+	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
+	    }, 
+	    styles: [{
+			markerOptions: {
+				iconName: "small_purple"
+			}
+		}, {
+			where: '\'Prediction\' <= 0.05' ,
+			markerOptions: {
+				iconName: "measle_grey"
+			}
+		}, {
+			where: '\'leadlevel\' >= 15  AND \'leadlevel\' < 50',
+			markerOptions: {
+				iconName: "small_yellow"
+			}
+		}, {
+			where: '\'leadlevel\' >= 50 ',
+			markerOptions: {
+				iconName: "small_red"
+			}
+		}, {
+			where: '\'leadlevel\' >= 0 AND \'leadlevel\' < 15',
+			markerOptions: {
+				iconName: "small_green"
+			}
+		}]
+	  });
 
+
+	addFusionListener(leadLayer);
+	addFusionListener(predictiveLayer);
+	addFusionListener(leadAndPredictiveLayer);
+}
+
+function addFusionListener(object) {
+		google.maps.event.addListener(object, 'click', function(e) {
+			e.infoWindowHtml = "<b>Address: </b>" + e.row['Address'].value + "<br>";
+			if(e.row['leadlevel'].value != "")
+				e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
+			e.infoWindowHtml += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+			if(e.row['testDate'].value != "")
+				e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['testDate'].value;
+
+		});	
 }
 
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
@@ -898,6 +956,7 @@ $(document).ready(function() {
 		else {
 			resourceActiveArray[7] = 1;
 		}
+		setMarkers();
 	});
 	
 
@@ -1083,20 +1142,27 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	if(resourceActiveArray[0] == 1 && leadLayer.getMap() != map) {
-			leadLayer.setMap(map);
+	if(resourceActiveArray[0] == 1 && resourceActiveArray[7] == 0) {
+		leadAndPredictiveLayer.setMap(null);
+		predictiveLayer.setMap(null);
+		leadLayer.setMap(map);
 	}
-	else if (resourceActiveArray[0] == 0 && leadLayer.getMap() == map) {
+	else if (resourceActiveArray[0] == 0 && resourceActiveArray[7] == 0) {
 		leadLayer.setMap(null);
-		//if(predictiveLayer.getMap() == map)
-			//predictiveLayer.setMap(null);
+		predictiveLayer.setMap(null);
 	}
-	else if (resourceActiveArray[0] == 1 && leadLayer.getMap() == map){
-		//console.log("heatmap is set and will stay set");
+	else if (resourceActiveArray[0] == 0 && resourceActiveArray[7] == 1) {
+		leadAndPredictiveLayer.setMap(null);
+		leadLayer.setMap(null);
+		predictiveLayer.setMap(map);
+	}	
+	else if (resourceActiveArray[0] == 1 && resourceActiveArray[7] == 1) {
+		predictiveLayer.setMap(null);
+		leadLayer.setMap(null);
+		leadAndPredictiveLayer.setMap(map);
 	}
 	else {
-		//console.log("heatmap is not set and will stay not set");
-		leadLayer.setMap(null);
+		
 	}
 	
 	for (var i = 0; i < allMarkers.length; i++){
