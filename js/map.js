@@ -21,7 +21,7 @@ var $location_buttons;
 var savedMarkers = [];
 var allMarkers = [];
 var allMarkersString = [];
-var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0];  //lead levels, water pickup, recycle, filter, lead, blood, construction
+var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  //lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
 var location_marker = [];
 var marker_img;
 
@@ -199,16 +199,6 @@ function initMap() {
     	$("#resource_card").hide();
   	});
 
-	google.maps.event.addListener(map, 'zoom_changed', function() {
-	    zoomLevel = map.getZoom();
-	    if (zoomLevel >= 17 && resourceActiveArray[0] == 1) {
-	        //predictiveLayer.setMap(map);
-	        leadLayer.setMap(map);
-	    } 
-	    else if (zoomLevel < 17) {
-	    	//predictiveLayer.setMap(null);
-	    } 
-	});
 	
 	/* Saved Location Selection Card */
 	if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
@@ -755,7 +745,7 @@ function setUpInitialMap(){
        		resourceActiveArray = JSON.parse(retrieveArray);
 
 
-     		var temp = [1,0,0,0,0,0];
+     		var temp = [1,0,0,0,0,0,0,0];
 			localStorage.setItem("resource_array", JSON.stringify(temp));
      	}
     	else {
@@ -782,8 +772,11 @@ function setUpInitialMap(){
 		if(resourceActiveArray[5] == 1) {
 			$("#blood_testing_btn").addClass("active");
 		}
-		if(pipeToggle == 1) {
+		if(resourceActiveArray[6] == 1) {
 			$("#construction_btn").addClass("active");
+		}
+		if(resourceActiveArray[7] == 1) {
+			$("#risk_factor_btn").addClass("active");
 		}
 }
 
@@ -899,11 +892,11 @@ $(document).ready(function() {
 	});
 	
 	$("#risk_factor_btn").on('click', function() {		
-		if (riskmap.getMap() != null) {
-			riskmap.setMap(null);
+		if (resourceActiveArray[7] == 1 && $("#risk_factor_btn").hasClass("active")) {
+			resourceActiveArray[7] = 0;
 		}
 		else {
-			riskmap.setMap(map);
+			resourceActiveArray[7] = 1;
 		}
 	});
 	
