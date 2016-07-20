@@ -54,7 +54,7 @@ $(document).ready(function() {
 				$(this).attr("href", "page.php?pid=" + page);
 			});
 		}
-		else {			
+		else {
 			if (id.indexOf("link") != -1) {
 				page = id.slice(0, id.indexOf("_"));
 
@@ -140,11 +140,13 @@ $(document).ready(function() {
 		
 		/* Move the map and help videos above the steppers for phone/small tablet. */
 		$("#topbar").css("height", "20em").prepend($("#map"));
+		//$("#help_video").css("margin-top", ($("#topbar").height() - $("#help_video").height()) / 2 + "px").prependTo($("#topbar"));
 		$("#help_video").prependTo($("#topbar"));
-		$("#topbar").css("height", $("#help_video").height()+"px");
 		
 		/* Apply the initial abbreviated stepper layout for mobile. */
 		$(".cancel_button").addClass("hide");
+		
+		$("#stepper_content").addClass("brief");
 		
 		$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({
 			"padding-top": "10px",
@@ -165,7 +167,7 @@ $(document).ready(function() {
 			"text-overflow": "ellipsis",
 			"display": "list-item"
 		});
-		$(".stepper-vert-content").css("border-left", "1px");
+		$(".stepper-vert .stepper:after, .stepper-vert .stepper:before, .stepper-vert-content").css("border-left", "1px");
 		$("#stepper_content .btn_group").css({
 			"margin-top": "0",
 			"text-align": "right"
@@ -173,15 +175,15 @@ $(document).ready(function() {
 		$("#stepper_content .next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
 		
 		/* Unhide all step titles when the stepper content is tapped. */
-		$("div[id*='step1']").on("click", function() {
+		$("div[id*='step1']").parent().parent().on("click", function() {
+			$("#stepper_content").removeClass("brief").addClass("expanded");
 			$("div[id$='step1'], div[id$='step2'], div[id$='step3'], #stepper_content h2, #stepper_content ul, #stepper_content ul li, .stepper-vert-content, #stepper_content .btn_group, #stepper_content .next_button").removeAttr("style");
 			$("div[id$='step2'], div[id$='step3'], .cancel_button").removeClass("hide");
-			$(".next_button").addClass("btn-primary")
+			$(".next_button").addClass("btn-primary");
 			$(".next_button span").remove();
-		});
-		
-		//$("#steppers").removeClass("stepper-vert").addClass("stepper-horiz");
-		//$("#steppers div:first").removeClass("stepper-vert-inner").addClass("stepper-horiz-inner");
+		}).on('click', '.next_button', function(event) {
+			event.stopPropagation();
+	    });
 	}
 	else if (windowWidth < 800) {
 		/* Move the map and help videos above the steppers for phone/small tablet. */
@@ -268,25 +270,74 @@ $(document).ready(function() {
 		resourceActiveArray = [0,0,0,0,1,0];
 		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 		
-		$("#water_step1_content .next_button").on("click", function() {
-			$("#water_step1").removeClass("active").addClass("done");
-			$("#water_step1_content").addClass("hide");
-			$("#water_step2_content").removeClass("hide");
-			$("#water_step2").addClass("active");
+		if (windowWidth < 768) {
+			$(".cancel_button").addClass("hide");
 			
-			$("#map").addClass("hide");
-			$("#help_video").removeClass("hide");
-		});
-		
-		$("#water_step2_content .next_button").on("click", function() {
-			$("#water_step2").removeClass("active").addClass("done");
-			$("#water_step2_content").addClass("hide");
-			$("#water_step3").addClass("active");
-			$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+			if ($("#stepper_content").css("expanded")) {
+				$("#water_step1_content .next_button").on("click", function() {
+					$("#water_step1").removeClass("active").addClass("done");
+					$("#water_step1_content").addClass("hide");
+					$("#water_step2_content").removeClass("hide");
+					$("#water_step2").addClass("active");
+					
+					$("#map").addClass("hide");
+					$("#help_video").removeClass("hide");
+				});
+				
+				$("#water_step2_content .next_button").on("click", function() {
+					$("#water_step2").removeClass("active").addClass("done");
+					$("#water_step2_content").addClass("hide");
+					$("#water_step3").addClass("active");
+					$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+					
+					$("#help_video").remove();
+					$("#map").removeClass("hide");
+				});
+			}
+			else {
+				$(".stepper-vert .stepper:after, .stepper-vert .stepper:before").css("border-left-width", "0");
+				
+				$("#water_step1_content .next_button").on("click", function() {
+					$("#water_step1, #water_step1_content, #water_step2, #water_step3").addClass("hide");
+					$("#water_step2").removeClass("hide").addClass("active");
+					$("#water_step2_content").removeClass("hide");
+					
+					$("#map").addClass("hide");
+					$("#help_video").removeClass("hide");
+				});
+				
+				$("#water_step2_content .next_button").on("click", function() {
+					$("#water_step2").removeClass("active").addClass("done");
+					$("#water_step2_content").addClass("hide");
+					$("#water_step3").addClass("active");
+					$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+					
+					$("#help_video").remove();
+					$("#map").removeClass("hide");
+				});
+			}
+		}
+		else {
+			$("#water_step1_content .next_button").on("click", function() {
+				$("#water_step1").removeClass("active").addClass("done");
+				$("#water_step1_content").addClass("hide");
+				$("#water_step2_content").removeClass("hide");
+				$("#water_step2").addClass("active");
+				
+				$("#map").addClass("hide");
+				$("#help_video").removeClass("hide");
+			});
 			
-			$("#help_video").remove();
-			$("#map").removeClass("hide");
-		});
+			$("#water_step2_content .next_button").on("click", function() {
+				$("#water_step2").removeClass("active").addClass("done");
+				$("#water_step2_content").addClass("hide");
+				$("#water_step3").addClass("active");
+				$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+				
+				$("#help_video").remove();
+				$("#map").removeClass("hide");
+			});
+		}
 	}
 	
 	/* Steppers for Install water filter */
