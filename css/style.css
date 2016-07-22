@@ -189,10 +189,6 @@ body[id='index_page'] #header_top #logo img {
 	color:#000!important;
 }
 
-#main_menu #submit_link {
-	display:none;
-}
-
 #main_menu .nav > li > .a::after, #main_menu .nav > li > a::after {
 	border-bottom-color:#FFF!important;
 }
@@ -497,9 +493,17 @@ body[id="index_page"] main {
 	font-size:20px;
 }
 
-.help_video {
-	margin-bottom:12px;
+#steppers .active span {
+	font-weight:bold;
 }
+
+#steppers .done .stepper-step::before {
+	background-color:#9A9A9A!important;
+}
+
+/*#help_video {
+	margin-bottom:12px;
+}*/
 
 #aerator_img {
 	width:auto;
@@ -523,6 +527,10 @@ body[id="index_page"] main {
 .stepper-vert-inner .btn_group {
 	margin-top:10px;
 	text-align:center;
+}
+
+.cancel_stepper_border {
+	border-left-width:0!important;
 }
 
 /*.stepper_group_width {
