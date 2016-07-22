@@ -63,14 +63,6 @@
 		display:none;
 	}
 	
-	#steppers .done .stepper-step::before {
-		background-color:#9A9A9A!important;
-	}
-	
-	#steppers .active span {
-		font-weight:bold;
-	}
-	
 	footer h5 {
 		text-align:center;
 	}

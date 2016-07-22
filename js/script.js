@@ -139,7 +139,8 @@ $(document).ready(function() {
 		$("#show_me_menu ul").removeClass("dropdown-menu");
 		
 		/* Move the map and help videos above the steppers for phone/small tablet. */
-		$("#topbar").css("height", "20em").prepend($("#map"));
+		$("#topbar").prepend($("#map"));
+		
 		//$("#help_video").css("margin-top", ($("#topbar").height() - $("#help_video").height()) / 2 + "px").prependTo($("#topbar"));
 		$("#help_video").prependTo($("#topbar"));
 		
@@ -147,6 +148,9 @@ $(document).ready(function() {
 		$(".cancel_button").addClass("hide");
 		
 		$("#stepper_content").addClass("brief");
+		$("#topbar").css("height", "20em");
+		
+		$("#water_step2, #water_step3").addClass("hide");
 		
 		$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({
 			"padding-top": "10px",
@@ -167,20 +171,44 @@ $(document).ready(function() {
 			"text-overflow": "ellipsis",
 			"display": "list-item"
 		});
-		$(".stepper-vert .stepper:after, .stepper-vert .stepper:before, .stepper-vert-content").css("border-left", "1px");
+		//$(".stepper-vert .stepper:after, .stepper-vert .stepper:before").addClass("cancel_stepper_border");
 		$("#stepper_content .btn_group").css({
 			"margin-top": "0",
 			"text-align": "right"
 		});
 		$("#stepper_content .next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+		$("div[id$='step3_content'] .cancel_button").css("display", "none");
 		
-		/* Unhide all step titles when the stepper content is tapped. */
-		$("div[id*='step1']").parent().parent().on("click", function() {
-			$("#stepper_content").removeClass("brief").addClass("expanded");
-			$("div[id$='step1'], div[id$='step2'], div[id$='step3'], #stepper_content h2, #stepper_content ul, #stepper_content ul li, .stepper-vert-content, #stepper_content .btn_group, #stepper_content .next_button").removeAttr("style");
-			$("div[id$='step2'], div[id$='step3'], .cancel_button").removeClass("hide");
-			$(".next_button").addClass("btn-primary");
-			$(".next_button span").remove();
+		/* Unhide all step titles when the steppers are expanded. */
+		$("div[id*='step1'], div[id*='step2'], div[id*='step3']").parent().parent().on("click", function() {
+			if ($("#stepper_content").hasClass("brief")) {
+				var $steppers = $(this).find("div[id*='step']");
+				var $total_active = $(this).find("div[class*='active']").length;
+				var $active_node;
+				
+				/* Mark previous steps as "done". */
+				$steppers.each(function(i) {
+					if (i < ($total_active-1)*2) {
+						if ((i % 2) == 0)
+							$(this).removeClass("active").addClass("done");
+					}
+					else {
+						$active_node = $(this);
+						return false;
+					}
+				});
+				
+				$("#stepper_content").removeClass("brief").addClass("expanded");
+				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], #stepper_content h2, #stepper_content ul, #stepper_content ul li, .stepper-vert-content, #stepper_content .btn_group, #stepper_content .next_button").removeAttr("style");
+				$("div[id*='step1'], div[id*='step2'], div[id*='step3']").removeClass("cancel_stepper_border");
+				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], .cancel_button").removeClass("hide");
+				$(".next_button").addClass("btn-primary");
+				$(".next_button span").remove();
+				
+				isExpanded($active_node);
+			}
+			else
+				return;
 		}).on('click', '.next_button', function(event) {
 			event.stopPropagation();
 	    });
@@ -233,7 +261,7 @@ $(document).ready(function() {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
 	}*/
-	console.log($page_id);
+	console.log("$page_id = " + $page_id);
 	
 	/*if ($page_id.indexOf("news") != -1) {
 		//$("head script[src*='script']").before(js_api);
@@ -258,6 +286,31 @@ $(document).ready(function() {
 		$(window).attr("location", "index.php");
 	});
 	
+	/* Mobile "expanded" code. */
+	function isExpanded(node) {
+		//node.attr("id")
+		
+		$("#water_step1_content .next_button").on("click", function() {
+			$("#water_step1").removeClass("active").addClass("done");
+			$("#water_step1_content").addClass("hide");
+			$("#water_step2_content").removeClass("hide");
+			$("#water_step2").addClass("active");
+			
+			$("#map").addClass("hide");
+			$("#help_video").removeClass("hide");
+		});
+		
+		$("#water_step2_content .next_button").on("click", function() {
+			$("#water_step2").removeClass("active").addClass("done");
+			$("#water_step2_content").addClass("hide");
+			$("#water_step3").addClass("active");
+			$("#water_step3_content").removeClass("hide").addClass("cancel_stepper_border");
+			
+			$("#help_video").remove();
+			$("#map").removeClass("hide");
+		});
+	}
+	
 	/* Test My Water page */
 	if ($page_id.indexOf("test") != -1) {
 		$("#water_step1").addClass("active");
@@ -273,7 +326,8 @@ $(document).ready(function() {
 		if (windowWidth < 768) {
 			$(".cancel_button").addClass("hide");
 			
-			if ($("#stepper_content").css("expanded")) {
+			/*if ($("#stepper_content").hasClass("expanded")) {
+				console.log("in expanded");
 				$("#water_step1_content .next_button").on("click", function() {
 					$("#water_step1").removeClass("active").addClass("done");
 					$("#water_step1_content").addClass("hide");
@@ -288,17 +342,17 @@ $(document).ready(function() {
 					$("#water_step2").removeClass("active").addClass("done");
 					$("#water_step2_content").addClass("hide");
 					$("#water_step3").addClass("active");
-					$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+					$("#water_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 					
 					$("#help_video").remove();
 					$("#map").removeClass("hide");
 				});
 			}
-			else {
-				$(".stepper-vert .stepper:after, .stepper-vert .stepper:before").css("border-left-width", "0");
+			else {*/
+				$("#water_step1, #water_step1_content, #water_step2, #water_step2_content, #water_step3, #water_step3_content, .stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
 				
 				$("#water_step1_content .next_button").on("click", function() {
-					$("#water_step1, #water_step1_content, #water_step2, #water_step3").addClass("hide");
+					$("#water_step1, #water_step1_content").addClass("hide");
 					$("#water_step2").removeClass("hide").addClass("active");
 					$("#water_step2_content").removeClass("hide");
 					
@@ -307,15 +361,16 @@ $(document).ready(function() {
 				});
 				
 				$("#water_step2_content .next_button").on("click", function() {
-					$("#water_step2").removeClass("active").addClass("done");
-					$("#water_step2_content").addClass("hide");
+					$("#water_step2, #water_step2_content").addClass("hide");
+					$("#water_step3, #water_step3_content").removeClass("hide");
 					$("#water_step3").addClass("active");
-					$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+					$("#water_step3_content .cancel_button").removeClass("hide btn-primary");
+					$("#water_step3_content .btn_group").css("text-align", "center");
 					
 					$("#help_video").remove();
 					$("#map").removeClass("hide");
 				});
-			}
+			//}
 		}
 		else {
 			$("#water_step1_content .next_button").on("click", function() {
@@ -332,7 +387,7 @@ $(document).ready(function() {
 				$("#water_step2").removeClass("active").addClass("done");
 				$("#water_step2_content").addClass("hide");
 				$("#water_step3").addClass("active");
-				$("#water_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+				$("#water_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 				
 				$("#help_video").remove();
 				$("#map").removeClass("hide");
@@ -372,21 +427,21 @@ $(document).ready(function() {
 	$("#PUR_step2_click").on("click", function() {
 	  $("#filter_step2").removeClass("active").addClass("done");
 	  $("#PUR_step2_content").addClass("hide");
-	  $("#PUR_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#PUR_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	  $("#filter_step3").addClass("active");
 	});
 	
     $("#Brita_step2_click").on("click", function() {
 	  $("#filter_step2").removeClass("active").addClass("done");
 	  $("#Brita_step2_content").addClass("hide");
-	  $("#Brita_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#Brita_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	  $("#filter_step3").addClass("active");
 	});
 	
 	$("#ZeroWater_step2_click").on("click", function() {
 	  $("#filter_step2").removeClass("active").addClass("done");
 	  $("#ZeroWater_step2_content").addClass("hide");
-	  $("#ZeroWater_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#ZeroWater_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	  $("#filter_step3").addClass("active");
 	});
 
@@ -421,7 +476,7 @@ $(document).ready(function() {
     $("#aerator_step3_click").on("click", function() {
 	  $("#aerator_step3").removeClass("active").addClass("done");
 	  $("#aerator_step3_content").addClass("hide");
-	  $("#aerator_step4_content").removeClass("hide").addClass("cancel-stepper-border");
+	  $("#aerator_step4_content").removeClass("hide").addClass("cancel_stepper_border");
 	  $("#aerator_step4").addClass("active");
 	});
 	
@@ -449,7 +504,7 @@ $(document).ready(function() {
 		$("#report_step2").removeClass("active").addClass("done");
 		$("#report_step2_content").addClass("hide");
 		$("#report_step3").addClass("active");
-		$("#report_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+		$("#report_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	});
 	
 	$("#report_problem #submit_button").on("click", function() {
@@ -482,7 +537,7 @@ $(document).ready(function() {
 		$("#submit_step2").removeClass("active").addClass("done");
 		$("#submit_step2_content").addClass("hide");
 		$("#submit_step3").addClass("active");
-		$("#submit_step3_content").removeClass("hide").addClass("cancel-stepper-border");
+		$("#submit_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	});
 	
 	$("#submit_info #submit_button").on("click", function() {
