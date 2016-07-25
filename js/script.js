@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	var windowWidth = window.innerWidth;
 	var windowHeight = window.innerHeight;
+	var $activeNode;
 	
 	/* Position alert in the middle of the page. */
 	$(".alert").css({
@@ -80,20 +81,20 @@ $(document).ready(function() {
 	//$("footer #about_link").attr("href", "page.php?pid=" + about);
 	
 	/* Mark the tab of the current page as active. */
-	$page_id = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+	$pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 	
-	if ($page_id.indexOf("index") != -1)
+	if ($pageId.indexOf("index") != -1)
 		$("#map_link").parent().addClass("active");
 	else {
-		$("#" + $page_id + "_link").parent().addClass("active");
+		$("#" + $pageId + "_link").parent().addClass("active");
 		
 		// if the linked clicked is in the "show me" dropdown then also make the "show me" tab active
-		if ($("#" + $page_id + "_link").parent().parent().parent().attr("id") == "show_me_menu")
+		if ($("#" + $pageId + "_link").parent().parent().parent().attr("id") == "show_me_menu")
 			$("#show_me_menu").addClass("active");
 	}
 	
 	/* Change the navbar-brand to the page title. */
-	/*if ($page_id.indexOf("index") == -1)
+	/*if ($pageId.indexOf("index") == -1)
 		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());*/
 		
 	if (windowWidth < 600) {
@@ -125,7 +126,18 @@ $(document).ready(function() {
 		});
 	}
 	
-	/* Layout mods for differences between desktop and mobile. */
+	/* Layout mods for differences between desktop and mobile for the "show me" pages. */
+	/*if (windowHeight < 480) {
+		$("#topbar").css("height", "9em");
+	}
+	else {
+		$("#topbar").css("height", "20em");
+	}*/
+	
+	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
+		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
+	//else
+	
 	if (windowWidth < 768) {
 		$("#made_in_Flint").appendTo($("#main_menu"));
 		$("#made_in_Flint img").css({
@@ -139,7 +151,7 @@ $(document).ready(function() {
 		$("#show_me_menu ul").removeClass("dropdown-menu");
 		
 		/* Move the map and help videos above the steppers for phone/small tablet. */
-		$("#topbar").prepend($("#map"));
+		$("#topbar").prepend($("#map")).css("height", "20em");
 		
 		//$("#help_video").css("margin-top", ($("#topbar").height() - $("#help_video").height()) / 2 + "px").prependTo($("#topbar"));
 		$("#help_video").prependTo($("#topbar"));
@@ -148,7 +160,6 @@ $(document).ready(function() {
 		$(".cancel_button").addClass("hide");
 		
 		$("#stepper_content").addClass("brief");
-		$("#topbar").css("height", "20em");
 		
 		$("#water_step2, #water_step3").addClass("hide");
 		
@@ -184,7 +195,6 @@ $(document).ready(function() {
 			if ($("#stepper_content").hasClass("brief")) {
 				var $steppers = $(this).find("div[id*='step']");
 				var $total_active = $(this).find("div[class*='active']").length;
-				var $active_node;
 				
 				/* Mark previous steps as "done". */
 				$steppers.each(function(i) {
@@ -193,7 +203,7 @@ $(document).ready(function() {
 							$(this).removeClass("active").addClass("done");
 					}
 					else {
-						$active_node = $(this);
+						$activeNode = $(this);
 						return false;
 					}
 				});
@@ -205,18 +215,13 @@ $(document).ready(function() {
 				$(".next_button").addClass("btn-primary");
 				$(".next_button span").remove();
 				
-				isExpanded($active_node);
+				isExpanded($activeNode);
 			}
 			else
 				return;
 		}).on('click', '.next_button', function(event) {
 			event.stopPropagation();
 	    });
-	}
-	else if (windowWidth < 800) {
-		/* Move the map and help videos above the steppers for phone/small tablet. */
-		$("#topbar").css("height", "20em").prepend($("#map"));
-		$("#help_video").prependTo($("#topbar"));
 	}
 	else if (windowWidth < 1024) {
 		$("#header_top").addClass("clearfix");
@@ -257,13 +262,13 @@ $(document).ready(function() {
 	var news_js = "<script src='js/news.js'></script>";
 	var alert_js = "<script src='js/alerts.js'></script>";
 	
-	/*if ($page_id.indexOf("index") != -1) {
+	/*if ($pageId.indexOf("index") != -1) {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
 	}*/
-	console.log("$page_id = " + $page_id);
+	console.log("$pageId = " + $pageId);
 	
-	/*if ($page_id.indexOf("news") != -1) {
+	/*if ($pageId.indexOf("news") != -1) {
 		//$("head script[src*='script']").before(js_api);
 		$("head").append(news_js);
 		// + "\n" + alert_js
@@ -288,23 +293,24 @@ $(document).ready(function() {
 	
 	/* Mobile "expanded" code. */
 	function isExpanded(node) {
-		//node.attr("id")
+		$node_id = node.attr("id");
+		$node_substring = $node_id.slice(0, $node_id.length-1);
 		
-		$("#water_step1_content .next_button").on("click", function() {
-			$("#water_step1").removeClass("active").addClass("done");
-			$("#water_step1_content").addClass("hide");
-			$("#water_step2_content").removeClass("hide");
-			$("#water_step2").addClass("active");
+		$("#" + $node_substring + "1_content .next_button").on("click", function() {
+			$("#" + $node_substring + "1").removeClass("active").addClass("done");
+			$("#" + $node_substring + "1_content").addClass("hide");
+			$("#" + $node_substring + "2_content").removeClass("hide");
+			$("#" + $node_substring + "2").addClass("active");
 			
 			$("#map").addClass("hide");
 			$("#help_video").removeClass("hide");
 		});
 		
-		$("#water_step2_content .next_button").on("click", function() {
-			$("#water_step2").removeClass("active").addClass("done");
-			$("#water_step2_content").addClass("hide");
-			$("#water_step3").addClass("active");
-			$("#water_step3_content").removeClass("hide").addClass("cancel_stepper_border");
+		$("#" + $node_substring + "2_content .next_button").on("click", function() {
+			$("#" + $node_substring + "2").removeClass("active").addClass("done");
+			$("#" + $node_substring + "2_content").addClass("hide");
+			$("#" + $node_substring + "3").addClass("active");
+			$("#" + $node_substring + "3_content").removeClass("hide").addClass("cancel_stepper_border");
 			
 			$("#help_video").remove();
 			$("#map").removeClass("hide");
@@ -312,11 +318,14 @@ $(document).ready(function() {
 	}
 	
 	/* Test My Water page */
-	if ($page_id.indexOf("test") != -1) {
-		$("#water_step1").addClass("active");
-		$("#water_step1_content").removeClass("hide");
-		$("#water_step2_content").addClass("hide");
-		$("#water_step3_content").addClass("hide");
+	if ($pageId.indexOf("test") != -1) {
+		$node_id = $activeNode.attr("id");
+		$node_substring = $node_id.slice(0, $node_id.length-1);
+		
+		$("#" + $node_substring + "1").addClass("active");
+		$("#" + $node_substring + "1_content").removeClass("hide");
+		$("#" + $node_substring + "2_content").addClass("hide");
+		$("#" + $node_substring + "3_content").addClass("hide");
 		$("#help_video").addClass("hide");
 		
 		/* Set the map to display only test kits. */
@@ -326,68 +335,45 @@ $(document).ready(function() {
 		if (windowWidth < 768) {
 			$(".cancel_button").addClass("hide");
 			
-			/*if ($("#stepper_content").hasClass("expanded")) {
-				console.log("in expanded");
-				$("#water_step1_content .next_button").on("click", function() {
-					$("#water_step1").removeClass("active").addClass("done");
-					$("#water_step1_content").addClass("hide");
-					$("#water_step2_content").removeClass("hide");
-					$("#water_step2").addClass("active");
-					
-					$("#map").addClass("hide");
-					$("#help_video").removeClass("hide");
-				});
-				
-				$("#water_step2_content .next_button").on("click", function() {
-					$("#water_step2").removeClass("active").addClass("done");
-					$("#water_step2_content").addClass("hide");
-					$("#water_step3").addClass("active");
-					$("#water_step3_content").removeClass("hide").addClass("cancel_stepper_border");
-					
-					$("#help_video").remove();
-					$("#map").removeClass("hide");
-				});
-			}
-			else {*/
-				$("#water_step1, #water_step1_content, #water_step2, #water_step2_content, #water_step3, #water_step3_content, .stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
-				
-				$("#water_step1_content .next_button").on("click", function() {
-					$("#water_step1, #water_step1_content").addClass("hide");
-					$("#water_step2").removeClass("hide").addClass("active");
-					$("#water_step2_content").removeClass("hide");
-					
-					$("#map").addClass("hide");
-					$("#help_video").removeClass("hide");
-				});
-				
-				$("#water_step2_content .next_button").on("click", function() {
-					$("#water_step2, #water_step2_content").addClass("hide");
-					$("#water_step3, #water_step3_content").removeClass("hide");
-					$("#water_step3").addClass("active");
-					$("#water_step3_content .cancel_button").removeClass("hide btn-primary");
-					$("#water_step3_content .btn_group").css("text-align", "center");
-					
-					$("#help_video").remove();
-					$("#map").removeClass("hide");
-				});
-			//}
-		}
-		else {
-			$("#water_step1_content .next_button").on("click", function() {
-				$("#water_step1").removeClass("active").addClass("done");
-				$("#water_step1_content").addClass("hide");
-				$("#water_step2_content").removeClass("hide");
-				$("#water_step2").addClass("active");
+			$("div[id*='" + $node_substring + "']").addClass("cancel_stepper_border");
+			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
+			
+			$("#" + $node_substring + "1_content .next_button").on("click", function() {
+				$("#" + $node_substring + "1, #water_step1_content").addClass("hide");
+				$("#" + $node_substring + "2").removeClass("hide").addClass("active");
+				$("#" + $node_substring + "2_content").removeClass("hide");
 				
 				$("#map").addClass("hide");
 				$("#help_video").removeClass("hide");
 			});
 			
-			$("#water_step2_content .next_button").on("click", function() {
-				$("#water_step2").removeClass("active").addClass("done");
-				$("#water_step2_content").addClass("hide");
-				$("#water_step3").addClass("active");
-				$("#water_step3_content").removeClass("hide").addClass("cancel_stepper_border");
+			$("#" + $node_substring + "2_content .next_button").on("click", function() {
+				$("#" + $node_substring + "2, #water_step2_content").addClass("hide");
+				$("#" + $node_substring + "3, #water_step3_content").removeClass("hide");
+				$("#" + $node_substring + "3").addClass("active");
+				$("#" + $node_substring + "3_content .cancel_button").removeClass("hide btn-primary");
+				$("#" + $node_substring + "3_content .btn_group").css("text-align", "center");
+				
+				$("#help_video").remove();
+				$("#map").removeClass("hide");
+			});
+		}
+		else {
+			$("#" + $node_substring + "1_content .next_button").on("click", function() {
+				$("#" + $node_substring + "1").removeClass("active").addClass("done");
+				$("#" + $node_substring + "1_content").addClass("hide");
+				$("#" + $node_substring + "2_content").removeClass("hide");
+				$("#" + $node_substring + "2").addClass("active");
+				
+				$("#map").addClass("hide");
+				$("#help_video").removeClass("hide");
+			});
+			
+			$("#" + $node_substring + "2_content .next_button").on("click", function() {
+				$("#" + $node_substring + "2").removeClass("active").addClass("done");
+				$("#" + $node_substring + "2_content").addClass("hide");
+				$("#" + $node_substring + "3").addClass("active");
+				$("#" + $node_substring + "3_content").removeClass("hide").addClass("cancel_stepper_border");
 				
 				$("#help_video").remove();
 				$("#map").removeClass("hide");
