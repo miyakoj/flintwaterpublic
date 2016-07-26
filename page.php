@@ -68,7 +68,7 @@ if (@isset($_GET["pid"])) {
 											<span class='stepper-text'>Take the water sample</span>
 										</div>
 										<div id='water_step2_content' class='stepper-vert-content hide'>
-											<div id='help_video' class='embed-responsive embed-responsive-16by9 center-block'>
+											<div class='help_video embed-responsive embed-responsive-16by9 center-block'>
 											<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/KMaAZA1c3oA' allowfullscreen></iframe>
 											</div>
 										
@@ -105,37 +105,44 @@ if (@isset($_GET["pid"])) {
 								</div>
 							</div>
 							
-							<div id='sidebar' class='col-md-8'></div>
+							<div id='sidebar' class='col-md-7'></div>
 						</div>
 					</div>";
 		break;
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
-			$content = "<div id='install_filter' class='stepper-vert'><h2>Install Water Filter</h2>
-							<div class='stepper-vert-inner'>
-								<div id='filter_step1' class='stepper active'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>1</span>
+			$content = "<div id='install_filter' class='container-fluid'>
+				<div class='row'>
+					<div id='topbar' class='col-md-12'></div>
+				
+					<div id='stepper_content' class='col-md-12'>
+						<div id='steppers' class='stepper-vert'>
+								<h2>Install a Water Filter</h2>
+								<div class='stepper-vert-inner'>
+									<div id='filter_step1' class='stepper active'>
+										<div class='stepper-step'>
+											<span class='icon stepper-step-icon'>check</span>
+											<span class='stepper-step-num'>1</span>
+										</div>
+										<span class='stepper-text'>Choose your filter type</span>
 									</div>
-									<span class='stepper-text'>Choose your filter type</span>
-								</div>
-								<div id='allFilters_step1_content' class='stepper-vert-content'>
-								   <figure>
-									<button id='PUR_btn' class='filter-buttons'><img src='images/PUR_filter.jpg' /></button>
-									<figcaption><h4>PUR</h4></figcaption>
-								   </figure>
-								   <figure>
-									<button id='Brita_btn' class='filter-buttons'><img src='images/Brita_filter.jpg' /></button>
-									<figcaption><h4>Brita</h4></figcaption>
-								   </figure>
-								   <figure>
-									<button id='ZeroWater_btn' class='filter-buttons'><img src='images/ZeroWater.jpg' /></button>
-									<figcaption><h4>ZeroWater</h4></figcaption>
-									</figure>
-								</div>
-								
+									
+									<div id='allFilters_step1_content' class='stepper-vert-content'>
+									   <figure>
+										<button id='Brita_btn' class='filter-buttons'><img src='images/Brita_filter.jpg' /></button>
+										<figcaption><h4>Brita</h4></figcaption>
+									   </figure>
+									   <figure>
+										<button id='PUR_btn' class='filter-buttons'><img src='images/PUR_filter.jpg' /></button>
+										<figcaption><h4>PUR</h4></figcaption>
+									   </figure>
+									   <figure>
+										<button id='ZeroWater_btn' class='filter-buttons'><img src='images/ZeroWater.jpg' /></button>
+										<figcaption><h4>ZeroWater</h4></figcaption>
+										</figure>
+									</div>
+										
 								<div id='filter_step2' class='stepper'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
@@ -143,23 +150,11 @@ if (@isset($_GET["pid"])) {
 									</div>
 									<span class='stepper-text'>Install your adapter</span>
 								</div>
-								<div id='PUR_step2_content' class='stepper-vert-content hide'>
-									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/r3Xm34EkQLY'></iframe>
 								
-								   <ul>
-									 <li>Remove your aerator.</li>
-									 <li>Choose an adater from the PUR filter box that fits the missing aerator location.</li>
-									 <li>The put the rubber gasket that matches your adapter over the threads.</li>
-									 <li>Next screw the adapter on.</li>
-								   </ul>
-								   <div class='btn_group'>
-								  <a id='PUR_step2_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
-								  </div>
-								</div>
-								
-								 <div id='Brita_step2_content' class='stepper-vert-content hide'>
-									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/Y0hfK6E8R18'></iframe>
+								<div id='Brita_step2_content' class='stepper-vert-content hide'>
+									<div id='Brita_video' class='help_video embed-responsive embed-responsive-16by9 center-block'>
+										<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/Y0hfK6E8R18' allowfullscreen></iframe>
+									</div>
 									
 								   <ul>
 										<li>Remove your aerator.</li>
@@ -169,30 +164,49 @@ if (@isset($_GET["pid"])) {
 										<li>Screw in the adapter.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='Brita_step2_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a id='Brita_step2_click' class='btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								
-								 <div id='ZeroWater_step2_content' class='stepper-vert-content hide'>
-								   ZeroWater pitchers do not require an adapter.
-								   
+								<div id='PUR_step2_content' class='stepper-vert-content hide'>									
+									<div id='PUR_video' class='help_video embed-responsive embed-responsive-16by9 center-block'>
+										<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/r3Xm34EkQLY' allowfullscreen></iframe>
+									</div>
+								
+								   <ul>
+									 <li>Remove your aerator.</li>
+									 <li>Choose an adater from the PUR filter box that fits the missing aerator location.</li>
+									 <li>The put the rubber gasket that matches your adapter over the threads.</li>
+									 <li>Next screw the adapter on.</li>
+								   </ul>
 								   <div class='btn_group'>
-								  <a id='ZeroWater_step2_click' class='btn btn-primary btn-flat'>Continue</a>
+								  <a id='PUR_step2_click' class='btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
-								<div id='filter_step3' class='stepper'>
+								
+								<div id='ZeroWater_step2_content' class='stepper-vert-content hide'>
+								   ZeroWater pitchers do not require an adapter.
+								   
+								   <div class='btn_group'>
+								  <a id='ZeroWater_step2_click' class='btn btn-primary btn-flat'>Next</a>
+								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
+								  </div>
+								</div>
+										
+								<div id='filter_step3' class='stepper hide'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>check</span>
 										<span class='stepper-step-num'>3</span>
 									</div>
 									<span class='stepper-text'>Install your filter</span>
 								</div>
-								<div id='PUR_step3_content' class='stepper-vert-content hide'>
+								
+								<div id='Brita_step3_content' class='stepper-vert-content hide'>
 								  <ul>
 										<li>Remove filter from packaging.</li>
-										<li>Remove the cap from the filter unit by unscrewing the top half of the cylindrical shape.</li>
+										<li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
 										<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
 										<li>Screw the cap back on.</li>
 										<li>Push the filter unit onto the adapter until you hear a click.</li>
@@ -202,10 +216,10 @@ if (@isset($_GET["pid"])) {
 								 </div>
 								</div>
 								
-								<div id='Brita_step3_content' class='stepper-vert-content hide'>
+								<div id='PUR_step3_content' class='stepper-vert-content hide'>
 								  <ul>
 										<li>Remove filter from packaging.</li>
-										<li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
+										<li>Remove the cap from the filter unit by unscrewing the top half of the cylindrical shape.</li>
 										<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
 										<li>Screw the cap back on.</li>
 										<li>Push the filter unit onto the adapter until you hear a click.</li>
@@ -226,91 +240,94 @@ if (@isset($_GET["pid"])) {
 								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>";
+							
+							<div id='sidebar' class='col-md-7'></div>
+						</div>
+					</div>";
 		break;
 		
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
-			$content = "<div id='clean_aerator' class='stepper-vert'><h2>Clean My Aerator</h2>
-							<div class='stepper-vert-inner'>
-								<div id='aerator_step1' class='stepper active'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>1</span>
+			$content = "<div id='clean_aerator' class='container-fluid'>
+				<div class='row'>
+					<div id='topbar' class='col-md-12'></div>
+				
+					<div id='stepper_content' class='col-md-12'>
+						<div id='steppers' class='stepper-vert'>
+									<h2>Clean My Aerator</h2>
+									<div class='stepper-vert-inner'>
+										<div id='aerator_step1' class='stepper active'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>1</span>
+											</div>
+											<span class='stepper-text'>Remove the aerator</span>
+										</div>
+										<div id='aerator_step1_content' class='stepper-vert-content'>										
+										  <ul>
+											<li>Get a cloth or tape to wrap around the aerator.</li>
+											<li>Get a pair of pliers.</li>
+											<li>Place the plier jaws around the aerator gently.</li>
+											<li>Grip the faucet arm.</li>
+											<li>Turn the aerator clockwise without crushing aerator.</li>
+										  </ul>
+										  <div class='btn_group'>
+										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
+										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										  </div>
+										</div>
+										
+										<div id='aerator_step2' class='stepper hide'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>2</span>
+											</div>
+											<span class='stepper-text'>Clean the aerator</span>
+										</div>
+										<div id='aerator_step2_content' class='stepper-vert-content hide'>
+											<div class='help_video embed-responsive embed-responsive-16by9 center-block'>
+											<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/7P9L2b8v5VM' allowfullscreen></iframe>
+											</div>
+										
+										   <ul>
+											<li>Move the aerator over a flat surface.</li>
+											<li>Remove the parts inside the aerator by pushing them. If stuck, place in a solution that can remove lime. Remember the order in which you removed the parts.</li>
+											<li>Clean aerator by gently scrubbing with a toothbrush.</li>
+										  </ul>
+										   <div class='btn_group'>
+										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
+										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										  </div>
+										</div>
+										
+										<div id='aerator_step3' class='stepper hide'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>3</span>
+											</div>
+											<span class='stepper-text'>Reinstall the aerator</span>
+										</div>
+										<div id='aerator_step3_content' class='stepper-vert-content hide'>
+										  <ul>
+											<li>Put the aerator back together in reverse order.</li>
+											<li>Screw the aerator back into the faucet counterclockwise.</li>
+											<li>Tighten with pliers, but not too tightly.</li>
+										  </ul>
+										  <div class='btn_group'>
+										 <a class='cancel_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										 </div>
+										</div>
 									</div>
-									<span class='stepper-text'>Protect the aerator</span>
-								</div>
-								<div id='aerator_step1_content' class='stepper-vert-content'>
-								  <ul>
-									<li>Get a cloth or tape to wrap around the aerator.</li>
-									<li>Get a pair of pliers.</li>
-								  </ul>
-								  
-								  <div class='btn_group'>
-								  <a id='aerator_step1_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
-								  </div>
-								</div>
-								<div id='aerator_step2' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>2</span>
-									</div>
-									<span class='stepper-text'>Take the water sample</span>
-								</div>
-								<div id='aerator_step2_content' class='stepper-vert-content hide'>
-								   <ul>
-									  <li>Place the plier jaws around the aerator gently.</li>
-									  <li>Grip the faucet arm.</li>
-									  <li>Turn the aerator clockwise without crushing aerator.</li>
-								   </ul>
-								   
-								   <div class='btn_group'>
-								  <a id='aerator_step2_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
-								  </div>
-								</div>
-								<div id='aerator_step3' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>3</span>
-									</div>
-									<span class='stepper-text'>Clean the aerator</span>
-								</div>
-								<div id='aerator_step3_content' class='stepper-vert-content hide'>
-									<iframe class='help_video' class='embed-responsive-item center-block' src='https://www.youtube.com/embed/7P9L2b8v5VM'></iframe>
-									
-								  <ul>
-									<li>Move the aerator over a flat surface.</li>
-									<li>Remove the parts inside the aerator by pushing them. If stuck, place in a solution that can remove lime. Remember the order in which you removed the parts.</li>
-									<li>Clean aerator by gently scrubbing with a toothbrush.</li>
-								  </ul>
-								  
-								  <div class='btn_group'>
-								  <a id='aerator_step3_click' class='btn btn-primary btn-flat'>Continue</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
-								  </div>
-								</div>
-								<div id='aerator_step4' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>4</span>
-									</div>
-									<span class='stepper-text'>Reinstall the aerator</span>
-								</div>
-								<div id='aerator_step4_content' class='stepper-vert-content hide'>
-								  <ul>
-									<li>Put the aerator back together in reverse order.</li>
-									<li>Screw the aerator back into the faucet counterclockwise.</li>
-									<li>Tighten with pliers but not too tight.</li>
-								  </ul>
-								  
-								  <div class='btn_group'>
-								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
 								</div>
 							</div>
-						</div>";
+							
+							<div id='sidebar' class='col-md-7'></div>
+						</div>
+					</div>";
 		break;
 		
 		case "submit":

@@ -4,7 +4,7 @@ $mysqli = new mysqli(
 	null, // host
 	getenv('MYSQL_USER'), // username
 	getenv('MYSQL_PASSWORD'), // password
-	'waterdata', // database name
+	getenv('MYSQL_DATABASE'), // database name
 	null,
 	getenv('MYSQL_INSTANCE') // database instance
 );
