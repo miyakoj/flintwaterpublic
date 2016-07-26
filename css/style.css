@@ -501,10 +501,6 @@ body[id="index_page"] main {
 	background-color:#9A9A9A!important;
 }
 
-/*#help_video {
-	margin-bottom:12px;
-}*/
-
 #aerator_img {
 	width:auto;
 	height:200px;
@@ -556,7 +552,7 @@ figure button {
 
 figure img {
 	width:auto;
-	height:150px;
+	height:100px;
 }
 
 figcaption {

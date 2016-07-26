@@ -155,15 +155,15 @@ $(document).ready(function() {
 		/* Move the map and help videos above the steppers for phone/small tablet. */
 		$("#topbar").prepend($("#map"));
 		
-		//$("#help_video").css("margin-top", ($("#topbar").height() - $("#help_video").height()) / 2 + "px").prependTo($("#topbar"));
-		$("#help_video").prependTo($("#topbar"));
+		//$(".help_video").css("margin-top", ($("#topbar").height() - $(".help_video").height()) / 2 + "px").prependTo($("#topbar"));
+		$(".help_video").prependTo($("#topbar"));
 		
 		/* Apply the initial abbreviated stepper layout for mobile. */
 		$(".cancel_button").addClass("hide");
 		
 		$("#stepper_content").addClass("brief");
 		
-		$("#water_step2, #water_step3").addClass("hide");
+		$("div[id$='step2'], div[id$='step3']").addClass("hide");
 		
 		$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({
 			"padding-top": "10px",
@@ -235,11 +235,11 @@ $(document).ready(function() {
 		$("#show_me_menu ul").addClass("dropdown-menu");
 		
 		/* Make the stepper content span only four columns. */
-		$("#water_test #stepper_content").removeClass("col-md-12").addClass("col-md-4");
+		$("#" + $pageId + "_page #stepper_content").removeClass("col-md-12").addClass("col-md-5");
 		
 		/* Move the map and help video into the sidebar. */
 		$("#map").prependTo($("#sidebar"));
-		$("#help_video").prependTo($("#sidebar"));
+		$(".help_video").prependTo($("#sidebar"));
 		
 		/* Show the step titles by default. */
 		$("div[id$='step1_content'] .cancel_button, div[id$='step2'], div[id$='step3']").removeClass("hide");
@@ -254,39 +254,6 @@ $(document).ready(function() {
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
 	//$("#provider_popup").parent().parent().css("width", "300px");
-	
-	/* Dynamically add script tags only to pages where they're relevant. */
-	// MAP API
-	var js_api = "<script src='https://www.google.com/jsapi'></script>";
-	var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI&libraries=visualization,places' async defer></script>";
-	var map_js = "<script src='js/map.js'></script>";
-	var client_api = "<script src='https://apis.google.com/js/client.js?onload=setAPIKey'></script>";
-	var news_js = "<script src='js/news.js'></script>";
-	var alert_js = "<script src='js/alerts.js'></script>";
-	
-	/*if ($pageId.indexOf("index") != -1) {
-		$("head script[src*='script']").before(map_api, client_api);
-		$("head script[src*='script']").after(map_js, client_api);
-	}*/
-	console.log("$pageId = " + $pageId);
-	
-	/*if ($pageId.indexOf("news") != -1) {
-		//$("head script[src*='script']").before(js_api);
-		$("head").append(news_js);
-		// + "\n" + alert_js
-	}*/
-	
-	/* Function to apply the abbreviated stepper layout for mobile. */
-	/*function changeToShortSteppers() {
-		$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css("padding-bottom", "24px");		
-		$("#stepper_content ul").css("padding-left", "32px");
-		$("#stepper_content ul li:first-child").css({
-			"white-space": "normal",
-			"overflow": "auto",
-			"text-overflow": "clip"
-		});
-		$(".stepper-vert-content").css("border-left", "1px");
-	}*/
 	
 	/* Cancel button for all "show me" pages. */
 	$(".cancel_button").on("click", function() {
@@ -308,7 +275,7 @@ $(document).ready(function() {
 			$("#" + $node_substring + "2").addClass("active");
 			
 			$("#map").addClass("hide");
-			$("#help_video").removeClass("hide");
+			$(".help_video").removeClass("hide");
 		});
 		
 		$("#" + $node_substring + "2_content .next_button").on("click", function() {
@@ -317,21 +284,31 @@ $(document).ready(function() {
 			$("#" + $node_substring + "3").addClass("active");
 			$("#" + $node_substring + "3_content").removeClass("hide").addClass("cancel_stepper_border");
 			
-			$("#help_video").remove();
+			$(".help_video").remove();
 			$("#map").removeClass("hide");
 		});
 	}
 	
-	/* Test My Water page */
-	if ($pageId.indexOf("test") != -1) {
+	/* All "show me how" pages. */
+	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1)) {
 		$node_id = $activeNode.attr("id");
 		$node_substring = $node_id.slice(0, $node_id.length-1);
 		
-		$("#" + $node_substring + "1").addClass("active");
-		$("#" + $node_substring + "1_content").removeClass("hide");
-		$("#" + $node_substring + "2_content").addClass("hide");
-		$("#" + $node_substring + "3_content").addClass("hide");
-		$("#help_video").addClass("hide");
+		console.log($activeNode);
+		console.log("$node_substring = " + $node_substring);
+		
+		$("div[id*='step1_content']").removeClass("hide");
+		$("div[id*='step2_content']").addClass("hide");
+		$("div[id*='step3_content']").addClass("hide");
+		
+		if ($pageId.indexOf("test") != -1)
+			$(".help_video").addClass("hide");
+		else if ($pageId.indexOf("filter") != -1) {
+			$("#Brita_video .help_video").addClass("hide");
+			$("#map").remove();			
+		}			
+		else
+			$("#map").remove();
 		
 		/* Set the map to display only test kits. */
 		resourceActiveArray = [0,0,0,0,1,0];
@@ -343,51 +320,59 @@ $(document).ready(function() {
 			$("div[id*='" + $node_substring + "']").addClass("cancel_stepper_border");
 			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
 			
-			$("#" + $node_substring + "1_content .next_button").on("click", function() {
-				$("#" + $node_substring + "1, #water_step1_content").addClass("hide");
+			$("div[id*='step1_content'] .next_button").on("click", function() {
+				$("#" + $node_substring + "1, div[id*='step1_content']").addClass("hide");
 				$("#" + $node_substring + "2").removeClass("hide").addClass("active");
-				$("#" + $node_substring + "2_content").removeClass("hide");
+				$("div[id*='step2_content']").removeClass("hide");
 				
-				$("#map").addClass("hide");
-				$("#help_video").removeClass("hide");
+				if ($pageId.indexOf("test") != -1) {
+					$("#map").addClass("hide");
+					$(".help_video").removeClass("hide");
+				}
 			});
 			
-			$("#" + $node_substring + "2_content .next_button").on("click", function() {
-				$("#" + $node_substring + "2, #water_step2_content").addClass("hide");
-				$("#" + $node_substring + "3, #water_step3_content").removeClass("hide");
+			$("div[id*='step2_content'] .next_button").on("click", function() {
+				$("#" + $node_substring + "2, div[id*='step2_content']").addClass("hide");
+				$("#" + $node_substring + "3, div[id*='step3_content']").removeClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
-				$("#" + $node_substring + "3_content .cancel_button").removeClass("hide btn-primary");
-				$("#" + $node_substring + "3_content .btn_group").css("text-align", "center");
+				$("div[id*='step3_content'] .cancel_button").removeClass("hide btn-primary");
+				$("div[id*='step3_content'] .btn_group").css("text-align", "center");
 				
-				$("#help_video").remove();
-				$("#map").removeClass("hide");
+				if ($pageId.indexOf("test") != -1) {
+					$(".help_video").remove();
+					$("#map").removeClass("hide");
+				}
 			});
 		}
 		else {
-			$("#" + $node_substring + "1_content .next_button").on("click", function() {
+			$("div[id*='step1_content'] .next_button").on("click", function() {
 				$("#" + $node_substring + "1").removeClass("active").addClass("done");
-				$("#" + $node_substring + "1_content").addClass("hide");
-				$("#" + $node_substring + "2_content").removeClass("hide");
+				$("div[id*='step1_content']").addClass("hide");
+				$("div[id*='step2_content']").removeClass("hide");
 				$("#" + $node_substring + "2").addClass("active");
 				
-				$("#map").addClass("hide");
-				$("#help_video").removeClass("hide");
+				if ($pageId.indexOf("test") != -1) {
+					$("#map").addClass("hide");
+					$(".help_video").removeClass("hide");
+				}
 			});
 			
-			$("#" + $node_substring + "2_content .next_button").on("click", function() {
+			$("div[id*='step2_content'] .next_button").on("click", function() {
 				$("#" + $node_substring + "2").removeClass("active").addClass("done");
-				$("#" + $node_substring + "2_content").addClass("hide");
+				$("div[id*='step2_content']").addClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
-				$("#" + $node_substring + "3_content").removeClass("hide").addClass("cancel_stepper_border");
+				$("div[id*='step3_content']").removeClass("hide").addClass("cancel_stepper_border");
 				
-				$("#help_video").remove();
-				$("#map").removeClass("hide");
+				if ($pageId.indexOf("test") != -1) {
+					$(".help_video").remove();
+					$("#map").removeClass("hide");
+				}
 			});
 		}
 	}
 	
 	/* Steppers for Install water filter */
-	$("#filter_link").on("click", function() {
+	/*$("#filter_link").on("click", function() {
 	  $("#filter_step1").addClass("active");
 	  $("#allFilters_step1_content").removeClass("hide");
 	  $("#filter_step2").addClass("hide");
@@ -438,11 +423,11 @@ $(document).ready(function() {
 
     $("#install_filter .cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
-	});
+	});*/
 
 
 	/* Steppers for Clean My Aerator */
-    $("#aerator_link").on("click", function() {
+    /*$("#aerator_link").on("click", function() {
 	  $("#aerator_step1").addClass("active");
 	  $("#aerator_step1_content").removeClass("hide");
 	  $("#aerator_step2").addClass("hide");
@@ -473,7 +458,7 @@ $(document).ready(function() {
 	
 	$("#clean_aerator .cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
-	});
+	});*/
 	
 
 	/* Report a Problem page */
@@ -540,4 +525,26 @@ $(document).ready(function() {
 		alert("Thank you for your submission!");
 		$(window).attr("location", "index.php");
 	});
+	
+	
+	/* Dynamically add script tags only to pages where they're relevant. */
+	// MAP API
+	var js_api = "<script src='https://www.google.com/jsapi'></script>";
+	var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI&libraries=visualization,places' async defer></script>";
+	var map_js = "<script src='js/map.js'></script>";
+	var client_api = "<script src='https://apis.google.com/js/client.js?onload=setAPIKey'></script>";
+	var news_js = "<script src='js/news.js'></script>";
+	var alert_js = "<script src='js/alerts.js'></script>";
+	
+	/*if ($pageId.indexOf("index") != -1) {
+		$("head script[src*='script']").before(map_api, client_api);
+		$("head script[src*='script']").after(map_js, client_api);
+	}*/
+	console.log("$pageId = " + $pageId);
+	
+	/*if ($pageId.indexOf("news") != -1) {
+		//$("head script[src*='script']").before(js_api);
+		$("head").append(news_js);
+		// + "\n" + alert_js
+	}*/
 });
