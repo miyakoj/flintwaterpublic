@@ -127,12 +127,14 @@ $(document).ready(function() {
 	}
 	
 	/* Layout mods for differences between desktop and mobile for the "show me" pages. */
-	/*if (windowHeight < 480) {
+	
+	/* Size the map depending on the height of the device. */
+	if (windowHeight < 480)
 		$("#topbar").css("height", "9em");
-	}
-	else {
+	else if (windowHeight < 800)
 		$("#topbar").css("height", "20em");
-	}*/
+	else
+		$("#topbar").css("height", "30em");
 	
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
@@ -151,7 +153,7 @@ $(document).ready(function() {
 		$("#show_me_menu ul").removeClass("dropdown-menu");
 		
 		/* Move the map and help videos above the steppers for phone/small tablet. */
-		$("#topbar").prepend($("#map")).css("height", "20em");
+		$("#topbar").prepend($("#map"));
 		
 		//$("#help_video").css("margin-top", ($("#topbar").height() - $("#help_video").height()) / 2 + "px").prependTo($("#topbar"));
 		$("#help_video").prependTo($("#topbar"));
@@ -295,6 +297,9 @@ $(document).ready(function() {
 	function isExpanded(node) {
 		$node_id = node.attr("id");
 		$node_substring = $node_id.slice(0, $node_id.length-1);
+		
+		if (windowHeight < 480)
+			$("#topbar").css("height", "15em");
 		
 		$("#" + $node_substring + "1_content .next_button").on("click", function() {
 			$("#" + $node_substring + "1").removeClass("active").addClass("done");
