@@ -129,16 +129,25 @@ if (@isset($_GET["pid"])) {
 									</div>
 									
 									<div id='allFilters_step1_content' class='stepper-vert-content'>
-									   <figure>
-										<button id='Brita_btn' class='filter-buttons'><img src='images/Brita_filter.jpg' /></button>
+										<div id='Brita_card' class='card'>
+											<div class='card-main'>
+												<div class='card-img'></div>
+												<div class='card-inner'>Brita</div>
+											</div>
+										</div>
+										
+									   <!--<figure>
+										<button id='Brita_btn' class='filter_buttons'><img src='images/Brita_filter.jpg' /></button>
 										<figcaption><h4>Brita</h4></figcaption>
-									   </figure>
+									   </figure>-->
+									   
 									   <figure>
-										<button id='PUR_btn' class='filter-buttons'><img src='images/PUR_filter.jpg' /></button>
+										<button id='PUR_btn' class='filter_buttons'><img src='images/PUR_filter.jpg' /></button>
 										<figcaption><h4>PUR</h4></figcaption>
 									   </figure>
+									   
 									   <figure>
-										<button id='ZeroWater_btn' class='filter-buttons'><img src='images/ZeroWater.jpg' /></button>
+										<button id='ZeroWater_btn' class='filter_buttons'><img src='images/ZeroWater.jpg' /></button>
 										<figcaption><h4>ZeroWater</h4></figcaption>
 										</figure>
 									</div>
