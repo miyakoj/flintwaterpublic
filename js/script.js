@@ -483,7 +483,7 @@ $(document).ready(function() {
 		$("#report_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	});
 	
-	$("#report_problem #submit_button").on("click", function() {
+	$("#report_problem #submit_button").on("submit", function() {
 		//var location = $("#report_page #report_info #locationTextField").val();
 		//var problemType = $("#report_page #report_info #ProblemSelector").val();
 		//var description = $("#report_page #report_info textarea").val();
@@ -516,7 +516,7 @@ $(document).ready(function() {
 		$("#submit_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	});
 	
-	$("#submit_info #submit_button").on("click", function() {
+	$("#submit_info #submit_button").on("submit", function() {
 		//var location = $("#report_page #report_info #locationTextField").val();
 		//var problemType = $("#report_page #report_info #ProblemSelector").val();
 		//var description = $("#report_page #report_info textarea").val();

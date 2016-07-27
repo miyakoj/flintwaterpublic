@@ -296,6 +296,10 @@ body[id='index_page'] #header_top #logo img {
 	border-color:#A4A8B9!important;
 }
 
+#toggles #risk_factor_btn {
+	display:none;
+}
+
 .tile {
 	background-color:transparent!important;
 }
@@ -538,8 +542,25 @@ body[id="index_page"] main {
 	padding-left: 0px!important;
 }*/
 
-.filter-buttons {
+.filter_buttons {
 	margin-right: 10px;
+}
+
+#filter_page .card-img {
+	width:auto;
+	height:100px;
+}
+
+#Brita_card .card-img {
+	background-image:url('images/Brita.jpg');
+}
+
+#PUR_card .card-img {
+	background-image:url('images/PUR.jpg');
+}
+
+#ZeroWater_card .card-img {
+	background-image:url('images/ZeroWater.jpg');
 }
 
 figure {
