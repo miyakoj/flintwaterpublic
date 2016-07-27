@@ -25,6 +25,7 @@ var allMarkersString = [];
 var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  //lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
 var location_marker = [];
 var marker_img;
+var savedLocationTotal;
 
 //resource marker that is clicked or last clicked
 var resource_marker;
@@ -49,13 +50,15 @@ var recycleIcon;
 var filterIcon;
 var constructionIcon;
 var waterPlantIcon;
+var savedResourceIcon;
+var savedLocationIcon;
 
 var leadLevelOfInput;
 
 /* Size the map popup icons based on whether the device is mobile or not. */
 var iconSize;
 
-
+//localStorage.clear();
 if (windowWidth < 992)
 	iconSize = 25;
 else
@@ -152,7 +155,20 @@ function initMap() {
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
-	
+	savedResourceIcon = {
+		url: 'images/savedresource.png',
+		origin: new google.maps.Point(0,0),
+		anchor: new google.maps.Point(0,0),
+		size: new google.maps.Size(64,64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	savedLocationIcon = {
+		url: 'images/savedlocation.png',
+		origin: new google.maps.Point(0,0),
+		anchor: new google.maps.Point(0,0),
+		size: new google.maps.Size(64,64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
 	var constructionTitle = "Construction Zone";
@@ -250,7 +266,7 @@ function initMap() {
 
 	  //get rid of previous markers if they exist
 	  if(location_marker.length > 0){
-	  		location_marker[0].setMap(null);
+	  		location_marker[0].setMap(map);
 	  		location_marker = [];
 		}
 	  // Create a marker for the place.
@@ -436,7 +452,7 @@ function initMap() {
 			if (typeof(Storage) !== "undefined") {
 				if ($("#location_card #saved_location_button span").text() == save_location_msg) {
 					if (localStorage.getItem("saved_locations_count") !== null) {
-						if (localStorage.saved_locations_count < 3)
+						if (localStorage.saved_locations_count < 100)
 							localStorage.saved_locations_count = Number(localStorage.saved_locations_count) + 1;
 						else
 							console.log("There are no free saved locations.");
@@ -448,28 +464,29 @@ function initMap() {
 					marker_img = "images/savedlocation.png";
 					card_marker_img = "images/locationicon.png";
 					$("#location_card #saved_location_button span").text(saved_location_msg);
+					
+					var temp = location_marker;
+					savedMarkers.push(temp)
+					console.log(savedMarkers);
+					
 				}
 				else { // remove location
 					var searched_location = $("#search_input").val();
+					savedLocationTotal = localStorage.getItem("saved_locations_count");
 					localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
 				
 					$("#saved_location_button span").text(save_location_msg);
-
-					if (localStorage.saved_location1 == searched_location) {
-						localStorage.removeItem("saved_location1");
-					}
-					else if (localStorage.saved_location2 == searched_location) {
-						localStorage.removeItem("saved_location2");
-					}
-					else if (localStorage.saved_location3 == searched_location) {
-						localStorage.removeItem("saved_location3");
+				    for(var i=0; i < savedLocationTotal; i++){
+						if (localStorage.getItem(["saved_location" + Number(localStorage.saved_locations_count)]) == searched_location){
+							localStorage.removeItem("saved_location" + Number(localStorage.saved_locations_count));
+						    savedMarkers.splice(i,1);
+						}
 					}
 					marker_img = "images/locationicon.png";
 					card_marker_img = "images/savedlocation.png";
 				}
 				
 				location_marker[0].setIcon(marker_img);
-				console.log(localStorage);
 			}
 			else {
 				console.log("There is no local storage support.");
@@ -658,13 +675,14 @@ function callStorageAPI(object) {
 					var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
 					var title = provider.locationName;
 					var isSaved = false;
-					if(checkIfSaved(title))
+					if(checkIfSaved(title)){
 						isSaved = true;
-
+						
+					}
 					var icon;
 					var images = "";
 					var resourcesAvailable = "";
-
+					
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						marker_img = "images/waterpickupicon.png";
 						images += "<img src='" + marker_img + "' class='marker_popup_icons' alt='Water Pickup' />";
@@ -723,23 +741,34 @@ function callStorageAPI(object) {
 					else
 						isDisplayMap = null;
 					
-					var marker = new google.maps.Marker({
-						position: latLng,
-						title: title,
-						map: isDisplayMap,
-						icon: icon
-					});
-					
+					if(!isSaved){
+						var marker = new google.maps.Marker({
+							position: latLng,
+							title: title,
+							map: isDisplayMap,
+							icon: icon
+						});
+					}
+					else {
+						var marker = new google.maps.Marker({
+							position: latLng,
+							title: title,
+							map: isDisplayMap,
+							icon: savedResourceIcon
+						});
+					}
+				
 					/* Add tooltips to the popup images. */
 					
 					/* Store the markers in arrays for the add/remove functionality. 
 						if saved, put in savedMarkers if not put in allMarkers*/
-					if(isSaved)
+					if(isSaved){						
 						savedMarkers.push(marker);
+					}
 					else
 						allMarkers.push(marker);
-					
-					bindInfoWindow(marker, map, infoWindow, content, isSaved);
+
+					bindInfoWindow(marker, map, infoWindow, content);
 
 				}
 
@@ -843,30 +872,33 @@ function setUpInitialMap(){
 		}
 }
 
+function attachLocationCard(marker, map, html){
+	marker.addListener("click", function() {
+	   map.panTo(marker.getPosition());
+	   $("location_card").empty();
+	   $("location_card .card-inner").append(html);
+	   $("location_card .card-inner").show();
+	   location_marker = marker;
+	}
+	
+}
+
+//needed a function to be able to change if it's saved or not
 function bindInfoWindow(marker, map, infowindow, html){
 	marker.addListener("click", function(){
 		//infowindow.setContent(html);
 		//infowindow.open(map, this);
+		isSaved = checkIfSaved(marker.getTitle());
 		map.panTo(marker.getPosition());
 		$("#resource_card .card-inner").empty();
 		$("#resource_card .card-inner").append(html);
 		$("#resource_card").show();
-		resource_marker = marker;
-
-	});
-}
-
-//needed a function to be able to change if it's saved or not
-function bindInfoWindow(marker, map, infowindow, html, isSaved){
-	marker.addListener("click", function(){
-		//infowindow.setContent(html);
-		//infowindow.open(map, this);
-		map.panTo(marker.getPosition());
-		if(isSaved)
+		if(isSaved){
 			$("#resource_card .resource-card-save img").attr("src", "../images/ic_star.png");
-		$("#resource_card .card-inner").empty();
-		$("#resource_card .card-inner").append(html);
-		$("#resource_card").show();
+		}
+		else{
+			$("#resource_card .resource-card-save img").attr("src", "../images/ic_star_border.png");
+		}
 		resource_marker = marker;
 
 	});
@@ -874,8 +906,13 @@ function bindInfoWindow(marker, map, infowindow, html, isSaved){
 
 function unsaveLocation(locationInput) {
 		localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
-
-		if (localStorage.saved_location1 == locationInput) {
+		savedLocationTotal = localStorage.getItem("saved_locations_count");
+		for(var i=0; i < savedLocationTotal;i++) {
+			if(locationStorage.getItem(["saved_location" + Number(localStorage.saved_locations_count)]) == locationInput)
+				localStorage.removeItem("saved_location"+i);
+		}
+		
+	/*	if (localStorage.saved_location1 == locationInput) {
 			localStorage.removeItem("saved_location1");
 		}
 		else if (localStorage.saved_location2 == locationInput) {
@@ -883,7 +920,7 @@ function unsaveLocation(locationInput) {
 		}
 		else if (localStorage.saved_location3 == locationInput) {
 			localStorage.removeItem("saved_location3");
-		}
+		}*/
 }
 
 function displaySavedLocations() {
@@ -891,7 +928,7 @@ function displaySavedLocations() {
 		"width": function() {
 			return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
 		},
-		"top": function() {
+		"bottom": function() {
 			return parseInt($("#search_input").css("top")) + parseInt($("#search_input").height()) + 20 + "px";
 		},
 		"left": function() {
@@ -906,7 +943,7 @@ function displaySavedLocations() {
 		$("#location_card .card-action").css("font-size", "0.5rem");
 		
 		var saved_locations = "<div id=\"saved_locations\">";
-		
+		//for(var i=0; i < ;i++)
 		if (localStorage.getItem("saved_location1") !== null) {
 			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
 		}
@@ -1068,7 +1105,6 @@ $(document).ready(function() {
 			var temp = resource_marker;
 			allMarkers.push(temp);
 			setMarkers();
-
 		}
 		else{
 			saveLocation(locationTitle);
@@ -1076,12 +1112,12 @@ $(document).ready(function() {
 			$("#resource_card .resource-card-save img").attr("src", "../images/ic_star.png");
 			//remove from allMarkers 
 			for(var i = 0; i < allMarkers.length; i++){
-				if(allMarkers[i].getTitle() == locationTitle)
+				if(allMarkers[i].getTitle() == locationTitle){
 					allMarkers.splice(i,1);
-			}
-			//add to savedMarkers
+				}	
 			var temp = resource_marker;
 			savedMarkers.push(temp);
+			}
 		}
 	});
 
@@ -1091,6 +1127,7 @@ $(document).ready(function() {
 		//todo submit to db the issue selected and resource_marker or 
 	});
 
+	
 	/* When a saved location is clicked, put the location in search bar and search. */
 	$(document).on('click', '.saved-location', function() {
 		$('#search_input').val($(this).text());
@@ -1217,8 +1254,9 @@ function checkIfSaved(obj) {
 		var tempNumberSaved = parseInt(localStorage["numberSaved"]);
 		var returnVal = false;
 		for(var i=0; i <= tempNumberSaved; i++){
-			if(localStorage["savedLocation"+i].includes(obj.toString()))
+			if(localStorage.getItem(["savedLocation"+i]) == obj.substring(0)){
 				returnVal = true;
+			}
 		}
 		return returnVal;
 }
@@ -1226,8 +1264,15 @@ function checkIfSaved(obj) {
 function removeFromSaved(obj) {
 		var tempNumberSaved = parseInt(localStorage["numberSaved"]);
 		for(var i=0; i <= tempNumberSaved; i++){
-			if(localStorage["savedLocation"+i].includes(obj.toString()))
-				localStorage["savedLocation"+i] = null;
+			if(localStorage.getItem(["savedLocation"+i]) == obj.substring(0)){
+				localStorage.removeItem(["savedLocation"+i]);
+				tempNumberSaved--;
+				if(tempNumberSaved == -1) {
+					localStorage["numberSaved"] = 0;
+				}	
+				else
+					localStorage["numberSaved"] = tempNumberSaved;
+			}
 		}
 }
 
@@ -1243,11 +1288,6 @@ function saveLocation(obj) {
 		localStorage["numberSaved"] = tempNumberSaved;
 		localStorage["savedLocation"+tempNumberSaved] = resource_marker.getTitle();
 		console.log(localStorage["savedLocation"+tempNumberSaved]);
+		console.log(localStorage);
 }
 
-function whats_active(){
-	  for (i=0; i < resourceActiveArray.length; i++){
-		  newValue += resourceActiveArray[i];
-	  }
-	  return newValue;
-};
