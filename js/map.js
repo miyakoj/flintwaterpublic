@@ -75,6 +75,7 @@ function checkAuth() {
 
 function initMap() {
 	$("#resource_card").hide();
+	
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
 	  zoom: 13,
@@ -96,7 +97,7 @@ function initMap() {
 	
 	infoWindow = new google.maps.InfoWindow();
 
-	callStorageAPI("leadlevels.json");
+	//callStorageAPI("leadlevels.json");
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
 	setUpFusionTable();
@@ -169,6 +170,7 @@ function initMap() {
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
+	
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
 	var constructionTitle = "Construction Zone";
@@ -265,10 +267,10 @@ function initMap() {
 	  updateSaveButtons();
 
 	  //get rid of previous markers if they exist
-	  if(location_marker.length > 0){
+	  if (location_marker.length > 0){
 	  		location_marker[0].setMap(map);
 	  		location_marker = [];
-		}
+	  }
 	  // Create a marker for the place.
 	  location_marker.push(new google.maps.Marker({
 		position: place.geometry.location,
@@ -323,37 +325,37 @@ function initMap() {
 		
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
-	  	var lead_meter;
-		var lead_prediction;
-		var lead_msg = "OK to use filtered water, except children under 6 and pregnant women.";	
+	  	var leadMeter;
+		var leadPrediction;
+		var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";	
 
 
 	  	for(var i=0; i < heatmapData.length; i++) {
 	  		var tempAddr = heatmapData[i].address.valueOf();
 	  		if(tempAddr === streetAddress) {
-	  			lead_meter = heatmapData[i].lead + " ppb";
+	  			leadMeter = heatmapData[i].lead + " ppb";
 	  			leadLevelOfInput = heatmapData[i].lead;
 	  			break;
 	  		}
 	  		else{
-				 lead_meter = "No Reported Reading";
+				 leadMeter = "No Reported Reading";
 				 leadLevelOfInput = -1;
 	  		}
 	  	}
 
 	  	if(leadLevelOfInput >= 0 && leadLevelOfInput < 15){
-	  		lead_prediction = "Predicted low lead levels";
+	  		leadPrediction = "Predicted low lead levels";
 	  	}
 	  	else if(leadLevelOfInput >= 15 && leadLevelOfInput < 150){
-	  		lead_prediction = "Predicted medium lead levels";
+	  		leadPrediction = "Predicted medium lead levels";
 	  	}
 	  	else if(leadLevelOfInput >= 150){
-	  		lead_prediction = "Predicted high lead levels";
-	  		lead_msg = "Not safe to drink even if filtered."
+	  		leadPrediction = "Predicted high lead levels";
+	  		leadMsg = "Not safe to drink even if filtered."
 	  	}
 
 		/* Display appropriate lead rating and message. */
-		$("#location_card .card-inner").html("<button type=\"button\" class=\"close\" >&times;</button> <h6>" + lead_prediction + "</h6> <p>" + lead_meter + "</p> <p>" + lead_msg + "</p>");
+		$("#location_card .card-inner").html("<button type=\"button\" class=\"close\" >&times;</button> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>");
 	});
 	
 	//303 E Kearsley St, Flint, MI, United States
@@ -879,7 +881,7 @@ function attachLocationCard(marker, map, html){
 	   $("location_card .card-inner").append(html);
 	   $("location_card .card-inner").show();
 	   location_marker = marker;
-	}
+	});
 	
 }
 
@@ -1169,17 +1171,6 @@ $(document).ready(function() {
 			activeSearch = 0;
 		}
 	});
-
-	$("#test_page #step1 a").on("click", function(){
-		if (localStorage !== "undefined") {
-     		resourceActiveArray = [0,0,0,0,1,0];
-			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-     	}
-    	else {
-      		console.log("We suck");
-    	}
-		$(window).attr("location", "index.php");
-	}); 
 });
 
 /* Set markers on the map based on type. */
