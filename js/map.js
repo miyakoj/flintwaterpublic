@@ -175,9 +175,7 @@ function initMap() {
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
-<<<<<<< HEAD
 	
-=======
 	greenIcon = {
 		url: 'images/green.png',
 		origin: new google.maps.Point(0,0),
@@ -199,7 +197,7 @@ function initMap() {
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
->>>>>>> origin/master
+
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
 	var constructionTitle = "Construction Zone";
