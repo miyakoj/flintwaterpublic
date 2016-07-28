@@ -13,6 +13,8 @@ var map;
 var infoWindow;
 var heatmap;
 var leadLayer; //fusion table layer to set up lead levels
+var leadLayerBirdView_markers = [];
+var leadLayerBirdView_info;
 var predictiveLayer; //fusion table layer to show predicted lead levels
 var leadAndPredictiveLayer; //fusion table layer to show both lead and predicted layer
 var heatmapData;
@@ -93,12 +95,15 @@ function initMap() {
 			}
 		});
 	});
+
+	google.maps.event
 	
 	infoWindow = new google.maps.InfoWindow();
 
 	callStorageAPI("leadlevels.json");
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
+	callStorageAPI("leadLevels_birdview.json");
 	setUpFusionTable();
 
 	allMarkers.forEach(function(marker) {
@@ -169,6 +174,27 @@ function initMap() {
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
+	greenIcon = {
+		url: 'images/green.png',
+		origin: new google.maps.Point(0,0),
+		anchor: new google.maps.Point(0,0),
+		size: new google.maps.Size(64,64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	yellowIcon = {
+		url: 'images/yellow.png',
+		origin: new google.maps.Point(0,0),
+		anchor: new google.maps.Point(0,0),
+		size: new google.maps.Size(64,64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
+	redIcon = {
+		url: 'images/red.png',
+		origin: new google.maps.Point(0,0),
+		anchor: new google.maps.Point(0,0),
+		size: new google.maps.Size(64,64),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	};
 	//Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
 	var constructionTitle = "Construction Zone";
@@ -211,10 +237,26 @@ function initMap() {
 		searchBox.setBounds(map.getBounds());
 	});
 
-	//If map center is changed hide resource card
+	//If map is clicked hide resource card
 	 map.addListener('click', function() {
     	$("#resource_card").hide();
   	});
+
+	 map.addListener('zoom_changed', function() {
+	 	var zoomLvl = map.getZoom();
+	 	if(resourceActiveArray[0] == 1 && zoomLvl < 16) {
+			leadAndPredictiveLayer.setMap(null);
+			for(var i = 0; i < leadLayerBirdView_markers.length; i++){
+				leadLayerBirdView_markers[i].setMap(map);
+			}
+		}
+		else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
+			leadAndPredictiveLayer.setMap(map);
+			for(var i = 0; i < leadLayerBirdView_markers.length; i++){
+				leadLayerBirdView_markers[i].setMap(null);
+			}
+		}
+	 });
 
 	
 	/* Saved Location Selection Card */
@@ -508,57 +550,9 @@ function initMap() {
 		}
 	});
 	setUpInitialMap();
-	setMarkers();
 }
 
 function setUpFusionTable() {
-	
-
-	leadLayer = new google.maps.FusionTablesLayer({
-	    query: {
-	      select: '\'latitude\'',
-	      where: '\'leadlevel\' >= 0',
-	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
-	    }, 
-	    styles: [{
-			markerOptions: {
-				iconName: "measle_grey"
-			}
-		}, {
-			where: '\'leadlevel\' >= 15  AND \'leadlevel\' < 50',
-			markerOptions: {
-				iconName: "small_yellow"
-			}
-		}, {
-			where: '\'leadlevel\' >= 50 ',
-			markerOptions: {
-				iconName: "small_red"
-			}
-		}, {
-			where: '\'leadlevel\' >= 0 AND \'leadlevel\' < 15',
-			markerOptions: {
-				iconName: "small_green"
-			}
-		}]
-	  });
-
-	predictiveLayer = new google.maps.FusionTablesLayer({
-	    query: {
-	      select: '\'latitude\'',
-	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
-	    }, 
-	    styles: [{
-	    	where:'\'Prediction\' <= 0.05',
-			markerOptions: {
-				iconName: "measle_grey"
-			}
-		}, {
-			where: '\'Prediction\' > 0.05',
-			markerOptions: {
-				iconName: "small_purple"
-			}
-		}]
-	  });
 
 	leadAndPredictiveLayer = new google.maps.FusionTablesLayer({
 	    query: {
@@ -567,11 +561,6 @@ function setUpFusionTable() {
 	    }, 
 	    styles: [{
 			markerOptions: {
-				iconName: "small_purple"
-			}
-		}, {
-			where: '\'Prediction\' <= 0.05' ,
-			markerOptions: {
 				iconName: "measle_grey"
 			}
 		}, {
@@ -592,9 +581,6 @@ function setUpFusionTable() {
 		}]
 	  });
 
-
-	addFusionListener(leadLayer);
-	addFusionListener(predictiveLayer);
 	addFusionListener(leadAndPredictiveLayer);
 }
 
@@ -625,50 +611,15 @@ function callStorageAPI(object) {
 				heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
-				/*for(i=0; i<js_obj.leadLevels.length; i++) {
-					var info = js_obj.leadLevels[i];
-					var weightValue = assignWeight(info.leadLevel);
-					heatmapData.push({location: new google.maps.LatLng(info.latitude, info.longitude), weight: weightValue});
-				}*/
 				for(i=0; i<js_obj.leadLevels.length; i++) {
 					var info = js_obj.leadLevels[i];
 					//var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
 				}
-				
-				/*function assignWeight(levelIn){
-					if (levelIn < 5){
-						return 0;
-					}
-					else if (levelIn < 14){
-						return 0;
-					}
-					else if(levelIn < 50){
-						return 50;
-					}
-					else {
-						return 100;
-					}
-				}
-				
-				heatmap = new google.maps.visualization.HeatmapLayer({
-					 data: heatmapData,
-					 radius: 25,
-					 dissipate: true,
-					 gradient: ['rgba(0,0,0,0)',
-								'rgba(255,255,0,1)',
-								'rgba(213,109,0,1)',
-								'rgba(255,0,0,1)',
-								'rgba(128,0,0,1)']
-				});
-				console.log("heatmap is initiated");
-				//heatmap.setMap(map);*/
 			}
 			/* Provider Data */
 			else if (object == "providers.json") {
 				js_obj = $.parseJSON(resp.body);
-				
-				
 				
 				for(i=0; i<js_obj.providers.length; i++) {
 					var provider = js_obj.providers[i];
@@ -823,7 +774,37 @@ function callStorageAPI(object) {
 						pipeLine = [];
 				}
 			}
-			
+			else if (object == "leadLevels_birdview.json") {
+				js_obj = $.parseJSON(resp.body);
+				
+				leadLayerBirdView_markers = [];
+				for(var i=0; i<js_obj.area.length; i++) {
+					var temp = js_obj.area[i];
+					var latLng = new google.maps.LatLng(temp.latitude, temp.longitude);
+					var numOfTests = temp.numOfTests;
+					var numOfDangerous = temp.numOfDangerous;
+					var icon;
+
+					if(numOfDangerous < 10) {
+						icon = greenIcon;
+					}
+					else if (numOfDangerous < 15) {
+						icon = yellowIcon;
+					}
+					else {
+						icon = redIcon;
+					}
+
+					var birdMarker = new google.maps.Marker({
+						position: latLng,
+						icon: icon,
+						map: map
+					});
+
+					leadLayerBirdView_markers.push(birdMarker);
+
+				}
+			}
 				
 		}, function(reason) {
 			console.log('Error: ' + reason.result.error.message);
@@ -841,7 +822,7 @@ function setUpInitialMap(){
 			localStorage.setItem("resource_array", JSON.stringify(temp));
      	}
     	else {
-      		console.log("We suck");
+      		resourceActiveArray = [0,0,0,0,0,0,0,0];
     	}
 
     	setMarkers();
@@ -870,6 +851,8 @@ function setUpInitialMap(){
 		if(resourceActiveArray[7] == 1) {
 			$("#risk_factor_btn").addClass("active");
 		}
+
+		setMarkers();
 }
 
 function attachLocationCard(marker, map, html){
@@ -879,7 +862,7 @@ function attachLocationCard(marker, map, html){
 	   $("location_card .card-inner").append(html);
 	   $("location_card .card-inner").show();
 	   location_marker = marker;
-	}
+	});
 	
 }
 
@@ -1184,29 +1167,28 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	if(resourceActiveArray[0] == 1 && resourceActiveArray[7] == 0) {
+	var zoomLvl = map.getZoom();
+	if(resourceActiveArray[0] == 1 && zoomLvl < 16) {
 		leadAndPredictiveLayer.setMap(null);
-		predictiveLayer.setMap(null);
-		leadLayer.setMap(map);
+		for(var i = 0; i < leadLayerBirdView_markers.length; i++){
+			leadLayerBirdView_markers[i].setMap(map);
+		}
 	}
-	else if (resourceActiveArray[0] == 0 && resourceActiveArray[7] == 0) {
-		leadLayer.setMap(null);
-		predictiveLayer.setMap(null);
-	}
-	else if (resourceActiveArray[0] == 0 && resourceActiveArray[7] == 1) {
-		leadAndPredictiveLayer.setMap(null);
-		leadLayer.setMap(null);
-		predictiveLayer.setMap(map);
-	}	
-	else if (resourceActiveArray[0] == 1 && resourceActiveArray[7] == 1) {
-		predictiveLayer.setMap(null);
-		leadLayer.setMap(null);
+	else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
 		leadAndPredictiveLayer.setMap(map);
+		for(var i = 0; i < leadLayerBirdView_markers.length; i++){
+			leadLayerBirdView_markers[i].setMap(null);
+		}
+	}
+	else if (resourceActiveArray[0] == 0) {
+		leadAndPredictiveLayer.setMap(null);
+		for(var i = 0; i < leadLayerBirdView_markers.length; i++){
+			leadLayerBirdView_markers[i].setMap(null);
+		}
 	}
 	else {
-		
+
 	}
-	
 	for (var i = 0; i < allMarkers.length; i++){
 		allMarkers[i].setMap(null);
 		if(resourceActiveArray[5]==1 && allMarkersString[i].search("blood") >-1){
