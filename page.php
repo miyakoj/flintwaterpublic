@@ -129,27 +129,26 @@ if (@isset($_GET["pid"])) {
 									</div>
 									
 									<div id='allFilters_step1_content' class='stepper-vert-content'>
-										<div id='Brita_card' class='card'>
+										<div id='Brita_card' class='next_button card'>
 											<div class='card-main'>
-												<div class='card-img'></div>
-												<div class='card-inner'>Brita</div>
+												<div class='card-img'><img src='images/Brita.jpg' /></div>
+												<div class='card-inner'><h5>Brita</h5></div>
 											</div>
 										</div>
 										
-									   <!--<figure>
-										<button id='Brita_btn' class='filter_buttons'><img src='images/Brita_filter.jpg' /></button>
-										<figcaption><h4>Brita</h4></figcaption>
-									   </figure>-->
-									   
-									   <figure>
-										<button id='PUR_btn' class='filter_buttons'><img src='images/PUR_filter.jpg' /></button>
-										<figcaption><h4>PUR</h4></figcaption>
-									   </figure>
-									   
-									   <figure>
-										<button id='ZeroWater_btn' class='filter_buttons'><img src='images/ZeroWater.jpg' /></button>
-										<figcaption><h4>ZeroWater</h4></figcaption>
-										</figure>
+										<div id='PUR_card' class='card'>
+											<div class='card-main'>
+												<div class='card-img'><img src='images/PUR.jpg' /></div>
+												<div class='card-inner'><h5>PUR</h5></div>
+											</div>
+										</div>
+										
+										<div id='ZeroWater_card' class='card'>
+											<div class='card-main'>
+												<div class='card-img'><img src='images/ZeroWater.jpg' /></div>
+												<div class='card-inner'><h5>ZeroWater</h5></div>
+											</div>
+										</div>
 									</div>
 										
 								<div id='filter_step2' class='stepper'>
@@ -173,7 +172,7 @@ if (@isset($_GET["pid"])) {
 										<li>Screw in the adapter.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='Brita_step2_click' class='btn btn-primary btn-flat'>Next</a>
+								  <a id='Brita_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
@@ -190,7 +189,7 @@ if (@isset($_GET["pid"])) {
 									 <li>Next screw the adapter on.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='PUR_step2_click' class='btn btn-primary btn-flat'>Next</a>
+								  <a id='PUR_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
@@ -199,7 +198,7 @@ if (@isset($_GET["pid"])) {
 								   ZeroWater pitchers do not require an adapter.
 								   
 								   <div class='btn_group'>
-								  <a id='ZeroWater_step2_click' class='btn btn-primary btn-flat'>Next</a>
+								  <a id='ZeroWater_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
 								  </div>
 								</div>
@@ -252,11 +251,10 @@ if (@isset($_GET["pid"])) {
 										</div>
 									</div>
 								</div>
+								
+								<div id='sidebar' class='col-md-7'></div>
 							</div>
-							
-							<div id='sidebar' class='col-md-7'></div>
-						</div>
-					</div>";
+						</div>";
 		break;
 		
 		case "aerator":

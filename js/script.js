@@ -78,7 +78,10 @@ $(document).ready(function() {
 		$(this).attr("href", "page.php?pid=" + page);
 	});
 	
-	//$("footer #about_link").attr("href", "page.php?pid=" + about);
+	id = $("footer #about_link").attr("id");
+	page = id.slice(0, id.indexOf("_"));
+	
+	$("footer #about_link").attr("href", "page.php?pid=" + page);
 	
 	/* Mark the tab of the current page as active. */
 	$pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
@@ -92,10 +95,6 @@ $(document).ready(function() {
 		if ($("#" + $pageId + "_link").parent().parent().parent().attr("id") == "show_me_menu")
 			$("#show_me_menu").addClass("active");
 	}
-	
-	/* Change the navbar-brand to the page title. */
-	/*if ($pageId.indexOf("index") == -1)
-		$(".navbar-brand").text($("#main_menu .active span:last-of-type").text());*/
 		
 	if (windowWidth < 600) {
 		$("#location_card").appendTo($("body"));
@@ -126,9 +125,8 @@ $(document).ready(function() {
 		});
 	}
 	
-	/* Layout mods for differences between desktop and mobile for the "show me" pages. */
-	
-	/* Size the map depending on the height of the device. */
+	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
+	   Size the map depending on the height of the device. */
 	if (windowHeight < 480)
 		$("#topbar").css("height", "9em");
 	else if (windowHeight < 800)
@@ -139,6 +137,10 @@ $(document).ready(function() {
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
 	//else
+		
+	/* Resize the provider info popups. */
+	//console.log($("#provider_popup").parent());
+	//$("#provider_popup").parent().parent().css("width", "300px");
 	
 	if (windowWidth < 768) {
 		$("#made_in_Flint").appendTo($("#main_menu"));
@@ -155,8 +157,14 @@ $(document).ready(function() {
 		/* Move the map and help videos above the steppers for phone/small tablet. */
 		$("#topbar").prepend($("#map"));
 		
-		//$(".help_video").css("margin-top", ($("#topbar").height() - $(".help_video").height()) / 2 + "px").prependTo($("#topbar"));
-		$(".help_video").prependTo($("#topbar"));
+		if ($pageId.indexOf("filter") != -1) {
+			$(".help_video").each(function() {
+				$(this).prependTo($("#topbar"))
+			});
+		}
+		else {
+			$(".help_video").prependTo($("#topbar"));
+		}
 		
 		/* Apply the initial abbreviated stepper layout for mobile. */
 		$(".cancel_button").addClass("hide");
@@ -189,7 +197,10 @@ $(document).ready(function() {
 			"margin-top": "0",
 			"text-align": "right"
 		});
-		$("#stepper_content .next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+		
+		if ($pageId.indexOf("filter") == -1)
+			$("#stepper_content .next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+		
 		$("div[id$='step3_content'] .cancel_button").css("display", "none");
 		
 		/* Unhide all step titles when the steppers are expanded. */
@@ -223,13 +234,14 @@ $(document).ready(function() {
 				return;
 		}).on('click', '.next_button', function(event) {
 			event.stopPropagation();
-	    });
-	}
-	else if (windowWidth < 1024) {
-		$("#header_top").addClass("clearfix");
-		$("#toggles").removeClass("btn-group btn-group-justified");
+		});
 	}
 	else { // Desktop/Laptop
+		if (windowWidth < 1024) {
+			$("#header_top").addClass("clearfix");
+			$("#toggles").removeClass("btn-group btn-group-justified");
+		}
+	
 		$("#main_menu .nav").addClass("nav-justified");
 		$("#show_me_menu").addClass("dropdown");
 		$("#show_me_menu ul").addClass("dropdown-menu");
@@ -239,53 +251,57 @@ $(document).ready(function() {
 		
 		/* Move the map and help video into the sidebar. */
 		$("#map").prependTo($("#sidebar"));
-		$(".help_video").prependTo($("#sidebar"));
+		
+		if ($pageId.indexOf("filter") != -1) {
+			$(".help_video").each(function() {
+				$(this).prependTo($("#sidebar"))
+			});
+		}
+		else {
+			$(".help_video").prependTo($("#sidebar"));
+		}
 		
 		/* Show the step titles by default. */
 		$("div[id$='step1_content'] .cancel_button, div[id$='step2'], div[id$='step3']").removeClass("hide");
-		
-		/*$("#steppers").removeClass("stepper-horiz").addClass("stepper-vert");
-		$("#steppers div:first").removeClass("stepper-horiz-inner").addClass("stepper-vert-inner");
-		$("#steppers div").find(".stepper-horiz-content").each(function() {
-			$(this).removeClass("stepper-horiz-content").addClass("stepper-vert-content")
-		});*/
 	}
-	
-	/* Resize the provider info popups. */
-	//console.log($("#provider_popup").parent());
-	//$("#provider_popup").parent().parent().css("width", "300px");
 	
 	/* Cancel button for all "show me" pages. */
 	$(".cancel_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
 	
-	/* Mobile "expanded" code. */
+	/* Mobile "expanded" stepper code. */
 	function isExpanded(node) {
 		$node_id = node.attr("id");
 		$node_substring = $node_id.slice(0, $node_id.length-1);
+		
+		$(".cancel_button").removeClass("hide");
 		
 		if (windowHeight < 480)
 			$("#topbar").css("height", "15em");
 		
 		$("#" + $node_substring + "1_content .next_button").on("click", function() {
-			$("#" + $node_substring + "1").removeClass("active").addClass("done");
+			$("#" + $node_substring + "1").removeClass("active hide").addClass("done");
 			$("#" + $node_substring + "1_content").addClass("hide");
 			$("#" + $node_substring + "2_content").removeClass("hide");
 			$("#" + $node_substring + "2").addClass("active");
 			
-			$("#map").addClass("hide");
-			$(".help_video").removeClass("hide");
+			if ($pageId.indexOf("test") != -1) {
+				$("#map").addClass("hide");
+				$(".help_video").removeClass("hide");
+			}
 		});
 		
 		$("#" + $node_substring + "2_content .next_button").on("click", function() {
-			$("#" + $node_substring + "2").removeClass("active").addClass("done");
+			$("#" + $node_substring + "2").removeClass("active hide").addClass("done");
 			$("#" + $node_substring + "2_content").addClass("hide");
 			$("#" + $node_substring + "3").addClass("active");
-			$("#" + $node_substring + "3_content").removeClass("hide").addClass("cancel_stepper_border");
+			$("#" + $node_substring + "3_content").removeClass("hide");
 			
-			$(".help_video").remove();
-			$("#map").removeClass("hide");
+			if ($pageId.indexOf("test") != -1) {
+				$(".help_video").remove();
+				$("#map").removeClass("hide");
+			}
 		});
 	}
 	
@@ -294,25 +310,23 @@ $(document).ready(function() {
 		$node_id = $activeNode.attr("id");
 		$node_substring = $node_id.slice(0, $node_id.length-1);
 		
-		console.log($activeNode);
-		console.log("$node_substring = " + $node_substring);
-		
+		/* Hide the content of steps 2 and 3 when the page loads. */
 		$("div[id*='step1_content']").removeClass("hide");
-		$("div[id*='step2_content']").addClass("hide");
-		$("div[id*='step3_content']").addClass("hide");
 		
-		if ($pageId.indexOf("test") != -1)
+		if ($pageId.indexOf("test") != -1) {
 			$(".help_video").addClass("hide");
+			
+			/* Set the map to display only test kits. */
+			resourceActiveArray = [0,0,0,0,1,0];
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+		}
 		else if ($pageId.indexOf("filter") != -1) {
-			$("#Brita_video .help_video").addClass("hide");
+			$("#PUR_video").addClass("hide");
 			$("#map").remove();			
 		}			
 		else
 			$("#map").remove();
 		
-		/* Set the map to display only test kits. */
-		resourceActiveArray = [0,0,0,0,1,0];
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 		
 		if (windowWidth < 768) {
 			$(".cancel_button").addClass("hide");

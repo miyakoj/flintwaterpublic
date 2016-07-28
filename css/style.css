@@ -202,6 +202,10 @@ body[id='index_page'] #header_top #logo img {
 	color:#245580!important;
 }
 
+#language_menu {
+	display:none;
+}
+
 #language_menu, #show_me_menu {
 	z-index:100!important;
 }
@@ -341,6 +345,8 @@ input[type='checkbox'] {
 #search_input {
 	background-color: #fff;
 	width:300px;
+	height: 32px;
+	margin-top: 10px;
 	margin-left: 12px;
 	padding: 0 11px 0 13px;
 	font-size: 15px;
@@ -348,6 +354,12 @@ input[type='checkbox'] {
 	text-overflow: ellipsis;
 	top:10px!important;
 	left:10px!important;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 body[id="index_page"] #search_input {
@@ -358,18 +370,7 @@ body[id="index_page"] #search_input {
 	border-color: #4d90fe;
 }
 
-#search_input {
-	margin-top: 10px;
-	border: 1px solid transparent;
-	border-radius: 2px 0 0 2px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	height: 32px;
-	outline: none;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-#search_button {
+/*#search_button {
 	background-color: #8ec7ff;
 	width: 35px;
 	height: 32px;
@@ -382,7 +383,7 @@ body[id="index_page"] #search_input {
 	left:272px;
 	z-index: 1;
 	display:none;
-}
+}*/
 
 /*body[id="index_page"] #search_button {
 	display:block;
@@ -546,21 +547,21 @@ body[id="index_page"] main {
 	margin-right: 10px;
 }
 
-#filter_page .card-img {
+#filter_page #allFilters_step1_content .card {
+	margin:0 10px 10px 0!important;
+	float:left;
+	cursor:pointer;
+}
+
+#filter_page #allFilters_step1_content .card-img img {
 	width:auto;
 	height:100px;
 }
 
-#Brita_card .card-img {
-	background-image:url('images/Brita.jpg');
-}
-
-#PUR_card .card-img {
-	background-image:url('images/PUR.jpg');
-}
-
-#ZeroWater_card .card-img {
-	background-image:url('images/ZeroWater.jpg');
+#filter_page #allFilters_step1_content .card-inner {
+	margin:0!important;
+	text-align:center;
+	font-weight:bold!important;
 }
 
 figure {
