@@ -360,6 +360,15 @@ $(document).ready(function() {
 		}
 		else {
 			$("div[id*='step1_content'] .next_button").on("click", function() {
+				/* Retrieve which type of filter was clicked if on the filter page. */
+				var filter_type = "";
+				
+				if ($pageId.indexOf("filter") != -1) {
+					var $temp = $(this).attr("id");
+					filter_type = $temp.slice(0, $temp.indexOf("_"));
+					console.log(filter_type);
+				}
+				
 				$("#" + $node_substring + "1").removeClass("active").addClass("done");
 				$("div[id*='step1_content']").addClass("hide");
 				$("div[id*='step2_content']").removeClass("hide");
