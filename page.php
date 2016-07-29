@@ -136,14 +136,14 @@ if (@isset($_GET["pid"])) {
 											</div>
 										</div>
 										
-										<div id='PUR_card' class='card'>
+										<div id='PUR_card' class='next_button card'>
 											<div class='card-main'>
 												<div class='card-img'><img src='images/PUR.jpg' /></div>
 												<div class='card-inner'><h5>PUR</h5></div>
 											</div>
 										</div>
 										
-										<div id='ZeroWater_card' class='card'>
+										<div id='ZeroWater_card' class='next_button card'>
 											<div class='card-main'>
 												<div class='card-img'><img src='images/ZeroWater.jpg' /></div>
 												<div class='card-inner'><h5>ZeroWater</h5></div>
@@ -168,7 +168,7 @@ if (@isset($_GET["pid"])) {
 										<li>Remove your aerator.</li>
 										<li>See if you have threads sticking out of the faucet head.</li>
 										<li>If you have threads sticking out you don't need an adapter.</li>
-										<li>If you don't have threads sticking out choose one of the adapters in the box that fit you faucet.</li>
+										<li>If you don't have threads sticking out, choose one of the adapters in the box that fit you faucet.</li>
 										<li>Screw in the adapter.</li>
 								   </ul>
 								   <div class='btn_group'>
@@ -184,9 +184,9 @@ if (@isset($_GET["pid"])) {
 								
 								   <ul>
 									 <li>Remove your aerator.</li>
-									 <li>Choose an adater from the PUR filter box that fits the missing aerator location.</li>
-									 <li>The put the rubber gasket that matches your adapter over the threads.</li>
-									 <li>Next screw the adapter on.</li>
+									 <li>Choose an adapter from the PUR filter box that fits the missing aerator location.</li>
+									 <li>Put the rubber gasket that matches your adapter over the threads.</li>
+									 <li>Next, screw the adapter on.</li>
 								   </ul>
 								   <div class='btn_group'>
 								  <a id='PUR_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
@@ -195,7 +195,7 @@ if (@isset($_GET["pid"])) {
 								</div>
 								
 								<div id='ZeroWater_step2_content' class='stepper-vert-content hide'>
-								   ZeroWater pitchers do not require an adapter.
+								   <p>ZeroWater pitchers do not require an adapter. No video is available.</p>
 								   
 								   <div class='btn_group'>
 								  <a id='ZeroWater_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
@@ -213,11 +213,10 @@ if (@isset($_GET["pid"])) {
 								
 								<div id='Brita_step3_content' class='stepper-vert-content hide'>
 								  <ul>
-										<li>Remove filter from packaging.</li>
-										<li>Remove the cap off the filter unit by unscrewing the top half of the cylindrical shape.</li>
-										<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
-										<li>Screw the cap back on.</li>
-										<li>Push the filter unit onto the adapter until you hear a click.</li>
+									<li>Line up the hole in the filter base.</li>
+									<li>Twist the mounting collar to secure it to the faucet.</li>
+									<li>Line up the peg on the bottom of the filter cartridge with the hole in the filter base.</li>
+									<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
 								  </ul>
 								  <div class='btn_group'>
 								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
