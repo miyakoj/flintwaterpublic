@@ -254,7 +254,7 @@ $(document).ready(function() {
 		
 		if ($pageId.indexOf("filter") != -1) {
 			$(".help_video").each(function() {
-				$(this).prependTo($("#sidebar"))
+				$(this).prependTo($("#sidebar"));
 			});
 		}
 		else {
@@ -334,18 +334,37 @@ $(document).ready(function() {
 			$("div[id*='" + $node_substring + "']").addClass("cancel_stepper_border");
 			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
 			
-			$("div[id*='step1_content'] .next_button").on("click", function() {
-				$("#" + $node_substring + "1, div[id*='step1_content']").addClass("hide");
-				$("#" + $node_substring + "2").removeClass("hide").addClass("active");
-				$("div[id*='step2_content']").removeClass("hide");
-				
-				if ($pageId.indexOf("test") != -1) {
-					$("#map").addClass("hide");
-					$(".help_video").removeClass("hide");
-				}
+			/* Use a loop to take into account the filter page which has three clickables in step 1. */
+			$("div[id*='step1_content'] .next_button").each(function() {
+				$(this).on("click", function() {
+					/* Retrieve which type of filter was clicked if on the filter page. */
+					var filter_type = "";
+					
+					if ($pageId.indexOf("filter") != -1) {
+						var $temp = $(this).attr("id");
+						filter_type = $temp.slice(0, $temp.indexOf("_"));
+					}
+					
+					$("#" + $node_substring + "1, div[id*='step1_content']").addClass("hide");
+					$("#" + $node_substring + "2").removeClass("hide").addClass("active");
+					$("div[id*='" + filter_type + "_step2_content']").removeClass("hide");
+					
+					if ($pageId.indexOf("test") != -1) {
+						$("#map").addClass("hide");
+						$(".help_video").removeClass("hide");
+					}
+				});
 			});
 			
 			$("div[id*='step2_content'] .next_button").on("click", function() {
+				/* Retrieve which type of filter was clicked if on the filter page. */
+				var filter_type = "";
+				
+				if ($pageId.indexOf("filter") != -1) {
+					var $temp = $(this).attr("id");
+					filter_type = $temp.slice(0, $temp.indexOf("_"));
+				}
+				
 				$("#" + $node_substring + "2, div[id*='step2_content']").addClass("hide");
 				$("#" + $node_substring + "3, div[id*='step3_content']").removeClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
@@ -359,32 +378,51 @@ $(document).ready(function() {
 			});
 		}
 		else {
-			$("div[id*='step1_content'] .next_button").on("click", function() {
+			/* Use a loop to take into account the filter page which has three clickables in step 1. */
+			$("div[id*='step1_content'] .next_button").each(function() {
+				$(this).on("click", function() {
+					/* Retrieve which type of filter was clicked if on the filter page. */
+					var filter_type = "";
+					
+					if ($pageId.indexOf("filter") != -1) {
+						var $temp = $(this).attr("id");
+						filter_type = $temp.slice(0, $temp.indexOf("_"));
+					}
+					
+					$("#" + $node_substring + "1").removeClass("active").addClass("done");
+					$("div[id*='step1_content']").addClass("hide");
+					$("div[id*='" + filter_type + "_step2_content']").removeClass("hide");
+					$("#" + $node_substring + "2").addClass("active");
+					
+					if ($pageId.indexOf("test") != -1) {
+						$("#map").addClass("hide");
+						$(".help_video").removeClass("hide");
+						
+						if ($pageId.indexOf("filter") == -1)
+							$(".help_video").removeClass("hide");
+						else
+							$("#" + filter_type + "_video").removeClass("hide");
+					}
+					else if ($pageId.indexOf("filter") != -1) {
+						$(".help_video").addClass("hide");
+						$("#" + filter_type + "_video").removeClass("hide");
+					}
+				});
+			});
+			
+			$("div[id*='step2_content'] .next_button").on("click", function() {
 				/* Retrieve which type of filter was clicked if on the filter page. */
 				var filter_type = "";
 				
 				if ($pageId.indexOf("filter") != -1) {
 					var $temp = $(this).attr("id");
 					filter_type = $temp.slice(0, $temp.indexOf("_"));
-					console.log(filter_type);
 				}
 				
-				$("#" + $node_substring + "1").removeClass("active").addClass("done");
-				$("div[id*='step1_content']").addClass("hide");
-				$("div[id*='step2_content']").removeClass("hide");
-				$("#" + $node_substring + "2").addClass("active");
-				
-				if ($pageId.indexOf("test") != -1) {
-					$("#map").addClass("hide");
-					$(".help_video").removeClass("hide");
-				}
-			});
-			
-			$("div[id*='step2_content'] .next_button").on("click", function() {
 				$("#" + $node_substring + "2").removeClass("active").addClass("done");
-				$("div[id*='step2_content']").addClass("hide");
+				$("div[id*='" + filter_type + "_step2_content']").addClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
-				$("div[id*='step3_content']").removeClass("hide").addClass("cancel_stepper_border");
+				$("div[id*='" + filter_type + "_step3_content']").removeClass("hide").addClass("cancel_stepper_border");
 				
 				if ($pageId.indexOf("test") != -1) {
 					$(".help_video").remove();

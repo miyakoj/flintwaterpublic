@@ -236,6 +236,10 @@ body[id='index_page'] #header_top #logo img {
 	color:#000!important;
 }
 
+#show_me_menu #submit_link {
+	display:none;
+}
+
 .dropdown-menu .btn, .dropdown-menu .btn-flat {
 	text-align:left!important;
 }
