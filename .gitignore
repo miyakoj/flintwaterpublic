@@ -7,3 +7,7 @@ app.yaml
 navbar_test.html
 *.bak
 color_scheme.png
+includes/new db files/database_config.php
+includes/new db files/json_processing.php
+includes/new db files/queries.php
+providers.json
