@@ -559,9 +559,12 @@ function setUpFusionTable() {
 
 	leadAndPredictiveLayer = new google.maps.FusionTablesLayer({
 	    query: {
-	      select: '\'latitude\'',
-	      from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
+	      	select: '\'latitude\'',
+	      	from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
 	    }, 
+	    options: {
+			suppressInfoWindows: "true"
+	    },
 	    styles: [{
 			markerOptions: {
 				iconName: "measle_grey"
@@ -589,12 +592,20 @@ function setUpFusionTable() {
 
 function addFusionListener(object) {
 		google.maps.event.addListener(object, 'click', function(e) {
-			e.infoWindowHtml = "<b>Address: </b>" + e.row['Address'].value + "<br>";
+			var html = "<div>";
+			e.infoWindow
+			html += "<b>Address: </b>" + e.row['Address'].value + "<br>";
 			if(e.row['leadlevel'].value != "")
-				e.infoWindowHtml += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
-			e.infoWindowHtml += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				html += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
+			else
+				html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
 			if(e.row['testDate'].value != "")
-				e.infoWindowHtml += "<b>Date Tested: </b>" + e.row['testDate'].value;
+				html += "<b>Last Tested: </b>" + e.row['testDate'].value;
+			html += "</div>";
+			$("#location_card .card-inner").empty();
+	   		$("#location_card .card-action").hide();
+	   		$("#location_card .card-inner").append(html);
+	   		$("#location_card").show();
 
 		});	
 }
@@ -806,6 +817,16 @@ function callStorageAPI(object) {
 
 					leadLayerBirdView_markers.push(birdMarker);
 
+					var display_html = "";
+					display_html += "<div>";
+					display_html += "<h5><b>About this area</b></h5>";
+					display_html += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
+					display_html += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
+					display_html += "<p><small>Zoom in see more details</small></p>"
+					display_html += "</div>";
+
+					attachLocationCard(birdMarker, map, display_html);
+
 				}
 			}
 				
@@ -861,9 +882,10 @@ function setUpInitialMap(){
 function attachLocationCard(marker, map, html){
 	marker.addListener("click", function() {
 	   map.panTo(marker.getPosition());
-	   $("location_card").empty();
-	   $("location_card .card-inner").append(html);
-	   $("location_card .card-inner").show();
+	   $("#location_card .card-inner").empty();
+	   $("#location_card .card-action").hide();
+	   $("#location_card .card-inner").append(html);
+	   $("#location_card").show();
 	   location_marker = marker;
 	});
 	
