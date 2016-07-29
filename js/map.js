@@ -595,12 +595,14 @@ function addFusionListener(object) {
 			var html = "<div>";
 			e.infoWindow
 			html += "<b>Address: </b>" + e.row['Address'].value + "<br>";
-			if(e.row['leadlevel'].value != "")
+			if(e.row['leadlevel'].value != "") {
 				html += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
-			else
-				html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-			if(e.row['testDate'].value != "")
 				html += "<b>Last Tested: </b>" + e.row['testDate'].value;
+			}
+			else {
+				html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+			}
+			
 			html += "</div>";
 			$("#location_card .card-inner").empty();
 	   		$("#location_card .card-action").hide();
@@ -792,8 +794,61 @@ function callStorageAPI(object) {
 				js_obj = $.parseJSON(resp.body);
 				
 				leadLayerBirdView_markers = [];
-				for(var i=0; i<js_obj.area.length; i++) {
-					var temp = js_obj.area[i];
+				var latDist = 0.00366980384615384615384615384615;
+				var lngDist = 0.00409039615384615384615384615385;
+				for(var i=0; i<js_obj.area.length; i++) {  
+					var temp = js_obj.area[i]; 					
+					var numOfTests = temp.numOfTests;
+					var numOfDangerous = temp.numOfDangerous;
+
+					var upperLat = temp.latitude + latDist;
+					var lowerLat = temp.latitude - latDist;
+					var upperLng = temp.longitude + lngDist;
+					var lowerLng = temp.longitude - lngDist;
+
+					var squareCoordinates = [
+						{lat: upperLat, lng: upperLng},
+						{lat: upperLat, lng: lowerLng},
+						{lat: lowerLat, lng: lowerLng},
+						{lat: lowerLat, lng: upperLng}
+					];
+
+					var color;
+					if(numOfDangerous < 10) {
+						color = "#00FF00";
+					}
+					else if (numOfDangerous < 15) {
+						color = "#FFFF00";
+					}
+					else {
+						color = "#FF0000";
+					}
+
+					var opacity;
+					if(numOfTests < 25) {
+						opacity = .2;
+					}
+					else if (numOfTests < 50) {
+						opacity = .3;
+					}
+					else if (numOfTests < 100) {
+						opacity = .5;
+					}
+					else if (numOfTests < 150) {
+						opacity = .65;
+					}
+					else {
+						opacity = .8;
+					}
+
+					var leadLevelAreaSquare = new google.maps.Polygon({
+						paths: squareCoordinates,
+						strokeColor: color,
+						fillColor: color,
+						fillOpacity: opacity,
+						map: map
+					})
+					/*var temp = js_obj.area[i];
 					var latLng = new google.maps.LatLng(temp.latitude, temp.longitude);
 					var numOfTests = temp.numOfTests;
 					var numOfDangerous = temp.numOfDangerous;
@@ -815,7 +870,7 @@ function callStorageAPI(object) {
 						map: map
 					});
 
-					leadLayerBirdView_markers.push(birdMarker);
+					leadLayerBirdView_markers.push(birdMarker);*/
 
 					var display_html = "";
 					display_html += "<div>";
@@ -823,9 +878,12 @@ function callStorageAPI(object) {
 					display_html += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
 					display_html += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
 					display_html += "<p><small>Zoom in see more details</small></p>"
+					display_html += "<p> Opacity " + opacity + "</p>";
 					display_html += "</div>";
+					attachLocationCard(leadLevelAreaSquare, map, display_html);
+					//attachLocationCard(birdMarker, map, display_html);
 
-					attachLocationCard(birdMarker, map, display_html);
+
 
 				}
 			}
@@ -881,7 +939,6 @@ function setUpInitialMap(){
 
 function attachLocationCard(marker, map, html){
 	marker.addListener("click", function() {
-	   map.panTo(marker.getPosition());
 	   $("#location_card .card-inner").empty();
 	   $("#location_card .card-action").hide();
 	   $("#location_card .card-inner").append(html);
