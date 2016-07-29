@@ -173,7 +173,7 @@ if (@isset($_GET["pid"])) {
 								   </ul>
 								   <div class='btn_group'>
 								  <a id='Brita_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
+								  <a class='cancel_button btn btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								
@@ -190,7 +190,7 @@ if (@isset($_GET["pid"])) {
 								   </ul>
 								   <div class='btn_group'>
 								  <a id='PUR_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
+								  <a class='cancel_button btn btn-flat'>Cancel</a>
 								  </div>
 								</div>
 								
@@ -199,7 +199,7 @@ if (@isset($_GET["pid"])) {
 								   
 								   <div class='btn_group'>
 								  <a id='ZeroWater_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
-								  <a class='cancel_button btn btn-primary btn-flat'>Cancel</a>
+								  <a class='cancel_button btn btn-flat'>Cancel</a>
 								  </div>
 								</div>
 										

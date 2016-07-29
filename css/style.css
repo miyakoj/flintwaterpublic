@@ -558,8 +558,8 @@ body[id="index_page"] main {
 }
 
 #filter_page #allFilters_step1_content .card-img img {
-	width:auto;
-	height:100px;
+	width:100px;
+	height:auto;
 }
 
 #filter_page #allFilters_step1_content .card-inner {
