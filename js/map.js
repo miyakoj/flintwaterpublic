@@ -844,6 +844,7 @@ function callStorageAPI(object) {
 					var leadLevelAreaSquare = new google.maps.Polygon({
 						paths: squareCoordinates,
 						strokeColor: color,
+						strokeOpacity: 0,
 						fillColor: color,
 						fillOpacity: opacity,
 						map: map
@@ -868,9 +869,9 @@ function callStorageAPI(object) {
 						position: latLng,
 						icon: icon,
 						map: map
-					});
+					});*/
 
-					leadLayerBirdView_markers.push(birdMarker);*/
+					leadLayerBirdView_markers.push(leadLevelAreaSquare);
 
 					var display_html = "";
 					display_html += "<div>";
@@ -878,7 +879,6 @@ function callStorageAPI(object) {
 					display_html += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
 					display_html += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
 					display_html += "<p><small>Zoom in see more details</small></p>"
-					display_html += "<p> Opacity " + opacity + "</p>";
 					display_html += "</div>";
 					attachLocationCard(leadLevelAreaSquare, map, display_html);
 					//attachLocationCard(birdMarker, map, display_html);
