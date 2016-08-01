@@ -127,8 +127,8 @@ $(document).ready(function() {
 	
 	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
 	   Size the map depending on the height of the device. */
-	if (windowHeight < 480)
-		$("#topbar").css("height", "9em");
+	if (windowHeight < 600)
+		$("#topbar").css("height", "15em");
 	else if (windowHeight < 800)
 		$("#topbar").css("height", "20em");
 	else
@@ -155,6 +155,7 @@ $(document).ready(function() {
 		$("#show_me_menu ul").removeClass("dropdown-menu");
 		
 		/* Move the map and help videos above the steppers for phone/small tablet. */
+		$("#sidebar").addClass("hide");
 		$("#topbar").prepend($("#map"));
 		
 		if ($pageId.indexOf("filter") != -1) {
@@ -205,8 +206,6 @@ $(document).ready(function() {
 		else
 			$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
 		
-		$("div[id$='step3_content'] .cancel_button").css("display", "none");
-		
 		/* Unhide all step titles when the steppers are expanded. */
 		$("div[id*='step1'], div[id*='step2'], div[id*='step3']").parent().parent().on("click", function() {
 			if ($("#stepper_content").hasClass("brief")) {
@@ -250,10 +249,14 @@ $(document).ready(function() {
 		$("#show_me_menu").addClass("dropdown");
 		$("#show_me_menu ul").addClass("dropdown-menu");
 		
+		console.log("$pageId = " + $pageId);
+		
 		/* Make the stepper content span only four columns. */
-		$("#" + $pageId + "_page #stepper_content").removeClass("col-md-12").addClass("col-md-5");
+		//$("#topbar").parent().parent().removeClass("container-fluid").addClass("container");  //find node using "container-fluid" and change it to "container"
+		$("#" + $pageId + "_page #stepper_content").removeClass("col-xs-12").addClass("col-sm-5");
 		
 		/* Move the map and help video into the sidebar. */
+		$("#topbar").addClass("hide");
 		$("#map").prependTo($("#sidebar"));
 		
 		if ($pageId.indexOf("filter") != -1) {
@@ -288,23 +291,16 @@ $(document).ready(function() {
 		}
 		
 		$(".cancel_button").removeClass("hide");
+		$("div[id$='step3_content'] .cancel_button").addClass("btn-primary");
 		
 		if (windowHeight < 480)
 			$("#topbar").css("height", "15em");
 		
 		$("#" + $node_substring + "1_content .next_button").on("click", function() {
-			$("#" + $node_substring + "1").removeClass("active hide").addClass("done");
-			
-			/*if ($pageId.indexOf("filter") != -1) {
-				$("#" + $node_substring + "1_content").addClass("hide");
-				$("#" + $node_substring + "2_content").removeClass("hide");
-			}
-			else {*/
-				$("#" + filter_type + "_" + $node_substring + "1_content").addClass("hide");
-				$("#" + filter_type + "_" + $node_substring + "2_content").removeClass("hide");
-			//}			
-			
-			$("#" + $node_substring + "2").addClass("active");
+			$("#" + filter_type + "_" + $node_substring + "1").removeClass("active hide").addClass("done");
+			$("#" + filter_type + "_" + $node_substring + "1_content").addClass("hide");
+			$("#" + filter_type + "_" + $node_substring + "2").addClass("active");
+			$("#" + filter_type + "_" + $node_substring + "2_content").removeClass("hide");
 			
 			if ($pageId.indexOf("test") != -1) {
 				$("#map").addClass("hide");
@@ -333,11 +329,13 @@ $(document).ready(function() {
 		/* Hide the content of steps 2 and 3 when the page loads. */
 		$("div[id*='step1_content']").removeClass("hide");
 		
+		console.log($pageId);
+		
 		if ($pageId.indexOf("test") != -1) {
 			$(".help_video").addClass("hide");
 			
 			/* Set the map to display only test kits. */
-			resourceActiveArray = [0,0,0,0,1,0];
+			resourceActiveArray = [0,0,0,1,0,0,0,0];
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 		}
 		else if ($pageId.indexOf("filter") != -1) {
@@ -354,7 +352,7 @@ $(document).ready(function() {
 			$("div[id*='" + $node_substring + "']").addClass("cancel_stepper_border");
 			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
 			
-			/* Use a loop to take into account the filter page which has three clickables in step 1. */
+			/* Use a loop to take the filter page into account, which has three clickables in step 1. */
 			$("div[id*='step1_content'] .next_button").each(function() {
 				$(this).on("click", function() {
 					/* Retrieve which type of filter was clicked if on the filter page. */
@@ -460,95 +458,6 @@ $(document).ready(function() {
 			});
 		}
 	}
-	
-	/* Steppers for Install water filter */
-	/*$("#filter_link").on("click", function() {
-	  $("#filter_step1").addClass("active");
-	  $("#allFilters_step1_content").removeClass("hide");
-	  $("#filter_step2").addClass("hide");
-	  $("#filter_step3").addClass("hide");
-	});
-	
-	$("#install_filter #PUR_btn").on("click", function() {
-	  $("#filter_step1").removeClass("active").addClass("done");
-	  $("#allFilters_step1_content").addClass("hide");
-	  $("#PUR_step2_content").removeClass("hide");
-	  $("#filter_step2").addClass("active");
-	});
-	
-	$("#install_filter #Brita_btn").on("click", function() {
-	  $("#filter_step1").removeClass("active").addClass("done");
-	  $("#allFilters_step1_content").addClass("hide");
-	  $("#Brita_step2_content").removeClass("hide");
-	  $("#filter_step2").addClass("active");
-	});
-	
-    $("#install_filter #ZeroWater_btn").on("click", function() {
-	  $("#filter_step1").removeClass("active").addClass("done");
-	  $("#allFilters_step1_content").addClass("hide");
-	  $("#ZeroWater_step2_content").removeClass("hide");
-	  $("#filter_step2").addClass("active");
-	});
-	
-	$("#PUR_step2_click").on("click", function() {
-	  $("#filter_step2").removeClass("active").addClass("done");
-	  $("#PUR_step2_content").addClass("hide");
-	  $("#PUR_step3_content").removeClass("hide").addClass("cancel_stepper_border");
-	  $("#filter_step3").addClass("active");
-	});
-	
-    $("#Brita_step2_click").on("click", function() {
-	  $("#filter_step2").removeClass("active").addClass("done");
-	  $("#Brita_step2_content").addClass("hide");
-	  $("#Brita_step3_content").removeClass("hide").addClass("cancel_stepper_border");
-	  $("#filter_step3").addClass("active");
-	});
-	
-	$("#ZeroWater_step2_click").on("click", function() {
-	  $("#filter_step2").removeClass("active").addClass("done");
-	  $("#ZeroWater_step2_content").addClass("hide");
-	  $("#ZeroWater_step3_content").removeClass("hide").addClass("cancel_stepper_border");
-	  $("#filter_step3").addClass("active");
-	});
-
-    $("#install_filter .cancel_button").on("click", function() {
-		$(window).attr("location", "index.php");
-	});*/
-
-
-	/* Steppers for Clean My Aerator */
-    /*$("#aerator_link").on("click", function() {
-	  $("#aerator_step1").addClass("active");
-	  $("#aerator_step1_content").removeClass("hide");
-	  $("#aerator_step2").addClass("hide");
-	  $("#aerator_step3").addClass("hide");
-	  $("#aerator_step4").addClass("hide");
-	});
-	
-	$("#aerator_step1_click").on("click", function() {
-	  $("#aerator_step1").removeClass("active").addClass("done");
-	  $("#aerator_step1_content").addClass("hide");
-	  $("#aerator_step2_content").removeClass("hide");
-	  $("#aerator_step2").addClass("active");
-	});
-	
-    $("#aerator_step2_click").on("click", function() {
-	  $("#aerator_step2").removeClass("active").addClass("done");
-	  $("#aerator_step2_content").addClass("hide");
-	  $("#aerator_step3_content").removeClass("hide");
-	  $("#aerator_step3").addClass("active");
-	});
-	
-    $("#aerator_step3_click").on("click", function() {
-	  $("#aerator_step3").removeClass("active").addClass("done");
-	  $("#aerator_step3_content").addClass("hide");
-	  $("#aerator_step4_content").removeClass("hide").addClass("cancel_stepper_border");
-	  $("#aerator_step4").addClass("active");
-	});
-	
-	$("#clean_aerator .cancel_button").on("click", function() {
-		$(window).attr("location", "index.php");
-	});*/
 	
 
 	/* Report a Problem page */

@@ -498,6 +498,10 @@ body[id="index_page"] main {
 	display:block;
 }
 
+#stepper_content {
+	clear:both;
+}
+
 #stepper_content h2 {
 	font-size:20px;
 }
@@ -558,7 +562,7 @@ body[id="index_page"] main {
 }
 
 #filter_page #allFilters_step1_content .card-img img {
-	width:100px;
+	width:90px;
 	height:auto;
 }
 
