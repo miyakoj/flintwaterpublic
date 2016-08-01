@@ -59,8 +59,16 @@
 		margin-bottom:-16px;
 	}
 	
+	#sidebar {
+		height:35em;
+	}
+	
 	#topbar {
 		display:none;
+	}
+	
+	#filter_page #allFilters_step1_content .card-img img {
+		width:100px;
 	}
 	
 	footer h5 {
@@ -131,10 +139,6 @@
 	
     #provider_popup img {
 		width:30px;
-	}
-	
-	#sidebar {
-		height:35em;
 	}
 
 	#news_page .tab-nav {

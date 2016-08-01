@@ -36,9 +36,9 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
 				<div class='row'>
-					<div id='topbar' class='col-md-12'></div>
+					<div id='topbar' class='col-xs-12'></div>
 				
-					<div id='stepper_content' class='col-md-12'>
+					<div id='stepper_content' class='col-xs-12'>
 						<div id='steppers' class='stepper-vert'>
 									<h2>Test your water</h2>
 									<div class='stepper-vert-inner'>
@@ -105,7 +105,7 @@ if (@isset($_GET["pid"])) {
 								</div>
 							</div>
 							
-							<div id='sidebar' class='col-md-7'></div>
+							<div id='sidebar' class='col-sm-7'></div>
 						</div>
 					</div>";
 		break;
@@ -114,9 +114,9 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Install a Water Filter";
 			$content = "<div id='install_filter' class='container-fluid'>
 				<div class='row'>
-					<div id='topbar' class='col-md-12'></div>
+					<div id='topbar' class='col-xs-12'></div>
 				
-					<div id='stepper_content' class='col-md-12'>
+					<div id='stepper_content' class='col-xs-12'>
 						<div id='steppers' class='stepper-vert'>
 								<h2>Install a Water Filter</h2>
 								<div class='stepper-vert-inner'>
@@ -195,7 +195,7 @@ if (@isset($_GET["pid"])) {
 								</div>
 								
 								<div id='ZeroWater_step2_content' class='stepper-vert-content hide'>
-								   <p>ZeroWater pitchers do not require an adapter. No video is available.</p>
+								   <p>ZeroWater pitchers do not require an adapter. No installation video is available.</p>
 								   
 								   <div class='btn_group'>
 								  <a id='ZeroWater_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
@@ -251,7 +251,7 @@ if (@isset($_GET["pid"])) {
 									</div>
 								</div>
 								
-								<div id='sidebar' class='col-md-7'></div>
+								<div id='sidebar' class='col-sm-7'></div>
 							</div>
 						</div>";
 		break;
@@ -260,9 +260,9 @@ if (@isset($_GET["pid"])) {
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='clean_aerator' class='container-fluid'>
 				<div class='row'>
-					<div id='topbar' class='col-md-12'></div>
+					<div id='topbar' class='col-xs-12'></div>
 				
-					<div id='stepper_content' class='col-md-12'>
+					<div id='stepper_content' class='col-xs-12'>
 						<div id='steppers' class='stepper-vert'>
 									<h2>Clean My Aerator</h2>
 									<div class='stepper-vert-inner'>
@@ -331,7 +331,7 @@ if (@isset($_GET["pid"])) {
 								</div>
 							</div>
 							
-							<div id='sidebar' class='col-md-7'></div>
+							<div id='sidebar' class='col-sm-7'></div>
 						</div>
 					</div>";
 		break;
