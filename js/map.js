@@ -815,13 +815,13 @@ function callStorageAPI(object) {
 
 					var color;
 					if(numOfDangerous < 10) {
-						color = "#00FF00";
+						color = "#99FF99";
 					}
 					else if (numOfDangerous < 15) {
-						color = "#FFFF00";
+						color = "#FFFF99 ";
 					}
 					else {
-						color = "#FF0000";
+						color = "#FF6565 ";
 					}
 
 					var opacity;
@@ -829,16 +829,16 @@ function callStorageAPI(object) {
 						opacity = .2;
 					}
 					else if (numOfTests < 50) {
-						opacity = .3;
+						opacity = .2;
 					}
 					else if (numOfTests < 100) {
-						opacity = .5;
+						opacity = .2;
 					}
 					else if (numOfTests < 150) {
-						opacity = .65;
+						opacity = .2;
 					}
 					else {
-						opacity = .8;
+						opacity = .2;
 					}
 
 					var leadLevelAreaSquare = new google.maps.Polygon({
