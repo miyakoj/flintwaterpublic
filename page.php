@@ -98,7 +98,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 										  </ul>
 										  <div class='btn_group'>
-										 <a class='cancel_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										 <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
 										 </div>
 										</div>
 									</div>
@@ -172,7 +172,7 @@ if (@isset($_GET["pid"])) {
 										<li>Screw in the adapter.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='Brita_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
+								  <a id='Brita_step2_button' class='next_button btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-flat'>Cancel</a>
 								  </div>
 								</div>
@@ -189,7 +189,7 @@ if (@isset($_GET["pid"])) {
 									 <li>Next, screw the adapter on.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='PUR_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
+								  <a id='PUR_step2_button' class='next_button btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-flat'>Cancel</a>
 								  </div>
 								</div>
@@ -198,7 +198,7 @@ if (@isset($_GET["pid"])) {
 								   <p>ZeroWater pitchers do not require an adapter. No installation video is available.</p>
 								   
 								   <div class='btn_group'>
-								  <a id='ZeroWater_step2_click' class='next_button btn btn-primary btn-flat'>Next</a>
+								  <a id='ZeroWater_step2_button' class='next_button btn btn-primary btn-flat'>Next</a>
 								  <a class='cancel_button btn btn-flat'>Cancel</a>
 								  </div>
 								</div>
@@ -219,7 +219,7 @@ if (@isset($_GET["pid"])) {
 									<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
+								 <a class='next_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
 								
@@ -232,7 +232,7 @@ if (@isset($_GET["pid"])) {
 										<li>Push the filter unit onto the adapter until you hear a click.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
+								 <a class='next_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
 								
@@ -244,7 +244,7 @@ if (@isset($_GET["pid"])) {
 										<li>Screw the filter into the bottom of the reservoir.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a class='cancel_button btn btn-primary btn-flat'>Return to map</a>
+								 <a class='next_button btn btn-primary btn-flat'>Return to map</a>
 								 </div>
 								</div>
 										</div>
@@ -324,7 +324,7 @@ if (@isset($_GET["pid"])) {
 											<li>Tighten with pliers, but not too tightly.</li>
 										  </ul>
 										  <div class='btn_group'>
-										 <a class='cancel_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										 <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
 										 </div>
 										</div>
 									</div>
