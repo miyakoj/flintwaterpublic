@@ -514,6 +514,13 @@ body[id="index_page"] main {
 	background-color:#9A9A9A!important;
 }
 
+.progress_img {
+	width:auto;
+	height:25px;
+	clear:left;
+	display:block;
+}
+
 #aerator_img {
 	width:auto;
 	height:200px;

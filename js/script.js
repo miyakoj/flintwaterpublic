@@ -136,7 +136,7 @@ $(document).ready(function() {
 	
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
-	//else
+	//else for the index, news, and about pages
 		
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
@@ -165,15 +165,15 @@ $(document).ready(function() {
 				$(this).prependTo($("#topbar"))
 			});
 		}
-		else {
+		else
 			$(".help_video").prependTo($("#topbar"));
-		}
 		
 		/* Apply the initial abbreviated stepper layout for mobile. */
 		$(".cancel_button").addClass("hide");
 		
 		$("#stepper_content").addClass("brief");
 		
+		$("div[id$='step1_content']").append("<img class='progress_img center-block' src='images/stepper1.png' />");
 		$("div[id$='step2'], div[id$='step3']").addClass("hide");
 		
 		$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({
@@ -201,10 +201,18 @@ $(document).ready(function() {
 			"text-align": "right"
 		});
 		
-		if ($pageId.indexOf("filter") == -1)
-			$(".next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
-		else
-			$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css("padding", "0").removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+		if ($pageId.indexOf("filter") == -1) {
+			$(".next_button").css({
+				"padding": "0",
+				"float": "right"
+			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+		}
+		else {
+			$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css({
+				"padding": "0",
+				"float": "right"
+			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+		}
 		
 		/* Unhide all step titles when the steppers are expanded. */
 		$("div[id*='step1'], div[id*='step2'], div[id*='step3']").parent().parent().on("click", function() {
@@ -228,8 +236,14 @@ $(document).ready(function() {
 				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], #stepper_content h2, #stepper_content ul, #stepper_content ul li, .stepper-vert-content, #stepper_content .btn_group, #stepper_content .next_button").removeAttr("style");
 				$("div[id*='step1'], div[id*='step2'], div[id*='step3']").removeClass("cancel_stepper_border");
 				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], .cancel_button").removeClass("hide");
-				$(".next_button").addClass("btn-primary");
+				
+				if ($pageId.indexOf("filter") == -1)
+					$(".next_button").addClass("btn-primary");
+				else
+					$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").addClass("btn-primary");
+				
 				$(".next_button span").remove();
+				$(".progress_img").remove();
 				
 				isExpanded($activeNode);
 			}
@@ -252,7 +266,6 @@ $(document).ready(function() {
 		console.log("$pageId = " + $pageId);
 		
 		/* Make the stepper content span only four columns. */
-		//$("#topbar").parent().parent().removeClass("container-fluid").addClass("container");  //find node using "container-fluid" and change it to "container"
 		$("#" + $pageId + "_page #stepper_content").removeClass("col-xs-12").addClass("col-sm-5");
 		
 		/* Move the map and help video into the sidebar. */
@@ -264,16 +277,15 @@ $(document).ready(function() {
 				$(this).prependTo($("#sidebar"));
 			});
 		}
-		else {
+		else
 			$(".help_video").prependTo($("#sidebar"));
-		}
 		
 		/* Show the step titles by default. */
 		$("div[id$='step1_content'] .cancel_button, div[id$='step2'], div[id$='step3']").removeClass("hide");
 	}
 	
-	/* Cancel button for all "show me" pages. */
-	$(".cancel_button").on("click", function() {
+	/* Cancel button for all "show me" pages and the third step next button. */
+	$(".cancel_button, div[id$='step3_content'] .next_button").on("click", function() {
 		$(window).attr("location", "index.php");
 	});
 	
@@ -291,7 +303,6 @@ $(document).ready(function() {
 		}
 		
 		$(".cancel_button").removeClass("hide");
-		$("div[id$='step3_content'] .cancel_button").addClass("btn-primary");
 		
 		if (windowHeight < 480)
 			$("#topbar").css("height", "15em");
@@ -299,7 +310,7 @@ $(document).ready(function() {
 		$("#" + $node_substring + "1_content .next_button").on("click", function() {
 			$("#" + filter_type + "_" + $node_substring + "1").removeClass("active hide").addClass("done");
 			$("#" + filter_type + "_" + $node_substring + "1_content").addClass("hide");
-			$("#" + filter_type + "_" + $node_substring + "2").addClass("active");
+			$("#" + filter_type + "_" + $node_substring + "2").removeClass("hide").addClass("active");
 			$("#" + filter_type + "_" + $node_substring + "2_content").removeClass("hide");
 			
 			if ($pageId.indexOf("test") != -1) {
@@ -311,7 +322,7 @@ $(document).ready(function() {
 		$("#" + $node_substring + "2_content .next_button").on("click", function() {
 			$("#" + $node_substring + "2").removeClass("active hide").addClass("done");
 			$("#" + $node_substring + "2_content").addClass("hide");
-			$("#" + $node_substring + "3").addClass("active");
+			$("#" + $node_substring + "3").removeClass("hide").addClass("active");
 			$("#" + $node_substring + "3_content").removeClass("hide");
 			
 			if ($pageId.indexOf("test") != -1) {
@@ -345,7 +356,6 @@ $(document).ready(function() {
 		else
 			$("#map").remove();
 		
-		
 		if (windowWidth < 768) {
 			$(".cancel_button").addClass("hide");
 			
@@ -363,18 +373,21 @@ $(document).ready(function() {
 						filter_type = $temp.slice(0, $temp.indexOf("_"));
 					}
 					
-					$("#" + $node_substring + "1, div[id*='step1_content']").addClass("hide");
+					console.log("filter_type = " + filter_type);
+					
+					if ($("#stepper_content").hasClass("brief"))
+						$("#" + $node_substring + "1, div[id$='step1_content']").addClass("hide");
+					else {
+						$("#" + $node_substring + "1").removeClass("active").addClass("done");
+						$("div[id$='step1_content']").addClass("hide");
+					}
+					
 					$("#" + $node_substring + "2").removeClass("hide").addClass("active");
 					$("div[id*='" + filter_type + "_step2_content']").removeClass("hide");
 					
 					if ($pageId.indexOf("test") != -1) {
 						$("#map").addClass("hide");
 						$(".help_video").removeClass("hide");
-						
-						if ($pageId.indexOf("filter") == -1)
-							$(".help_video").removeClass("hide");
-						else
-							$("#" + filter_type + "_video").removeClass("hide");
 					}
 					else if ($pageId.indexOf("filter") != -1) {
 						$(".help_video").addClass("hide");
@@ -392,11 +405,20 @@ $(document).ready(function() {
 					filter_type = $temp.slice(0, $temp.indexOf("_"));
 				}
 				
-				$("#" + $node_substring + "2, div[id*='" + filter_type + "_step2_content']").addClass("hide");
+				if ($("#stepper_content").hasClass("brief"))
+					$("#" + $node_substring + "2, div[id*='" + filter_type + "_step2_content']").addClass("hide");
+				else {
+					$("#" + $node_substring + "2").removeClass("active").addClass("done");
+					$("div[id*='" + filter_type + "_step2_content']").addClass("hide");
+				}
+				
 				$("#" + $node_substring + "3, div[id*='" + filter_type + "_step3_content']").removeClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
-				$("div[id*='step3_content'] .cancel_button").removeClass("hide btn-primary");
+				//$("div[id*='step3_content'] .cancel_button").removeClass("hide");
+				$("div[id*='step3_content'] .next_button span").remove();
 				$("div[id*='step3_content'] .btn_group").css("text-align", "center");
+				
+				//$("div[id$='step3_content'] .cancel_button").addClass("btn-primary");
 				
 				if ($pageId.indexOf("test") != -1) {
 					$(".help_video").remove();
@@ -446,7 +468,7 @@ $(document).ready(function() {
 					filter_type = $temp.slice(0, $temp.indexOf("_"));
 				}
 				
-				$("#" + $node_substring + "2").removeClass("active").addClass("done");
+				$("#" + $node_substring + "2").removeClass("active hide").addClass("done");
 				$("div[id*='" + filter_type + "_step2_content']").addClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
 				$("div[id*='" + filter_type + "_step3_content']").removeClass("hide").addClass("cancel_stepper_border");
