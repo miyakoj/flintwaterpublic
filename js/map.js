@@ -78,6 +78,8 @@ function checkAuth() {
 function initMap() {
 	$("#resource_card").hide();
 	
+	console.log("initMap() map = " + map);
+	
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
 	  zoom: 13,
@@ -1225,6 +1227,7 @@ $(document).ready(function() {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
+	console.log("setMarkers() map = " + map);
 	var zoomLvl = map.getZoom();
 	if(resourceActiveArray[0] == 1 && zoomLvl < 16) {
 		leadAndPredictiveLayer.setMap(null);
