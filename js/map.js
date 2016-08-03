@@ -814,10 +814,11 @@ function callStorageAPI(object) {
 					];
 
 					var color;
-					if(numOfDangerous < 10) {
+					var weirdnessLevel = weirdnessEquation(temp.numOfTests, temp.numOfDangerous);
+					if(weirdnessLevel < 0) {
 						color = "#99FF99";
 					}
-					else if (numOfDangerous < 15) {
+					else if (weirdnessLevel < .6) {
 						color = "#FFFF99 ";
 					}
 					else {
@@ -849,27 +850,7 @@ function callStorageAPI(object) {
 						fillOpacity: opacity,
 						map: map
 					})
-					/*var temp = js_obj.area[i];
-					var latLng = new google.maps.LatLng(temp.latitude, temp.longitude);
-					var numOfTests = temp.numOfTests;
-					var numOfDangerous = temp.numOfDangerous;
-					var icon;
-
-					if(numOfDangerous < 10) {
-						icon = greenIcon;
-					}
-					else if (numOfDangerous < 15) {
-						icon = yellowIcon;
-					}
-					else {
-						icon = redIcon;
-					}
-
-					var birdMarker = new google.maps.Marker({
-						position: latLng,
-						icon: icon,
-						map: map
-					});*/
+					
 
 					leadLayerBirdView_markers.push(leadLevelAreaSquare);
 
@@ -892,6 +873,12 @@ function callStorageAPI(object) {
 			console.log('Error: ' + reason.result.error.message);
 		});
 	});
+}
+
+function weirdnessEquation(N, K) {
+	var sqrt = Math.sqrt(N);
+	var weirdness = (K/sqrt) - (sqrt*.084);
+	return weirdness;
 }
 
 function setUpInitialMap(){
