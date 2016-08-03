@@ -514,11 +514,22 @@ body[id="index_page"] main {
 	background-color:#9A9A9A!important;
 }
 
+.btn_group {
+	position:relative;
+}
+
 .progress_img {
 	width:auto;
-	height:25px;
+	height:20px;
 	clear:left;
+	position:absolute;
+	top:0;
+	left:0;
 	display:block;
+}
+
+.next_button span {
+	line-height:20px;
 }
 
 #aerator_img {
@@ -577,29 +588,6 @@ body[id="index_page"] main {
 	margin:0!important;
 	text-align:center;
 	font-weight:bold!important;
-}
-
-figure {
-	float: left;
-}
-
-figure button {
-	background:none;
-}
-
-figure img {
-	width:auto;
-	height:100px;
-}
-
-figcaption {
-	margin: 0 10px 10px 0;
-	text-align: center;
-    box-shadow: 4px 2px 2px gray;
-}
-
-figcaption h4 {
-	margin-top: 0!important;
 }
 
 #index_page #location_card .card {
