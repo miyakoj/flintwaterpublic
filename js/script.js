@@ -571,7 +571,7 @@ $(document).ready(function() {
 		$("head script[src*='script']").before(map_api, client_api);
 		$("head script[src*='script']").after(map_js, client_api);
 	}*/
-	console.log("$pageId = " + $pageId);
+	//console.log("$pageId = " + $pageId);
 	
 	/*if ($pageId.indexOf("news") != -1) {
 		//$("head script[src*='script']").before(js_api);

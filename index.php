@@ -44,36 +44,32 @@ $content = "<div id='map_container'>
 		<div id='resource_card' class='card'>
 			<div class='card_main'>
 				<div class='card-inner'>
-					<div><h4 id='title'> Resource Title </h4> <br /> <div id='address'> address </div></div>
-					<div><p id='notes'> notes  </p> <p id='hours'> hours  </p> <p id='resources'> available resources  </p></div>
+					<div><h4 id='title'></h4> <div id='address'></div></div>
+					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
 				 </div>
 				<div class='card-action'>
-					<button class='btn btn-flat resource-card-directions'>  Get Directions </button>
-					<button class='btn btn-flat resource-card-save'> <img src='../images/ic_star_border.png' /> </button>
-					<span class='dropdown'>
-					    <a class='dropdown-toggle' data-toggle='dropdown'> <img src='../images/ic_report.png' /></a>
-					    <ul class='dropdown-menu'>
-					        <li>
-					            <a> Temporarily Closed </a>
-					        </li>
-					        <li>
-					            <a> Permanently Closed </a>
-					        </li>
-					        <li>
-					            <a> Doesn't Have Water </a>
-					        </li>
-					        <li>
-					            <a> Doesn't Have Water Filters</a>
-					        </li>
-					        <li>
-					            <a> Doesn't have Test Kits </a>
-					        </li>
+					<button class='btn btn-flat pull-left resource-card-directions'>Get Directions</button>
+					
+					<button class='btn btn-flat pull-right resource-card-save'><span class='sr-only sr-only-focusable'>Save</span>
+					<span class='material-icons'>star_border</span></button>
+					
+					<ul id='report_menu' class='btn btn-flat pull-right'>
+					    <li class='dropdown'>
+						<a class='dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report</span>
+						<span class='material-icons'>error</span></a>
+					    <ul class='dropdown-menu dropdown-menu-right' aria-labelledby='resource-card-save'>
+					        <li><a href='#'>Temporarily Closed</a></li>
+					        <li><a href='#'>Permanently Closed</a></li>
+					        <li><a href='#'>Doesn't Have Water</a></li>
+					        <li><a href='#'>Doesn't Have Water Filters</a></li>
+					        <li><a href='#'>Doesn't have Test Kits</a></li>
+							<li><a href='#'>Doesn't Perform Blood Testing</a></li>
 					    </ul>
-					</span>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
-
 	</div>";
 
 $page = new webpageTemplate("includes/template.html");
