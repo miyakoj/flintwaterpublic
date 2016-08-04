@@ -442,8 +442,16 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 	display:none;
 }
 
-#resource_card .card-inner, #resource_card .card-action {
+#resource_card .card-inner {
 	width:100%;
+}
+
+#resource_card .resource-card-save span {
+	padding-right:15px;
+}
+
+#resource_card #resource_card #report_menu a {
+	color:#333!important;
 }
 
 .resource-card-directions {
@@ -452,11 +460,14 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 	left: 0%;
 }
 
-#resource_card .dropdown {
-	margin-left: 10px;
-	padding: 10px;
-	position: absolute;
-	right: 0%;
+#resource_card #report_menu {
+	padding-top:6px;
+	list-style-type:none;
+}
+
+.marker_popup_icons {
+	width:auto;
+	height:15px;
 }
 
 .resource-card-save {
