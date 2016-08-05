@@ -29,14 +29,23 @@ $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 
 $content = "<div id='map_container'>
 		<input id='search_input' class='controls' type='text' placeholder='Search for an address' />
+		
 		<div id='location_card' class='card'>
+			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+			
 			<div class='card-main'>
-				<div class='card-inner'></div>
+				<div class='card-inner'><h5 id='address'></h5></div>
 				<div class='card-action'>
-					<div id='location_buttons' class='btn-group' role='group' aria-label='Location Info Buttons'>
+					<!--<div id='location_buttons' class='btn-group' role='group' aria-label='Location Info Buttons'>
 						<button id='saved_location_button' type='button' class='btn btn-flat btn-brand'><img src='images/savedlocation.png' /> <span></span></button>
 						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> <span>More Info</span></button>
-					</div>
+					</div>-->
+					
+					<button id='resource_card_save' class='btn btn-flat pull-right'><span class='sr-only sr-only-focusable'>Save</span>
+					<span class='material-icons'>star_border</span></button>
+					
+					<button id='' class='btn btn-flat pull-right'><span class='sr-only sr-only-focusable'>More Info</span>
+					<span class='material-icons'>info_outline</span></button>
 				</div>
 			</div>
 		</div>
@@ -48,9 +57,9 @@ $content = "<div id='map_container'>
 					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
 				 </div>
 				<div class='card-action'>
-					<button class='btn btn-flat pull-left resource-card-directions'>Get Directions</button>
+					<button id='resource_card_directions' class='btn btn-flat pull-left'>Get Directions</button>
 					
-					<button class='btn btn-flat pull-right resource-card-save'><span class='sr-only sr-only-focusable'>Save</span>
+					<button id='resource_card_save' class='btn btn-flat pull-right'><span class='sr-only sr-only-focusable'>Save</span>
 					<span class='material-icons'>star_border</span></button>
 					
 					<ul id='report_menu' class='btn btn-flat pull-right'>
