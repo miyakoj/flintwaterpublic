@@ -67,6 +67,10 @@
 		display:none;
 	}
 	
+	#resource_card {
+		width: 300px;
+	}
+	
 	#filter_page #allFilters_step1_content .card-img img {
 		width:100px;
 	}
