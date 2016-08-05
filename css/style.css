@@ -446,7 +446,13 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 	width:100%;
 }
 
-#resource_card .resource-card-save span {
+#resource_card_save {
+	margin-right: 10px;
+	position: absolute;
+	right: 20px;
+}
+
+#resource_card #resource_card_save span {
 	padding-right:15px;
 }
 
@@ -454,7 +460,7 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 	color:#333!important;
 }
 
-.resource-card-directions {
+#resource_card_directions {
 	margin-left: 10px;
 	position: absolute;
 	left: 0%;
@@ -468,12 +474,6 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 .marker_popup_icons {
 	width:auto;
 	height:15px;
-}
-
-.resource-card-save {
-	margin-right: 10px;
-	position: absolute;
-	right: 20px;
 }
 
 #provider_popup img {
