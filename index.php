@@ -63,9 +63,9 @@ $content = "<div id='map_container'>
 					
 					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span><span class='material-icons'>star_border</span></button>
 					
-					<ul id='report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'>
+					<ul id='report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li class='dropdown'>
-						<a class='dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report</span>
+						<a class='dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
 						<span class='material-icons'>error</span></a>
 					    <ul class='dropdown-menu dropdown-menu-right' aria-labelledby='resource-card-save'>
 					        <li><a href='#'>Temporarily Closed</a></li>
