@@ -41,10 +41,10 @@ $content = "<div id='map_container'>
 						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> <span>More Info</span></button>
 					</div>-->
 					
-					<button id='card_save' class='btn btn-flat pull-right'><span class='sr-only sr-only-focusable'>Save</span>
+					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span>
 					<span class='material-icons'>star_border</span></button>
 					
-					<button id='more_info_button' class='btn btn-flat pull-right'><span class='sr-only sr-only-focusable'>More Info</span>
+					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only sr-only-focusable'>More Info</span>
 					<span class='material-icons'>info_outline</span></button>
 				</div>
 			</div>
@@ -57,12 +57,13 @@ $content = "<div id='map_container'>
 					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
 				 </div>
 				<div class='card-action'>
-					<button id='resource_card_directions' class='btn btn-flat pull-left'>Get Directions</button>
+					<!--<button id='resource_card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'>Get Directions</button>-->
 					
-					<button id='card_save' class='btn btn-flat pull-right'><span class='sr-only sr-only-focusable'>Save</span>
-					<span class='material-icons'>star_border</span></button>
+					<button id='resource_card_directions' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Get Directions'><span class='sr-only sr-only-focusable'>Get Directions</span><span class='material-icons'>directions</span></button>
 					
-					<ul id='report_menu' class='btn btn-flat pull-right'>
+					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span><span class='material-icons'>star_border</span></button>
+					
+					<ul id='report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'>
 					    <li class='dropdown'>
 						<a class='dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report</span>
 						<span class='material-icons'>error</span></a>
