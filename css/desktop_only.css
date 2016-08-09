@@ -1,5 +1,5 @@
 /* Tablet and desktop/laptop only. */
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width:768px) {
 	header, .navbar-default {
 		background-color:#252E56!important;
 	}
@@ -68,7 +68,7 @@
 	}
 	
 	#resource_card {
-		width: 300px;
+		width:300px;
 	}
 	
 	#filter_page #allFilters_step1_content .card-img img {
@@ -81,7 +81,7 @@
 }
 
 /* Desktop/Laptop only. */
-@media only screen and (min-width: 992px) {
+@media only screen and (min-width:992px) {
 	#logo {
 		margin-top:0;
 	}
@@ -134,7 +134,7 @@
 	}	
 	
 	#show_me_menu #show_me_toggle{
-		pointer-events: auto;
+		pointer-events:auto;
 	}
 	
 	#toggles span {
