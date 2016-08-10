@@ -96,9 +96,11 @@ $(document).ready(function() {
 			$("#show_me_menu").addClass("active");
 	}
 		
-	if (windowWidth < 600) {		
+	if (windowWidth < 600) {
 		$("#location_card, #resource_card").css({
+			"width": (windowWidth - 10) + "px",
 			"margin-bottom": 0,
+			"position": "absolute",
 			"left": "5px",
 			"bottom": "5px"
 		}).appendTo($("body"));

@@ -803,7 +803,7 @@ footer #copyright p span:last-child {
 .tooltip-inner {
   color:#FFF;
   background-color:#252E56;
-  border:solid 1px #FFF;
+  border:solid 1px #000;
   opacity:1;
   filter:alpha(opacity=100);
 }

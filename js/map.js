@@ -105,8 +105,6 @@ function initMap() {
 			}
 		});
 	});
-
-	google.maps.event
 	
 	infoWindow = new google.maps.InfoWindow();
 
@@ -130,7 +128,7 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	waterPickupIcon = {
-		url: 'images/waterPickupIcon.png',
+		url: 'images/waterpickupicon.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
@@ -178,6 +176,13 @@ function initMap() {
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
+	locationIcon = {
+		url: 'images/locationicon.png',
+		size: new google.maps.Size(64, 64),
+		origin: new google.maps.Point(0, 0),
+		anchor: new google.maps.Point(17, 34),
+		scaledSize: new google.maps.Size(iconSize, iconSize)
+	  };
 	savedLocationIcon = {
 		url: 'images/savedlocation.png',
 		origin: new google.maps.Point(0,0),
@@ -185,9 +190,37 @@ function initMap() {
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
+	
+	/* Load saved non-resource locations. */
+	var numberSaved = parseInt(localStorage["numberSaved"]);
+	var locationPosition;
+	
+	for (var i = 0; i < numberSaved; i++) {
+		if (localStorage.getItem("savedLocationType"+numberSaved).indexOf("Non-Resource") != -1) {
+			locationPosition = localStorage.getItem("savedLocation"+numberSaved);
+			
+			latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
+			longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+			
+			locationMarker = new google.maps.Marker({
+				position: {lat:latitude, lng:longitude},
+				map: map,
+				icon: savedLocationIcon
+			});
+			
+			savedMarkers.push(locationMarker);
+			
+			$("#location_card #card_save .material-icons").html("star");
+			attachLocationCard("location", locationMarker, map, content);
+			
+			console.log(locationMarker);
+		}
+	}
+	
+	$("#location_card #card_save .material-icons").html("star");
 
 	// Construction Junk
-	var constructionLatLng = {lat:43.019368, lng:-83.668522 };
+	var constructionLatLng = {lat:43.019368, lng:-83.668522};
 	var constructionTitle = "Construction Zone";
 	var constructionImage = "images/constructionicon.png";
 	constructionMarker  = new google.maps.Marker({
@@ -260,14 +293,6 @@ function initMap() {
 	  // For each place, get the icon, name and location.
 	  var bounds = new google.maps.LatLngBounds();
 	  
-	  locationIcon = {
-		url: 'images/locationicon.png',
-		size: new google.maps.Size(64, 64),
-		origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(17, 34),
-		scaledSize: new google.maps.Size(iconSize, iconSize)
-	  };
-	  
 	  // Create a marker for the place.
 	  locationMarker = new google.maps.Marker({
 		position: place.geometry.location,
@@ -330,8 +355,8 @@ function initMap() {
 
 	  
 	  map.fitBounds(bounds);
-
-	  /* Location Info Card */		
+	  
+		/* Location Info Card */		
 	  	var inputAddress = place.formatted_address.split(',');
 	  	var streetAddress = inputAddress[0].toUpperCase();
 	  	var leadMeter;
@@ -361,10 +386,19 @@ function initMap() {
 	  		leadPrediction = "Predicted high lead levels";
 	  		leadMsg = "Not safe to drink even if filtered."
 	  	}
+		
+		var content = "<h5>" + streetAddress + "</h5> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>";
 
 		/* Display appropriate lead rating and message. */
-		$("#location_card .card-inner").html("<h5>" + streetAddress + "</h5> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>");
-		$("#location_card, #location_card .card-action").show();
+		//$("#location_card .card-inner").html("<h5>" + streetAddress + "</h5> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>");
+		//$("#location_card, #location_card .card-action").show();
+		
+		$("#location_card .card-inner").html();
+		$("#location_card .card-inner").html(content);
+		$("#location_card #card_save .material-icons").html("star_border");
+		$("#location_card").show();
+		
+		attachLocationCard("location", locationMarker, map, content);
 	});	
 	
 	/*$("#search_button").css({
@@ -671,7 +705,7 @@ function callStorageAPI(object) {
 					display_html += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
 					display_html += "<p><small>Zoom in see more details</small></p>"
 					display_html += "</div>";
-					attachLocationCard(leadLevelAreaSquare, map, display_html);
+					attachLocationCard("lead", leadLevelAreaSquare, map, display_html);
 					// attachLocationCard(birdMarker, map, display_html);
 				}
 			}
@@ -775,8 +809,6 @@ function callStorageAPI(object) {
 							icon: savedResourceIcon
 						});
 					}
-				
-					/* Add tooltips to the popup images. */
 					
 					/* Store the markers in arrays for the add/remove functionality. 
 						if saved, put in savedMarkers if not put in allMarkers*/
@@ -853,54 +885,59 @@ function weirdnessEquation(N, K) {
 }
 
 function setUpInitialMap() {
-		var retrieveArray = localStorage.getItem("resource_array");
+	var retrieveArray = localStorage.getItem("resource_array");
 		
-		console.log(localStorage);
-	
-		if ((localStorage !== "undefined") && (retrieveArray != null)) {
-       		resourceActiveArray = JSON.parse(retrieveArray);
-			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-     	}
-    	else {
-			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-    	}
+	console.log(localStorage);
 
-		if (resourceActiveArray[0] == 1) {
-			$("#heatmap_btn").addClass("active");
-		}
-		if (resourceActiveArray[1] == 1) {
-			$("#water_pickup_btn").addClass("active");
-		}
-		if (resourceActiveArray[2] == 1) {
-			$("#recycling_btn").addClass("active");
-		}
-		if (resourceActiveArray[3] == 1) {
-			$("#water_filters_btn").addClass("active");
-		}
-		if (resourceActiveArray[4] == 1) {
-			$("#water_testing_btn").addClass("active");
-		}
-		if (resourceActiveArray[5] == 1) {
-			$("#blood_testing_btn").addClass("active");
-		}
-		if (resourceActiveArray[6] == 1) {
-			$("#construction_btn").addClass("active");
-		}
-		if (resourceActiveArray[7] == 1) {
-			$("#risk_factor_btn").addClass("active");
-		}
+	if ((localStorage !== "undefined") && (retrieveArray != null)) {
+		resourceActiveArray = JSON.parse(retrieveArray);
+		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+	}
+	else {
+		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+	}
 
-		setMarkers();
+	if (resourceActiveArray[0] == 1) {
+		$("#heatmap_btn").addClass("active");
+	}
+	if (resourceActiveArray[1] == 1) {
+		$("#water_pickup_btn").addClass("active");
+	}
+	if (resourceActiveArray[2] == 1) {
+		$("#recycling_btn").addClass("active");
+	}
+	if (resourceActiveArray[3] == 1) {
+		$("#water_filters_btn").addClass("active");
+	}
+	if (resourceActiveArray[4] == 1) {
+		$("#water_testing_btn").addClass("active");
+	}
+	if (resourceActiveArray[5] == 1) {
+		$("#blood_testing_btn").addClass("active");
+	}
+	if (resourceActiveArray[6] == 1) {
+		$("#construction_btn").addClass("active");
+	}
+	if (resourceActiveArray[7] == 1) {
+		$("#risk_factor_btn").addClass("active");
+	}
+
+	setMarkers();
 }
 
-function attachLocationCard(marker, map, content) {	
+function attachLocationCard(type, marker, map, content) {
 	marker.addListener("click", function() {
 		$("#resource_card").hide();
 		
 		// map.panTo(marker.getPosition());
 		$("#location_card .card-inner").html();
-		$("#location_card .card-action").hide();
 		$("#location_card .card-inner").html(content);
+		
+		if (type.indexOf("location") != -1)
+			$("#location_card .card-action").show();
+		else
+			$("#location_card .card-action").hide();
+		
 		$("#location_card").show();
 		
 		locationMarker.push(marker);
@@ -1035,9 +1072,9 @@ function setMarkers() {
 }
 
 function checkIfSaved(latLong) {
-	var tempNumberSaved = parseInt(localStorage["numberSaved"]);
+	var numberSaved = parseInt(localStorage["numberSaved"]);
 	var returnVal = false;
-	for (var i=0; i <= tempNumberSaved; i++) {
+	for (var i=0; i <= numberSaved; i++) {
 		if (localStorage.getItem(["savedLocation"+i]) == latLong) { // .substring(0)
 			returnVal = true;
 		}
@@ -1046,37 +1083,39 @@ function checkIfSaved(latLong) {
 	return returnVal;
 }
 
-function saveLocation(latLong, icon) {
-	var tempNumberSaved = localStorage.getItem("numberSaved");
+function saveLocation(latLong, icon, type) {
+	var numberSaved = localStorage.getItem("numberSaved");
 	
-	if (tempNumberSaved == null)
-		tempNumberSaved = 1;
+	if (numberSaved == null)
+		numberSaved = 1;
 	else {
-		tempNumberSaved = parseInt(tempNumberSaved);
-		tempNumberSaved++;
+		numberSaved = parseInt(numberSaved);
+		numberSaved++;
 	}
 	
-	localStorage.setItem("numberSaved", tempNumberSaved);
-	localStorage.setItem("savedLocation"+tempNumberSaved, latLong);
-	localStorage.setItem("savedLocationIcon"+tempNumberSaved, icon);
+	localStorage.setItem("numberSaved", numberSaved);
+	localStorage.setItem("savedLocation"+numberSaved, latLong);
+	localStorage.setItem("savedLocationType"+numberSaved, type);
+	localStorage.setItem("savedLocationIcon"+numberSaved, icon);
 }
 
 function unsaveLocation(latLong) {
-	var tempNumberSaved = parseInt(localStorage["numberSaved"]);
-	for (var i=0; i <= tempNumberSaved; i++) {
+	var numberSaved = parseInt(localStorage["numberSaved"]);
+	for (var i=0; i <= numberSaved; i++) {
 		if (localStorage.getItem(["savedLocation"+i]) == latLong) {
 			localStorage.removeItem(["savedLocation"+i]);
+			localStorage.removeItem(["savedLocationType"+i]);
 			
-			tempNumberSaved--;
+			numberSaved--;
 			
-			if (tempNumberSaved == -1)
+			if (numberSaved == -1)
 				localStorage.setItem("numberSaved", 0);
 			else
-				localStorage.setItem("numberSaved", tempNumberSaved);
+				localStorage.setItem("numberSaved", numberSaved);
 		}
 	}
 	
-	return (tempNumberSaved+1);
+	return (numberSaved+1);
 }
 
 /*function unsaveLocation(locationInput) {
@@ -1115,124 +1154,131 @@ $(document).ready(function() {
 	*/
 	
 	//localStorage.clear();
+	console.log(localStorage);
 	
 	// display the search box after the map has loaded
 	$("#search_input").css("display", "block");
 
-	$("#heatmap_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
+	if (typeof(Storage) !== "undefined") {
+		$("#heatmap_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active"))
+				resourceActiveArray[0] = 0;
+			else
+				resourceActiveArray[0] = 1;
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 		
-		if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active"))
-			resourceActiveArray[0] = 0;
-		else
-			resourceActiveArray[0] = 1;
+		$("#risk_factor_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[7] == 1 && $("#risk_factor_btn").hasClass("active"))
+				resourceActiveArray[7] = 0;
+			else
+				resourceActiveArray[7] = 1;
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
-	
-	$("#risk_factor_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[7] == 1 && $("#risk_factor_btn").hasClass("active"))
-			resourceActiveArray[7] = 0;
-		else
-			resourceActiveArray[7] = 1;
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
-	
 
-	$("#water_pickup_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[1] == 1)
-			resourceActiveArray[1] = 0;
-		else
-			resourceActiveArray[1] = 1;
-		
-		if (map.getZoom() > 15)
-			map.setZoom(15);
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
+		$("#water_pickup_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[1] == 1)
+				resourceActiveArray[1] = 0;
+			else
+				resourceActiveArray[1] = 1;
+			
+			if (map.getZoom() > 15)
+				map.setZoom(15);
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 
-	$("#recycling_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[2] == 1)
-			resourceActiveArray[2] = 0;
-		else
-			resourceActiveArray[2] = 1;
-		
-		if (map.getZoom() > 15)
-			map.setZoom(15);
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
+		$("#recycling_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[2] == 1)
+				resourceActiveArray[2] = 0;
+			else
+				resourceActiveArray[2] = 1;
+			
+			if (map.getZoom() > 15)
+				map.setZoom(15);
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 
-	$("#water_testing_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[4] == 1)
-			resourceActiveArray[4] = 0;
-		else
-			resourceActiveArray[4] = 1;
-		
-		if (map.getZoom() > 15)
-			map.setZoom(15);
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
+		$("#water_testing_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[4] == 1)
+				resourceActiveArray[4] = 0;
+			else
+				resourceActiveArray[4] = 1;
+			
+			if (map.getZoom() > 15)
+				map.setZoom(15);
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 
-	$("#blood_testing_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[5] == 1)
-			resourceActiveArray[5] = 0;
-		else
-			resourceActiveArray[5] = 1;
-		
-		if (map.getZoom() > 14)
-			map.setZoom(14);
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
+		$("#blood_testing_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[5] == 1)
+				resourceActiveArray[5] = 0;
+			else
+				resourceActiveArray[5] = 1;
+			
+			if (map.getZoom() > 14)
+				map.setZoom(14);
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 
-	$("#water_filters_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[3] == 1)
-			resourceActiveArray[3] = 0;
-		else
-			resourceActiveArray[3] = 1;
-		
-		if (map.getZoom() > 15)
-			map.setZoom(15);
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
+		$("#water_filters_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[3] == 1)
+				resourceActiveArray[3] = 0;
+			else
+				resourceActiveArray[3] = 1;
+			
+			if (map.getZoom() > 15)
+				map.setZoom(15);
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
 
-	$("#pipes_btn").on('click', function() {
-		$("#resource_card, #location_card").hide();
-		
-		if (resourceActiveArray[6] == 1)
-			resourceActiveArray[6] = 0;
-		else
-			resourceActiveArray[6] = 1;
-		
-		if (map.getZoom() > 15)
-			map.setZoom(15);
-		
-		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-		setMarkers();
-	});
+		$("#pipes_btn").on('click', function() {
+			$("#resource_card, #location_card").hide();
+			
+			if (resourceActiveArray[6] == 1)
+				resourceActiveArray[6] = 0;
+			else
+				resourceActiveArray[6] = 1;
+			
+			if (map.getZoom() > 15)
+				map.setZoom(15);
+			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			setMarkers();
+		});
+	}
+	else {
+		console.log("No local storage support.");
+		window.stop(); // stop loading the page
+	}
 
 	// gives directions to a resource location when get dircetions is clicked
 	$("#resource_card #card_directions").on("click", function() {
@@ -1297,7 +1343,7 @@ $(document).ready(function() {
 			var temp;
 			
 			// add to local storage
-			saveLocation(latLong, unsavedIcon);
+			saveLocation(latLong, unsavedIcon, "Resource");
 			
 			// change image on card to filled star
 			$("#resource_card #card_save .material-icons").html("star");
@@ -1375,7 +1421,7 @@ $(document).ready(function() {
 			var temp;
 			
 			// add to local storage
-			saveLocation(latLong, unsavedIcon);
+			saveLocation(latLong, unsavedIcon, "Non-Resource");
 			
 			// change image on card to filled star
 			$("#location_card #card_save .material-icons").html("star");
