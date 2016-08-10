@@ -1235,9 +1235,9 @@ $(document).ready(function() {
 	});
 
 	// gives directions to a resource location when get dircetions is clicked
-	$("#resource_card #resource_card_directions").on("click", function() {
+	$("#resource_card #card_directions").on("click", function() {
 		resource_directions = resourceMarker.getPosition();
-        window.open('http:// maps.google.com/?q='+resource_directions,'_blank');
+        window.open('http://maps.google.com/?q='+resource_directions,'_blank');
 	});
 
 	// saves resource location when save button is clicked on the resource card

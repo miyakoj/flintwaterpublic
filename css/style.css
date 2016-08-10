@@ -447,27 +447,15 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 	font-weight:bold;
 }
 
-/*#card_save {
-	margin-right:10px;
-	position:absolute;
-	right:20px;
-}*/
-
-#resource_card #card_save span {
-	padding-right:15px;
-}
-
 #report_menu a {
 	color:#333!important;
 }
 
-#resource_card_directions {
-	margin-left:10px;
-	position:absolute;
-	left:0%;
+#resource_card #card_directions {
+	
 }
 
-#resource_card #report_menu {
+#resource_card #card_report_menu {
 	padding-top:6px;
 	list-style-type:none;
 }
