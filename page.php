@@ -384,21 +384,21 @@ if (@isset($_GET["pid"])) {
 							</div>
 						</div>";
 		break;
-		
 		case "report":
 			$pagetitle = "Report a Problem";
 			$content = "<div id='report_problem' class='stepper-vert'><h2>Report a Problem</h2>
-							<div class='stepper-vert-inner'>
-								<div id='report_step1' class='stepper active'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>1</span>
+							<form action='includes/functions.php' method='post'>
+								<div class='stepper-vert-inner'>
+									<div id='report_step1' class='stepper active'>
+										<div class='stepper-step'>
+											<span class='icon stepper-step-icon'>check</span>
+											<span class='stepper-step-num'>1</span>
+										</div>
+										<span class='stepper-text'>Enter your location</span>
 									</div>
-									<span class='stepper-text'>Enter your location</span>
-								</div>
 								<div id='report_step1_content' class='stepper-vert-content'>								
 								  <label for='locationTextField' style='display:none;'>Enter Your Location: </label><br />
-									<input class='form-control' id='locationTextField' style='width=100%;'>
+									<input class='form-control' id='locationTextField' style='width=100%;' name='location' />
 									<script>
 										function init() {
 											var input = document.getElementById('locationTextField');
@@ -422,11 +422,11 @@ if (@isset($_GET["pid"])) {
 								<div id='report_step2_content' class='stepper-vert-content hide'>
 									<div id='step2_stuff' class='form-group form-group-label'>
                                     <label for='ProblemSelector' style='display:none;'> Select The Problem: </label>
-                                    <select class='form-control' id='ProblemSelector' style='width:100%;'>
-                                        <option value='...'> Discolored Water </option>
-                                        <option value='...'> Water Main Break </option>
-                                        <option value='...'> Other Infrastructure Issue </option>
-                                        ...
+                                    <select title='Please Choose One' class='form-control' id='ProblemSelector' style='width:100%;' name='problemType' >
+										<option value=''> </option> 
+                                        <option value='Discolored Water'> Discolored Water </option>
+                                        <option value='Water Main Break'> Water Main Break </option>
+                                        <option value='Other Infrastructure Issue'> Other Infrastructure Issue </option>
                                     </select>
                                     </div>
 								   <div class='btn_group'>
@@ -445,13 +445,15 @@ if (@isset($_GET["pid"])) {
 								<div id='report_step3_content' class='stepper-vert-content hide'>
 								  <div id='step3_stuff' class='form-group form-group-label'>
                                     <label for='GrowBox' style='display:none;'> Describe Problem: (500 Character Limit) </label><br>
-                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' maxlength='500' style='width:100%;'></textarea>						
+                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' maxlength='500' style='width:100%;' name='description' ></textarea>						
 									</div>
 								  <div class='btn_group'>
-								 <a id='submit_button' class='btn btn-flat btn-primary'>Submit</a>
+								 <button id='submit_button' type:'submit' class='btn btn-flat btn-primary'>Submit</button>
+								 <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
 								 </div>
 								</div>
 							</div>
+						</form>
 						</div>";
 		break;
 		
@@ -460,7 +462,8 @@ if (@isset($_GET["pid"])) {
 			$content = "<p>This website is a joint project between University of Michigan-Flint, University of Michigan-Ann Arbor, and Google.</p>";
 		break;
 	}
-}
+}		
+
 else {
 	header("Location: index.php");
 	exit();
