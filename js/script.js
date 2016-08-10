@@ -518,13 +518,12 @@ $(document).ready(function() {
 		$("#report_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	});
 	
-	$("#report_problem #submit_button").on("submit", function() {
-		//var location = $("#report_page #report_info #locationTextField").val();
-		//var problemType = $("#report_page #report_info #ProblemSelector").val();
-		//var description = $("#report_page #report_info textarea").val();
-		console.log("click worked");
-		//TODO save these values to the db
+	$("#report_problem form").on("submit", function(event) {
+		var location = $("#report_problem #locationTextField").val();
+		var problemType = $("#report_problem #ProblemSelector").val();
+		var description = $("#report_problem #GrowBox").val();
 		alert("Thank you for your submission!");
+		event.stopPropagation();
 		$(window).attr("location", "index.php");
 	});
 	
