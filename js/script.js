@@ -348,7 +348,9 @@ $(document).ready(function() {
 			$(".help_video").addClass("hide");
 			
 			/* Set the map to display only test kits. */
-			resourceActiveArray = [0, 0, 0, 1, 0, 0, 0, 0];
+			//resourceActiveArray = [0, 0, 0, 0, 1, 0, 0, 0];
+			resourceActiveArray[0] = 0;
+			resourceActiveArray[4] = 1;
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			//setMarkers();
 		}
