@@ -57,7 +57,7 @@ $content = "<div id='map_container'>
 					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
 				 </div>
 				<div class='card-action'>
-					<button id='card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'>Get Directions</button>
+					<button id='card_directions' class='btn btn-flat pull-left' title='Get Directions'>Get Directions</button>
 					
 					<!--<button id='card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'><span class='sr-only sr-only-focusable'>Get Directions</span><span class='material-icons'>directions</span></button>-->
 					
