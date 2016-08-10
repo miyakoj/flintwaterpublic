@@ -2,8 +2,6 @@
 
 require_once "includes/template.php";
 
-/*<!---->*/
-
 $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 				<div class='wrapper nav nav-tabs tile'>
 					<div class='list'>
@@ -40,17 +38,10 @@ $content = "<div id='map_container'>
 						<button id='saved_location_button' type='button' class='btn btn-flat btn-brand'><img src='images/savedlocation.png' /> <span></span></button>
 						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> <span>More Info</span></button>
 					</div>-->
-<<<<<<< HEAD
 
 					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span>
 					<span class='material-icons'>star_border</span></button>
-
-=======
 					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span>
-					<span class='material-icons'>star_border</span></button>
-					
->>>>>>> origin/master
 					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only sr-only-focusable'>More Info</span>
 					<span class='material-icons'>info_outline</span></button>
 				</div>
@@ -64,7 +55,6 @@ $content = "<div id='map_container'>
 					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
 				 </div>
 				<div class='card-action'>
-<<<<<<< HEAD
 					<button id='card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'>Get Directions</button>
 
 					<!--<button id='card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'><span class='sr-only sr-only-focusable'>Get Directions</span><span class='material-icons'>directions</span></button>-->
@@ -72,17 +62,6 @@ $content = "<div id='map_container'>
 					<ul id='card_report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li class='dropdown'>
 						<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
-=======
-					<!--<button id='resource_card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'>Get Directions</button>-->
-					
-					<button id='resource_card_directions' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Get Directions'><span class='sr-only sr-only-focusable'>Get Directions</span><span class='material-icons'>directions</span></button>
-					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span><span class='material-icons'>star_border</span></button>
-					
-					<ul id='report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
-					    <li class='dropdown'>
-						<a class='dropdown-toggle' data-toggle='dropdown' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
->>>>>>> origin/master
 						<span class='material-icons'>error</span></a>
 					    <ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
 					        <li><a href='#'>Temporarily Closed</a></li>
