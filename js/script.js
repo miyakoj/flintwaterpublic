@@ -96,20 +96,20 @@ $(document).ready(function() {
 			$("#show_me_menu").addClass("active");
 	}
 		
-	if (windowWidth < 600) {
-		$("#location_card").appendTo($("body"));
+	if (windowWidth < 600) {		
+		$("#location_card, #resource_card").css({
+			"margin-bottom": 0,
+			"left": "5px",
+			"bottom": "5px"
+		}).appendTo($("body"));
 		
-		console.log("location_card spacing: " + ($("#location_card").width() / 2));
-		
-		$("#location_card").css({
+		/*$("#location_card, #resource_card").css({
 			"margin": "0 5px",
 			"left": function () {
-				($("#location_card").width() / 2) + "px";
+				($("#location_card, #resource_card").width() / 2) + "px";
 			},
 			"bottom": "5px"
-		});
-		
-		console.log("location_card left: " + $("#location_card").css("left"));
+		});*/
 	}
 	else {
 		$("#location_card").css({
@@ -123,6 +123,8 @@ $(document).ready(function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 			}
 		});
+		
+		//#resource_card
 	}
 	
 	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
@@ -348,9 +350,9 @@ $(document).ready(function() {
 			$(".help_video").addClass("hide");
 			
 			/* Set the map to display only test kits. */
-			//resourceActiveArray = [0, 0, 0, 0, 1, 0, 0, 0];
-			resourceActiveArray[0] = 0;
-			resourceActiveArray[4] = 1;
+			resourceActiveArray = [0, 0, 0, 0, 1, 0, 0, 0];
+			//resourceActiveArray[0] = 0;
+			//resourceActiveArray[4] = 1;
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			//setMarkers();
 		}
