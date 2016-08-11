@@ -41,11 +41,11 @@ $content = "<div id='map_container'>
 						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> <span>More Info</span></button>
 					</div>-->
 					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span>
-					<span class='material-icons'>star_border</span></button>
-					
 					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only sr-only-focusable'>More Info</span>
 					<span class='material-icons'>info_outline</span></button>
+					
+					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span>
+					<span class='material-icons'>star_border</span></button>
 				</div>
 			</div>
 		</div>

@@ -10,6 +10,7 @@ var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 
 var map;
+var geocoder;
 var infoWindow;
 var heatmap;
 var leadLayer; // fusion table layer to set up lead levels
@@ -25,7 +26,7 @@ var savedMarkers = [];
 var allMarkers = [];
 var allMarkersString = [];
 var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  // lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
-//var locationMarker = [];
+var savedLocationMarkers = [];
 var locationMarker;
 var markerImg;
 var savedLocationTotal;
@@ -106,6 +107,7 @@ function initMap() {
 		});
 	});
 	
+	geocoder = new google.maps.Geocoder();		
 	infoWindow = new google.maps.InfoWindow();
 
 	callStorageAPI("leadlevels.json");
@@ -193,27 +195,70 @@ function initMap() {
 	
 	/* Load saved non-resource locations. */
 	var numberSaved = parseInt(localStorage["numberSaved"]);
-	var locationPosition;
 	
-	for (var i = 0; i < numberSaved; i++) {
-		if (localStorage.getItem("savedLocationType"+numberSaved).indexOf("Non-Resource") != -1) {
-			locationPosition = localStorage.getItem("savedLocation"+numberSaved);
-			
-			latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
-			longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
-			
-			locationMarker = new google.maps.Marker({
-				position: {lat:latitude, lng:longitude},
-				map: map,
-				icon: savedLocationIcon
-			});
-			
-			savedMarkers.push(locationMarker);
-			
-			$("#location_card #card_save .material-icons").html("star");
-			attachLocationCard("location", locationMarker, map, content);
-			
-			console.log(locationMarker);
+	if (!isNaN(numberSaved) && (numberSaved > 0)) {
+		var locationPosition;
+		var tempLocationMarker;
+		var content;
+		
+		for (var i = 1; i <= numberSaved; i++) {
+			if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
+				locationPosition = localStorage.getItem("savedLocationPosition"+i);
+				console.log(locationPosition);
+				
+				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
+				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+				
+				//console.log("(" + latitude + ", " + longitude + ")");
+				
+				tempLocationMarker = new google.maps.Marker({
+					position: {lat:latitude, lng:longitude},
+					map: map,
+					icon: savedLocationIcon
+				});
+				
+				//content = createLocationContent(tempLocationMarker, localStorage.getItem("savedLocationAddress"+i));
+				
+				/*var streetAddress = localStorage.getItem("savedLocationAddress"+i);
+				var leadMeter;
+				var leadPrediction;
+				var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
+
+				for (var i=0; i < heatmapData.length; i++) {
+					var tempAddr = heatmapData[i].address.valueOf();
+					if (tempAddr === streetAddress) {
+						leadMeter = heatmapData[i].lead + " ppb";
+						leadLevelOfInput = heatmapData[i].lead;
+						break;
+					}
+					else {
+						 leadMeter = "No Reported Reading";
+						 leadLevelOfInput = -1;
+					}
+				}
+
+				if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
+					leadPrediction = "Predicted low lead levels";
+				}
+				else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
+					leadPrediction = "Predicted medium lead levels";
+				}
+				else if (leadLevelOfInput >= 150) {
+					leadPrediction = "Predicted high lead levels";
+					leadMsg = "Not safe to drink even if filtered."
+				}
+				
+				var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
+				
+				$("#location_card #card_save .material-icons").html("star");
+				//attachLocationCard("location", tempLocationMarker, map, content);
+				attachLocationCard("location", tempLocationMarker, localStorage.getItem("savedLocationAddress"+i), "");
+				
+				savedMarkers.push(tempLocationMarker);
+				savedLocationMarkers.push(tempLocationMarker);
+				
+				console.log(tempLocationMarker);
+			}
 		}
 	}
 	
@@ -255,6 +300,11 @@ function initMap() {
 	var input = document.getElementById('search_input');
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+	
+	// Changes CSS to make search bar visible, making sure it doesn't load before the map does
+	google.maps.event.addListenerOnce(map, 'idle', function(){
+		$("#search_input").css("display", "block");
+	});
 	
 	// Bias the SearchBox results towards current map's viewport.
 	map.addListener('bounds_changed', function() {
@@ -354,58 +404,54 @@ function initMap() {
 	  }); */
 
 	  
-	  map.fitBounds(bounds);
-	  
-		/* Location Info Card */		
-	  	var inputAddress = place.formatted_address.split(',');
-	  	var streetAddress = inputAddress[0].toUpperCase();
-	  	var leadMeter;
-		var leadPrediction;
-		var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
-
-	  	for (var i=0; i < heatmapData.length; i++) {
-	  		var tempAddr = heatmapData[i].address.valueOf();
-	  		if (tempAddr === streetAddress) {
-	  			leadMeter = heatmapData[i].lead + " ppb";
-	  			leadLevelOfInput = heatmapData[i].lead;
-	  			break;
-	  		}
-	  		else {
-				 leadMeter = "No Reported Reading";
-				 leadLevelOfInput = -1;
-	  		}
-	  	}
-
-	  	if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
-	  		leadPrediction = "Predicted low lead levels";
-	  	}
-	  	else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
-	  		leadPrediction = "Predicted medium lead levels";
-	  	}
-	  	else if (leadLevelOfInput >= 150) {
-	  		leadPrediction = "Predicted high lead levels";
-	  		leadMsg = "Not safe to drink even if filtered."
-	  	}
-		
-		var content = "<h5>" + streetAddress + "</h5> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>";
+		map.fitBounds(bounds);
 
 		/* Display appropriate lead rating and message. */
 		//$("#location_card .card-inner").html("<h5>" + streetAddress + "</h5> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>");
 		//$("#location_card, #location_card .card-action").show();
 		
-		$("#location_card .card-inner").html();
+		var inputAddress = place.formatted_address.split(',');
+		var streetAddress = inputAddress[0].toUpperCase();
+		
+		var content = createLocationContent(locationMarker, streetAddress);
+		
+		/*var leadMeter;
+		var leadPrediction;
+		var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
+
+		for (var i=0; i < heatmapData.length; i++) {
+			var tempAddr = heatmapData[i].address.valueOf();
+			if (tempAddr === streetAddress) {
+				leadMeter = heatmapData[i].lead + " ppb";
+				leadLevelOfInput = heatmapData[i].lead;
+				break;
+			}
+			else {
+				 leadMeter = "No Reported Reading";
+				 leadLevelOfInput = -1;
+			}
+		}
+
+		if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
+			leadPrediction = "Predicted low lead levels";
+		}
+		else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
+			leadPrediction = "Predicted medium lead levels";
+		}
+		else if (leadLevelOfInput >= 150) {
+			leadPrediction = "Predicted high lead levels";
+			leadMsg = "Not safe to drink even if filtered."
+		}
+		
+		var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
+		
 		$("#location_card .card-inner").html(content);
 		$("#location_card #card_save .material-icons").html("star_border");
 		$("#location_card").show();
 		
-		attachLocationCard("location", locationMarker, map, content);
-	});	
-	
-	/*$("#search_button").css({
-		"top": function() {
-				return $("header").outerHeight() + $("#toggles").outerHeight() + 20;
-		}
-	});*/
+		//attachLocationCard("location", locationMarker, map, content);
+		attachLocationCard("location", locationMarker, streetAddress, "");
+	});
 	
 	// Check the saved locations if enter is pressed while in the search box
 	$("#search_input").on("keydown", function(event) {
@@ -557,6 +603,30 @@ function initMap() {
 	setUpInitialMap();
 }
 
+function geocodeAddress(geocoder, map, address) {
+	geocoder.geocode({
+			'address': address,
+			'bounds': new google.maps.LatLngBounds(new google.maps.LatLng({lat: 43.021, lng: -83.681}))
+		},
+		function(results, status) {
+			if (status === 'OK') {
+				/*map.setCenter(results[0].geometry.location);
+
+				var marker = new google.maps.Marker({
+				  map: map,
+				  position: results[0].geometry.location
+				});*/
+				
+				console.log(results[0].geometry.location);
+
+				return results[0].geometry.location;
+			}
+			else {
+				console.log('Geocode was not successful for the following reason: ' + status);
+			}
+		});
+}
+
 function setUpFusionTable() {
 	leadAndPredictiveLayer = new google.maps.FusionTablesLayer({
 	    query: {
@@ -625,6 +695,8 @@ function callStorageAPI(object) {
 		request.then(function(resp) {
 			/* Heatmap Data */
 			if (object == "leadlevels.json") {
+				console.log("loading heatmap data");
+				
 				heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
@@ -698,15 +770,17 @@ function callStorageAPI(object) {
 
 					leadLayerBirdView_markers.push(leadLevelAreaSquare);
 
-					var display_html = "";
-					display_html += "<div>";
-					display_html += "<h5><b>About this area</b></h5>";
-					display_html += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
-					display_html += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
-					display_html += "<p><small>Zoom in see more details</small></p>"
-					display_html += "</div>";
-					attachLocationCard("lead", leadLevelAreaSquare, map, display_html);
-					// attachLocationCard(birdMarker, map, display_html);
+					var content = "";
+					content += "<div>";
+					content += "<h5><b>About this area</b></h5>";
+					content += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
+					content += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
+					content += "<p><small>Zoom in see more details</small></p>"
+					content += "</div>";
+					
+					attachLocationCard("lead", leadLevelAreaSquare, "", content);
+					//attachLocationCard("lead", leadLevelAreaSquare, map, content);
+					// attachLocationCard(birdMarker, map, content);
 				}
 			}
 			/* Provider Data */
@@ -725,6 +799,7 @@ function callStorageAPI(object) {
 					var icon;
 					var images = "";
 					var resourcesAvailable = "";
+					var marker;
 					
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						markerImg = "images/waterPickupIcon.png";
@@ -794,7 +869,7 @@ function callStorageAPI(object) {
 						isDisplayMap = null;
 					
 					if (!isSaved) {
-						var marker = new google.maps.Marker({
+						marker = new google.maps.Marker({
 							position: latLng,
 							title: title,
 							map: isDisplayMap,
@@ -802,7 +877,7 @@ function callStorageAPI(object) {
 						});
 					}
 					else {
-						var marker = new google.maps.Marker({
+						marker = new google.maps.Marker({
 							position: latLng,
 							title: title,
 							map: isDisplayMap,
@@ -925,12 +1000,15 @@ function setUpInitialMap() {
 	setMarkers();
 }
 
-function attachLocationCard(type, marker, map, content) {
-	marker.addListener("click", function() {
+//function attachLocationCard(type, marker, map, content) {
+function attachLocationCard(type, marker, address, content) {
+	marker.addListener("click", function() {		
 		$("#resource_card").hide();
 		
+		if ((address.length != 0) && content.length == 0)
+			content = createLocationContent(marker, address)
+		
 		// map.panTo(marker.getPosition());
-		$("#location_card .card-inner").html();
 		$("#location_card .card-inner").html(content);
 		
 		if (type.indexOf("location") != -1)
@@ -940,8 +1018,42 @@ function attachLocationCard(type, marker, map, content) {
 		
 		$("#location_card").show();
 		
-		locationMarker.push(marker);
+		savedLocationMarkers.push(marker);
 	});
+}
+
+/* Location info card content generation. */
+function createLocationContent(tempLocationMarker, address) {
+	var streetAddress = address;
+	var leadMeter;
+	var leadPrediction;
+	var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
+
+	for (var i=0; i < heatmapData.length; i++) {
+		var tempAddr = heatmapData[i].address.valueOf();
+		if (tempAddr === streetAddress) {
+			leadMeter = heatmapData[i].lead + " ppb";
+			leadLevelOfInput = heatmapData[i].lead;
+			break;
+		}
+		else {
+			 leadMeter = "No Reported Reading";
+			 leadLevelOfInput = -1;
+		}
+	}
+
+	if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
+		leadPrediction = "Predicted low lead levels";
+	}
+	else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
+		leadPrediction = "Predicted medium lead levels";
+	}
+	else if (leadLevelOfInput >= 150) {
+		leadPrediction = "Predicted high lead levels";
+		leadMsg = "Not safe to drink even if filtered."
+	}
+	
+	return "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";
 }
 
 function bindInfoWindow(type, marker, map, infowindow, content) {	
@@ -953,7 +1065,6 @@ function bindInfoWindow(type, marker, map, infowindow, content) {
 			// infowindow.open(map, this);
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
-			$("#resource_card .card-inner").html();
 			$("#resource_card .card-inner").html(content);
 			$("#resource_card").show();
 			
@@ -1074,16 +1185,13 @@ function setMarkers() {
 function checkIfSaved(latLong) {
 	var numberSaved = parseInt(localStorage["numberSaved"]);
 	var returnVal = false;
-	for (var i=0; i <= numberSaved; i++) {
-		if (localStorage.getItem(["savedLocation"+i]) == latLong) { // .substring(0)
-			returnVal = true;
-		}
+	for (var i=1; i <= numberSaved; i++) {
+		if (localStorage.getItem("savedLocationPosition"+i) == latLong)
+			return true;
 	}
-	
-	return returnVal;
 }
 
-function saveLocation(latLong, icon, type) {
+function saveLocation(latLong, address, icon, type) {
 	var numberSaved = localStorage.getItem("numberSaved");
 	
 	if (numberSaved == null)
@@ -1094,17 +1202,19 @@ function saveLocation(latLong, icon, type) {
 	}
 	
 	localStorage.setItem("numberSaved", numberSaved);
-	localStorage.setItem("savedLocation"+numberSaved, latLong);
+	localStorage.setItem("savedLocationPosition"+numberSaved, latLong);
+	localStorage.setItem("savedLocationAddress"+numberSaved, address);
 	localStorage.setItem("savedLocationType"+numberSaved, type);
 	localStorage.setItem("savedLocationIcon"+numberSaved, icon);
 }
 
 function unsaveLocation(latLong) {
 	var numberSaved = parseInt(localStorage["numberSaved"]);
-	for (var i=0; i <= numberSaved; i++) {
-		if (localStorage.getItem(["savedLocation"+i]) == latLong) {
-			localStorage.removeItem(["savedLocation"+i]);
-			localStorage.removeItem(["savedLocationType"+i]);
+	for (var i=1; i <= numberSaved; i++) {
+		if (localStorage.getItem("savedLocationPosition"+i) == latLong) {
+			localStorage.removeItem("savedLocationPosition"+i);
+			localStorage.removeItem("savedLocationAddress"+i);
+			localStorage.removeItem("savedLocationType"+i);
 			
 			numberSaved--;
 			
@@ -1155,9 +1265,6 @@ $(document).ready(function() {
 	
 	//localStorage.clear();
 	console.log(localStorage);
-	
-	// display the search box after the map has loaded
-	$("#search_input").css("display", "block");
 
 	if (typeof(Storage) !== "undefined") {
 		$("#heatmap_btn").on('click', function() {
@@ -1286,12 +1393,15 @@ $(document).ready(function() {
         window.open('http://maps.google.com/?q='+resource_directions,'_blank');
 	});
 
-	// saves resource location when save button is clicked on the resource card
+	// saves/unsaves resource location when save button is clicked on the resource card
 	$("#resource_card #card_save").on("click", function() {
 		var latLong = resourceMarker.getPosition();
+		var streetAddress = $("#resource_card #provider_address").html();
 		var unsavedIcon = resourceMarker.getIcon().url;
 		var savedLocationNum
 		var isSaved = checkIfSaved(latLong);
+		
+		console.log("streetAddress = " + streetAddress);
 		
 		// resource has already been saved
 		if (isSaved) {
@@ -1343,7 +1453,7 @@ $(document).ready(function() {
 			var temp;
 			
 			// add to local storage
-			saveLocation(latLong, unsavedIcon, "Resource");
+			saveLocation(latLong, streetAddress, unsavedIcon, "Resource");
 			
 			// change image on card to filled star
 			$("#resource_card #card_save .material-icons").html("star");
@@ -1366,7 +1476,7 @@ $(document).ready(function() {
 	});
 
 	// sends problem reported to db when report issue is selected from #resource_card
-	$("#resource_card .dropdown-menu li").on("click", function() {
+	$("#resource_card .dropdown-menu li").on("change", function() {
 		// todo submit to db the issue selected and resource info
 	});
 	
@@ -1386,12 +1496,21 @@ $(document).ready(function() {
 		updateLocationZoom();
 	});*/
 	
-	// saves a non-resource location when save button is clicked on the location card
+	// saves/unsaves a non-resource location when save button is clicked on the location card
 	$("#location_card #card_save").on("click", function() {
-		var latLong = locationMarker.getPosition();
-		var unsavedIcon = locationMarker.getIcon().url;
-		var savedLocationNum
-		var isSaved = checkIfSaved(latLong);
+		var streetAddress = $("#location_card #address").text();
+		//var latLong = geocodeAddress(geocoder, map, streetAddress);
+		console.log(geocodeAddress(geocoder, map, streetAddress));
+		var unsavedIcon = locationIcon.url;
+		var savedLocationNum;
+		
+		console.log("geocoded latLong:");
+		console.log(latLong.lat() + ", " + latLong.lng());
+		
+		if (latLong)
+			var isSaved = checkIfSaved(latLong);
+		
+		console.log("streetAddress = " + streetAddress);
 		
 		// location has already been saved
 		if (isSaved) {
@@ -1421,7 +1540,7 @@ $(document).ready(function() {
 			var temp;
 			
 			// add to local storage
-			saveLocation(latLong, unsavedIcon, "Non-Resource");
+			saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
 			
 			// change image on card to filled star
 			$("#location_card #card_save .material-icons").html("star");
