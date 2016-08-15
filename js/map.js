@@ -58,16 +58,9 @@ var waterPlantIcon;
 var locationIcon;
 var savedResourceIcon;
 var savedLocationIcon;
+var iconSize = 30;
 
 var leadLevelOfInput;
-
-/* Size the map popup icons based on whether the device is mobile or not. */
-var iconSize;
-
-if (windowWidth < 992)
-	iconSize = 25;
-else
-	iconSize = 30;
 
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
@@ -193,6 +186,9 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	
+	// Create a marker for the place.
+	locationMarker = new google.maps.Marker({map: map});
+	
 	/* Load saved non-resource locations. */
 	var numberSaved = parseInt(localStorage["numberSaved"]);
 	
@@ -204,12 +200,8 @@ function initMap() {
 		for (var i = 1; i <= numberSaved; i++) {
 			if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
 				locationPosition = localStorage.getItem("savedLocationPosition"+i);
-				console.log(locationPosition);
-				
 				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
 				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
-				
-				//console.log("(" + latitude + ", " + longitude + ")");
 				
 				tempLocationMarker = new google.maps.Marker({
 					position: {lat:latitude, lng:longitude},
@@ -256,8 +248,6 @@ function initMap() {
 				
 				savedMarkers.push(tempLocationMarker);
 				savedLocationMarkers.push(tempLocationMarker);
-				
-				console.log(tempLocationMarker);
 			}
 		}
 	}
@@ -342,14 +332,6 @@ function initMap() {
 
 	  // For each place, get the icon, name and location.
 	  var bounds = new google.maps.LatLngBounds();
-	  
-	  // Create a marker for the place.
-	  locationMarker = new google.maps.Marker({
-		position: place.geometry.location,
-		map: map,
-		title: place.name,
-		icon: locationIcon,
-	  });
 
 	  // get rid of previous markers if they exist
 	  /*if (locationMarker.length > 0) {
@@ -364,6 +346,11 @@ function initMap() {
 		title: place.name,
 		icon: markerIcon,
 	  }));*/
+	  
+	// Update the location marker for the address searched.
+	locationMarker.setPosition(place.geometry.location);
+	locationMarker.setTitle(place.name);
+	locationMarker.setIcon(locationIcon);
 
 	  if (place.geometry.viewport) {
 		// Only geocodes have viewport.
@@ -802,8 +789,8 @@ function callStorageAPI(object) {
 					var marker;
 					
 					if (provider.resType.indexOf("Water Pickup") != -1) {
-						markerImg = "images/waterPickupIcon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' alt='Water Pickup' /> ";
+						markerImg = "images/waterpickupicon.png";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Pickup' /> ";
 						resourcesAvailable += "Water Pickup, ";
 						
 						if (icon == null)
@@ -812,7 +799,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Recycle") != -1) {
 						markerImg = "images/recycleicon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' alt='Recycling' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Recycling' /> ";
 						resourcesAvailable += "Recycling, ";
 						
 						if (icon == null)
@@ -821,7 +808,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Blood Testing") != -1) {
 						markerImg = "images/bloodtesticon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' alt='Blood Testing' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Blood Testing' /> ";
 						resourcesAvailable += "Blood Testing, ";
 						
 						if (icon == null)
@@ -830,7 +817,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Water Filters") != -1) {
 						markerImg = "images/waterfiltericon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' alt='Water Filters' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Filters' /> ";
 						resourcesAvailable += "Water Filters, ";
 						
 						if (icon == null)
@@ -839,7 +826,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Test Kits") != -1) {
 						markerImg = "images/leadtesticon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' alt='Water Testing' />";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Testing' />";
 						resourcesAvailable += "Water Testing";
 						
 						if (icon == null)
@@ -892,7 +879,7 @@ function callStorageAPI(object) {
 					else
 						allMarkers.push(marker);
 
-					bindInfoWindow("resource", marker, map, infoWindow, content);
+					bindInfoWindow("resource", marker, map, resourcesAvailable, content);
 				}
 
 				setMarkers();
@@ -1000,7 +987,6 @@ function setUpInitialMap() {
 	setMarkers();
 }
 
-//function attachLocationCard(type, marker, map, content) {
 function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {		
 		$("#resource_card").hide();
@@ -1025,21 +1011,20 @@ function attachLocationCard(type, marker, address, content) {
 /* Location info card content generation. */
 function createLocationContent(tempLocationMarker, address) {
 	var streetAddress = address;
-	var leadMeter;
-	var leadPrediction;
+	var leadMeter = "No reported reading.";
+	var leadPrediction = "No prediction available.";
 	var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
+	var tempAddr;
 
 	for (var i=0; i < heatmapData.length; i++) {
-		var tempAddr = heatmapData[i].address.valueOf();
+		tempAddr = heatmapData[i].address.valueOf();
 		if (tempAddr === streetAddress) {
 			leadMeter = heatmapData[i].lead + " ppb";
 			leadLevelOfInput = heatmapData[i].lead;
 			break;
 		}
-		else {
-			 leadMeter = "No Reported Reading";
-			 leadLevelOfInput = -1;
-		}
+		else
+			leadLevelOfInput = -1;
 	}
 
 	if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
@@ -1053,19 +1038,66 @@ function createLocationContent(tempLocationMarker, address) {
 		leadMsg = "Not safe to drink even if filtered."
 	}
 	
-	return "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";
+	return "<h5 id='address'>" + streetAddress + "</h5> <h5 id='prediction'>" + leadPrediction + "</h5> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";
 }
 
-function bindInfoWindow(type, marker, map, infowindow, content) {	
+function bindInfoWindow(type, marker, map, resourcesAvailable, content) {	
 	if (type.indexOf("resource") != -1) {
 		marker.addListener("click", function() {
 			$("#location_card").hide();
 			
-			// infowindow.setContent(content);
-			// infowindow.open(map, this);
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
 			$("#resource_card .card-inner").html(content);
+			
+			console.log(resourcesAvailable);
+			
+			/* Disable non-relevant report choices. */
+			if (resourcesAvailable.indexOf("Blood Testing") == -1) {
+				$("#resource_card #card_report_menu a:contains('Blood')").parent().addClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Blood')").removeAttr("href");
+			}
+			else {
+				$("#resource_card #card_report_menu a:contains('Blood')").parent().removeClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Blood')").attr("href", "#");
+			}
+			
+			if (resourcesAvailable.indexOf("Water Testing") == -1) {
+				$("#resource_card #card_report_menu a:contains('Test Kits')").parent().addClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Test Kits')").removeAttr("href");
+			}
+			else {
+				$("#resource_card #card_report_menu a:contains('Test Kits')").parent().removeClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Test Kits')").attr("href", "#");
+			}
+			
+			if (resourcesAvailable.indexOf("Recycling") == -1) {
+				$("#resource_card #card_report_menu a:contains('Recycling')").parent().addClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Recycling')").removeAttr("href");
+			}
+			else {
+				$("#resource_card #card_report_menu a:contains('Recycling')").parent().removeClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Recycling')").attr("href", "#");
+			}
+			
+			if (resourcesAvailable.indexOf("Water Filters") == -1) {
+				$("#resource_card #card_report_menu a:contains('Water Filters')").parent().addClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Water Filters')").removeAttr("href");
+			}
+			else {
+				$("#resource_card #card_report_menu a:contains('Water Filters')").parent().removeClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Water Filters')").attr("href", "#");
+			}
+			
+			if (resourcesAvailable.indexOf("Water Pickup") == -1) {
+				$("#resource_card #card_report_menu a:contains('Water Pickup')").parent().addClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Water Pickup')").removeAttr("href");
+			}
+			else {
+				$("#resource_card #card_report_menu a:contains('Water Pickup')").parent().removeClass("disabled");
+				$("#resource_card #card_report_menu a:contains('Water Pickup')").attr("href", "#");
+			}
+			
 			$("#resource_card").show();
 			
 			if (isSaved)
@@ -1209,7 +1241,7 @@ function saveLocation(latLong, address, icon, type) {
 }
 
 function unsaveLocation(latLong) {
-	var numberSaved = parseInt(localStorage["numberSaved"]);
+	var numberSaved = parseInt(localStorage.getItem("numberSaved"));
 	for (var i=1; i <= numberSaved; i++) {
 		if (localStorage.getItem("savedLocationPosition"+i) == latLong) {
 			localStorage.removeItem("savedLocationPosition"+i);
@@ -1476,8 +1508,22 @@ $(document).ready(function() {
 	});
 
 	// sends problem reported to db when report issue is selected from #resource_card
-	$("#resource_card .dropdown-menu li").on("change", function() {
-		// todo submit to db the issue selected and resource info
+	$("#resource_card .dropdown-menu li").on("click", function(event){
+		var selectedReason = $(event.target).text(); // Get the text of the element
+		var resourceAddress = $("#resource_card #provider_address").html();	// Get the address of the element
+		var problemObject = {type:"resource", reason: selectedReason, address: resourceAddress};
+
+		$.ajax({
+			method: "POST",
+			url: "includes/functions.php",
+			data: problemObject,
+			success: function(data){
+				console.log("Resource report data successfully saved.");
+			},
+			error: function(response) {
+				console.log("Resource report data wasn't saved.");
+			}
+		});
 	});
 	
 	/* When a saved location is clicked, put the location in search bar and search. */
@@ -1498,19 +1544,34 @@ $(document).ready(function() {
 	
 	// saves/unsaves a non-resource location when save button is clicked on the location card
 	$("#location_card #card_save").on("click", function() {
+		var latLong;
+		
+		if (locationMarker)
+			latLong = locationMarker.getPosition();
+		
 		var streetAddress = $("#location_card #address").text();
+		var numberSaved = parseInt(localStorage.getItem("numberSaved"));
+		var isSaved = false;
+		
 		//var latLong = geocodeAddress(geocoder, map, streetAddress);
-		console.log(geocodeAddress(geocoder, map, streetAddress));
+		//console.log(geocodeAddress(geocoder, map, streetAddress));
 		var unsavedIcon = locationIcon.url;
 		var savedLocationNum;
 		
-		console.log("geocoded latLong:");
-		console.log(latLong.lat() + ", " + latLong.lng());
+		//console.log("geocoded latLong:");
+		//console.log(latLong.lat() + ", " + latLong.lng());
 		
 		if (latLong)
-			var isSaved = checkIfSaved(latLong);
-		
-		console.log("streetAddress = " + streetAddress);
+			isSaved = checkIfSaved(latLong);
+		else {
+			for (var i = 1; i <= numberSaved; i++) {
+				if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
+					console.log(localStorage.getItem("savedLocationPosition"+i));
+					latLong = localStorage.getItem("savedLocationPosition"+i);
+					isSaved = true;
+				}
+			}
+		}
 		
 		// location has already been saved
 		if (isSaved) {
@@ -1518,8 +1579,7 @@ $(document).ready(function() {
 			
 			// remove from local storage
 			savedLocationNum = unsaveLocation(latLong);
-			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
-			
+			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
 			temp.setIcon(locationIcon);
 			
 			// change image on card to star outline
@@ -1570,7 +1630,7 @@ $(document).ready(function() {
 		displaySavedLocations();
 	});*/
 
-	$("#location_card .close").on("click", function() {
+	$("#location_card .close, #resource_card .close").on("click", function() {
 		$(this).parent().hide();
 	});
 	

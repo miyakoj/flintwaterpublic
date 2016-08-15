@@ -71,6 +71,10 @@
 		width:300px;
 	}
 	
+	#resource_card .close {
+		display:none;
+	}
+	
 	#filter_page #allFilters_step1_content .card-img img {
 		width:100px;
 	}

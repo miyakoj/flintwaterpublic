@@ -30,9 +30,13 @@ $(document).ready(function() {
 	if($("#search_input").length != 0)
 		$("#map_container #search_input").after($("#map"));
   
-	/* Size the map based on the window size. */
-	var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight() + 10;
-	$("#map_container").css("height", mapHeight + "px");
+	/* Size the map based on the window size. */	
+	if (windowHeight >= 480) {
+		var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight() + 10;
+		$("#map_container").css("height", mapHeight + "px");
+	}
+	else
+		$("#map_container").css("height", "10em");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
 	
@@ -95,23 +99,18 @@ $(document).ready(function() {
 		if ($("#" + $pageId + "_link").parent().parent().parent().attr("id") == "show_me_menu")
 			$("#show_me_menu").addClass("active");
 	}
-		
+	
+	/* Phones only. */
 	if (windowWidth < 600) {
 		$("#location_card, #resource_card").css({
 			"width": (windowWidth - 10) + "px",
-			"margin-bottom": 0,
+			"height": "210px",
 			"position": "absolute",
 			"left": "5px",
 			"bottom": "5px"
 		}).appendTo($("body"));
 		
-		/*$("#location_card, #resource_card").css({
-			"margin": "0 5px",
-			"left": function () {
-				($("#location_card, #resource_card").width() / 2) + "px";
-			},
-			"bottom": "5px"
-		});*/
+		$("#resource_card #card_report_menu li").removeClass("dropdown").addClass("dropup");
 	}
 	else {
 		$("#location_card").css({
@@ -144,6 +143,7 @@ $(document).ready(function() {
 	//console.log($("#provider_popup").parent());
 	//$("#provider_popup").parent().parent().css("width", "300px");
 	
+	/* Phones and small tablets. */
 	if (windowWidth < 768) {
 		$("#made_in_Flint").appendTo($("#main_menu"));
 		$("#made_in_Flint img").css({
@@ -356,7 +356,6 @@ $(document).ready(function() {
 			//resourceActiveArray[0] = 0;
 			//resourceActiveArray[4] = 1;
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
-			//setMarkers();
 		}
 		else if ($pageId.indexOf("filter") != -1) {
 			$("#PUR_video").addClass("hide");
