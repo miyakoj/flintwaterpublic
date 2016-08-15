@@ -175,7 +175,7 @@ function initMap() {
 		url: 'images/locationicon.png',
 		size: new google.maps.Size(64, 64),
 		origin: new google.maps.Point(0, 0),
-		anchor: new google.maps.Point(17, 34),
+		anchor: new google.maps.Point(0, 0),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	  };
 	savedLocationIcon = {
@@ -1099,6 +1099,13 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 			}
 			
 			$("#resource_card").show();
+			/*console.log("#report_button top = " + $("#resource_card #report_button").offset().top + "px");
+		
+			$("#resource_card #card_report_menu .dropdown-menu").css({
+				//top:0,
+				bottom:0
+				//bottom: $("#resource_card #report_button").offset().top + "px"
+			});*/
 			
 			if (isSaved)
 				$("#resource_card #card_save .material-icons").html("star");

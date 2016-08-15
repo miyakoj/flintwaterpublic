@@ -53,7 +53,7 @@ $content = "<div id='map_container'>
 		<div id='resource_card' class='card'>
 			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
 			
-			<div class='card_main'>
+			<div class='card-main'>
 				<div class='card-inner'>
 					<div><h4 id='title'></h4> <div id='address'></div></div>
 					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
@@ -61,21 +61,22 @@ $content = "<div id='map_container'>
 				<div class='card-action'>
 					<button id='card_directions' class='btn btn-flat pull-left' title='Get Directions'>Get Directions</button>
 					
-					<!--<button id='card_directions' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Get Directions'><span class='sr-only sr-only-focusable'>Get Directions</span><span class='material-icons'>directions</span></button>-->
-					
 					<ul id='card_report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
-					    <li class='dropdown'>
-						<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
-						<span class='material-icons'>error</span></a>
-					    <ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
-					        <li><a href='#'>Temporarily Closed</a></li>
-					        <li><a href='#'>Permanently Closed</a></li>
-					        <li><a href='#'>Doesn't Have Water Pickup</a></li>
-					        <li><a href='#'>Doesn't Have Water Filters</a></li>
-					        <li><a href='#'>Doesn't Have Test Kits</a></li>
-							<li><a href='#'>Doesn't Accept Recycling</a></li>
-							<li><a href='#'>Doesn't Perform Blood Testing</a></li>
-					    </ul>
+					    <li>
+							<div class='dropdown'>
+							<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
+							<span class='material-icons'>error</span></a>
+							
+							<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
+								<li><a href='#'>Temporarily Closed</a></li>
+								<li><a href='#'>Permanently Closed</a></li>
+								<li><a href='#'>Doesn't Have Water Pickup</a></li>
+								<li><a href='#'>Doesn't Have Water Filters</a></li>
+								<li><a href='#'>Doesn't Have Test Kits</a></li>
+								<li><a href='#'>Doesn't Accept Recycling</a></li>
+								<li><a href='#'>Doesn't Perform Blood Testing</a></li>
+							</ul>
+							</div>
 						</li>
 					</ul>
 					

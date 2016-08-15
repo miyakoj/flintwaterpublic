@@ -100,6 +100,7 @@ $(document).ready(function() {
 			$("#show_me_menu").addClass("active");
 	}
 	
+	/* General layout/CSS differences between the mobile and desktop versions. */
 	/* Phones only. */
 	if (windowWidth < 600) {
 		$("#location_card, #resource_card").css({
@@ -110,7 +111,12 @@ $(document).ready(function() {
 			"bottom": "5px"
 		}).appendTo($("body"));
 		
-		$("#resource_card #card_report_menu li").removeClass("dropdown").addClass("dropup");
+		$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown").addClass("dropup");
+		
+		//$("#resource_card #card_report_menu").on("click", function() {
+			//$(this).find("li:first-child").addClass("open");
+			//$(this).find("#report_button").attr("aria-expanded", "true");
+		//});
 	}
 	else {
 		$("#location_card").css({
