@@ -51,6 +51,8 @@ $content = "<div id='map_container'>
 		</div>
 
 		<div id='resource_card' class='card'>
+			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+			
 			<div class='card_main'>
 				<div class='card-inner'>
 					<div><h4 id='title'></h4> <div id='address'></div></div>
@@ -68,9 +70,10 @@ $content = "<div id='map_container'>
 					    <ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
 					        <li><a href='#'>Temporarily Closed</a></li>
 					        <li><a href='#'>Permanently Closed</a></li>
-					        <li><a href='#'>Doesn't Have Water</a></li>
+					        <li><a href='#'>Doesn't Have Water Pickup</a></li>
 					        <li><a href='#'>Doesn't Have Water Filters</a></li>
-					        <li><a href='#'>Doesn't have Test Kits</a></li>
+					        <li><a href='#'>Doesn't Have Test Kits</a></li>
+							<li><a href='#'>Doesn't Accept Recycling</a></li>
 							<li><a href='#'>Doesn't Perform Blood Testing</a></li>
 					    </ul>
 						</li>

@@ -2,7 +2,7 @@
 
 require_once "database_config.php";
 
-function queries($choice, $var = "", $intVar = "") {
+function queries($choice, $var = "", $var2 = "") {
 	global $mysqli;
 	$choice = $mysqli->real_escape_string($choice);
 	$var = $mysqli->real_escape_string($var);
@@ -20,10 +20,19 @@ function queries($choice, $var = "", $intVar = "") {
 		}
 	}
 	else if(strcmp($choice, "report") === 0) {
-
-	$query = sprintf("INSERT INTO ReportProblem VALUES ('%s', '%s', '%s', '%s');",
-	$_POST['location'], $_POST['problemType'], $_POST['description'], $intVar);
+		$query = sprintf("INSERT INTO ReportProblem VALUES ('%s', '%s', '%s', '%s');",
+		$_POST['location'], $_POST['problemType'], $_POST['description'], $var2);
 
 	}
+	else if(strcmp($choice, "inaccuracy") === 0) {
+		echo "not wrong again";
+		$query = sprintf("INSERT INTO AidInaccuracy (address, reason, reportTicket) VALUES ('%s', '%s', '%s');",
+		$_POST['address'], $_POST['reason'], $var2);
+		echo "here it is";
+	}
+	else {
+		echo "queries error";
+	}
+
 	return $mysqli->query($query);
 }

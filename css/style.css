@@ -591,22 +591,25 @@ body[id="index_page"] main {
 	font-weight:bold!important;
 }
 
-#index_page #location_card .card {
+#index_page .card {
 	margin-top:0!important;
 	margin-bottom:0!important;
 }
 
-#index_page #location_card .card-inner {
+#location_card .card-inner {
 	margin-top:10px!important;
 	margin-bottom:10px!important;
 }
 
-#index_page #location_card .card-inner h6 {
-	margin-top:0!important;
+#location_card #address {
+	font-size:150%;
+}
+
+#location_card #prediction, #location_card #lead_meter {
 	font-weight:bold;
 }
 
-#index_page #location_card .card-action {
+#location_card .card-action {
 	text-align:center;
 }
 
@@ -615,7 +618,7 @@ body[id="index_page"] main {
 	font-size:1rem!important;
 }
 
-#index_page #location_card .card-action img {
+#location_card .card-action img {
 	width:auto;
 	height:18px!important;
 	vertical-align:middle;
@@ -632,7 +635,7 @@ body[id="index_page"] main {
 	float:left;
 }
 
-#provider_popup {
+/*#provider_popup {
 	width:25rem!important;
 }
 
@@ -650,7 +653,7 @@ body[id="index_page"] main {
 	width:30px;
 	height:auto;
 	margin-right:8px;
-}
+}*/
 
 
 /* News Page */
