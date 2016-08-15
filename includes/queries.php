@@ -25,10 +25,10 @@ function queries($choice, $var = "", $var2 = "") {
 
 	}
 	else if(strcmp($choice, "inaccuracy") === 0) {
-		echo "not wrong again";
+
 		$query = sprintf("INSERT INTO AidInaccuracy (address, reason, reportTicket) VALUES ('%s', '%s', '%s');",
 		$_POST['address'], $_POST['reason'], $var2);
-		echo "here it is";
+
 	}
 	else {
 		echo "queries error";
