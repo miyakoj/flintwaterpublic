@@ -111,7 +111,7 @@ $(document).ready(function() {
 			"bottom": "5px"
 		}).appendTo($("body"));
 		
-		$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown").addClass("dropup");
+		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown dropdown-menu-right").addClass("dropup");
 		
 		//$("#resource_card #card_report_menu").on("click", function() {
 			//$(this).find("li:first-child").addClass("open");
@@ -135,7 +135,7 @@ $(document).ready(function() {
 	}
 	
 	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
-	   Size the map depending on the height of the device. */
+	/* Size the map/video area depending on the height of the device. */	   
 	if (windowHeight < 800)
 		$("#topbar").css("height", "20em");
 	else
@@ -210,15 +210,33 @@ $(document).ready(function() {
 		});
 		
 		if ($pageId.indexOf("filter") == -1) {
+			$(".back_button").css({
+				"padding": "0",
+				"position": "absolute",
+				"top": "0",
+				"left": "0"
+			}).prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
+			
 			$(".next_button").css({
 				"padding": "0",
-				"float": "right"
+				"position": "absolute",
+				"top": "0",
+				"right": "0"
 			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
 		}
 		else {
+			$("div[id$='step2_content'] .back_button, div[id$='step3_content'] .back_button").css({
+				"padding": "0",
+				"position": "absolute",
+				"top": "0",
+				"left": "0"
+			}).prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
+			
 			$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css({
 				"padding": "0",
-				"float": "right"
+				"position": "absolute",
+				"top": "0",
+				"right": "0"
 			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
 		}
 		
