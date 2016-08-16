@@ -75,6 +75,10 @@
 		display:none;
 	}
 	
+	div[id*='step'][class*='stepper']::before {
+		border-left-width:1px;
+	}
+	
 	#filter_page #allFilters_step1_content .card-img img {
 		width:100px;
 	}

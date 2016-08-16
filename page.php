@@ -52,7 +52,7 @@ if (@isset($_GET["pid"])) {
 										<div id='water_step1_content' class='stepper-vert-content'>										
 										  <ul>
 											<li>Pick up a free test kit from a water resource location.</li>
-											<li>Residents who need transportation or any other assistance can call 211.</li>
+											<li>Residents who need transportation or any other assistance can call <a href='http://www.centralmichigan211.org'>211</a>.</li>
 										  </ul>
 										  <div class='btn_group'>
 										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
@@ -80,8 +80,9 @@ if (@isset($_GET["pid"])) {
 											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 										   </ul>
 										   <div class='btn_group'>
-										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
-										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										   <a class='back_button btn btn-flat' href='#'>Back</a>
+										   <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
+										   <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
 										  </div>
 										</div>
 										
@@ -98,7 +99,8 @@ if (@isset($_GET["pid"])) {
 											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 										  </ul>
 										  <div class='btn_group'>
-										 <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										  <a class='back_button btn btn-flat' href='#'>Back</a>
+										  <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
 										 </div>
 										</div>
 									</div>
