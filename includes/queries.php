@@ -25,13 +25,12 @@ function queries($choice, $var = "", $var2 = "") {
 
 	}
 	else if(strcmp($choice, "inaccuracy") === 0) {
-
 		$query = sprintf("INSERT INTO AidInaccuracy (address, reason, reportTicket) VALUES ('%s', '%s', '%s');",
 		$_POST['address'], $_POST['reason'], $var2);
 
 	}
 	else {
-		echo "queries error";
+		echo "There is a problem with the query.";
 	}
 
 	return $mysqli->query($query);

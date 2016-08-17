@@ -2,8 +2,6 @@
 
 require_once "includes/template.php";
 
-/*<!---->*/
-
 $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 				<div class='wrapper nav nav-tabs tile'>
 					<div class='list'>
@@ -61,7 +59,7 @@ $content = "<div id='map_container'>
 					
 					<ul id='card_report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li>
-							<div class='dropup'>
+							<div class='dropdown'>
 							<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
 							<span class='material-icons'>error</span></a>
 							

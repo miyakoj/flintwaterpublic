@@ -116,35 +116,35 @@ function initMap() {
 
 	// make icons for each resource
 	bloodIcon = {
-		url: 'images/bloodtest_icon.png',
+		url: 'images/bloodtest_circle_icon.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	waterPickupIcon = {
-		url: 'images/water_pickup_icon.png',
+		url: 'images/water_pickup_circle_icon.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	leadTestIcon = {
-		url: 'images/lead_test_icon.png',
+		url: 'images/lead_test_circle_icon.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	recycleIcon = {
-		url: 'images/recycle_icon.png',
+		url: 'images/recycle_circle_icon.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	filterIcon = {
-		url: 'images/water_filter_icon.png',
+		url: 'images/water_filter_circle_icon.png',
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
@@ -1017,7 +1017,8 @@ function createLocationContent(tempLocationMarker, address) {
 	var streetAddress = address;
 	var leadMeter = "No reported reading.";
 	var leadPrediction = "No prediction available.";
-	var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
+	//var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
+	var leadMsg = "";
 	var tempAddr;
 
 	for (var i=0; i < heatmapData.length; i++) {

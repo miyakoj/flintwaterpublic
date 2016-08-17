@@ -32,6 +32,7 @@ html, body {
 }
 
 #made_in_Flint {
+	margin-top:25px;
 	text-align:center;
 }
 
@@ -169,7 +170,7 @@ body[id='index_page'] #header_top #logo img {
 	background-image:none!important;
 	background-color:transparent!important;
 	box-shadow:none!important;
-	color:#245580!important;
+	color:#3A4fA1!important;
 }
 
 .navbar .material-icons {
@@ -200,7 +201,7 @@ body[id='index_page'] #header_top #logo img {
 
 #main_menu .active {
 	background-color:transparent!important;
-	color:#245580!important;
+	color:#3A4fA1!important;
 }
 
 #language_menu {
@@ -259,7 +260,8 @@ body[id='index_page'] #header_top #logo img {
 }
 
 #toggles .active {
-	background-color:#245580!important;
+	background-color:#3A4fA1!important;
+	border-color:#245580!important;
 }
 
 #toggles img {
@@ -302,7 +304,8 @@ body[id='index_page'] #header_top #logo img {
 }
 
 #toggles .btn {
-	border-color:#A4A8B9!important;
+	border-color:#A4A8B9;
+	text-transform:none;
 }
 
 #toggles #risk_factor_btn {
@@ -679,6 +682,14 @@ footer a {
 	display:none;
 	text-align:center;
 }*/
+
+footer {
+	display:none;
+}
+
+body[id="index_page"] footer {
+	display:block;
+}
 
 footer .row:nth-child(1) .col-md-12 {
 	padding:15px 5px 0 5px!important;

@@ -313,25 +313,6 @@ body[id='index_page'] #header_top #logo img {
 	background-color:transparent!important;
 }
 
-/*#toggles .scroller {
-	text-align:center;
-	display:none;
-	padding:7px;
-	padding-top:7.5px;
-	white-space:no-wrap;
-	vertical-align:top;
-	background-color:#fff;
-	z-index:5!important;
-}
-#toggles .scroller-right{
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-#toggles .scroller-left {
-	float:left;
-}*/
-
 input[type='checkbox'] {
 	display: none;
 }
