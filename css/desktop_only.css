@@ -9,6 +9,7 @@
 	}*/
 	
 	#made_in_Flint {
+		margin-top:0;
 		margin-bottom:0;
 		display:block;
 		float:left;
@@ -69,10 +70,6 @@
 	
 	#resource_card {
 		width:300px;
-	}
-	
-	#resource_card .close {
-		display:none;
 	}
 	
 	div[id*='step'][class*='stepper']::before {

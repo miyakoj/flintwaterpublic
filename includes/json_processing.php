@@ -2,7 +2,7 @@
 
 require_once "queries.php";
 
-/* Process lead level data. */
+/* Process provider data. */
 provider_processing();
 
 /* Array processing for providers. */

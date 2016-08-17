@@ -461,7 +461,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "about":
 			$pagetitle = "About This Site";
-			$content = "<p>This website is a joint project between University of Michigan-Flint, University of Michigan-Ann Arbor, and Google.</p>";
+			$content = "<img src='images/um_logo.png' /> <p>This website is a joint project between University of Michigan-Flint, University of Michigan-Ann Arbor, and Google.</p>";
 		break;
 	}
 }		
