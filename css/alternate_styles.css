@@ -1,9 +1,24 @@
+/* Tablet only. */
+@media only screen and (max-height:768px) {
+	#resource_card {
+		/*top:15em;
+		bottom:initial!important;
+		left:5em;*/
+	}
+}
+
+/* Tablet only. */
+@media only screen and (min-width:600px) {
+	#resource_card {
+		width:300px;
+		left:0;
+		/*bottom:10em;*/
+		bottom:0;
+	}
+}
+
 /* Tablet and desktop/laptop only. */
 @media only screen and (min-width:768px) {
-	header, .navbar-default {
-		background-color:#252E56!important;
-	}
-	
 	/*#header_top {
 		margin-bottom:15px;
 	}*/
@@ -19,10 +34,6 @@
 		margin-top:0;
 	}
 	
-	.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .open > a {
-		color:#FFF!important;
-	}
-	
 	#header_top {
 		padding:10px;
 	}
@@ -31,14 +42,8 @@
 		display:inline;
 	}
 	
-	#logo h1 {
-		font-size:1.75em;
-	}
-	
 	#main_menu {
 		width:100%!important;
-		background:transparent!important;
-		color:#A4A8B9!important;
 	}
 	
 	#show_me_menu ul {
@@ -46,14 +51,8 @@
 		position:absolute!important;
 	}
 	
-	#show_me_menu a {
-		color:#a4a8b9 !important;
-	}
-	
 	#show_me_menu .dropdown-menu a {
 		padding:5px!important;
-		font-size:100%;
-		color:#337ab7!important;
 	}
 	
 	#toggles {
@@ -69,19 +68,19 @@
 	}
 	
 	#resource_card {
-		width:300px;
+		left:15em;
 	}
 	
-	div[id*='step'][class*='stepper']::before {
-		border-left-width:1px;
+	#resource_card #card_report_menu {
+		display:block;
+	}
+	
+	.stepper-vert-inner .btn_group .back_button {
+		display:none;
 	}
 	
 	#filter_page #allFilters_step1_content .card-img img {
 		width:100px;
-	}
-	
-	footer h5 {
-		text-align:center;
 	}
 }
 
@@ -94,10 +93,6 @@
 	#logo img {
 		width:4rem;
 		height:4rem;
-	}
-	
-	#language_menu #language_toggle {
-		font-size:1.3rem;
 	}
 	
 	.col-md-12 {
@@ -131,7 +126,6 @@
 	#main_menu {
 		width:75rem!important;
 		margin:0 auto!important;
-		text-transform:uppercase!important;
 	}
 	
 	#main_menu a {
@@ -149,12 +143,12 @@
     #provider_popup img {
 		width:30px;
 	}
+	
+	#resource_card {
+		left:25em;
+	}
 
 	#news_page .tab-nav {
 		margin-top:24px!important;
-	}
-	
-	footer h5 {
-		text-align:center;
 	}
 }

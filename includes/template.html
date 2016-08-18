@@ -9,34 +9,11 @@
 <link rel="stylesheet" href="css/base.min.css">
 <link rel="stylesheet" href="css/project.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-theme.min.css" rel="stylesheet">-->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link href="css/nav_drawer.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
-<link href="css/desktop_only.css" rel="stylesheet">
-<!--<link href="css/theme.css" rel="stylesheet">-->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
-<!--<script src="js/base.min.js"></script>
-<script src="js/project.min.js"></script>
-<script src="js/bootstrap.min.js"></script>-->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places" async defer></script>
-<!--<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>-->
-<script src="https://www.google.com/jsapi"></script>
-<script src="../js/nav_drawer.js"></script>
-<script src="js/script.js"></script>
-<script src="js/map.js"></script>
-<script src="https://apis.google.com/js/client.js?onload=setAPIKey"></script>
-<script src="js/news.js"></script>
-<!--<script src="js/alerts.js"></script>-->
+<link href="css/alternate_styles.css" rel="stylesheet">
+<link href="css/theme.css" rel="stylesheet">
 </head>
 
 <body id="{PAGE_ID}">
@@ -74,21 +51,21 @@
 			   
 			   <div id="main_menu" class="tab-nav">
 				<ul class="nav navbar-nav">
-				<li><a id="map_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">map</span> <span>Map</span></a></li>
-				<li><a id="news_link" href="#"><span class="material-icons icon-lg" aria-hidden="true">markunread_mailbox</span> <span>News &amp; Alerts</span></a></li>
+				<li><a id="map_link" href="#"><span>Map</span></a></li>
+				<li><a id="news_link" href="#"><span>News</span></a></li>
 				
 				<li id="show_me_menu">
 				  <a id="show_me_toggle" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				  <span class="material-icons icon-lg" aria-hidden="true">help</span> Show me how to... <span class="caret"></span></a>
+				  Show me how to... <span class="caret"></span></a>
 				  <ul aria-labelledby="show_me_toggle">
-					<li><a id="test_link" href="#"><span class="material-icons md-18" aria-hidden="true">local_drink</span> <span>Test My Water</span></a></li>
-					<li><a id="filter_link" href="#"><span class="material-icons md-18" aria-hidden="true">build</span> <span>Install a Water Filter</span></a></li>
-					<li><a id="aerator_link" href="#"><span class="material-icons md-18" aria-hidden="true">bubble_chart</span> <span>Clean My Aerator</span></a></li>
-					<li><a id="submit_link" href="#"><span class="material-icons md-18" aria-hidden="true">rate_review</span> <span>Submit Location Information</span></a></li>
+					<li><a id="test_link" href="#"><span>Test My Water</span></a></li>
+					<li><a id="filter_link" href="#"><span>Install a Water Filter</span></a></li>
+					<li><a id="aerator_link" href="#"><span>Clean My Aerator</span></a></li>
+					<li><a id="submit_link" href="#"><span>Submit Location Information</span></a></li>
 				  </ul>
 				</li>
 				
-				<li><a id="report_link" href="#"><span class="material-icons md-18" aria-hidden="true">report_problem</span> <span>Report a Problem</span></a></li>
+				<li><a id="report_link" href="#"><span>Report a Problem</span></a></li>
 			  </ul> 
 			   </div>
 			  </div>
@@ -108,7 +85,7 @@
 		<footer>
 		  <div class="section">
 			<div class="container-fluid">
-				<div class="row">
+				<div id="site_desc" class="row">
 					<div class="col-md-12">
 						<p>Unite Flint was created to provide the latest water information and resources to the people of Flint.</p>
 						<p>The <a href="http://www.centralmichigan211.org" target="_blank">211 service</a> can provide you with access to resources if you are unable to travel for water or require interpretation or translation services. It is available 24/7.</p>
@@ -174,5 +151,24 @@
 	</div>
   </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<!--<script src="js/base.min.js"></script>
+<script src="js/project.min.js"></script>-->
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places" async defer></script>
+<!--<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>-->
+<script src="https://www.google.com/jsapi"></script>
+<script src="../js/nav_drawer.js"></script>
+<script src="js/script.js"></script>
+<script src="js/map.js"></script>
+<script src="https://apis.google.com/js/client.js?onload=setAPIKey"></script>
+<script src="js/news.js"></script>
+<!--<script src="js/alerts.js"></script>-->
 </body>
 </html>

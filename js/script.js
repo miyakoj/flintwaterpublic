@@ -89,6 +89,7 @@ $(document).ready(function() {
 	
 	/* Mark the tab of the current page as active. */
 	$pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+	console.log("$pageId = " + $pageId);
 	
 	if ($pageId.indexOf("index") != -1)
 		$("#map_link").parent().addClass("active");
@@ -104,11 +105,7 @@ $(document).ready(function() {
 	/* Phones only. */
 	if (windowWidth < 600) {
 		$("#location_card, #resource_card").css({
-			"width": (windowWidth - 10) + "px",
-			"height": "210px",
-			"position": "absolute",
-			"left": "5px",
-			"bottom": "5px"
+			"width": (windowWidth - 10) + "px"
 		}).appendTo($("body"));
 		
 		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown dropdown-menu-right").addClass("dropup");
@@ -130,8 +127,6 @@ $(document).ready(function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 			}
 		});
-		
-		//#resource_card
 	}
 	
 	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
@@ -209,13 +204,13 @@ $(document).ready(function() {
 			"padding-bottom": "10px"
 		});
 		
-		if ($pageId.indexOf("filter") == -1) {
+		/*if ($pageId.indexOf("filter") == -1) {
 			$(".back_button").css({
 				"padding": "0",
 				"position": "absolute",
 				"top": "0",
 				"left": "0"
-			}).prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
+			}).removeClass("btn-primary").prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
 			
 			$(".next_button").css({
 				"padding": "0",
@@ -224,23 +219,23 @@ $(document).ready(function() {
 				"right": "0"
 			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
 		}
-		else {
+		else {*/
 			$("div[id$='step2_content'] .back_button, div[id$='step3_content'] .back_button").css({
 				"padding": "0",
 				"position": "absolute",
 				"top": "0",
 				"left": "0"
-			}).prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
+			}).removeClass("btn-primary").prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
 			
-			$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css({
+			$("div[id$='step1_content'] .next_button, div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css({
 				"padding": "0",
 				"position": "absolute",
 				"top": "0",
 				"right": "0"
 			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
-		}
+		//}
 		
-		/* Unhide all step titles when the steppers are expanded. */
+		/* Unhide all step titles when the steppers are expanded and modify appearance of buttons. */
 		$("div[id*='step1'], div[id*='step2'], div[id*='step3']").parent().parent().on("click", function() {
 			if ($("#stepper_content").hasClass("brief")) {
 				var $steppers = $(this).find("div[id*='step']");
@@ -261,25 +256,25 @@ $(document).ready(function() {
 				$("#stepper_content").removeClass("brief").addClass("expanded");
 				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], #stepper_content h2, #stepper_content ul, #stepper_content ul li, .stepper-vert-content, #stepper_content .btn_group, #stepper_content .next_button").removeAttr("style");
 				$("div[id*='step1'], div[id*='step2'], div[id*='step3']").removeClass("cancel_stepper_border");
-				$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({
-					"padding-left": "inherit"
-				});
+				$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({"padding-left": "inherit"});
 				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], .cancel_button").removeClass("hide");
 				$("div[id*='step'] .btn_group").remove("img");
 				
-				if ($pageId.indexOf("filter") == -1)
-					$(".next_button").addClass("btn-primary");
-				else
-					$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").addClass("btn-primary");
+				if ($pageId.indexOf("filter") == -1) {
+					$(".next_button, .back_button").addClass("btn-primary");
+				}
+				else {
+					$("div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button, div[id$='step2_content'] .back_button, div[id$='step3_content'] .back_button").addClass("btn-primary");
+				}
 				
-				$(".next_button span").remove();
+				$(".next_button span, .back_button span").remove();
 				$(".progress_img").remove();
 				
 				isExpanded($activeNode);
 			}
 			else
 				return;
-		}).on('click', '.next_button', function(event) {
+		}).on("click", ".next_button, .back_button, .cancel_button", function(event) {
 			event.stopPropagation();
 		});
 	}
@@ -292,8 +287,6 @@ $(document).ready(function() {
 		$("#main_menu .nav").addClass("nav-justified");
 		$("#show_me_menu").addClass("dropdown");
 		$("#show_me_menu ul").addClass("dropdown-menu");
-		
-		console.log("$pageId = " + $pageId);
 		
 		/* Make the stepper content span only four columns. */
 		$("#" + $pageId + "_page #stepper_content").removeClass("col-xs-12").addClass("col-sm-5");
@@ -356,8 +349,20 @@ $(document).ready(function() {
 			$("#" + $node_substring + "3_content").removeClass("hide");
 			
 			if ($pageId.indexOf("test") != -1) {
-				$(".help_video").remove();
+				$(".help_video").addClass();
 				$("#map").removeClass("hide");
+			}
+		});
+		
+		$("#" + $node_substring + "2_content .back_button").on("click", function() {
+			$("#" + $node_substring + "2").removeClass("done").addClass("active");
+			$("#" + $node_substring + "2_content").removeClass("hide");
+			$("#" + $node_substring + "3").removeClass("active").addClass("hide");
+			$("#" + $node_substring + "3_content").addClass("hide");
+			
+			if ($pageId.indexOf("test") != -1) {
+				$(".help_video").removeClass();
+				$("#map").addClass("hide");
 			}
 		});
 	}
@@ -450,7 +455,7 @@ $(document).ready(function() {
 				$("#" + $node_substring + "3, div[id*='" + filter_type + "_step3_content']").removeClass("hide");
 				$("#" + $node_substring + "3").addClass("active");
 				//$("div[id*='step3_content'] .cancel_button").removeClass("hide");
-				$("div[id$='step3_content'] .next_button span").remove();
+				$("div[id$='step3_content'] .next_button span").addClass("hide");
 				$("div[id$='step3_content'] .btn_group").css("text-align", "center");
 				
 				if ($("#stepper_content").hasClass("brief")) {
@@ -460,8 +465,42 @@ $(document).ready(function() {
 				$("div[id$='step3_content'] .next_button").css("display", "none");
 				
 				if ($pageId.indexOf("test") != -1) {
-					$(".help_video").remove();
+					$(".help_video").addClass("hide");
 					$("#map").removeClass("hide");
+				}
+			});
+			
+			$("div[id$='step2_content'] .back_button").on("click", function() {
+				/* Retrieve which type of filter was clicked if on the filter page. */
+				var filter_type = "";
+				
+				if ($pageId.indexOf("filter") != -1) {
+					var $temp = $(this).attr("id");
+					filter_type = $temp.slice(0, $temp.indexOf("_"));
+				}
+				
+				if ($("#stepper_content").hasClass("brief"))
+					$("#" + $node_substring + "2, div[id*='" + filter_type + "_step2_content']").removeClass("hide");
+				else {
+					$("#" + $node_substring + "2").removeClass("done").addClass("active");
+					$("div[id*='" + filter_type + "_step2_content']").removeClass("hide");
+				}
+				
+				$("#" + $node_substring + "3, div[id*='" + filter_type + "_step3_content']").addClass("hide");
+				$("#" + $node_substring + "3").removeClass("active");
+				//$("div[id*='step3_content'] .cancel_button").removeClass("hide");
+				$("div[id$='step3_content'] .next_button span").removeClass("hide");
+				$("div[id$='step3_content'] .btn_group").css("text-align", "center");
+				
+				if ($("#stepper_content").hasClass("brief")) {
+					$("div[id$='" + filter_type + "_step3_content'] .btn_group").prepend("&nbsp;").append("<img class='progress_img center-block' src='images/stepper2.png' />");
+				}
+				
+				$("div[id$='step3_content'] .next_button").css("display", "none");
+				
+				if ($pageId.indexOf("test") != -1) {
+					$(".help_video").removeClass("hide");
+					$("#map").addClass("hide");
 				}
 			});
 		}

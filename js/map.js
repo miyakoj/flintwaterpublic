@@ -1046,7 +1046,7 @@ function createLocationContent(tempLocationMarker, address) {
 	return "<h5 id='address'>" + streetAddress + "</h5> <h5 id='prediction'>" + leadPrediction + "</h5> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";
 }
 
-function bindInfoWindow(type, marker, map, resourcesAvailable, content) {	
+function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
 		marker.addListener("click", function() {
 			$("#location_card").hide();
@@ -1104,13 +1104,6 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 			}
 			
 			$("#resource_card").show();
-			/*console.log("#report_button top = " + $("#resource_card #report_button").offset().top + "px");
-		
-			$("#resource_card #card_report_menu .dropdown-menu").css({
-				//top:0,
-				bottom:0
-				//bottom: $("#resource_card #report_button").offset().top + "px"
-			});*/
 			
 			if (isSaved)
 				$("#resource_card #card_save .material-icons").html("star");

@@ -12,12 +12,12 @@ if (@isset($_GET["pid"])) {
 		break;
 		
 		case "news":
-			$pagetitle = "News and Alerts";
-			$content = "<div id='page_card'>
+			$pagetitle = "News";
+			$content = "<div id='page_cards'>
 				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
-					<li role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
-					<li role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
+					<li id='news_tab' role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
+					<li id='alerts_tab' role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
 				  </ul>
 				</nav>
 				
@@ -80,7 +80,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 										   </ul>
 										   <div class='btn_group'>
-										   <a class='back_button btn btn-flat' href='#'>Back</a>
+										   <a class='back_button btn btn-flat btn-primary' href='#'>Back</a>
 										   <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
 										   <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
 										  </div>
@@ -99,7 +99,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <a class='back_button btn btn-flat' href='#'>Back</a>
+										  <a class='back_button btn btn-flat btn-primary' href='#'>Back</a>
 										  <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
 										 </div>
 										</div>

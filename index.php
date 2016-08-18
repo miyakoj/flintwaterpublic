@@ -49,7 +49,7 @@ $content = "<div id='map_container'>
 		<div id='resource_card' class='card'>
 			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
 			
-			<div class='card-main'>
+			<div class='card-main'>				
 				<div class='card-inner'>
 					<div><h4 id='title'></h4> <div id='address'></div></div>
 					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
