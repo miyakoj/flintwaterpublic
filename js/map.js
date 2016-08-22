@@ -651,14 +651,45 @@ function setUpFusionTable() {
 function addFusionListener(object) {
 		google.maps.event.addListener(object, 'click', function(e) {
 			var html = "<div>";
+									
+			//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
+			//var image1 = "<img src='" + icon1 + "' title ='banana' /> ";
+			
+			var unknownRiskSrc = 'images/unknownrisklevel.png';
+			var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='riskMeter' /> ";
+			
+			var lowRiskSrc = 'images/lowrisklevel.png';
+			var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='riskMeter' /> ";
+			
+			var mediumRiskSrc = 'images/medrisklevel.png';
+			var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='riskMeter' /> ";
+			
+			var highRiskSrc = 'images/highrisk.png';
+			var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='riskMeter' /> ";
+			
+			//$(".riskMeter").css({"max-width": "50%", "max-height": "50%"});
+						
 			e.infoWindow
 			html += "<b>Address: </b>" + e.row['Address'].value + "<br>";
 			if (e.row['leadlevel'].value != "") {
 				html += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
 				html += "<b>Last Tested: </b>" + e.row['testDate'].value;
 			}
-			else {
-				html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+			else if (e.row['Prediction'].value >= 0.20) {
+				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				html += "<b>Predicted Risk: </b>" + highRisk + "<br>";
+			}
+			else if (e.row['Prediction'].value > 0.10 && e.row['Prediction'].value < .20) {
+				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				html += "<b>Predicted Risk: </b>" + mediumRisk + "<br>";
+			}
+			else if (e.row['Prediction'].value <= .10) {
+				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				html += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
+			}
+			else
+			{
+				html += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
 			}
 			
 			html += "</div>";

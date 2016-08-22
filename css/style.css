@@ -517,3 +517,8 @@ footer #copyright p span:last-child {
   border-top-color:#FFF;
   border-width:5px 5px 0;
 }
+
+.riskMeter{
+	max-height: 40%;
+	max-width: 40%;
+}
