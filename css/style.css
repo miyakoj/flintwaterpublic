@@ -19,6 +19,10 @@ html, body {
 	display:none;
 }
 
+.card-inner {
+	margin: 20px 16px 20px 16px!important;
+}
+
 #header_top {
 	padding:7px 10px 5px 10px;
 }
@@ -235,9 +239,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 #location_card {
-	padding:5px;
+	/*padding:5px;*/
 	position:absolute;
 	display:none;
+	bottom:5px;
+	left:5px;
 	z-index:200!important;
 }
 
@@ -262,7 +268,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 #resource_card {
-	padding:5px;
+	/*padding:5px;*/
 	position:absolute;
 	bottom:5px;
 	left:5px;
@@ -276,6 +282,10 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	display:block;
 }
 
+#resource_card .close {
+	margin-top:3px;
+	margin-right:5px;
+}
 #provider_resources .marker_popup_icons {
 	width:auto;
 	height:25px;
@@ -342,7 +352,10 @@ body[id="index_page"] main {
 .card-main h3/*, .card-inner p, .card-action a*/{
 	margin-left:16px;
 }
-
+.card-action {
+	min-height:35px!important;
+	max-height:35px;
+}
 .stepper-vert-inner li {
 	padding-bottom:8px;
 }
