@@ -73,11 +73,7 @@
 	
 	#resource_card {
 		left:15em;
-	}
-	
-	#resource_card #card_report_menu {
-		display:block;
-	}
+	}	
 	
 	.stepper-vert-inner .btn_group .back_button {
 		display:none;

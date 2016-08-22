@@ -109,12 +109,12 @@ $(document).ready(function() {
 			"width": (windowWidth - 10) + "px"
 		}).appendTo($("body"));
 		
-		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown dropdown-menu-right").addClass("dropup");
+		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown").addClass("dropup");
 		
-		//$("#resource_card #card_report_menu").on("click", function() {
-			//$(this).find("li:first-child").addClass("open");
-			//$(this).find("#report_button").attr("aria-expanded", "true");
-		//});
+		$("#resource_card #card_report_menu").on("click", function() {
+			$(this).find("li:first-child").addClass("dropup open");
+			$(this).find("#report_button").attr("aria-expanded", "true");
+		});
 	}
 	else {
 		$("#location_card").css({
