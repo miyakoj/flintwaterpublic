@@ -31,16 +31,17 @@ $content = "<div id='map_container'>
 			
 			<div class='card-main'>
 				<div class='card-inner'></div>
+				
 				<div class='card-action'>
 					<!--<div id='location_buttons' class='btn-group' role='group' aria-label='Location Info Buttons'>
 						<button id='saved_location_button' type='button' class='btn btn-flat btn-brand'><img src='images/savedlocation.png' /> <span></span></button>
 						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> <span>More Info</span></button>
 					</div>-->
 					
-					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only sr-only-focusable'>More Info</span>
+					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only'>More Info</span>
 					<span class='material-icons'>info_outline</span></button>
 					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span>
+					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only'>Save</span>
 					<span class='material-icons'>star_border</span></button>
 				</div>
 			</div>
@@ -50,17 +51,15 @@ $content = "<div id='map_container'>
 			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
 			
 			<div class='card-main'>				
-				<div class='card-inner'>
-					<div><h4 id='title'></h4> <div id='address'></div></div>
-					<div><p id='hours'></p> <p id='resources'></p> <p id='notes'></p></div>
-				 </div>
+				<div class='card-inner'></div>
+				
 				<div class='card-action'>
 					<button id='card_directions' class='btn btn-flat pull-left' title='Get Directions'>Get Directions</button>
 					
 					<ul id='card_report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li>
 							<div class='dropdown'>
-							<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only sr-only-focusable'>Report an Inaccuracy</span>
+							<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only'>Report an Inaccuracy</span>
 							<span class='material-icons'>error</span></a>
 							
 							<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
@@ -76,7 +75,7 @@ $content = "<div id='map_container'>
 						</li>
 					</ul>
 					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only sr-only-focusable'>Save</span><span class='material-icons'>star_border</span></button>
+					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only'>Save</span><span class='material-icons'>star_border</span></button>
 				</div>
 			</div>
 		</div>

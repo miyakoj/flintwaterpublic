@@ -2,6 +2,9 @@
 
 require_once "queries.php";
 
+/* Process lead level data. */
+query_json_output(queries("lead"), "leadLevels", "leadlevels.json");
+
 /* Process provider data. */
 provider_processing();
 
@@ -89,7 +92,7 @@ function query_json_output($result, $array_name, $filename) {
 
 	$output .= "]}";
 	
-	//print_r($output);
+	print_r($output);
 
 	write_file($output, $filename);
 }
