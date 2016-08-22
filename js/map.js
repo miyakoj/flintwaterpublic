@@ -632,8 +632,8 @@ function setUpFusionTable() {
 
 function addFusionListener(object) {
 		google.maps.event.addListener(object, 'click', function(e) {
-<<<<<<< HEAD
-			var html = "<div>";
+
+			//var html = "<div>";
 									
 			//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
 			//var image1 = "<img src='" + icon1 + "' title ='banana' /> ";
@@ -652,35 +652,31 @@ function addFusionListener(object) {
 			
 			//$(".riskMeter").css({"max-width": "50%", "max-height": "50%"});
 						
-=======
+
 			var content = "<div>";
->>>>>>> origin/master
+
 			e.infoWindow
 			content += "<b>Address: </b>" + e.row['Address'].value + "<br>";
 			if (e.row['leadlevel'].value != "") {
 				content += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
 				content += "<b>Last Tested: </b>" + e.row['testDate'].value;
 			}
-<<<<<<< HEAD
+
 			else if (e.row['Prediction'].value >= 0.20) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-				html += "<b>Predicted Risk: </b>" + highRisk + "<br>";
+				content += "<b>Predicted Risk: </b>" + highRisk + "<br>";
 			}
 			else if (e.row['Prediction'].value > 0.10 && e.row['Prediction'].value < .20) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-				html += "<b>Predicted Risk: </b>" + mediumRisk + "<br>";
+				content += "<b>Predicted Risk: </b>" + mediumRisk + "<br>";
 			}
 			else if (e.row['Prediction'].value <= .10) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-				html += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
+				content += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
 			}
 			else
 			{
-				html += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
-=======
-			else {
-				content += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
->>>>>>> origin/master
+				content += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
 			}
 			
 			content += "</div>";
