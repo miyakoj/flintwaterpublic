@@ -30,13 +30,14 @@ $(document).ready(function() {
 	if($("#search_input").length != 0)
 		$("#map_container #search_input").after($("#map"));
   
-	/* Size the map based on the window size. */	
+	/* Size the map based on the window size. */
 	if (windowHeight >= 480) {
 		var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight() + 10;
-		$("#map_container").css("height", mapHeight + "px");
 	}
 	else
 		$("#map_container").css("height", "10em");
+	
+	$("#map_container").css("height", mapHeight + "px");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
 	
@@ -108,12 +109,12 @@ $(document).ready(function() {
 			"width": (windowWidth - 10) + "px"
 		}).appendTo($("body"));
 		
-		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown dropdown-menu-right").addClass("dropup");
+		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown").addClass("dropup");
 		
-		//$("#resource_card #card_report_menu").on("click", function() {
-			//$(this).find("li:first-child").addClass("open");
-			//$(this).find("#report_button").attr("aria-expanded", "true");
-		//});
+		$("#resource_card #card_report_menu").on("click", function() {
+			$(this).find("li:first-child").addClass("dropup open");
+			$(this).find("#report_button").attr("aria-expanded", "true");
+		});
 	}
 	else {
 		$("#location_card").css({
@@ -126,6 +127,13 @@ $(document).ready(function() {
 			"left": function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 			}
+		});
+		
+		var leftPos = (windowWidth - $("#resource_card").width()) / 2;
+		
+		$("#resource_card").css({
+			"margin-right": "-" + leftPos + "px",
+			"left": leftPos + "px"	
 		});
 	}
 	
@@ -367,7 +375,7 @@ $(document).ready(function() {
 		});
 	}
 	
-	/* All "show me how" pages. */
+	/* All "show me how" pages and the "report a problem" page. */
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1)) {
 		$node_id = $activeNode.attr("id");
 		$node_substring = $node_id.slice(0, $node_id.length-1);
@@ -382,9 +390,14 @@ $(document).ready(function() {
 			
 			/* Set the map to display only test kits. */
 			resourceActiveArray = [0, 0, 0, 0, 1, 0, 0, 0];
-			//resourceActiveArray[0] = 0;
-			//resourceActiveArray[4] = 1;
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+		}
+		else if ($pageId.indexOf("report") != -1) {
+			$(".help_video").addClass("hide");
+			
+			/* Remove all resource markers from the map. */
+			resourceActiveArray = [0, 0, 0, 0, 0, 0, 0, 0];
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));			
 		}
 		else if ($pageId.indexOf("filter") != -1) {
 			$("#PUR_video").addClass("hide");
@@ -432,7 +445,7 @@ $(document).ready(function() {
 					else if ($pageId.indexOf("filter") != -1) {
 						$(".help_video").addClass("hide");
 						$("#" + filter_type + "_video").removeClass("hide");
-					}
+					} 
 				});
 			});
 			
@@ -521,8 +534,10 @@ $(document).ready(function() {
 					$("div[id*='" + filter_type + "_step2_content']").removeClass("hide");
 					$("#" + $node_substring + "2").addClass("active");
 					
-					if ($pageId.indexOf("test") != -1) {
-						$("#map").addClass("hide");
+					if ($pageId.indexOf("test") == -1) {
+						if ($pageId.indexOf("report") == -1)
+							$("#map").addClass("hide");
+						
 						$(".help_video").removeClass("hide");
 						
 						if ($pageId.indexOf("filter") == -1)
@@ -561,7 +576,7 @@ $(document).ready(function() {
 	
 
 	/* Report a Problem page */
-	$("#report_link").on("click", function() {
+	/*$("#report_link").on("click", function() {
 	    $("#report_step1").addClass("active");
 		$("#report_step1_content").removeClass("hide");
 		$("#report_step2_content").addClass("hide");
@@ -580,17 +595,134 @@ $(document).ready(function() {
 		$("#report_step2_content").addClass("hide");
 		$("#report_step3").addClass("active");
 		$("#report_step3_content").removeClass("hide").addClass("cancel_stepper_border");
+	});*/
+	
+	/* Make sure each form field is reset. */
+	$("#report_problem #locationSelector").val("");
+	$("#report_problem #problemSelector").val(0);
+	$("#report_problem #problemText").val("");
+	$("#report_problem #emailAddress").val("");
+	$("#report_problem #phoneNumber").val("");
+	$("#report_problem #contactPref").val(0);
+	
+	/* Fill in location after clicking favorite location marker. */
+	$("#report_problem #locationSelector").on("focus", function() {
+		var autocomplete = initAutocomplete($(this).attr("id"));
+		
+		autocomplete.addListener('place_changed', function() {
+			/*if (this.getPlace().id !== "") {
+				//console.log();
+				
+			}*/
+			$("#report_step1_content .next_button").removeClass("disabled");
+		});
 	});
 	
-	$("#report_problem form").on("submit", function(event) {
-		var location = $("#report_problem #locationTextField").val();
+	var report_location = document.getElementById("locationSelector");
+	
+	/* Report a Problem form processing. */
+	//$("#report_problem form").on("submit", function(event) {
+		/*var location = $("#report_problem #locationTextField").val();
 		var problemType = $("#report_problem #ProblemSelector").val();
 		var description = $("#report_problem #GrowBox").val();
 		alert("Thank you for your submission!");
 		event.stopPropagation();
-		$(window).attr("location", "index.php");
+		$(window).attr("location", "index.php");*/
+		
+		/*$.ajax({
+			method: "POST",
+			url: "includes/functions.php",
+			data: {
+				type: "report",
+				location: $("#report_problem #locationTextField").val(),
+				problemType: $("#report_problem #ProblemSelector").val(),
+				description: $("#report_problem #GrowBox").val()
+			}			
+		}).done(function() {
+			//$().css("display", "none");			
+		}).fail(function() {
+			console.log("There was an error submitting the 'Report a Problem' form.");
+		});*/
+	//});
+	
+	/* Enable step 2 button once both fields are completed. */
+	var reportStep2Counter = 0;
+	
+	$("#problemSelector").on("change", function() {		
+		if ($("#problemSelector").val() != "")
+			reportStep2Counter++;
 	});
 	
+	$("#problemText").on("keydown", function() {
+		console.log($("#problemText").val());
+		
+		//if ($("#problemText").val() != "")
+			//reportStep2Counter++;
+	});
+	
+	if (reportStep2Counter == 2)
+		$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+		
+	
+	/* Enable step 3 button once one of the fields is completed. */
+	
+	/* Send the data to the server. */
+	$("#report_problem #report_step3_content .next_button").on("click", function(event) {
+		$("#report_problem form").validate({
+			debug: true,
+			errorPlacement: function(error, element) {
+				error.appendTo(element.parent());
+			},
+			rules: {
+				locationSelector: "required",
+				problemSelector: "required",
+				problemText: {
+					required: true,
+					maxlength: 500
+				},
+				email: {
+					email: true
+				},
+				phone: {
+					phone: true
+				}
+			},
+			messages: {
+				locationSelector: "Please enter a location.",
+				problemSelector: "Please select a problem type.",
+				problemText: "Please describe the problem."
+			},submitHandler: function(form) {
+				$(form).ajaxSubmit(function(){				
+					var data = "";
+					data += "{type: 'report', ";
+					data += "location: '" + $("#locationSelector").val() + "'}";
+					data += "problemType: '" + $("#problemSelector").val() + "'}";
+					data += "description: '" + $("#problemText").val() + "', ";
+					
+					//if ($("#emailAddress").val() != "")
+						data += "email: '" + $("#emailAddress").val() + "', ";
+					//else
+						//data += "email: ''";
+					
+					//if ($("#phoneNumber").val() != "")
+						data += "phone: '" + $("#phoneNumber").val() + "', ";
+					//else
+						//data += "phone: ''";
+					
+					//if (($("#emailAddress").val() != "") && ($("#phoneNumber").val() != ""))
+						data += "contactPref: '" + $("#contactPref").val() + "', ";
+					//else
+						//data += "contactPref: ''";
+					
+					console.log(data);
+					
+					// send to email form
+					//form.submit();
+				});
+			},
+			onkeyup: false
+		});
+	});
 	
 	/* Steppers for the submit information page. */
 	$("#submit_link").on("click", function() {

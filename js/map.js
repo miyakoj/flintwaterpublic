@@ -10,7 +10,7 @@ var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 
 var map;
-var geocoder;
+var autocomplete;
 var infoWindow;
 var heatmap;
 var leadLayer; // fusion table layer to set up lead levels
@@ -87,7 +87,7 @@ function initMap() {
 	  mapTypeControl:false
 	});
 	
-	/*Centering and resizing*/
+	/* Centering and resizing */
 	google.maps.event.addDomListener(window, "resize", function() {
 		var center = map.getCenter();
 		google.maps.event.trigger(map, "resize");
@@ -100,7 +100,6 @@ function initMap() {
 		});
 	});
 	
-	geocoder = new google.maps.Geocoder();		
 	infoWindow = new google.maps.InfoWindow();
 
 	callStorageAPI("leadlevels.json");
@@ -267,7 +266,6 @@ function initMap() {
 	
 	var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
 	bindInfoWindow("construction", constructionMarker, map, infoWindow, constructionContent);
-
 	constructionMarker.setMap(null);
 	
 	// Water Plant Junk
@@ -282,8 +280,7 @@ function initMap() {
 	});
 	
 	var waterplantContent = "<h1>City of Flint Water Plant</h1> <p>4500 N Dort Hwy, Flint, MI 48505</p>";
-	bindInfoWindow("waterplant", waterplantMarker, map, infoWindow, waterplantContent);
-	
+	bindInfoWindow("waterplant", waterplantMarker, map, infoWindow, waterplantContent);	
 	waterplantMarker.setMap(null);
 	
 	// Create the search box and link it to the UI element.
@@ -398,8 +395,7 @@ function initMap() {
 		//$("#location_card, #location_card .card-action").show();
 		
 		var inputAddress = place.formatted_address.split(',');
-		var streetAddress = inputAddress[0].toUpperCase();
-		
+		var streetAddress = inputAddress[0].toUpperCase();		
 		var content = createLocationContent(locationMarker, streetAddress);
 		
 		/*var leadMeter;
@@ -432,7 +428,7 @@ function initMap() {
 		
 		var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
 		
-		$("#location_card .card-inner").html(content);
+		$("#location_card .card-inner").content(html, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
 		$("#location_card #card_save .material-icons").html("star_border");
 		$("#location_card").show();
 		
@@ -590,28 +586,14 @@ function initMap() {
 	setUpInitialMap();
 }
 
-function geocodeAddress(geocoder, map, address) {
-	geocoder.geocode({
-			'address': address,
-			'bounds': new google.maps.LatLngBounds(new google.maps.LatLng({lat: 43.021, lng: -83.681}))
-		},
-		function(results, status) {
-			if (status === 'OK') {
-				/*map.setCenter(results[0].geometry.location);
-
-				var marker = new google.maps.Marker({
-				  map: map,
-				  position: results[0].geometry.location
-				});*/
-				
-				console.log(results[0].geometry.location);
-
-				return results[0].geometry.location;
-			}
-			else {
-				console.log('Geocode was not successful for the following reason: ' + status);
-			}
-		});
+function initAutocomplete(inputId) {
+	var input = document.getElementById(inputId);
+	var autocomplete = new google.maps.places.Autocomplete(input, {
+		types: ['geocode']
+	});
+	autocomplete.setBounds(new google.maps.LatLngBounds({lat: 43.021, lng: -83.681}));
+	
+	return autocomplete;
 }
 
 function setUpFusionTable() {
@@ -650,6 +632,7 @@ function setUpFusionTable() {
 
 function addFusionListener(object) {
 		google.maps.event.addListener(object, 'click', function(e) {
+<<<<<<< HEAD
 			var html = "<div>";
 									
 			//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
@@ -669,12 +652,16 @@ function addFusionListener(object) {
 			
 			//$(".riskMeter").css({"max-width": "50%", "max-height": "50%"});
 						
+=======
+			var content = "<div>";
+>>>>>>> origin/master
 			e.infoWindow
-			html += "<b>Address: </b>" + e.row['Address'].value + "<br>";
+			content += "<b>Address: </b>" + e.row['Address'].value + "<br>";
 			if (e.row['leadlevel'].value != "") {
-				html += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
-				html += "<b>Last Tested: </b>" + e.row['testDate'].value;
+				content += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
+				content += "<b>Last Tested: </b>" + e.row['testDate'].value;
 			}
+<<<<<<< HEAD
 			else if (e.row['Prediction'].value >= 0.20) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
 				html += "<b>Predicted Risk: </b>" + highRisk + "<br>";
@@ -690,12 +677,16 @@ function addFusionListener(object) {
 			else
 			{
 				html += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
+=======
+			else {
+				content += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+>>>>>>> origin/master
 			}
 			
-			html += "</div>";
-			$("#location_card .card-inner").empty();
-	   		$("#location_card .card-action").hide();
-	   		$("#location_card .card-inner").append(html);
+			content += "</div>";
+			$("#location_card .card-inner").empty();	   		
+	   		$("#location_card .card-inner").append(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+			$("#location_card .card-action").hide();
 	   		$("#location_card").show();
 
 		});	
@@ -878,7 +869,8 @@ function callStorageAPI(object) {
 						content += "<p id='provider_notes'>" + provider.notes + "</p>";
 					
 					// content += "<p>" + images + "</p></div>";
-					content += "<p id='provider_resources'>" + images + "</p>";
+					content += "<p id='provider_resources'>" + images + "</p>"
+					content += "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
 
 					/*If the resource is saved, display on map always if not then do not display*/
 					if (isSaved)
@@ -1030,7 +1022,7 @@ function attachLocationCard(type, marker, address, content) {
 			content = createLocationContent(marker, address)
 		
 		// map.panTo(marker.getPosition());
-		$("#location_card .card-inner").html(content);
+		$("#location_card .card-inner").append(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
 		
 		if (type.indexOf("location") != -1)
 			$("#location_card .card-action").show();
@@ -1084,7 +1076,7 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 			
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
-			$("#resource_card .card-inner").html(content);
+			$("#resource_card .card-inner").empty().prepend(content);
 			
 			console.log(resourcesAvailable);
 			
@@ -1133,6 +1125,10 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 				$("#resource_card #card_report_menu a:contains('Water Pickup')").parent().removeClass("disabled");
 				$("#resource_card #card_report_menu a:contains('Water Pickup')").attr("href", "#");
 			}
+			
+			//console.log(map.getBounds());
+			//console.log("#map_container offset top = " + $("#map_container").offset().top);
+			//console.log(marker.getPosition());
 			
 			$("#resource_card").show();
 			
@@ -1604,9 +1600,6 @@ $(document).ready(function() {
 		var streetAddress = $("#location_card #address").text();
 		var numberSaved = parseInt(localStorage.getItem("numberSaved"));
 		var isSaved = false;
-		
-		//var latLong = geocodeAddress(geocoder, map, streetAddress);
-		//console.log(geocodeAddress(geocoder, map, streetAddress));
 		var unsavedIcon = locationIcon.url;
 		var savedLocationNum;
 		

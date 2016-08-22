@@ -11,9 +11,13 @@
 @media only screen and (min-width:600px) {
 	#resource_card {
 		width:300px;
+		top:3.5em;
 		left:0;
-		/*bottom:10em;*/
-		bottom:0;
+		bottom:auto;
+	}
+	
+	#resource_card #card_report_menu {
+		display:block;
 	}
 }
 
@@ -69,11 +73,7 @@
 	
 	#resource_card {
 		left:15em;
-	}
-	
-	#resource_card #card_report_menu {
-		display:block;
-	}
+	}	
 	
 	.stepper-vert-inner .btn_group .back_button {
 		display:none;

@@ -224,8 +224,14 @@ input[type='checkbox'] {
 	z-index:1!important;
 }
 
-body[id="index_page"] #map, body[id="test_page"] #map {
+body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #map {
 	display:block;
+}
+
+#index_page .card {
+	margin-top:0!important;
+	margin-bottom:0!important;
+	z-index:2000!important;
 }
 
 #location_card {
@@ -233,6 +239,26 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 	position:absolute;
 	display:none;
 	z-index:200!important;
+}
+
+#location_card .card-inner {
+	margin-top:10px!important;
+	margin-bottom:10px!important;
+}
+
+#location_card .card-action .btn {
+	padding:10px!important;
+	font-size:1rem!important;
+}
+
+#location_card #more_info_button {
+	display:none;
+}
+
+#location_card .card-action img {
+	width:auto;
+	height:18px!important;
+	vertical-align:middle;
 }
 
 #resource_card {
@@ -247,7 +273,7 @@ body[id="index_page"] #map, body[id="test_page"] #map {
 #resource_card #card_report_menu {
 	padding-top:6px;
 	list-style-type:none;
-	display:none;
+	display:block;
 }
 
 #provider_resources .marker_popup_icons {
@@ -358,33 +384,15 @@ body[id="index_page"] main {
 	margin:0!important;
 }
 
-#index_page .card {
-	margin-top:0!important;
-	margin-bottom:0!important;
-	z-index:2000!important;
+#report_problem label {
+	display:none;
 }
 
-#location_card .card-inner {
-	margin-top:10px!important;
-	margin-bottom:10px!important;
-}
-
-#location_card .card-action .btn {
-	padding:10px!important;
-	font-size:1rem!important;
-}
-
-#location_card .card-action img {
-	width:auto;
-	height:18px!important;
-	vertical-align:middle;
-}
-
-.saved_locations img {
+/*.saved_locations img {
 	width:25px;
 	height:auto;
 	float:left;
-}
+}*/
 
 
 /* News Page */
@@ -421,11 +429,13 @@ body[id="index_page"] main {
 
 #news_page .card-inner p {
 	margin-left:15px;
+	margin-right:15px;
 	padding-top:12px;
 }
 
 #news_page .card-main h6 {
 	margin-left:15px;
+	margin-right:15px;
 }
 
 #news_page .card-main a {
@@ -447,7 +457,7 @@ body[id="index_page"] footer {
 }
 
 footer .row:nth-child(1) .col-md-12 {
-	padding:15px 5px 0 5px!important;
+	padding:15px 10px 0 10px!important;
 }
 
 footer row:nth-child(2) .col-md-12 {
