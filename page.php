@@ -369,14 +369,7 @@ if (@isset($_GET["pid"])) {
 								</div>
 								<div id='submit_step2_content' class='stepper-vert-content hide'>
 									<label for='locationTextField' style='display:none;'>Enter Your Location: </label><br />
-									<input class='form-control' id='locationTextField' style='width=100%;'>
-									<script>
-										function init() {
-											var input = document.getElementById('locationTextField');
-											var autocomplete = new google.maps.places.Autocomplete(input);
-										}
-										google.maps.event.addDomListener(window, 'load', init);
-									</script>
+									<input class='form-control' id='locationTextField' onFocus='initAutocomplete()'>
 									
 								   <div class='btn_group'>
 								  <a id='step2_click' class='btn btn-flat btn-primary disabled'>Continue</a>
@@ -388,75 +381,103 @@ if (@isset($_GET["pid"])) {
 		break;
 		case "report":
 			$pagetitle = "Report a Problem";
-			$content = "<div id='report_problem' class='stepper-vert'><h2>Report a Problem</h2>
-							<form action='includes/functions.php' method='post'>
-								<div class='stepper-vert-inner'>
-									<div id='report_step1' class='stepper active'>
-										<div class='stepper-step'>
-											<span class='icon stepper-step-icon'>check</span>
-											<span class='stepper-step-num'>1</span>
+			$content = "<div id='report_problem' class='container-fluid'>
+				<div class='row'>
+					<div id='topbar' class='col-xs-12'></div>
+				
+					<div id='stepper_content' class='col-xs-12'>
+						<form method='post'>
+						<div id='steppers' class='stepper-vert'>
+									<h2>Report a Problem</h2>
+									<div class='stepper-vert-inner'>
+										<div id='report_step1' class='stepper active'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>1</span>
+											</div>
+											<span class='stepper-text'>Enter the location</span>
 										</div>
-										<span class='stepper-text'>Enter your location</span>
+										<div id='report_step1_content' class='stepper-vert-content'>
+											<div class='form-group'>
+											<label for='locationSelector' class='sr-only'>Enter the Location:</label>
+											<input id='locationSelector' class='form-control' placeholder='Enter the location' />
+											</div>
+											
+											<div class='btn_group'>
+											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Next</a>
+											<a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+											</div>
+										</div>
+										
+										<div id='report_step2' class='stepper hide'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>2</span>
+											</div>
+											<span class='stepper-text'>Describe the problem</span>
+										</div>
+										<div id='report_step2_content' class='stepper-vert-content hide'>
+											<div class='form-group'>
+											<label for='problemSelector'>Select the problem: </label>
+											<select id='problemSelector' title='Please choose a problem type.' class='form-control'>
+												<option value=''></option> 
+												<option value='Discolored Water'>Discolored Water</option>
+												<option value='Water Main Break'>Water Main Break</option>
+												<option value='Other Infrastructure Issue'>Other Water-Related Infrastructure Issue</option>
+											</select>
+											</div>
+											
+											<div class='form-group'>
+											<label for='problemText'>Describe the problem: (500 character limit)</label><br>
+											<textarea id='problemText' class='form-control textarea-autosize' rows='3' name='description'></textarea>
+											<!--Counter for textbox-->
+											</div>											
+											
+											<div class='btn_group'>
+											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Next</a>
+											<a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+											</div>
+										</div>
+										
+										<div id='report_step3' class='stepper hide'>
+											<div class='stepper-step'>
+												<span class='icon stepper-step-icon'>check</span>
+												<span class='stepper-step-num'>3</span>
+											</div>
+											<span class='stepper-text'>Contact information</span>
+										</div>
+										<div id='report_step3_content' class='stepper-vert-content hide'>
+											<div class='form-group'>
+											<label for='emailAddress'>Email address:</label>
+											<input id='emailAddress' class='form-control' placeholder='Email address' />
+											</div>
+											
+											<div class='form-group'>
+											<label for='phoneNumber' class='sr-only'>Phone number:</label>
+											<input id='phoneNumber' class='form-control' name='location' placeholder='Phone number' />
+											</div>
+											
+											<div class='form-group'>
+											<label for='problemSelector'>Contact preference: </label>
+											<select id='problemSelector' title='Please choose your contact preference.' class='form-control'>
+												<option value=''></option> 
+												<option value='email'>Email</option>
+												<option value='phone'>Phone</option>
+											</select>
+											</div>
+											
+											<div class='btn_group'>
+											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Submit</a>
+											</div>
+										</div>
 									</div>
-								<div id='report_step1_content' class='stepper-vert-content'>								
-								  <label for='locationTextField' style='display:none;'>Enter Your Location: </label><br />
-									<input class='form-control' id='locationTextField' style='width=100%;' name='location' />
-									<script>
-										function init() {
-											var input = document.getElementById('locationTextField');
-											var autocomplete = new google.maps.places.Autocomplete(input);
-										}
-										google.maps.event.addDomListener(window, 'load', init);
-									</script>
-								  <div class='btn_group'>
-								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
-								  </div>
-								</div>
-								
-								<div id='report_step2' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>2</span>
-									</div>
-									<span class='stepper-text'>Select the problem</span>
-								</div>
-								<div id='report_step2_content' class='stepper-vert-content hide'>
-									<div id='step2_stuff' class='form-group form-group-label'>
-                                    <label for='ProblemSelector' style='display:none;'> Select The Problem: </label>
-                                    <select title='Please Choose One' class='form-control' id='ProblemSelector' style='width:100%;' name='problemType' >
-										<option value=''> </option> 
-                                        <option value='Discolored Water'> Discolored Water </option>
-                                        <option value='Water Main Break'> Water Main Break </option>
-                                        <option value='Other Infrastructure Issue'> Other Infrastructure Issue </option>
-                                    </select>
-                                    </div>
-								   <div class='btn_group'>
-								  <a id='step2_click' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
-								  </div>
-								</div>
-								
-								<div id='report_step3' class='stepper'>
-									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
-										<span class='stepper-step-num'>3</span>
-									</div>
-									<span class='stepper-text'>Describe the problem</span>
-								</div>
-								<div id='report_step3_content' class='stepper-vert-content hide'>
-								  <div id='step3_stuff' class='form-group form-group-label'>
-                                    <label for='GrowBox' style='display:none;'> Describe Problem: (500 Character Limit) </label><br>
-                                    <textarea class='form-control textarea-autosize' id='GrowBox' rows='3' maxlength='500' style='width:100%;' name='description' ></textarea>						
-									</div>
-								  <div class='btn_group'>
-								 <button id='submit_button' type:'submit' class='btn btn-flat btn-primary'>Submit</button>
-								 <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
-								 </div>
 								</div>
 							</div>
+							
+							<div id='sidebar' class='col-sm-7'></div>
+						</div>
 						</form>
-						</div>";
+					</div>";
 		break;
 		
 		case "about":
