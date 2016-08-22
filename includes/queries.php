@@ -8,7 +8,7 @@ function queries($choice, $var = "", $var2 = "") {
 	$var = $mysqli->real_escape_string($var);
 
 	if (strcmp($choice, "lead") === 0) {
-		$query = "SELECT Geo.latitude, Geo.longitude, leadlevel, testID, StAddress FROM waterCondition, (SELECT * FROM GeoLocation) Geo WHERE propertyID = locationID ORDER BY leadLevel ASC;";
+		$query = "SELECT Geo.latitude, Geo.longitude, leadlevel, testID, REPLACE(StAddress,'\r','') AS StAddress FROM waterCondition, (SELECT * FROM GeoLocation) Geo WHERE propertyID = locationID ORDER BY leadLevel ASC;";
 	}
 	else if (strcmp($choice, "providers") === 0) {
 		if (strcmp($var, "") === 0)
