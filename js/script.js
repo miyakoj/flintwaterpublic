@@ -648,16 +648,35 @@ $(document).ready(function() {
 	/* Enable step 2 button once both fields are completed. */
 	var reportStep2Counter = 0;
 	
-	$("#problemSelector").on("change", function() {		
-		if ($("#problemSelector").val() != "")
+	$("#report_problem #problemSelector").on("change", function() {		
+		if ($("#report_problem #problemSelector").val() != "")
 			reportStep2Counter++;
 	});
 	
-	$("#problemText").on("keydown", function() {
-		console.log($("#problemText").val());
-		
+	$("#report_problem #problemText").on("keydown", function() {
 		//if ($("#problemText").val() != "")
 			//reportStep2Counter++;
+	});
+	
+	var charCounter = 0;
+	$(".char_count").html("<span style='font-weight:bold;'>Characters:</span> " + charCounter);
+	
+	$("#report_problem #problemText").on("focus", function() {
+		//charCounter = $(this).val().length;
+		
+		$("#report_problem #problemText").on("keydown", function(event) {
+			charCounter = $(this).val().length + 1;
+			console.log("charCounter = " + charCounter);
+			
+			if (event.which == 8) {
+				//charCounter--;
+				$(".char_count").html("<span class=\"emphasis\">Characters:</span> " + charCounter);
+			}
+			else if ((event.which != 13) && (event.which != 37) && (event.which != 38) && (event.which != 39) && (event.which != 40)) {
+				//charCounter++;
+				$(".char_count").html("<span class=\"emphasis\">Characters:</span> " + charCounter);
+			}
+		});
 	});
 	
 	if (reportStep2Counter == 2)

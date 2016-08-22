@@ -430,7 +430,7 @@ if (@isset($_GET["pid"])) {
 											<div class='form-group'>
 											<label for='problemText'>Describe the problem: (500 character limit)</label><br>
 											<textarea id='problemText' class='form-control textarea-autosize' rows='3' name='description'></textarea>
-											<!--Counter for textbox-->
+											<p class='char_count'></p>
 											</div>											
 											
 											<div class='btn_group'>
