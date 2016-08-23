@@ -330,6 +330,7 @@ body[id="index_page"] main {
 
 .btn_group {
 	position:relative;
+	float:left;
 }
 
 .btn_group .cancel_button {
