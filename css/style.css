@@ -1,3 +1,7 @@
+* {
+	font-family:"roboto"!important;
+}
+
 html, body {
   	height:100%;
 }
@@ -330,6 +334,7 @@ body[id="index_page"] main {
 
 .btn_group {
 	position:relative;
+	text-align:left!important;
 }
 
 .btn_group .cancel_button {
@@ -410,8 +415,8 @@ body[id="index_page"] main {
 	display:initial;
 }
 
-#report_problem #emailAddress, #report_problem #phoneNumber {
-	display:none;
+#report_problem #email_address, #report_problem #phone_number {
+	width:60%;
 }
 
 /*.saved_locations img {

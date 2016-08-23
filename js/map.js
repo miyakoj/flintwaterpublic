@@ -575,7 +575,7 @@ function initMap() {
 	$("#more_info_button").on("click", function() {	
 		if ($("#more_info_button span").text() === "More Info") {
 			$("#more_info_button span").text("Less Info");
-			$("#location_card .card-inner").append("<p class=\"more-info\">More Info About " + leadLevelOfInput + "</p>");
+			$("#location_card .card-inner").empty().append("<p class=\"more-info\">More Info About " + leadLevelOfInput + "</p>");
 		}
 		else {
 			$("#more_info_button span").text("More Info");
@@ -680,8 +680,8 @@ function addFusionListener(object) {
 			}
 			
 			content += "</div>";
-			$("#location_card .card-inner").empty();	   		
-	   		$("#location_card .card-inner").append(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+	   		
+	   		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 			$("#location_card .card-action").hide();
 	   		$("#location_card").show();
 
@@ -1018,7 +1018,7 @@ function attachLocationCard(type, marker, address, content) {
 			content = createLocationContent(marker, address)
 		
 		// map.panTo(marker.getPosition());
-		$("#location_card .card-inner").append(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
+		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
 		
 		if (type.indexOf("location") != -1)
 			$("#location_card .card-action").show();

@@ -576,37 +576,75 @@ $(document).ready(function() {
 	
 
 	/* Report a Problem page */
-	/*$("#report_link").on("click", function() {
-	    $("#report_step1").addClass("active");
-		$("#report_step1_content").removeClass("hide");
-		$("#report_step2_content").addClass("hide");
-		$("#report_step3_content").addClass("hide");
+	var validator = $("#report_problem form").validate({
+		debug: true,
+		errorPlacement: function(error, element) {
+			error.appendTo(element.parent());
+		},
+		rules: {
+			location_selector: "required"
+		},
+		messages: {
+			locationSelector: "Please enter a location.",
+			problemSelector: "Please select a problem type.",
+			problemText: "Please describe the problem.",
+			email_address: "Please enter a valid email address.",
+			phone_number: "Please enter the phone number in (555) 555-5555 format."
+		},
+		submitHandler: function(form) {
+			$(form).ajaxSubmit(function(){				
+				var data = "";
+				data += "{type: 'report', ";
+				data += "location: '" + $("#location_selector").val() + "'}";
+				data += "problemType: '" + $("#problem_selector").val() + "'}";
+				data += "description: '" + $("#problem_text").val() + "', ";
+				
+				//if ($("#emailAddress").val() != "")
+					data += "email: '" + $("#email_address").val() + "', ";
+				//else
+					//data += "email: ''";
+				
+				//if ($("#phoneNumber").val() != "")
+					data += "phone: '" + $("#phone_number").val() + "', ";
+				//else
+					//data += "phone: ''";
+				
+				//if (($("#emailAddress").val() != "") && ($("#phoneNumber").val() != ""))
+					data += "contactPref: '" + $("#contact_pref").val() + "', ";
+				//else
+					//data += "contactPref: ''";
+				
+				console.log(data);
+				
+				// send to email form
+				//form.submit();
+			});
+		},
+		onkeyup: false
 	});
-	
-    $("#report_problem #step1_click").click(function() {
-		$("#report_step1").removeClass("active").addClass("done");
-		$("#report_step1_content").addClass("hide");
-		$("#report_step2_content").removeClass("hide");
-		$("#report_step2").addClass("active");
-	});
-	
-	$("#report_problem #step2_click").on("click", function() {
-		$("#report_step2").removeClass("active").addClass("done");
-		$("#report_step2_content").addClass("hide");
-		$("#report_step3").addClass("active");
-		$("#report_step3_content").removeClass("hide").addClass("cancel_stepper_border");
-	});*/
 	
 	/* Make sure each form field is reset to default. */
-	$("#report_problem #locationSelector").val("");
-	$("#report_problem #problemSelector").val(0);
-	$("#report_problem #problemText").val("");
-	$("#report_problem #emailChoice, #report_problem #phoneChoice").prop("checked", false);
-	$("#report_problem #emailAddress").val("");
-	$("#report_problem #phoneNumber").val("");
+	$("#report_problem #location_selector").val("");
+	$("#report_problem #problem_selector").val(0);
+	$("#report_problem #problem_text").val("");
+	$("#report_problem #email_choice, #report_problem #phone_choice").prop("checked", false);
+	$("#report_problem #email_address").val("");
+	$("#report_problem #phone_number").val("");
+	
+	/* Set the validation rules. */
+	$("#report_problem #problem_selector").rules("add", {required: true});
+	$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
+	$("#email_address").rules("add", {
+		email: true,
+		depends: function(element) {
+			console.log($("#" + element.id).parent().find("#contact_pref input[type='radio']").filter(":checked").val());
+			return true;
+		}
+	});
+	//$("#phone_address").rules("add", {phone: true});
 	
 	/* Fill in location after clicking favorite location marker. */
-	$("#report_problem #locationSelector").on("focus", function() {
+	$("#report_problem #location_selector").on("focus", function() {
 		var autocomplete = initAutocomplete($(this).attr("id"));
 		
 		autocomplete.addListener('place_changed', function() {
@@ -618,7 +656,7 @@ $(document).ready(function() {
 		});
 	});
 	
-	var report_location = document.getElementById("locationSelector");
+	var report_location = document.getElementById("location_selector");
 	
 	/* Report a Problem form processing. */
 	//$("#report_problem form").on("submit", function(event) {
@@ -645,113 +683,46 @@ $(document).ready(function() {
 		});*/
 	//});
 	
-	/* Enable step 2 button once both fields are completed. */
-	var reportStep2Counter = 0;
-	
-	$("#report_problem #problemSelector").on("change", function() {		
-		if ($("#report_problem #problemSelector").val() != "")
-			reportStep2Counter++;
-	});
-	
-	$("#report_problem #problemText").on("keyup", function() {
-		if ($("#problemText").val().length > 4)
-			reportStep2Counter++;
-	});
-	
-	/* Count the characters of the problem description and stop people from entering more text once 500 is hit. */
+	/* Enable step 2 button once both fields are completed. */	
+	/* Count the characters of the problem description and stop the user from entering more characters after 500. */
 	$(".char_count").html("<span>Characters:</span> 0");
-	$("#report_problem #problemText").on("keyup", function() {
-		$(".char_count").html("<span>Characters:</span> " + $("#report_problem #problemText").val().length);
-		
-		//if ()
+	$("#report_problem #problem_text").on("keyup", function(event) {
+		$(".char_count").html("<span>Characters:</span> " + $(this).val().length);
 	});
 	
-	$("#report_problem #problemSelector, #report_problem #problemText").on("focusout", function() {
-		if (reportStep2Counter == 2)
+	$("#report_problem #problem_selector, #report_problem #problem_text").on("focusout", function() {
+		if (validator.element("#report_problem #problem_selector") && validator.element("#report_problem #problem_text"))
 			$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step2_content .next_button").addClass("disabled");
 	});		
 	
-	/* Enable step 3 button once one of the fields is completed and valid. */
-	$("#report_problem #contactPref input[type='radio']").on("change", function() {
+	/* Enable step 3 button once one of the contact fields is completed and valid. */
+	$("#report_problem #contact_pref input[type='radio']").on("change", function() {
 		var selected = $(this).filter(":checked").val();
 		
 		if (selected.indexOf("email") != -1) {
-			$("#phoneNumber").css("display", "none");
-			$("#emailAddress").css("display", "initial");			
+			$("#phone_number").addClass("hide");
+			$("#email_address").removeClass("hide");
 		}
 		else if (selected.indexOf("phone") != -1) {
-			$("#emailAddress").css("display", "none");
-			$("#phoneNumber").css("display", "initial");			
+			$("#email_address").addClass("hide");
+			$("#phone_number").removeClass("hide");
 		}
 	});
 	
-	/*
-	$("#emailAddress").change(function() {
-		// Check input( $( this ).val() ) for validity here
+	$("#report_problem #email_address, #report_problem #phone_number").on("keyup", function() {
+		if (validator.element("#report_problem #email_address") && validator.element("#report_problem #phone_number"))
+			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step3_content .next_button").addClass("disabled");
 	});
-	
-	$("#phoneNumber").change(function() {
-		// Check input( $( this ).val() ) for validity here
-	});
-	*/
 	
 	/* Send the data to the server. */
 	$("#report_problem #report_step3_content .next_button").on("click", function(event) {
-		$("#report_problem form").validate({
-			debug: true,
-			errorPlacement: function(error, element) {
-				error.appendTo(element.parent());
-			},
-			rules: {
-				locationSelector: "required",
-				problemSelector: "required",
-				problemText: {
-					required: true,
-					maxlength: 500
-				},
-				email: {
-					email: true
-				},
-				phone: {
-					phone: true
-				}
-			},
-			messages: {
-				locationSelector: "Please enter a location.",
-				problemSelector: "Please select a problem type.",
-				problemText: "Please describe the problem."
-			},submitHandler: function(form) {
-				$(form).ajaxSubmit(function(){				
-					var data = "";
-					data += "{type: 'report', ";
-					data += "location: '" + $("#locationSelector").val() + "'}";
-					data += "problemType: '" + $("#problemSelector").val() + "'}";
-					data += "description: '" + $("#problemText").val() + "', ";
-					
-					//if ($("#emailAddress").val() != "")
-						data += "email: '" + $("#emailAddress").val() + "', ";
-					//else
-						//data += "email: ''";
-					
-					//if ($("#phoneNumber").val() != "")
-						data += "phone: '" + $("#phoneNumber").val() + "', ";
-					//else
-						//data += "phone: ''";
-					
-					//if (($("#emailAddress").val() != "") && ($("#phoneNumber").val() != ""))
-						data += "contactPref: '" + $("#contactPref").val() + "', ";
-					//else
-						//data += "contactPref: ''";
-					
-					console.log(data);
-					
-					// send to email form
-					//form.submit();
-				});
-			},
-			onkeyup: false
-		});
+		
 	});
+	
 	
 	/* Steppers for the submit information page. */
 	$("#submit_link").on("click", function() {

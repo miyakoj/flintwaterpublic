@@ -399,8 +399,8 @@ if (@isset($_GET["pid"])) {
 										</div>
 										<div id='report_step1_content' class='stepper-vert-content'>
 											<div class='form-group'>
-											<label for='locationSelector' class='sr-only'>Enter the Location:</label>
-											<input id='locationSelector' class='form-control' placeholder='Enter the location' />
+											<label for='location_selector' class='sr-only'>Enter the Location:</label>
+											<input id='location_selector' class='form-control' placeholder='Enter the location' />
 											</div>
 											
 											<div class='btn_group'>
@@ -418,8 +418,8 @@ if (@isset($_GET["pid"])) {
 										</div>
 										<div id='report_step2_content' class='stepper-vert-content hide'>
 											<div class='form-group'>
-											<label for='problemSelector'>Select the problem:</label>
-											<select id='problemSelector' title='Please choose a problem type.' class='form-control'>
+											<label for='problem_selector'>Select the problem:</label>
+											<select id='problem_selector' title='Please choose a problem type.' class='form-control'>
 												<option value=''></option> 
 												<option value='Discolored Water'>Discolored Water</option>
 												<option value='Water Main Break'>Water Main Break</option>
@@ -428,8 +428,8 @@ if (@isset($_GET["pid"])) {
 											</div>
 											
 											<div class='form-group'>
-											<label for='problemText'>Describe the problem:</label><br>
-											<textarea id='problemText' class='form-control textarea-autosize' rows='3' name='description' placeholder='500 character limit'></textarea>
+											<label for='problem_text'>Describe the problem:</label><br>
+											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit'></textarea>
 											<p class='char_count'></p>
 											</div>											
 											
@@ -447,22 +447,23 @@ if (@isset($_GET["pid"])) {
 											<span class='stepper-text'>Contact information</span>
 										</div>
 										<div id='report_step3_content' class='stepper-vert-content hide'>
-											<div id='contactPref' class='form-group'>
+											<div id='contact_pref' class='form-group'>
 												<h5>Contact preference:</h5>
 												
 												<label class='radio-inline'>
-													<input type='radio' name='contactRadioOptions' id='emailChoice' value='email'> Email
+													<input type='radio' name='contact_radio_options' id='email_choice' value='email'> Email
 												</label>
 												<label class='radio-inline'>
-													<input type='radio' name='contactRadioOptions' id='phoneChoice' value='phone'> Phone
+													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone'> Phone
 												</label>
 											</div>
 											
-											<input id='emailAddress' class='form-control' placeholder='user@email.com' />
-											<input id='phoneNumber' class='form-control' name='location' placeholder='(555) 555-5555' />
+											<input id='email_address' class='form-control hide' name='email' placeholder='user@email.com' />
+											<input id='phone_number' class='form-control hide' name='phone' placeholder='(555) 555-5555' />
 											
 											<div class='btn_group'>
 											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Submit</a>
+											<a class='cancel_button btn btn-flat' href='#'>Cancel</a>
 											</div>
 										</div>
 									</div>
