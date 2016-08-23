@@ -106,7 +106,7 @@ $(document).ready(function() {
 	/* Phones only. */
 	if (windowWidth < 600) {
 		$("#location_card, #resource_card").css({
-			"width": (windowWidth - 10) + "px"
+			"width": (windowWidth - 10) + "px",
 		}).appendTo($("body"));
 		
 		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown").addClass("dropup");
