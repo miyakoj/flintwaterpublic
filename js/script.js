@@ -597,13 +597,13 @@ $(document).ready(function() {
 		$("#report_step3_content").removeClass("hide").addClass("cancel_stepper_border");
 	});*/
 	
-	/* Make sure each form field is reset. */
+	/* Make sure each form field is reset to default. */
 	$("#report_problem #locationSelector").val("");
 	$("#report_problem #problemSelector").val(0);
 	$("#report_problem #problemText").val("");
+	$("#report_problem #emailChoice, #report_problem #phoneChoice").prop("checked", false);
 	$("#report_problem #emailAddress").val("");
 	$("#report_problem #phoneNumber").val("");
-	$("#report_problem #contactPref").val(0);
 	
 	/* Fill in location after clicking favorite location marker. */
 	$("#report_problem #locationSelector").on("focus", function() {
@@ -653,37 +653,47 @@ $(document).ready(function() {
 			reportStep2Counter++;
 	});
 	
-	$("#report_problem #problemText").on("keydown", function() {
-		//if ($("#problemText").val() != "")
-			//reportStep2Counter++;
+	$("#report_problem #problemText").on("keyup", function() {
+		if ($("#problemText").val().length > 4)
+			reportStep2Counter++;
 	});
 	
-	var charCounter = 0;
-	$(".char_count").html("<span style='font-weight:bold;'>Characters:</span> " + charCounter);
-	
-	$("#report_problem #problemText").on("focus", function() {
-		//charCounter = $(this).val().length;
+	/* Count the characters of the problem description and stop people from entering more text once 500 is hit. */
+	$(".char_count").html("<span>Characters:</span> 0");
+	$("#report_problem #problemText").on("keyup", function() {
+		$(".char_count").html("<span>Characters:</span> " + $("#report_problem #problemText").val().length);
 		
-		$("#report_problem #problemText").on("keydown", function(event) {
-			charCounter = $(this).val().length + 1;
-			console.log("charCounter = " + charCounter);
-			
-			if (event.which == 8) {
-				//charCounter--;
-				$(".char_count").html("<span class=\"emphasis\">Characters:</span> " + charCounter);
-			}
-			else if ((event.which != 13) && (event.which != 37) && (event.which != 38) && (event.which != 39) && (event.which != 40)) {
-				//charCounter++;
-				$(".char_count").html("<span class=\"emphasis\">Characters:</span> " + charCounter);
-			}
-		});
+		//if ()
 	});
 	
-	if (reportStep2Counter == 2)
-		$("#report_problem #report_step2_content .next_button").removeClass("disabled");
-		
+	$("#report_problem #problemSelector, #report_problem #problemText").on("focusout", function() {
+		if (reportStep2Counter == 2)
+			$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+	});		
 	
-	/* Enable step 3 button once one of the fields is completed. */
+	/* Enable step 3 button once one of the fields is completed and valid. */
+	$("#report_problem #contactPref input[type='radio']").on("change", function() {
+		var selected = $(this).filter(":checked").val();
+		
+		if (selected.indexOf("email") != -1) {
+			$("#phoneNumber").css("display", "none");
+			$("#emailAddress").css("display", "initial");			
+		}
+		else if (selected.indexOf("phone") != -1) {
+			$("#emailAddress").css("display", "none");
+			$("#phoneNumber").css("display", "initial");			
+		}
+	});
+	
+	/*
+	$("#emailAddress").change(function() {
+		// Check input( $( this ).val() ) for validity here
+	});
+	
+	$("#phoneNumber").change(function() {
+		// Check input( $( this ).val() ) for validity here
+	});
+	*/
 	
 	/* Send the data to the server. */
 	$("#report_problem #report_step3_content .next_button").on("click", function(event) {

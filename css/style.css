@@ -401,6 +401,19 @@ body[id="index_page"] main {
 	display:none;
 }
 
+#report_problem #report_step3_content h5 {
+	margin-top:0;
+	font-weight:bold;
+}
+
+#report_problem #report_step3_content label {
+	display:initial;
+}
+
+#report_problem #emailAddress, #report_problem #phoneNumber {
+	display:none;
+}
+
 /*.saved_locations img {
 	width:25px;
 	height:auto;

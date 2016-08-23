@@ -418,7 +418,7 @@ if (@isset($_GET["pid"])) {
 										</div>
 										<div id='report_step2_content' class='stepper-vert-content hide'>
 											<div class='form-group'>
-											<label for='problemSelector'>Select the problem: </label>
+											<label for='problemSelector'>Select the problem:</label>
 											<select id='problemSelector' title='Please choose a problem type.' class='form-control'>
 												<option value=''></option> 
 												<option value='Discolored Water'>Discolored Water</option>
@@ -428,8 +428,8 @@ if (@isset($_GET["pid"])) {
 											</div>
 											
 											<div class='form-group'>
-											<label for='problemText'>Describe the problem: (500 character limit)</label><br>
-											<textarea id='problemText' class='form-control textarea-autosize' rows='3' name='description'></textarea>
+											<label for='problemText'>Describe the problem:</label><br>
+											<textarea id='problemText' class='form-control textarea-autosize' rows='3' name='description' placeholder='500 character limit'></textarea>
 											<p class='char_count'></p>
 											</div>											
 											
@@ -447,24 +447,19 @@ if (@isset($_GET["pid"])) {
 											<span class='stepper-text'>Contact information</span>
 										</div>
 										<div id='report_step3_content' class='stepper-vert-content hide'>
-											<div class='form-group'>
-											<label for='emailAddress'>Email address:</label>
-											<input id='emailAddress' class='form-control' placeholder='Email address' />
+											<div id='contactPref' class='form-group'>
+												<h5>Contact preference:</h5>
+												
+												<label class='radio-inline'>
+													<input type='radio' name='contactRadioOptions' id='emailChoice' value='email'> Email
+												</label>
+												<label class='radio-inline'>
+													<input type='radio' name='contactRadioOptions' id='phoneChoice' value='phone'> Phone
+												</label>
 											</div>
 											
-											<div class='form-group'>
-											<label for='phoneNumber' class='sr-only'>Phone number:</label>
-											<input id='phoneNumber' class='form-control' name='location' placeholder='Phone number' />
-											</div>
-											
-											<div class='form-group'>
-											<label for='problemSelector'>Contact preference: </label>
-											<select id='problemSelector' title='Please choose your contact preference.' class='form-control'>
-												<option value=''></option> 
-												<option value='email'>Email</option>
-												<option value='phone'>Phone</option>
-											</select>
-											</div>
+											<input id='emailAddress' class='form-control' placeholder='user@email.com' />
+											<input id='phoneNumber' class='form-control' name='location' placeholder='(555) 555-5555' />
 											
 											<div class='btn_group'>
 											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Submit</a>
