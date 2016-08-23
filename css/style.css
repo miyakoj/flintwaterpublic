@@ -239,11 +239,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 #location_card {
-	/*padding:5px;*/
 	position:absolute;
 	display:none;
 	bottom:5px;
 	left:5px;
+	right:5px;
 	z-index:200!important;
 }
 

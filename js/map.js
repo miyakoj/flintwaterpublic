@@ -428,7 +428,7 @@ function initMap() {
 		
 		var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
 		
-		$("#location_card .card-inner").content(html, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
+		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
 		$("#location_card #card_save .material-icons").html("star_border");
 		$("#location_card").show();
 		
