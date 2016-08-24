@@ -184,15 +184,17 @@ html, body {
 
 #search_input {
 	background-color:#fff;
-	font-size:15px;
-	font-weight:300;
+	font-size:16px;
+	/*font-weight:300;*/
 	text-overflow:ellipsis;
 	border:1px solid transparent;
 	border-radius:2px 0 0 2px;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	outline:none;
-	box-shadow:0 2px 6px rgba(0, 0, 0, 0.3);
+	/*box-shadow:0 2px 6px rgba(0, 0, 0, 0.3);*/
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
+	height: 48px;
 }
 
 #search_input:focus {

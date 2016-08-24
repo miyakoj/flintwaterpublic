@@ -24,7 +24,7 @@ $toggles = "<nav id='toggles' class='col-md-12' data-toggle='buttons'>
 			</nav>";
 
 $content = "<div id='map_container'>
-		<input id='search_input' class='controls' type='text' placeholder='Search for an address' />
+		<input id='search_input' class='controls' type='text' placeholder='Search for a location' />
 		
 		<div id='location_card' class='card'>
 			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
