@@ -1,3 +1,11 @@
+* {
+	font-family:"roboto"!important;
+}
+
+.icon {
+	font-family:"Material Icons"!important;
+}
+
 html, body {
 	background-color:transparent;
 }
@@ -10,18 +18,15 @@ html, body {
 
 #made_in_Flint {
 	text-align:center;
-	font-family:"roboto";
 }
 
 #logo {
 	text-align:center;
-	font-family:"roboto";
 }
 
 #logo img {
 	text-align:center;
 	vertical-align:middle;
-	font-family:"roboto";
 }
 
 #logo h1 {
@@ -29,18 +34,16 @@ html, body {
 	font-size:1.5em!important;
 	vertical-align:middle;
 	color:#FFF;
-	font-family:"roboto";
 }
 
 #language_menu #language_toggle {
 	font-size:1.25rem;
 	color:#A4A8B9!important;
-	font-family:"roboto";
+	font
 }
 
 #language_menu a:hover {
 	text-decoration:none!important;
-	font-family:"roboto";
 }
 
 .border {
@@ -64,7 +67,6 @@ html, body {
 .navbar-nav > li > a {
 	text-shadow:none!important;
 	color:inherit!important;
-	font-family:"roboto";
 }
 
 .navbar-default {
@@ -81,7 +83,6 @@ html, body {
 	background-color:transparent!important;
 	box-shadow:none!important;
 	color:#3A4fA1!important;
-
 }
 
 .navbar .material-icons {
@@ -112,14 +113,11 @@ html, body {
 
 #main_menu a {
 	text-transform:initial!important;
-	font-family:"roboto";
 }
 
 #show_me_menu ul {
-
 	line-height:35px!important;
 	font-size:85%;
-	font-family:"roboto";
 }
 
 #show_me_menu .dropdown-menu > .active > a, .dropdown-menu > .active > a:focus, .dropdown-menu > .active > a:hover {
@@ -132,8 +130,8 @@ html, body {
 
 .dropdown-menu .btn, .dropdown-menu .btn-flat {
 	text-align:left!important;
-	font-family:"roboto";
 }
+
 
 /* Map-Related Styles. */
 #toggles {
@@ -169,7 +167,6 @@ html, body {
 	font-size:0.9em!important;
     text-align:center;
     color:#EFEFEF;
-		font-family:"roboto";
 }
 
 #toggles .list label span {
@@ -179,7 +176,6 @@ html, body {
 #toggles .btn {
 	border-color:#A4A8B9;
 	text-transform:none;
-	font-family:"roboto";
 }
 
 .tile {
@@ -197,7 +193,6 @@ html, body {
 	-moz-box-sizing:border-box;
 	outline:none;
 	box-shadow:0 2px 6px rgba(0, 0, 0, 0.3);
-	font-family:"roboto";
 }
 
 #search_input:focus {
@@ -213,37 +208,32 @@ html, body {
 	font-family:Roboto;
 	font-size:13px;
 	font-weight:300;
-	font-family:"roboto";
 }
 
 #map h1 {
 	font-size:1.25em;
-	font-family:"roboto";
 }
 
 #resource_card #provider_title {
 	font-weight:bold;
-	font-family:"roboto";
 }
 
 #report_menu a {
 	color:#333!important;
 }
 
+
 /* Non-Map Pages */
 .page-header {
 	text-align:center;
-	font-family:"roboto";
 }
 
 #stepper_content h2 {
 	font-size:20px;
-	font-family:"roboto";
 }
 
 #steppers .active span {
 	font-weight:bold;
-	font-family:"roboto";
 }
 
 #steppers .done .stepper-step::before {
@@ -256,7 +246,6 @@ html, body {
 
 #aerator_img {
 	text-align:center;
-	font-family:"roboto";
 }
 
 div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='brief'] div[id*='step'][class*='stepper']::before, .cancel_stepper_border {
@@ -265,69 +254,57 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 
 .stepper-vert-inner .btn {
 	text-transform:uppercase;
-	font-family:"roboto";
 }
 
 .stepper-vert-inner .btn_group {
-	text-align:center;
-	font-family:"roboto";
+	 text-align:left!important
 }
 
 #filter_page #allFilters_step1_content .card-inner {
 	text-align:center;
 	font-weight:bold!important;
-	font-family:"roboto";
 }
 
 #location_card #address {
 	font-size:150%;
-	font-family:"roboto";
 }
 
 #location_card #prediction, #location_card #lead_meter {
 	font-weight:bold;
-	font-family:"roboto";
 }
 
 #location_card .card-action {
 	text-align:center;
-	font-family:"roboto";
 }
 
 #location_card .card-action .btn {
 	font-size:1rem!important;
-	font-family:"roboto";
 }
 
 #location_card .btn {
 	text-align:left;
 	white-space:normal!important;
-	font-family:"roboto";
 }
+
 
 footer #site_desc p:first-child {
 	font-size:120%;
-	font-family:"roboto";
 }
 
 footer h5 {
 	text-align:justify;
-	font-family:"roboto";
 }
 
 footer p {
 	text-align:center;
-	font-family:"roboto";
 }
 
 footer .card-inner p {
 	text-align:left;
-	font-family:"roboto";
 }
 
 footer .card-action btn {
 	font-size:1.3rem!important;
-	font-family:"roboto";
 }
 
 .tooltip-inner {
@@ -337,6 +314,7 @@ footer .card-action btn {
   opacity:1;
   filter:alpha(opacity=100);
 }
+
 
 /* Tablet and desktop/laptop only. */
 @media only screen and (min-width:768px) {
@@ -350,7 +328,6 @@ footer .card-action btn {
 
 	#logo h1 {
 		font-size:1.75em;
-		font-family:"roboto";
 	}
 
 	#main_menu {
@@ -364,7 +341,6 @@ footer .card-action btn {
 
 	#show_me_menu .dropdown-menu a {
 		font-size:100%;
-		font-family:"roboto";
 		color:#337ab7!important;
 	}
 
@@ -374,16 +350,12 @@ footer .card-action btn {
 
 	footer h3 {
 		text-align:center;
-		font-family:"roboto";
 	}
-
 }
 
 /* Desktop/Laptop only. */
 @media only screen and (min-width:992px) {
 	#language_menu #language_toggle {
 		font-size:1.3rem;
-		font-family:"roboto";
 	}
-
 }

@@ -612,7 +612,7 @@ function setUpFusionTable() {
 		}, {
 			where: '\'leadlevel\' >= 15  AND \'leadlevel\' < 50',
 			markerOptions: {
-				iconName: "small_yellow"
+				iconName: "measle_brown"
 			}
 		}, {
 			where: '\'leadlevel\' >= 50 ',
@@ -622,7 +622,7 @@ function setUpFusionTable() {
 		}, {
 			where: '\'leadlevel\' >= 0 AND \'leadlevel\' < 15',
 			markerOptions: {
-				iconName: "small_green"
+				iconName: "small_yellow"
 			}
 		}]
 	  });

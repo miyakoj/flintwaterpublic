@@ -19,10 +19,6 @@ html, body {
 	margin-right:0!important;
 }
 
-.row:nth-child(2) {
-	display:none;
-}
-
 .card-inner {
 	margin: 20px 16px 20px 16px!important;
 }
@@ -484,27 +480,31 @@ footer {
 }
 
 body[id="index_page"] footer {
-	display:block;
+	display:initial;
 }
 
-footer .row:nth-child(1) .col-md-12 {
+footer #site_desc .col-md-12 {
 	padding:15px 10px 0 10px!important;
 }
 
-footer row:nth-child(2) .col-md-12 {
+footer #card_row .col-md-12 {
 	padding:0 40px!important;
+}
+
+footer #card_row h4 {
+	margin-bottom:15px;
+}
+
+footer #card_row #apple_store_link {
+	display:none;
+}
+
+footer #copyright_row {
+	margin-top:12px;
 }
 
 footer .col-md-4 {
 	padding:0 20px;
-}
-
-footer #app_card {
-	display:none;
-}
-
-footer .card img {
-	display:none;
 }
 
 footer p {
