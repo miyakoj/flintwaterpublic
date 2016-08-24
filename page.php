@@ -428,7 +428,7 @@ if (@isset($_GET["pid"])) {
 											</div>
 											
 											<div class='form-group'>
-											<label for='problem_text'>Describe the problem:</label><br>
+											<label for='problem_text'>Describe the problem:</label>
 											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit'></textarea>
 											<p class='char_count'></p>
 											</div>											
@@ -458,7 +458,11 @@ if (@isset($_GET["pid"])) {
 												</label>
 											</div>
 											
-											<input id='email_address' class='form-control hide' name='email' placeholder='user@email.com' />
+											<div class='form-group'>
+											<label for='email_address'>Email address:</label>
+											<input id='email_address' class='form-control' name='email' placeholder='user@email.com' />
+											</div>
+											
 											<input id='phone_number' class='form-control hide' name='phone' placeholder='(555) 555-5555' />
 											
 											<div class='btn_group'>

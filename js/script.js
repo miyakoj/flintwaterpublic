@@ -601,16 +601,19 @@ $(document).ready(function() {
 	$("#report_problem #phone_number").val("");
 	
 	/* Set the validation rules. */
+	/*$.validator.methods.phoneUS = function(value, element) {
+		return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
+	}*/
 	$("#report_problem #location_selector").rules("add", {required: true});
 	$("#report_problem #problem_selector").rules("add", {required: true});
 	$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
 	$("#email_address").rules("add", {
 		required: true,
-		email: {
+		email: true/*{
 			depends: function(element) {
 				return $("#email_choice").is(":checked");
 			}
-		}
+		}*/
 	});
 	$.validator.methods.phoneUS = function(value, element) {
 		return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
@@ -633,6 +636,11 @@ $(document).ready(function() {
 				//console.log();
 				
 			}*/
+			
+			if (validator.element("#report_problem #location_selector"))
+				$("#report_step1_content .next_button").removeClass("disabled");
+			else
+				$("#report_step1_content .next_button").addClass("disabled");
 		});
 		
 		if (validator.element("#report_problem #location_selector"))

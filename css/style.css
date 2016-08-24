@@ -415,6 +415,10 @@ body[id="index_page"] main {
 	width:60%;
 }
 
+#report_problem #contact_pref, #report_problem #phone_number {
+	display:none;
+}
+
 /*.saved_locations img {
 	width:25px;
 	height:auto;
