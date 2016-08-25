@@ -77,7 +77,7 @@ function checkAuth() {
 }
 
 function initMap() {
-	$("#resource_card, #location_card").hide();
+	$("#resource_card, #location_card, #legend_card").hide();
 	
 	console.log("initMap() map = " + map);
 	
@@ -300,7 +300,7 @@ function initMap() {
 
 	// If the map is clicked, hide the resource and location cards
 	 map.addListener('click', function() {
-    	$("#resource_card, #location_card").hide();
+    	$("#resource_card, #location_card, #legend_card").hide();
   	});
 
 	 map.addListener('zoom_changed', function() {
@@ -446,7 +446,7 @@ function initMap() {
 	
 	// hide the location card if the search box is empty
 	$("#search_input").on("change", function(event) {
-		$("#resource_card").hide();
+		$("#resource_card, #legend_card").hide();
 		
 		if ($(this).val() == "")
 			$("#location_card").hide();
@@ -654,29 +654,34 @@ function addFusionListener(object) {
 						
 
 			var content = "<div>";
-
+			
 			e.infoWindow
 			content += "<b>Address: </b>" + e.row['Address'].value + "<br>";
 			if (e.row['leadlevel'].value != "") {
 				content += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
 				content += "<b>Last Tested: </b>" + e.row['testDate'].value;
+				hideLegendCard();
 			}
 
 			else if (e.row['Prediction'].value >= 0.20) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
 				content += "<b>Predicted Risk: </b>" + highRisk + "<br>";
+				attachLegendCard();
 			}
 			else if (e.row['Prediction'].value > 0.10 && e.row['Prediction'].value < .20) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
 				content += "<b>Predicted Risk: </b>" + mediumRisk + "<br>";
+				attachLegendCard();
 			}
 			else if (e.row['Prediction'].value <= .10) {
 				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
 				content += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
+				attachLegendCard();
 			}
 			else
 			{
 				content += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
+				hideLegendCard();
 			}
 			
 			content += "</div>";
@@ -684,10 +689,63 @@ function addFusionListener(object) {
 	   		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 			$("#location_card .card-action").hide();
 	   		$("#location_card").show();
+			
 
 		});	
 }
 
+function attachLegendCard(){
+		var details = "<div class=legend>"
+			
+		var unknownIconSrc = 'images/unknown_icon.png';
+		var unknownicon = "<img src='" + unknownIconSrc + "' title ='unknown risk' class='legend_icons' /> ";
+			
+		var lowIconSrc = 'images/low_icon.png';
+		var lowicon = "<img src='" + lowIconSrc + "' title ='low risk' class ='legend_icons' /> ";
+			
+		var mediumIconSrc = 'images/medium_icon.png';
+		var mediumicon = "<img src='" + mediumIconSrc + "' title ='medium risk' class='legend_icons' /> ";
+			
+		var highIconSrc = 'images/high_icon.png';
+		var highicon = "<img src='" + highIconSrc + "' title ='high risk' class='legend_icons' /> ";
+		
+		if(windowWidth <= 600){
+			details += unknownicon + "<b>Unknown</b>"; 
+			details += lowicon + "<b>Low</b>";
+			details += mediumicon + "<b>Medium</b>";
+			details += highicon + "<b>High</b>"
+			details += "</div>";
+			$("#legend_card .card-inner").empty()
+			$("#legend_card .card-inner").append(details);
+			$("#legend_card .card-action").hide();
+			$("#legend_card").show();
+		}
+		else {
+			details += "<div class=row>";
+			details += "<div class=col-md-4>"
+			details += unknownicon + "<b>Unknown</b>"; 
+			details += mediumicon + "<b>Medium</b>";
+			details += "</div>";
+			details += "<div class=col-md-4>"
+			details += lowicon + "<b>Low</b>";
+			details += highicon + "<b>High</b>"
+			details += "</div>";
+			details += "</div>";
+			details += "</div>";
+			$("#legend_card .card-inner").empty()
+			$("#legend_card .card-inner").append(details);
+			$("#legend_card .card-action").hide();
+			$("#legend_card").show();
+		}
+}
+
+function hideLegendCard() {
+		$("#legend_card").hide();
+		console.log(windowWidth);
+		if(windowWidth <= 600){
+			$("#location_card").css("bottom", "5px");
+		}
+}
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
 function callStorageAPI(object) {
 	gapi.client.load('storage', 'v1').then(function() {
@@ -780,7 +838,7 @@ function callStorageAPI(object) {
 					content += "<h5><b>About this area</b></h5>";
 					content += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
 					content += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
-					content += "<p><small>Zoom in see more details</small></p>"
+				/*	content += "<p><small>Zoom in see more details</small></p>"*/
 					content += "</div>";
 					
 					attachLocationCard("lead", leadLevelAreaSquare, "", content);
@@ -1012,7 +1070,7 @@ function setUpInitialMap() {
 
 function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {		
-		$("#resource_card").hide();
+		$("#resource_card, #legend_card").hide();
 		
 		if ((address.length != 0) && content.length == 0)
 			content = createLocationContent(marker, address)
@@ -1068,7 +1126,7 @@ function createLocationContent(tempLocationMarker, address) {
 function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
 		marker.addListener("click", function() {
-			$("#location_card").hide();
+			$("#location_card, #legend_card").hide();
 			
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
@@ -1328,7 +1386,7 @@ $(document).ready(function() {
 
 	if (typeof(Storage) !== "undefined") {
 		$("#heatmap_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			//if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			if (resourceActiveArray[0] == 1) {
@@ -1345,7 +1403,7 @@ $(document).ready(function() {
 		});
 
 		$("#water_pickup_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[1] == 1) {
 				resourceActiveArray[1] = 0;
@@ -1364,7 +1422,7 @@ $(document).ready(function() {
 		});
 
 		$("#recycling_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[2] == 1) {
 				resourceActiveArray[2] = 0;
@@ -1383,7 +1441,7 @@ $(document).ready(function() {
 		});
 
 		$("#water_testing_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[4] == 1) {
 				resourceActiveArray[4] = 0;
@@ -1402,7 +1460,7 @@ $(document).ready(function() {
 		});
 
 		$("#blood_testing_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[5] == 1) {
 				resourceActiveArray[5] = 0;
@@ -1421,7 +1479,7 @@ $(document).ready(function() {
 		});
 
 		$("#water_filters_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[3] == 1) {
 				resourceActiveArray[3] = 0;
@@ -1440,7 +1498,7 @@ $(document).ready(function() {
 		});
 
 		$("#pipes_btn").on('click', function() {
-			$("#resource_card, #location_card").hide();
+			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[6] == 1) {
 				resourceActiveArray[6] = 0;
@@ -1671,7 +1729,7 @@ $(document).ready(function() {
 		displaySavedLocations();
 	});*/
 
-	$("#location_card .close, #resource_card .close").on("click", function() {
+	$("#location_card .close, #resource_card .close, #legend_card .close").on("click", function() {
 		$(this).parent().hide();
 	});
 	

@@ -97,6 +97,22 @@ html, body {
 	padding-top:25px;
 }
 
+.nav li {	
+	padding: 0 24px;
+	height: 48px;
+	line-height: 48px;
+}
+.nav span{
+	text-transform: uppercase;
+	font-weight: 500;
+	font-size: 13px;
+}
+
+#main a{
+	text-transform: uppercase!important;
+}
+
+
 .navbar {
 	margin-bottom:0!important;
 	border:none;
@@ -151,7 +167,6 @@ html, body {
 #show_me_menu #submit_link {
 	display:none;
 }
-
 
 /* Map-Related Styles. */
 #toggles {
@@ -241,7 +256,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #location_card {
 	position:absolute;
 	display:none;
-	bottom:5px;
+	bottom:65px;
 	left:5px;
 	right:5px;
 	z-index:200!important;
@@ -267,6 +282,32 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	vertical-align:middle;
 }
 
+#legend_card {
+	position:absolute;
+	display:none;
+	bottom: 1px;
+	left: 5px;
+	right: 5px;
+	z-index:200!important;
+}
+
+#legend_card .card-inner {
+	margin-top:10px!important;
+	margin-bottom:10px!important;
+}
+
+.legend_icons {
+	max-height: 40px;
+	max-width: 40px;
+	margin: 0 15px;
+	display: inline-block;
+}
+
+/*.legend b{	
+	text-align: center;
+	margin: 20px auto;
+}*/
+
 #resource_card {
 	/*padding:5px;*/
 	position:absolute;
@@ -282,7 +323,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	display:block;
 }
 
-#resource_card .close {
+.close {
 	margin-top:3px;
 	margin-right:5px;
 }

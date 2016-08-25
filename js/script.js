@@ -105,7 +105,7 @@ $(document).ready(function() {
 	/* General layout/CSS differences between the mobile and desktop versions. */
 	/* Phones only. */
 	if (windowWidth < 600) {
-		$("#location_card, #resource_card").css({
+		$("#location_card, #resource_card, #legend_card").css({
 			"width": (windowWidth - 10) + "px",
 		}).appendTo($("body"));
 		
@@ -128,6 +128,8 @@ $(document).ready(function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 			}
 		});
+		$("#legend_card").css({"width": "300px", "top": "215px", "left": "22px"});
+		
 		
 		var leftPos = (windowWidth - $("#resource_card").width()) / 2;
 		
