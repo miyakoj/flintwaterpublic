@@ -253,7 +253,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #location_card {
 	position:absolute;
 	display:none;
-	bottom:65px;
+	bottom:75px;
 	left:5px;
 	right:5px;
 	z-index:200!important;
@@ -281,28 +281,21 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #legend_card {
 	position:absolute;
 	display:none;
-	bottom: 1px;
+	bottom: 7px;
 	left: 5px;
 	right: 5px;
 	z-index:200!important;
 }
 
-#legend_card .card-inner {
+/*#legend_card .card-inner {
 	margin-top:10px!important;
 	margin-bottom:10px!important;
-}
+}*/
 
 .legend_icons {
-	max-height: 40px;
-	max-width: 40px;
-	margin: 0 15px;
-	display: inline-block;
+	height: 20px;
+	width: 20px;
 }
-
-/*.legend b{	
-	text-align: center;
-	margin: 20px auto;
-}*/
 
 #resource_card {
 	/*padding:5px;*/

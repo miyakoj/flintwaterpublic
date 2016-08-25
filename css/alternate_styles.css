@@ -35,9 +35,6 @@
 		left:0;
 	}
 	
-	#legend_card .col-md-4{
-		text-align: center;
-	}
 }
 
 /* Tablet and desktop/laptop only. */
@@ -169,5 +166,10 @@
 
 	#news_page .tab-nav {
 		margin-top:24px!important;
+	}
+	
+	.legend_icons {
+		height: 40px;
+		width: 40px;
 	}
 }
