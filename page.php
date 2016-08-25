@@ -400,7 +400,7 @@ if (@isset($_GET["pid"])) {
 										<div id='report_step1_content' class='stepper-vert-content'>
 											<div class='form-group'>
 											<label for='location_selector' class='sr-only'>Enter the Location:</label>
-											<input id='location_selector' class='form-control' placeholder='Enter the location' />
+											<input id='location_selector' class='form-control' type='text' name='location' placeholder='Enter the location' />
 											</div>
 											
 											<div class='btn_group'>
@@ -460,10 +460,10 @@ if (@isset($_GET["pid"])) {
 											
 											<div class='form-group'>
 											<label for='email_address'>Email address:</label>
-											<input id='email_address' class='form-control' name='email' placeholder='user@email.com' />
+											<input id='email_address' class='form-control' type='email' name='email' placeholder='user@email.com' />
 											</div>
 											
-											<input id='phone_number' class='form-control hide' name='phone' placeholder='(555) 555-5555' />
+											<input id='phone_number' class='form-control hide' type='tel' name='phone' placeholder='(555) 555-5555' />
 											
 											<div class='btn_group'>
 											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Submit</a>
@@ -482,7 +482,12 @@ if (@isset($_GET["pid"])) {
 		
 		case "about":
 			$pagetitle = "About This Site";
-			$content = "<img src='images/um_logo.png' /> <p>This website is a joint project between University of Michigan-Flint, University of Michigan-Ann Arbor, and Google.</p>";
+			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			$content .= "<div id='university_images' class='container-fluid'><div class='row'>
+			<div class='col-md-6'><img id='umf_logo' src='images/umf_logo.png' /></div>
+			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
+			</div></div>
+			<p>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and <a href='http://www.umich.edu'>University of Michigan-Ann Arbor</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>";
 		break;
 	}
 }		

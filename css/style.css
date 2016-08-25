@@ -93,11 +93,6 @@ html, body {
 	padding-top:25px;
 }
 
-.nav li {	
-	padding: 0 24px;
-	height: 48px;
-	line-height: 48px;
-}
 .nav span{
 	text-transform: uppercase;
 	font-weight: 500;
@@ -133,6 +128,10 @@ html, body {
 	padding-top:15px!important;
 }
 
+/*#main_menu .nav-justified li {
+	width:25%;
+}*/
+
 #language_menu {
 	display:none;
 }
@@ -141,9 +140,15 @@ html, body {
 	z-index:100!important;
 }
 
+#main_menu li {
+	padding:0 24px;
+}
+
 #main_menu a {
 	min-height:auto!important;
-	padding:6px 0 6px 6px!important;
+	margin:0;
+	height: 48px;
+	line-height: 48px;
 }
 
 #show_me_menu #show_me_toggle{
@@ -509,6 +514,23 @@ body[id="index_page"] main {
 }
 
 
+#about_page h3 {
+	margin-bottom:30px;
+}
+
+#about_page #umf_logo {
+	float:right;
+}
+
+#about_page img {
+	width:auto;
+	height:75px;
+}
+
+#about_page #university_images {
+	margin:0 30% 20px 30%;
+}
+
 
 footer {
 	display:none;
@@ -582,8 +604,6 @@ footer #copyright p span:last-child {
   bottom:0;
   left:50%;
   margin-left:-5px;
-  border-top-color:#FFF;
-  border-width:5px 5px 0;
 }
 
 .riskMeter{

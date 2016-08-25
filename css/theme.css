@@ -288,6 +288,10 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 	white-space:normal!important;
 }
 
+#about_page p {
+	text-align:justify;
+}
+
 
 footer #site_desc p:first-child {
 	font-size:120%;
@@ -311,6 +315,11 @@ footer .card-inner p {
 
 footer .card-action btn {
 	font-size:1.3rem!important;
+}
+
+.tooltip.top .tooltip-arrow {
+  border-top-color:#FFF;
+  border-width:5px 5px 0;
 }
 
 .tooltip-inner {
@@ -363,6 +372,10 @@ footer .card-action btn {
 @media only screen and (min-width:992px) {
 	#language_menu #language_toggle {
 		font-size:1.3rem;
+	}
+	
+	#about_page p {
+		text-align:center;
 	}
 	
 	footer #site_desc p {
