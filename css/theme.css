@@ -230,6 +230,10 @@ html, body {
 	text-align:center;
 }
 
+.btn_group {
+	text-align:left!important;
+}
+
 #stepper_content h2 {
 	font-size:20px;
 }

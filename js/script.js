@@ -609,6 +609,9 @@ $(document).ready(function() {
 	$("#report_problem #location_selector").rules("add", {required: true});
 	$("#report_problem #problem_selector").rules("add", {required: true});
 	$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
+	$.validator.methods.email = function(value, element) {
+		return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
+	}
 	$("#email_address").rules("add", {
 		required: true,
 		email: true/*{
