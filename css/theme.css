@@ -111,10 +111,6 @@ html, body {
 	color:#3A4fA1!important;
 }
 
-#main_menu a {
-	text-transform:initial!important;
-}
-
 #show_me_menu ul {
 	line-height:35px!important;
 	font-size:85%;
@@ -305,6 +301,10 @@ footer p {
 	text-align:center;
 }
 
+footer #site_desc p {
+	text-align:justify;
+}
+
 footer .card-inner p {
 	text-align:left;
 }
@@ -363,5 +363,9 @@ footer .card-action btn {
 @media only screen and (min-width:992px) {
 	#language_menu #language_toggle {
 		font-size:1.3rem;
+	}
+	
+	footer #site_desc p {
+		text-align:center;
 	}
 }

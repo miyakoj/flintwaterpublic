@@ -32,7 +32,7 @@ $(document).ready(function() {
   
 	/* Size the map based on the window size. */
 	if (windowHeight >= 480) {
-		var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight() + 10;
+		var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").offset().top + 100;
 	}
 	else
 		$("#map_container").css("height", "10em");

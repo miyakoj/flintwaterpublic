@@ -1,7 +1,3 @@
-* {
-	font-family:"roboto"!important;
-}
-
 html, body {
   	height:100%;
 }
@@ -106,10 +102,6 @@ html, body {
 	text-transform: uppercase;
 	font-weight: 500;
 	font-size: 13px;
-}
-
-#main a{
-	text-transform: uppercase!important;
 }
 
 
@@ -247,11 +239,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	display:block;
 }
 
-#index_page .card {
+/*#index_page .card {
 	margin-top:0!important;
 	margin-bottom:0!important;
 	z-index:2000!important;
-}
+}*/
 
 #location_card {
 	position:absolute;
@@ -269,7 +261,6 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 
 #location_card .card-action .btn {
 	padding:10px!important;
-	font-size:1rem!important;
 }
 
 #location_card #more_info_button {
@@ -371,7 +362,6 @@ body[id="index_page"] main {
 
 .btn_group {
 	position:relative;
-	text-align:left!important;
 }
 
 .btn_group .cancel_button {
@@ -408,7 +398,7 @@ body[id="index_page"] main {
 }
 
 .stepper-vert-inner .btn_group .back_button {
-		display:none;
+	display:none;
 }
 
 /*.stepper_group_width {
@@ -532,10 +522,6 @@ footer #site_desc .col-md-12 {
 	padding:15px 10px 0 10px!important;
 }
 
-footer #card_row .col-md-12 {
-	padding:0 40px!important;
-}
-
 footer #card_row h4 {
 	margin-bottom:15px;
 }
@@ -546,10 +532,6 @@ footer #card_row #apple_store_link {
 
 footer #copyright_row {
 	margin-top:12px;
-}
-
-footer .col-md-4 {
-	padding:0 20px;
 }
 
 footer p {

@@ -678,15 +678,14 @@ function addFusionListener(object) {
 				content += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
 				attachLegendCard();
 			}
-			else
-			{
+			else {
 				content += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
 				hideLegendCard();
 			}
 			
 			content += "</div>";
 	   		
-	   		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+	   		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 			$("#location_card .card-action").hide();
 	   		$("#location_card").show();
 			
