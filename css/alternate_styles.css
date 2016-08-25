@@ -27,6 +27,17 @@
 		top:3.5em;
 		left:0;
 	}
+	
+	#legend_card {
+		width:300px;
+		max-height: 150px;
+		top:3.5em;
+		left:0;
+	}
+	
+	#legend_card .col-md-4{
+		text-align: center;
+	}
 }
 
 /* Tablet and desktop/laptop only. */
