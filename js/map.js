@@ -637,6 +637,7 @@ function setUpFusionTable() {
 }
 
 function addFusionListener(object) {
+<<<<<<< HEAD
 	google.maps.event.addListener(object, 'click', function(event) {
 		//var html = "<div>";
 								
@@ -653,47 +654,129 @@ function addFusionListener(object) {
 
 function attachLegendCard() {
 		var details = "<div class=legend>"
+=======
+		google.maps.event.addListener(object, 'click', function(e) {
+
+			//var html = "<div>";
+									
+			//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
+			//var image1 = "<img src='" + icon1 + "' title ='banana' /> ";
+			
+			var unknownRiskSrc = 'images/unknownrisklevel.png';
+			var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='riskMeter' /> ";
+			
+			var lowRiskSrc = 'images/lowrisklevel.png';
+			var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='riskMeter' /> ";
+			
+			var mediumRiskSrc = 'images/medrisklevel.png';
+			var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='riskMeter' /> ";
+			
+			var highRiskSrc = 'images/highrisk.png';
+			var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='riskMeter' /> ";
+			
+			//$(".riskMeter").css({"max-width": "50%", "max-height": "50%"});
+						
+
+			var content = "<div>";
+			var details = ""
+			var tempLegendInfo = "<div class='legend'>";
+			
+			e.infoWindow
+			content += "<b>Address: </b>" + e.row['Address'].value + "<br>";
+			if (e.row['leadlevel'].value != "") {
+				content += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
+				content += "<b>Last Tested: </b>" + e.row['testDate'].value;
+				hideLegendCard();
+			}
+
+			else if (e.row['Prediction'].value >= 0.20) {
+				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				content += "<b>Predicted Risk: </b>" + highRisk + "<br>";
+				details=attachLegendCard(tempLegendInfo);
+			}
+			else if (e.row['Prediction'].value > 0.10 && e.row['Prediction'].value < .20) {
+				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				content += "<b>Predicted Risk: </b>" + mediumRisk + "<br>";
+				details=attachLegendCard(tempLegendInfo);
+			}
+			else if (e.row['Prediction'].value <= .10) {
+				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
+				content += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
+				details=attachLegendCard(tempLegendInfo);
+			}
+			else {
+				content += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
+				hideLegendCard();
+			}
+			
+			content += "</div>";
+	   		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+			if(windowWidth <= 600)
+				$("#location_card .card-inner").append("<br>" + details);
+			$("#location_card .card-action").hide();
+	   		$("#location_card").show();
+			
+
+		});	
+}
+
+function attachLegendCard(tempLegendInfo){
+		
+		var placeholderDetails = tempLegendInfo;
+>>>>>>> origin/master
 			
 		var unknownIconSrc = 'images/unknown_icon.png';
-		var unknownicon = "<img src='" + unknownIconSrc + "' title ='unknown risk' class='legend_icons' /> ";
+		var unknownicon = "<img src='" + unknownIconSrc + "' title ='unknown risk' class='legend_icons center-block' /> ";
 			
 		var lowIconSrc = 'images/low_icon.png';
-		var lowicon = "<img src='" + lowIconSrc + "' title ='low risk' class ='legend_icons' /> ";
+		var lowicon = "<img src='" + lowIconSrc + "' title ='low risk' class ='legend_icons center-block' /> ";
 			
 		var mediumIconSrc = 'images/medium_icon.png';
-		var mediumicon = "<img src='" + mediumIconSrc + "' title ='medium risk' class='legend_icons' /> ";
+		var mediumicon = "<img src='" + mediumIconSrc + "' title ='medium risk' class='legend_icons center-block' /> ";
 			
 		var highIconSrc = 'images/high_icon.png';
-		var highicon = "<img src='" + highIconSrc + "' title ='high risk' class='legend_icons' /> ";
+		var highicon = "<img src='" + highIconSrc + "' title ='high risk' class='legend_icons center-block' /> ";
 		
 		if(windowWidth <= 600){
-			details += unknownicon + "<b>Unknown</b>"; 
-			details += lowicon + "<b>Low</b>";
-			details += mediumicon + "<b>Medium</b>";
-			details += highicon + "<b>High</b>"
-			details += "</div>";
-			$("#legend_card .card-inner").empty()
-			$("#legend_card .card-inner").append(details);
+			placeholderDetails += "<div class='row'>";
+			placeholderDetails += "<div class='col-xs-3 text-center'>";
+			placeholderDetails += unknownicon + "<span>Unknown</span>"; 
+			placeholderDetails += "</div>";
+			placeholderDetails += "<div class='col-xs-3 text-center'>";
+			placeholderDetails += lowicon + "<span>Low</span>";
+			placeholderDetails += "</div>";
+			placeholderDetails += "<div class='col-xs-3 text-center'>";
+			placeholderDetails += mediumicon + "<span>Medium</span>";
+			placeholderDetails += "</div>";
+			placeholderDetails += "<div class='col-xs-3 text-center'>";
+			placeholderDetails += highicon + "<span>High</span>";
+			placeholderDetails += "</div>";
+			placeholderDetails += "</div>";
+			placeholderDetails += "</div>";
+			//$("location_card .card-inner").html(details);
+			/*$("#legend_card .card-inner").empty().html(details);
 			$("#legend_card .card-action").hide();
-			$("#legend_card").show();
+			$("#legend_card").show();*/
 		}
 		else {
-			details += "<div class=row>";
-			details += "<div class=col-md-4>"
-			details += unknownicon + "<b>Unknown</b>"; 
-			details += mediumicon + "<b>Medium</b>";
-			details += "</div>";
-			details += "<div class=col-md-4>"
-			details += lowicon + "<b>Low</b>";
-			details += highicon + "<b>High</b>"
-			details += "</div>";
-			details += "</div>";
-			details += "</div>";
-			$("#legend_card .card-inner").empty()
-			$("#legend_card .card-inner").append(details);
+			placeholderDetails += "<div class=row>";
+			placeholderDetails += "<div class='col-md-5 text-center'>"
+			placeholderDetails += unknownicon + "<span>Unknown</span>"; 
+			placeholderDetails += mediumicon + "<span>Medium</span>";
+			placeholderDetails += "</div>";
+			placeholderDetails += "<div class='col-md-5 text-center'>"
+			placeholderDetails += lowicon + "<span>Low</span>";
+			placeholderDetails += highicon + "<span>High</span>"
+			placeholderDetails += "</div>";
+			placeholderDetails += "</div>";
+			placeholderDetails += "</div>";
+			$("#legend_card .card-inner").empty().html(placeholderDetails);
 			$("#legend_card .card-action").hide();
 			$("#legend_card").show();
+			return 0;
 		}
+
+		return placeholderDetails;
 }
 
 function hideLegendCard() {

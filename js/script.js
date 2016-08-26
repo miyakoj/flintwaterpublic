@@ -122,7 +122,7 @@ $(document).ready(function() {
 				return $("#search_input").outerWidth();
 			},
 			"top": function() {
-				return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height()) + 20) + "px";
+				return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height())) + "px";
 			},
 			"left": function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
