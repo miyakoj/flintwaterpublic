@@ -19,6 +19,10 @@ html, body {
 	margin: 20px 16px 20px 16px!important;
 }
 
+h3, h4, h5 {
+	margin-top:0;
+}
+
 #header_top {
 	padding:7px 10px 5px 10px;
 }
@@ -128,27 +132,12 @@ html, body {
 	padding-top:15px!important;
 }
 
-/*#main_menu .nav-justified li {
-	width:25%;
-}*/
-
 #language_menu {
 	display:none;
 }
 
 #language_menu, #show_me_menu {
 	z-index:100!important;
-}
-
-#main_menu li {
-	padding:0 24px;
-}
-
-#main_menu a {
-	min-height:auto!important;
-	margin:0;
-	height: 48px;
-	line-height: 48px;
 }
 
 #show_me_menu #show_me_toggle{
@@ -161,9 +150,10 @@ html, body {
 	position:static;
 }
 
-#show_me_menu #submit_link {
+#show_me_menu li:nth-child(4) {
 	display:none;
 }
+
 
 /* Map-Related Styles. */
 #toggles {
@@ -190,6 +180,7 @@ html, body {
 #toggles .list {
 	width:100%;
 	margin-top:0px;
+	padding:8px 0;
 }
 
 #toggles .list label {
@@ -215,7 +206,7 @@ input[type='checkbox'] {
 
 #search_input {
 	width:300px;
-	height:32px;
+	height:2.25em;
 	margin-top:10px;
 	margin-left:12px;
 	padding:0 11px 0 13px;
@@ -262,6 +253,19 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #location_card .card-inner {
 	margin-top:10px!important;
 	margin-bottom:10px!important;
+}
+
+#location_card .dl-horizontal dt {
+	width:37%;
+}
+
+#location_card .dl-horizontal dd {
+	margin-left:40%;
+}
+
+#location_card .risk_meter {
+	width:auto;
+	height:3.5em;
 }
 
 #location_card .card-action .btn {
@@ -323,6 +327,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	margin-top:3px;
 	margin-right:5px;
 }
+
 #provider_resources .marker_popup_icons {
 	width:auto;
 	height:25px;
@@ -545,6 +550,7 @@ footer #site_desc .col-md-12 {
 }
 
 footer #card_row h4 {
+	margin-top:0;
 	margin-bottom:15px;
 }
 
@@ -560,17 +566,22 @@ footer p {
 	margin-top:10px!important;
 }
 
-footer .card-inner h3 {
+footer.card .card-inner h3 {
 	margin:10px 0 20px 0!important;
 }
 
-footer .card-inner p {
+footer.card .card-inner p {
 	margin:12px 0;
 }
 
-footer .card-action {
+footer.card .card-action {
 	width:100%;
 	min-height:auto;
+}
+
+footer .card .btn-group {
+	width:100%;
+	padding:0 8px;
 }
 
 body[id="index_page"] footer p {
@@ -604,9 +615,4 @@ footer #copyright p span:last-child {
   bottom:0;
   left:50%;
   margin-left:-5px;
-}
-
-.riskMeter{
-	max-height: 40%;
-	max-width: 40%;
 }

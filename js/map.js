@@ -60,6 +60,12 @@ var savedResourceIcon;
 var savedLocationIcon;
 var iconSize = 30;
 
+// risk meters
+var unknownRiskSrc = 'images/unknownrisklevel.png';
+var lowRiskSrc = 'images/lowrisklevel.png';
+var mediumRiskSrc = 'images/medrisklevel.png';
+var highRiskSrc = 'images/highrisk.png';
+
 var leadLevelOfInput;
 
 function setAPIKey() {
@@ -396,7 +402,7 @@ function initMap() {
 		
 		var inputAddress = place.formatted_address.split(',');
 		var streetAddress = inputAddress[0].toUpperCase();		
-		var content = createLocationContent(locationMarker, streetAddress);
+		var content = createLocationContent(locationMarker, streetAddress, "");
 		
 		/*var leadMeter;
 		var leadPrediction;
@@ -428,7 +434,7 @@ function initMap() {
 		
 		var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
 		
-		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
+		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
 		$("#location_card #card_save .material-icons").html("star_border");
 		$("#location_card").show();
 		
@@ -438,7 +444,7 @@ function initMap() {
 	
 	// Check the saved locations if enter is pressed while in the search box
 	$("#search_input").on("keydown", function(event) {
-		$("#resource_card").hide();
+		$("#resource_card, #legend_card").hide();
 		
 		if (event.which == 13)
 			updateLocationZoom();
@@ -625,75 +631,27 @@ function setUpFusionTable() {
 				iconName: "small_yellow"
 			}
 		}]
-	  });
+	});
 
 	addFusionListener(leadAndPredictiveLayer);
 }
 
 function addFusionListener(object) {
-		google.maps.event.addListener(object, 'click', function(e) {
-
-			//var html = "<div>";
-									
-			//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
-			//var image1 = "<img src='" + icon1 + "' title ='banana' /> ";
-			
-			var unknownRiskSrc = 'images/unknownrisklevel.png';
-			var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='riskMeter' /> ";
-			
-			var lowRiskSrc = 'images/lowrisklevel.png';
-			var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='riskMeter' /> ";
-			
-			var mediumRiskSrc = 'images/medrisklevel.png';
-			var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='riskMeter' /> ";
-			
-			var highRiskSrc = 'images/highrisk.png';
-			var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='riskMeter' /> ";
-			
-			//$(".riskMeter").css({"max-width": "50%", "max-height": "50%"});
-						
-
-			var content = "<div>";
-			
-			e.infoWindow
-			content += "<b>Address: </b>" + e.row['Address'].value + "<br>";
-			if (e.row['leadlevel'].value != "") {
-				content += "<b>Lead Level: </b>" + e.row['leadlevel'].value + "<br>";
-				content += "<b>Last Tested: </b>" + e.row['testDate'].value;
-				hideLegendCard();
-			}
-
-			else if (e.row['Prediction'].value >= 0.20) {
-				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-				content += "<b>Predicted Risk: </b>" + highRisk + "<br>";
-				attachLegendCard();
-			}
-			else if (e.row['Prediction'].value > 0.10 && e.row['Prediction'].value < .20) {
-				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-				content += "<b>Predicted Risk: </b>" + mediumRisk + "<br>";
-				attachLegendCard();
-			}
-			else if (e.row['Prediction'].value <= .10) {
-				//html += "<b>Predicted Risk: </b>" + e.row['Prediction'].value + "<br>";
-				content += "<b>Predicted Risk: </b>" + lowRisk + "<br>";
-				attachLegendCard();
-			}
-			else {
-				content += "<b>Predicted Risk: </b>" + unknownRisk + "<br>";
-				hideLegendCard();
-			}
-			
-			content += "</div>";
-	   		
-	   		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-			$("#location_card .card-action").hide();
-	   		$("#location_card").show();
-			
-
-		});	
+	google.maps.event.addListener(object, 'click', function(event) {
+		//var html = "<div>";
+								
+		//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
+		//var image1 = "<img src='" + icon1 + "' title ='banana' /> ";
+		
+		var content = createLocationContent(object, event.row['Address'].value, event);
+		
+		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+		$("#location_card .card-action").hide();
+		$("#location_card").show();
+	});
 }
 
-function attachLegendCard(){
+function attachLegendCard() {
 		var details = "<div class=legend>"
 			
 		var unknownIconSrc = 'images/unknown_icon.png';
@@ -739,12 +697,13 @@ function attachLegendCard(){
 }
 
 function hideLegendCard() {
-		$("#legend_card").hide();
-		console.log(windowWidth);
-		if(windowWidth <= 600){
-			$("#location_card").css("bottom", "5px");
-		}
+	$("#legend_card").hide();
+	console.log(windowWidth);
+	if(windowWidth <= 600){
+		$("#location_card").css("bottom", "5px");
+	}
 }
+
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
 function callStorageAPI(object) {
 	gapi.client.load('storage', 'v1').then(function() {
@@ -1072,10 +1031,10 @@ function attachLocationCard(type, marker, address, content) {
 		$("#resource_card, #legend_card").hide();
 		
 		if ((address.length != 0) && content.length == 0)
-			content = createLocationContent(marker, address)
+			content = createLocationContent(marker, address, "")
 		
 		// map.panTo(marker.getPosition());
-		$("#location_card .card-inner").html(content, "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
+		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
 		
 		if (type.indexOf("location") != -1)
 			$("#location_card .card-action").show();
@@ -1089,15 +1048,15 @@ function attachLocationCard(type, marker, address, content) {
 }
 
 /* Location info card content generation. */
-function createLocationContent(tempLocationMarker, address) {
+function createLocationContent(tempLocationMarker, address, eventData) {
 	var streetAddress = address;
-	var leadMeter = "No reported reading.";
-	var leadPrediction = "No prediction available.";
+	//var leadMeter = "No reported reading.";
+	//var leadPrediction = "No prediction available.";
 	//var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
 	var leadMsg = "";
 	var tempAddr;
 
-	for (var i=0; i < heatmapData.length; i++) {
+	/*for (var i=0; i < heatmapData.length; i++) {
 		tempAddr = heatmapData[i].address.valueOf();
 		if (tempAddr === streetAddress) {
 			leadMeter = heatmapData[i].lead + " ppb";
@@ -1106,9 +1065,52 @@ function createLocationContent(tempLocationMarker, address) {
 		}
 		else
 			leadLevelOfInput = -1;
+	}*/
+	
+	if (eventData == "") {
+		/*query: {
+	      	select: '\'latitude\'',
+	      	from: '17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX'
+	    }*/
+		
+		//query the fusion table
 	}
+	
+	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
+	var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
+	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
+	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";
+	
+	var content = "<h5 id='address'>" + address + "</h5>";
+	/*content += "<dl id='fusion_data' class='dl-horizontal'>";
+	if (e.row['leadlevel'].value != "") {
+		content += "<dt id='lead_level'>Lead Level:</dt> <dd>" + e.row['leadlevel'].value + "</dd>";
+		content += "<dt id='last_tested'>Last Tested:</dt> <dd>" + e.row['testDate'].value + "</dd>";
+		hideLegendCard();
+	}
+	else {
+		content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
+	
+		if (e.row['Prediction'].value >= 0.20) {
+			//html += "<p><span>Predicted Risk: </span>" + e.row['Prediction'].value + "</p>";
+			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + highRisk + "</dd>";
+		}
+		else if (e.row['Prediction'].value > 0.10 && e.row['Prediction'].value < .20) {
+			//html += "<p><span>Predicted Risk: </span>" + e.row['Prediction'].value + "</p>";
+			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + mediumRisk + "</dd>";
+		}
+		else if (e.row['Prediction'].value <= .10) {
+			//html += "<p><span>Predicted Risk: </span>" + e.row['Prediction'].value + "</p>";
+			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + lowRisk + "</dd>";
+		}
+		else {
+			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + unknownRisk + "</dd>";
+		}
+	}
+	
+	content += "</dl>";*/
 
-	if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
+	/*if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
 		leadPrediction = "Predicted low lead levels";
 	}
 	else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
@@ -1119,7 +1121,9 @@ function createLocationContent(tempLocationMarker, address) {
 		leadMsg = "Not safe to drink even if filtered."
 	}
 	
-	return "<h5 id='address'>" + streetAddress + "</h5> <h5 id='prediction'>" + leadPrediction + "</h5> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";
+	return "<h5 id='address'>" + streetAddress + "</h5> <h5 id='prediction'>" + leadPrediction + "</h5> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
+	
+	return content;
 }
 
 function bindInfoWindow(type, marker, map, resourcesAvailable, content) {

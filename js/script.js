@@ -128,8 +128,30 @@ $(document).ready(function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 			}
 		});
-		$("#legend_card").css({"width": "300px", "top": "215px", "left": "22px"});
 		
+		/*$("#location_card .dl-horizontal dt").css({
+			"width": function() {
+				return ($("#search_input").outerWidth() * 0.3) + "px";
+			}
+		});
+		
+		$("#location_card .dl-horizontal dd").css({
+			"margin-right": function() {
+				return ($("#search_input").outerWidth() + 5) + "px";
+			}
+		});*/
+		
+		$("#legend_card").css({
+			"width": function() {
+				return $("#location_card").outerWidth();
+			},
+			"top": function() {
+				return parseInt($("#location_card").css("top")) + (parseInt($("#location_card").height()) + 20) + "px";
+			},
+			"left": function() {
+				return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
+			}
+		});
 		
 		var leftPos = (windowWidth - $("#resource_card").width()) / 2;
 		

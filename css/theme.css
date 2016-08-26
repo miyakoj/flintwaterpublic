@@ -2,7 +2,12 @@
 	font-family:"roboto"!important;
 }
 
-.icon {
+a {
+	color:#3f51b5!important;
+	color:#3f51b5!important;
+}
+
+.icon, .material-icons {
 	font-family:"Material Icons"!important;
 }
 
@@ -131,14 +136,14 @@ html, body {
 
 /* Map-Related Styles. */
 #toggles {
-	background-color:#252E56;
+	background-color:#252E56!important;
 	position:relative;
 	overflow:hidden!important;
 }
 
 #toggles .active {
 	background-color:#3A4fA1!important;
-	border-color:#245580!important;
+	border:1px solid #245580!important;
 }
 
 #toggles img {
@@ -162,7 +167,7 @@ html, body {
 	display:table-cell;
 	font-size:0.9em!important;
     text-align:center;
-    color:#EFEFEF;
+    color:#EFEFEF!important;
 }
 
 #toggles .list label span {
@@ -170,8 +175,14 @@ html, body {
 }
 
 #toggles .btn {
-	border-color:#A4A8B9;
+	border:1px solid #A4A8B9;
 	text-transform:none;
+	box-shadow:none;
+	border-radius:4px;
+}
+
+.btn-primary {
+	
 }
 
 .tile {
@@ -181,16 +192,13 @@ html, body {
 #search_input {
 	background-color:#fff;
 	font-size:16px;
-	/*font-weight:300;*/
 	text-overflow:ellipsis;
 	border:1px solid transparent;
 	border-radius:2px 0 0 2px;
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	outline:none;
-	/*box-shadow:0 2px 6px rgba(0, 0, 0, 0.3);*/
 	box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
-	height: 48px;
 }
 
 #search_input:focus {
@@ -268,8 +276,12 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 }
 
 #location_card #address {
-	font-size:150%;
+	font-size:120%;
 }
+
+/*#location_card span {
+	font-weight:bold;
+}*/
 
 #location_card #prediction, #location_card #lead_meter {
 	font-weight:bold;

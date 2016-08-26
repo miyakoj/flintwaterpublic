@@ -38,6 +38,10 @@
 	#legend_card .col-md-4{
 		text-align: center;
 	}
+	
+	.card {
+		margin:0;
+	}
 }
 
 /* Tablet and desktop/laptop only. */
@@ -69,9 +73,29 @@
 		width:100%!important;
 	}
 	
+	#main_menu li {
+		height: 48px;
+		padding:0 24px;
+	}
+	
+	#main_menu a {
+		margin:0;
+		padding:0;
+		line-height:48px;
+	}
+	
+	#main_menu .nav-justified li {
+		width:10em;
+	}
+	
 	#show_me_menu ul {
 		padding-left:0!important;
 		position:absolute!important;
+	}
+	
+	#show_me_menu li {
+		width:auto!important;
+		padding:0 12px!important;
 	}
 	
 	#show_me_menu .dropdown-menu a {
@@ -143,7 +167,7 @@
 	}
 	
 	#main_menu {
-		width:75rem!important;
+		width:60rem!important;
 		margin:0 auto!important;
 	}
 	

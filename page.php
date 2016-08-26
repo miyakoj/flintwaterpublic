@@ -482,8 +482,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "about":
 			$pagetitle = "About This Site";
-			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-			$content .= "<div id='university_images' class='container-fluid'><div class='row'>
+			//$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			$content = "<div id='university_images' class='container-fluid'><div class='row'>
 			<div class='col-md-6'><img id='umf_logo' src='images/umf_logo.png' /></div>
 			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
 			</div></div>
