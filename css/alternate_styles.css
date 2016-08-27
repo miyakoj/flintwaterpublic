@@ -1,19 +1,8 @@
 /* Tablet only. */
-@media only screen and (max-height:768px) {
-	#resource_card {
-		/*top:15em;
-		bottom:initial!important;
-		left:5em;*/
-	}
-}
-
-/* Tablet only. */
 @media only screen and (min-width:600px) {
 	#resource_card {
-		width:300px;
-		max-height: 222px;
+		width:25em;
 		top:3.5em;
-		left:0;
 		bottom:auto;
 	}
 	
@@ -21,7 +10,7 @@
 		display:block;
 	}
 	
-	#location_card {
+	/*#location_card {
 		width:300px;
 		max-height: 150px;
 		top:3.5em;
@@ -33,7 +22,7 @@
 		max-height: 150px;
 		top:3.5em;
 		left:0;
-	}
+	}*/
 	
 	#legend_card .col-md-4{
 		text-align: center;
@@ -63,6 +52,10 @@
 	
 	#header_top {
 		padding:10px;
+	}
+	
+	#logo {
+		margin:0 20%;	
 	}
 	
 	#logo img {
@@ -113,10 +106,6 @@
 	#topbar {
 		display:none;
 	}
-	
-	#resource_card {
-		left:15em;
-	}	
 	
 	.stepper-vert-inner .btn_group .back_button {
 		display:none;
@@ -185,10 +174,6 @@
 	
     #provider_popup img {
 		width:30px;
-	}
-	
-	#resource_card {
-		left:25em;
 	}
 
 	#news_page .tab-nav {

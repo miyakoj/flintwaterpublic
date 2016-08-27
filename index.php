@@ -33,11 +33,6 @@ $content = "<div id='map_container'>
 				<div class='card-inner'></div>
 				
 				<div class='card-action'>
-					<!--<div id='location_buttons' class='btn-group' role='group' aria-label='Location Info Buttons'>
-						<button id='saved_location_button' type='button' class='btn btn-flat btn-brand'><img src='images/savedlocation.png' /> <span></span></button>
-						<button id='more_info_button' type='button' class='btn btn-flat btn-brand'><img src='images/moreinfo.png' /> <span>More Info</span></button>
-					</div>-->
-					
 					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only'>More Info</span>
 					<span class='material-icons'>info_outline</span></button>
 					
@@ -59,7 +54,7 @@ $content = "<div id='map_container'>
 					<ul id='card_report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li>
 							<div class='dropdown'>
-							<a id='report_button' class='dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only'>Report an Inaccuracy</span>
+							<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only'>Report an Inaccuracy</span>
 							<span class='material-icons'>error</span></a>
 							
 							<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
@@ -85,9 +80,6 @@ $content = "<div id='map_container'>
 			
 			<div class='card-main'>
 				<div class='card-inner'></div>
-				
-				<div class='card-action'>
-				</div>
 			</div>
 		</div>
 	</div>";

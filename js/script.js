@@ -26,21 +26,6 @@ $(document).ready(function() {
 	//$("#language_menu .dropdown-toggle").css("width", $("#language_menu .dropdown-menu").css("min-width"));
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
-	/* Position the map in the correct element if it exists on the page. */
-	if($("#search_input").length != 0)
-		$("#map_container #search_input").after($("#map"));
-  
-	/* Size the map based on the window size. */
-	if (windowHeight >= 480) {
-		var mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").offset().top + 100;
-	}
-	else
-		$("#map_container").css("height", "10em");
-	
-	$("#map_container").css("height", mapHeight + "px");
-	
-	$("#search_input").val(""); // clear the search input upon refresh
-	
 	/* Scale the popup markers based on screen size. */
 	$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
 	
@@ -122,7 +107,7 @@ $(document).ready(function() {
 				return $("#search_input").outerWidth();
 			},
 			"top": function() {
-				return parseInt($("#search_input").css("top")) + (parseInt($("#search_input").height())) + "px";
+				return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
 			},
 			"left": function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
@@ -146,7 +131,8 @@ $(document).ready(function() {
 				return $("#location_card").outerWidth();
 			},
 			"top": function() {
-				return parseInt($("#location_card").css("top")) + (parseInt($("#location_card").height()) + 20) + "px";
+				console.log($("#location_card").css("top") + ", " + $("#location_card").outerHeight(true));
+				return parseInt($("#location_card").css("top")) + $("#location_card").outerHeight(true) + 10 + "px";
 			},
 			"left": function() {
 				return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";

@@ -23,9 +23,9 @@ h3, h4, h5 {
 	margin-top:0;
 }
 
-#header_top {
+/*#header_top {
 	padding:7px 10px 5px 10px;
-}
+}*/
 
 #made_in_Flint {
 	margin-top:25px;
@@ -36,12 +36,8 @@ h3, h4, h5 {
 	height:auto;
 }
 
-#logo {
-	margin:0 20%;	
-}
-
 #logo img {
-	width:3rem;
+	width:2.5rem;
 	height:auto;
 	margin:0 6px 0 auto;
 	display:none;
@@ -112,10 +108,6 @@ h3, h4, h5 {
 .navbar-header {
 	width:100%;
 	margin-top:10px;
-}
-
-.navbar-toggle {
-	padding-top:8px!important;
 }
 
 .navbar-brand {
@@ -241,12 +233,13 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	z-index:2000!important;
 }*/
 
-#location_card {
+#location_card, #resource_card, #legend_card {
+	width:100%;
+	margin:0;
 	position:absolute;
+	bottom: 5px;
+	left: 5px;
 	display:none;
-	bottom:75px;
-	left:5px;
-	right:5px;
 	z-index:200!important;
 }
 
@@ -282,15 +275,6 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	vertical-align:middle;
 }
 
-#legend_card {
-	position:absolute;
-	display:none;
-	bottom: 7px;
-	left: 5px;
-	right: 5px;
-	z-index:200!important;
-}
-
 /*#legend_card .card-inner {
 	margin-top:10px!important;
 	margin-bottom:10px!important;
@@ -303,15 +287,10 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 
 #resource_card {
 	/*padding:5px;*/
-	position:absolute;
-	bottom:5px;
-	left:5px;
-	display:none;
-	z-index:100!important;
 }
 
 #resource_card #card_report_menu {
-	padding-top:6px;
+	margin-top:0;
 	list-style-type:none;
 	display:block;
 }

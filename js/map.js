@@ -85,8 +85,23 @@ function checkAuth() {
 
 function initMap() {
 	$("#resource_card, #location_card, #legend_card").hide();
+
+	/* Position the map in the correct element if it exists on the page. */
+	if($("#search_input").length != 0)
+		$("#map_container #search_input").after($("#map"));
+  
+	/* Size the map based on the window size. */
+	var mapHeight;
 	
-	console.log("initMap() map = " + map);
+	if (windowHeight < 800)
+		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height")) - 25;
+	else
+		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height"));
+
+	
+	$("#map_container").css("height", mapHeight + "px");
+	
+	$("#search_input").val(""); // clear the search input upon refresh
 	
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
@@ -201,6 +216,7 @@ function initMap() {
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		var locationPosition;
 		var tempLocationMarker;
+		var streetAddress;
 		var content;
 		
 		for (var i = 1; i <= numberSaved; i++) {
@@ -208,6 +224,7 @@ function initMap() {
 				locationPosition = localStorage.getItem("savedLocationPosition"+i);
 				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
 				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+				streetAddress = localStorage.getItem("savedLocationAddress"+i);
 				
 				tempLocationMarker = new google.maps.Marker({
 					position: {lat:latitude, lng:longitude},
@@ -215,50 +232,22 @@ function initMap() {
 					icon: savedLocationIcon
 				});
 				
-				//content = createLocationContent(tempLocationMarker, localStorage.getItem("savedLocationAddress"+i));
-				
-				/*var streetAddress = localStorage.getItem("savedLocationAddress"+i);
-				var leadMeter;
-				var leadPrediction;
-				var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
-
-				for (var i=0; i < heatmapData.length; i++) {
-					var tempAddr = heatmapData[i].address.valueOf();
-					if (tempAddr === streetAddress) {
-						leadMeter = heatmapData[i].lead + " ppb";
-						leadLevelOfInput = heatmapData[i].lead;
-						break;
-					}
-					else {
-						 leadMeter = "No Reported Reading";
-						 leadLevelOfInput = -1;
-					}
-				}
-
-				if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
-					leadPrediction = "Predicted low lead levels";
-				}
-				else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
-					leadPrediction = "Predicted medium lead levels";
-				}
-				else if (leadLevelOfInput >= 150) {
-					leadPrediction = "Predicted high lead levels";
-					leadMsg = "Not safe to drink even if filtered."
-				}
-				
-				var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
-				
 				$("#location_card #card_save .material-icons").html("star");
-				//attachLocationCard("location", tempLocationMarker, map, content);
-				attachLocationCard("location", tempLocationMarker, localStorage.getItem("savedLocationAddress"+i), "");
+				
+				var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+					+ streetAddress + "'";
+
+				queryFusionTable(query, function(result) {
+					content = createLocationContent(tempLocationMarker, streetAddress, result);
+					
+					attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+				});
 				
 				savedMarkers.push(tempLocationMarker);
 				savedLocationMarkers.push(tempLocationMarker);
 			}
 		}
 	}
-	
-	$("#location_card #card_save .material-icons").html("star");
 
 	// Construction Junk
 	var constructionLatLng = {lat:43.019368, lng:-83.668522};
@@ -397,55 +386,27 @@ function initMap() {
 	  
 		map.fitBounds(bounds);
 
-		/* Display appropriate lead rating and message. */
-		//$("#location_card .card-inner").html("<h5>" + streetAddress + "</h5> <h6>" + leadPrediction + "</h6> <p>" + leadMeter + "</p> <p>" + leadMsg + "</p>");
-		//$("#location_card, #location_card .card-action").show();
-		
+		/* Display appropriate lead rating and message. */		
 		var inputAddress = place.formatted_address.split(',');
 		var streetAddress = inputAddress[0].toUpperCase();
-		//var content = createLocationContent(locationMarker, streetAddress, null);
+		
 		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 					+ streetAddress + "'";
-		var content = queryFusionTable(query, function(result) {
-			createLocationContent(locationMarker, streetAddress, result);
-		});
-		
-		/*var leadMeter;
-		var leadPrediction;
-		var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
 
-		for (var i=0; i < heatmapData.length; i++) {
-			var tempAddr = heatmapData[i].address.valueOf();
-			if (tempAddr === streetAddress) {
-				leadMeter = heatmapData[i].lead + " ppb";
-				leadLevelOfInput = heatmapData[i].lead;
-				break;
+		queryFusionTable(query, function(result) {
+			if (result.rows != undefined) {
+				content = createLocationContent(locationMarker, streetAddress, result);
+				$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");	
 			}
 			else {
-				 leadMeter = "No Reported Reading";
-				 leadLevelOfInput = -1;
+				content = "<h5 id='address'>" + streetAddress + "</h5> <p>There is no data available for this location.</p>";
+				$("#location_card .card-inner").empty().html(content);
+				$("#location_card .card-action").hide();
 			}
-		}
-
-		if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
-			leadPrediction = "Predicted low lead levels";
-		}
-		else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
-			leadPrediction = "Predicted medium lead levels";
-		}
-		else if (leadLevelOfInput >= 150) {
-			leadPrediction = "Predicted high lead levels";
-			leadMsg = "Not safe to drink even if filtered."
-		}
-		
-		var content = "<h5 id='address'>" + streetAddress + "</h5> <h6 id='prediction'>" + leadPrediction + "</h6> <p id='lead_meter'>" + leadMeter + "</p> <p id='lead_msg'>" + leadMsg + "</p>";*/
-		
-		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
-		$("#location_card #card_save .material-icons").html("star_border");
-		$("#location_card").show();
-		
-		//attachLocationCard("location", locationMarker, map, content);
-		attachLocationCard("location", locationMarker, streetAddress, "");
+				
+			$("#location_card").show();
+			
+		});
 	});
 	
 	// Check the saved locations if enter is pressed while in the search box
@@ -657,27 +618,34 @@ function addFusionListener(object) {
 	});
 }
 
-function attachLegendCard(tempLegendInfo) {
-	var details = "<div class=legend>";
-	var placeholderDetails = tempLegendInfo;
-	var unknownicon = "<img src='" + unknownIconSrc + "' title ='unknown risk' class='legend_icons center-block' /> ";
-	var lowicon = "<img src='" + lowIconSrc + "' title ='low risk' class ='legend_icons center-block' /> ";
-	var mediumicon = "<img src='" + mediumIconSrc + "' title ='medium risk' class='legend_icons center-block' /> ";
-	var highicon = "<img src='" + highIconSrc + "' title ='high risk' class='legend_icons center-block' /> ";
+//function attachLegendCard(tempLegendInfo) {
+function attachLegendCard() {
+	var placeholderDetails = "<div class=legend>";
+	//var placeholderDetails = tempLegendInfo;
+	
+	var unknownIconSrc = "images/unknown_icon.png";
+	var lowIconSrc = "images/low_icon.png";
+	var mediumIconSrc = "images/medium_icon.png";
+	var highIconSrc = "images/high_icon.png";
+	
+	var unknownIcon = "<img src='" + unknownIconSrc + "' title ='unknown risk' class='legend_icons center-block' /> ";
+	var lowIcon = "<img src='" + lowIconSrc + "' title ='low risk' class ='legend_icons center-block' /> ";
+	var mediumIcon = "<img src='" + mediumIconSrc + "' title ='medium risk' class='legend_icons center-block' /> ";
+	var highIcon = "<img src='" + highIconSrc + "' title ='high risk' class='legend_icons center-block' /> ";
 	
 	if (windowWidth <= 600) {
 		placeholderDetails += "<div class='row'>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += unknownicon + "<span>Unknown</span>"; 
+		placeholderDetails += unknownIcon + "<span>Unknown</span>"; 
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += lowicon + "<span>Low</span>";
+		placeholderDetails += lowIcon + "<span>Low</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += mediumicon + "<span>Medium</span>";
+		placeholderDetails += mediumIcon + "<span>Medium</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += highicon + "<span>High</span>";
+		placeholderDetails += highIcon + "<span>High</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
@@ -689,22 +657,22 @@ function attachLegendCard(tempLegendInfo) {
 	else {
 		placeholderDetails += "<div class=row>";
 		placeholderDetails += "<div class='col-md-5 text-center'>"
-		placeholderDetails += unknownicon + "<span>Unknown</span>"; 
-		placeholderDetails += mediumicon + "<span>Medium</span>";
+		placeholderDetails += unknownIcon + "<span>Unknown</span>"; 
+		placeholderDetails += mediumIcon + "<span>Medium</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-md-5 text-center'>"
-		placeholderDetails += lowicon + "<span>Low</span>";
-		placeholderDetails += highicon + "<span>High</span>"
+		placeholderDetails += lowIcon + "<span>Low</span>";
+		placeholderDetails += highIcon + "<span>High</span>"
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
-		$("#legend_card .card-inner").empty().html(placeholderDetails);
-		$("#legend_card .card-action").hide();
-		$("#legend_card").show();
-		return 0;
 	}
+	
+	$("#legend_card .card-inner").empty().html(placeholderDetails);
+	
+	//$("#legend_card").show();
 
-	return placeholderDetails;
+	//return placeholderDetails;
 }
 
 function hideLegendCard() {
@@ -810,9 +778,7 @@ function callStorageAPI(object) {
 				/*	content += "<p><small>Zoom in see more details</small></p>"*/
 					content += "</div>";
 					
-					attachLocationCard("lead", leadLevelAreaSquare, "", content);
-					//attachLocationCard("lead", leadLevelAreaSquare, map, content);
-					// attachLocationCard(birdMarker, map, content);
+					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
 				}
 			}
 			/* Provider Data */
@@ -1037,26 +1003,6 @@ function setUpInitialMap() {
 	setMarkers();
 }
 
-function attachLocationCard(type, marker, address, content) {
-	marker.addListener("click", function() {		
-		$("#resource_card, #legend_card").hide();
-		
-		if ((address.length != 0) && content.length == 0)
-			content = createLocationContent(marker, address, null)
-		
-		// map.panTo(marker.getPosition());
-		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");;
-		
-		if (type.indexOf("location") != -1)
-			$("#location_card .card-action").show();
-		else
-			$("#location_card .card-action").hide();
-		
-		$("#location_card").show();
-		
-		savedLocationMarkers.push(marker);
-	});
-}
 
 function queryFusionTable(query, callback) {
 	return $.ajax({
@@ -1075,34 +1021,25 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 	//var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
 	var tempAddr;
 	
-	if (object.kind.indexOf("fusiontables#sqlresponse") != -1) {
-		/*.done(function(resp) {
-			eadLevel = resp.rows[0][0];
-			testDate = resp.rows[0][1];
-			prediction = resp.rows[0][2];
-		}).fail(function() {
-			console.log("Error querying fusion table.");
-		});*/
-		
+	if (object.kind !== undefined) {		
 		leadLevel = object.rows[0][0];
 		testDate = object.rows[0][1];
 		prediction = object.rows[0][2];
 	}
-	/*else {
+	else {		
 		leadLevel = object.row["leadlevel"].value;
 		testDate = object.row["testDate"].value;
 		prediction = object.row["Prediction"].value;
-	}*/
+	}
 	
-	console.log(leadLevel + ", " + testDate + ", " + prediction);
-	
-	/*var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
+	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
 	var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
 	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
 	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	content += "<dl id='fusion_data' class='dl-horizontal'>";
+	
 	if (leadLevel != "") {
 		content += "<dt id='lead_level'>Lead Level:</dt> <dd>" + leadLevel + "</dd>";
 		content += "<dt id='last_tested'>Last Tested:</dt> <dd>" + testDate + "</dd>";
@@ -1123,11 +1060,11 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		else {
 			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + unknownRisk + "</dd>";
 		}
+		
+		attachLegendCard();
 	}
 	
 	content += "</dl>";
-	
-	console.log(content);
 
 	/*if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
 		leadPrediction = "Predicted low lead levels";
@@ -1140,8 +1077,41 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		leadMsg = "Not safe to drink even if filtered."
 	}*/
 	
-	return "";
+	return content;
 }
+
+
+function attachLocationCard(type, marker, address, content) {
+	marker.addListener("click", function() {
+		$("#resource_card, #legend_card").hide();
+		
+		/* Only specific location info. */
+		/*if ((address.length != 0) && (content.length == 0)) {
+			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+						+ address + "'";
+						
+			console.log(query);
+
+			queryFusionTable(query, function(result) {
+				content = createLocationContent(marker, address, result);
+			});
+		}*/
+		
+		$("#location_card .card-inner").empty().html(content);
+		
+		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1)) {
+			$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+			$("#location_card .card-action").show();
+		}
+		else
+			$("#location_card .card-action").hide();
+		
+		$("#location_card").show();
+		
+		savedLocationMarkers.push(marker);
+	});
+}
+
 
 function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
@@ -1405,7 +1375,7 @@ $(document).ready(function() {
 	console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {
-		$("#heatmap_btn").on('click', function() {
+		$("#heatmap_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			//if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
@@ -1422,7 +1392,7 @@ $(document).ready(function() {
 			setMarkers();
 		});
 
-		$("#water_pickup_btn").on('click', function() {
+		$("#water_pickup_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[1] == 1) {
@@ -1441,7 +1411,7 @@ $(document).ready(function() {
 			setMarkers();
 		});
 
-		$("#recycling_btn").on('click', function() {
+		$("#recycling_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[2] == 1) {
@@ -1460,7 +1430,7 @@ $(document).ready(function() {
 			setMarkers();
 		});
 
-		$("#water_testing_btn").on('click', function() {
+		$("#water_testing_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[4] == 1) {
@@ -1479,7 +1449,7 @@ $(document).ready(function() {
 			setMarkers();
 		});
 
-		$("#blood_testing_btn").on('click', function() {
+		$("#blood_testing_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[5] == 1) {
@@ -1498,7 +1468,7 @@ $(document).ready(function() {
 			setMarkers();
 		});
 
-		$("#water_filters_btn").on('click', function() {
+		$("#water_filters_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[3] == 1) {
@@ -1517,7 +1487,7 @@ $(document).ready(function() {
 			setMarkers();
 		});
 
-		$("#pipes_btn").on('click', function() {
+		$("#pipes_btn").on("click", function() {
 			$("#resource_card, #location_card, #legend_card").hide();
 			
 			if (resourceActiveArray[6] == 1) {
@@ -1544,7 +1514,7 @@ $(document).ready(function() {
 	// gives directions to a resource location when get dircetions is clicked
 	$("#resource_card #card_directions").on("click", function() {
 		resource_directions = resourceMarker.getPosition();
-        window.open('http://maps.google.com/?q='+resource_directions,'_blank');
+        window.open('http://maps.google.com/?q='+resource_directions, '_blank');
 	});
 
 	// saves/unsaves resource location when save button is clicked on the resource card
@@ -1649,7 +1619,7 @@ $(document).ready(function() {
 	});
 	
 	/* When a saved location is clicked, put the location in search bar and search. */
-	/*$(document).on('click', '.saved-location', function() {
+	/*$(document).on("click", '.saved-location', function() {
 		$('#search_input').val($(this).text());
 		// $('#search_button').click();
 
@@ -1702,7 +1672,7 @@ $(document).ready(function() {
 			temp.setIcon(locationIcon);
 			
 			// change image on card to star outline
-			$("#location_card #card_save .material-icons").html("star_outline");
+			$("#location_card #card_save .material-icons").html("star_border");
 			
 			// remove from savedMarkers 
 			for (var i = 0; i < savedMarkers.length; i++) {
