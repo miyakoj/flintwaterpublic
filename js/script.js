@@ -90,17 +90,14 @@ $(document).ready(function() {
 	/* General layout/CSS differences between the mobile and desktop versions. */
 	/* Phones only. */
 	if (windowWidth < 600) {
-		$("#location_card, #resource_card, #legend_card").css({
-			"width": (windowWidth - 10) + "px",
-		}).appendTo($("body"));
-		
-		//$("#resource_card #card_report_menu li:first-child div").removeClass("dropdown").addClass("dropup");
+		$("#location_card, #resource_card, #legend_card").appendTo($("body"));
 		
 		$("#resource_card #card_report_menu").on("click", function() {
 			$(this).find("li:first-child").addClass("dropup open");
 			$(this).find("#report_button").attr("aria-expanded", "true");
 		});
 	}
+	/* Tablets and computers. */
 	else {
 		$("#location_card").css({
 			"width": function() {
@@ -113,18 +110,6 @@ $(document).ready(function() {
 				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
 			}
 		});
-		
-		/*$("#location_card .dl-horizontal dt").css({
-			"width": function() {
-				return ($("#search_input").outerWidth() * 0.3) + "px";
-			}
-		});
-		
-		$("#location_card .dl-horizontal dd").css({
-			"margin-right": function() {
-				return ($("#search_input").outerWidth() + 5) + "px";
-			}
-		});*/
 		
 		$("#legend_card").css({
 			"width": function() {
@@ -301,10 +286,6 @@ $(document).ready(function() {
 			$("#header_top").addClass("clearfix");
 			$("#toggles").removeClass("btn-group btn-group-justified");
 		}
-	
-		$("#main_menu .nav").addClass("nav-justified");
-		$("#show_me_menu").addClass("dropdown");
-		$("#show_me_menu ul").addClass("dropdown-menu");
 		
 		/* Make the stepper content span only four columns. */
 		$("#" + $pageId + "_page #stepper_content").removeClass("col-xs-12").addClass("col-sm-5");

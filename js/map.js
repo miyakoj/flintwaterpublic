@@ -396,7 +396,22 @@ function initMap() {
 		queryFusionTable(query, function(result) {
 			if (result.rows != undefined) {
 				content = createLocationContent(locationMarker, streetAddress, result);
-				$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");	
+				$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+				
+				/* Dynamically size the location card info elements. */
+				$("#location_card .dl-horizontal dt").css({
+					"width": function() {
+						return ($("#location_card").innerWidth() * 0.35) + "px";
+					}
+				});
+				
+				$("#location_card .dl-horizontal dd").css({
+					"margin-left": function() {
+						return ($("#location_card").innerWidth() * 0.4) + "px";
+					}
+				});
+				
+				$("#location_card .card-action").show();
 			}
 			else {
 				content = "<h5 id='address'>" + streetAddress + "</h5> <p>There is no data available for this location.</p>";
@@ -613,6 +628,20 @@ function addFusionListener(object) {
 		var content = createLocationContent(object, event.row['Address'].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+		
+		/* Dynamically size the location card info elements. */
+		$("#location_card .dl-horizontal dt").css({
+			"width": function() {
+				return ($("#location_card").innerWidth() * 0.35) + "px";
+			}
+		});
+		
+		$("#location_card .dl-horizontal dd").css({
+			"margin-left": function() {
+				return ($("#location_card").innerWidth() * 0.4) + "px";
+			}
+		});
+		
 		$("#location_card .card-action").hide();
 		$("#location_card").show();
 	});
@@ -678,8 +707,12 @@ function attachLegendCard() {
 function hideLegendCard() {
 	$("#legend_card").hide();
 	console.log(windowWidth);
-	if(windowWidth <= 600){
-		$("#location_card").css("bottom", "5px");
+	if (windowWidth <= 600) {
+		$("#location_card").css({
+			"left": "5px",
+			"right": "5px",
+			"bottom": "5px",
+		});
 	}
 }
 
@@ -1101,6 +1134,20 @@ function attachLocationCard(type, marker, address, content) {
 		
 		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1)) {
 			$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+			
+			/* Dynamically size the location card info elements. */
+			$("#location_card .dl-horizontal dt").css({
+				"width": function() {
+					return ($("#location_card").innerWidth() * 0.35) + "px";
+				}
+			});
+			
+			$("#location_card .dl-horizontal dd").css({
+				"margin-left": function() {
+					return ($("#location_card").innerWidth() * 0.4) + "px";
+				}
+			});
+			
 			$("#location_card .card-action").show();
 		}
 		else

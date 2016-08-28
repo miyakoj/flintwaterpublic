@@ -234,11 +234,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }*/
 
 #location_card, #resource_card, #legend_card {
-	width:100%;
 	margin:0;
 	position:absolute;
-	bottom: 5px;
-	left: 5px;
+	bottom:5px;
+	left:5px;
+	right:5px;
 	display:none;
 	z-index:200!important;
 }
@@ -249,11 +249,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 #location_card .dl-horizontal dt {
-	width:37%;
-}
-
-#location_card .dl-horizontal dd {
-	margin-left:40%;
+	float:left;
 }
 
 #location_card .risk_meter {

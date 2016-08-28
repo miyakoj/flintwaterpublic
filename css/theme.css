@@ -287,6 +287,10 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 	font-weight:bold;
 }
 
+#location_card .dl-horizontal dt {
+	text-align:right;
+}
+
 #location_card .card-action {
 	text-align:center;
 }

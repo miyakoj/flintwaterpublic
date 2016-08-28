@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Unite Flint {PAGE_TITLE}</title>
 
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="css/base.min.css">
 <link rel="stylesheet" href="css/project.min.css">
@@ -50,14 +51,14 @@
 			   </div>
 			   
 			   <div id="main_menu" class="tab-nav">
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav nav-justified">
 				<li><a id="map_link" href="#"><span>Map</span></a></li>
 				<li><a id="news_link" href="#"><span>News</span></a></li>
 				
-				<li id="show_me_menu">
+				<li id="show_me_menu" class="dropdown">
 				  <a id="show_me_toggle" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 				  <span>Show me how to...</span> <span class="caret"></span></a>
-				  <ul aria-labelledby="show_me_toggle">
+				  <ul aria-labelledby="show_me_toggle" class="dropdown-menu">
 					<li><a id="test_link" href="#"><span>Test My Water</span></a></li>
 					<li><a id="filter_link" href="#"><span>Install a Water Filter</span></a></li>
 					<li><a id="aerator_link" href="#"><span>Clean My Aerator</span></a></li>

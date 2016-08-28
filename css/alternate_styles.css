@@ -1,5 +1,10 @@
 /* Tablet only. */
 @media only screen and (min-width:600px) {
+	#location_card, #resource_card, #legend_card {
+		bottom:initial;
+		right:initial;
+	}
+		
 	#resource_card {
 		width:25em;
 		top:3.5em;
@@ -26,10 +31,6 @@
 	
 	#legend_card .col-md-4{
 		text-align: center;
-	}
-	
-	.card {
-		margin:0;
 	}
 }
 
