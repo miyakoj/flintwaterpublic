@@ -246,6 +246,9 @@ function initMap() {
 				savedMarkers.push(tempLocationMarker);
 				savedLocationMarkers.push(tempLocationMarker);
 			}
+			else {
+				$("#location_card #card_save .material-icons").html("star_border");
+			}
 		}
 	}
 
@@ -279,7 +282,7 @@ function initMap() {
 	bindInfoWindow("waterplant", waterplantMarker, map, infoWindow, waterplantContent);	
 	waterplantMarker.setMap(null);
 	
-	// Create the search box and link it to the UI element only on the main map page.
+	// Create the search box and link it to the UI element.
 	var input = document.getElementById('search_input');
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -288,12 +291,12 @@ function initMap() {
 	map.addListener('idle', function(){
 		$("#search_input").css("display", "block");
 	});
-
+	
 	// Bias the SearchBox results towards current map's viewport.
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
 	});
-	
+
 	// If the map is clicked, hide the resource and location cards
 	 map.addListener('click', function() {
     	$("#resource_card, #location_card, #legend_card").hide();
@@ -418,7 +421,7 @@ function initMap() {
 				$("#location_card .card-inner").empty().html(content);
 				$("#location_card .card-action").hide();
 			}
-				
+			
 			$("#location_card").show();
 			
 		});
@@ -434,10 +437,10 @@ function initMap() {
 	
 	// hide the location card if the search box is empty
 	$("#search_input").on("change", function(event) {
-		$("#resource_card, #legend_card").hide();
+		//$("#resource_card, #legend_card").hide();
 		
 		if ($(this).val() == "")
-			$("#location_card").hide();
+			$("#location_card, #legend_card, #legend").hide();
 	});
 	
 	// Trigger search on button click
@@ -578,7 +581,7 @@ function initAutocomplete(inputId) {
 	var input = document.getElementById(inputId);
 	var autocomplete = new google.maps.places.Autocomplete(input, {
 		bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681}),
-		types: ["geocode"]
+		types: ['geocode']
 	});
 	
 	return autocomplete;
@@ -628,7 +631,7 @@ function addFusionListener(object) {
 		var content = createLocationContent(object, event.row['Address'].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-		
+
 		/* Dynamically size the location card info elements. */
 		$("#location_card .dl-horizontal dt").css({
 			"width": function() {
@@ -641,16 +644,17 @@ function addFusionListener(object) {
 				return ($("#location_card").innerWidth() * 0.4) + "px";
 			}
 		});
-		
+		$("#location_card .dl-horizontal").remove("#legend");
+		$("#location_card #211_info").after(attachLegendCard());
 		$("#location_card .card-action").hide();
 		$("#location_card").show();
 	});
 }
 
-//function attachLegendCard(tempLegendInfo) {
+
 function attachLegendCard() {
-	var placeholderDetails = "<div class=legend>";
-	//var placeholderDetails = tempLegendInfo;
+	var placeholderDetails = "<div id='legend'>";
+
 	
 	var unknownIconSrc = "images/unknown_icon.png";
 	var lowIconSrc = "images/low_icon.png";
@@ -678,6 +682,7 @@ function attachLegendCard() {
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
+		return placeholderDetails;
 		//$("location_card .card-inner").html(details);
 		/*$("#legend_card .card-inner").empty().html(details);
 		$("#legend_card .card-action").hide();
@@ -728,8 +733,6 @@ function callStorageAPI(object) {
 		request.then(function(resp) {
 			/* Heatmap Data */
 			if (object == "leadlevels.json") {
-				console.log("loading heatmap data");
-				
 				heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
@@ -1073,28 +1076,35 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	content += "<dl id='fusion_data' class='dl-horizontal'>";
 	
-	if (leadLevel != "") {
-		content += "<dt id='lead_level'>Lead Level:</dt> <dd>" + leadLevel + "</dd>";
-		content += "<dt id='last_tested'>Last Tested:</dt> <dd>" + testDate + "</dd>";
-		hideLegendCard();
+	if (!isNaN(leadLevel)) {
+		if (leadLevel != "") {
+			content += "<dt id='lead_level'>Lead Level:</dt> <dd>" + leadLevel + "</dd>";
+			content += "<dt id='last_tested'>Last Tested:</dt> <dd>" + testDate + "</dd>";
+			hideLegendCard();
+		}
+		else {
+			content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
+		
+			if (prediction >= 0.20) {
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + highRisk + "</dd>";
+			}
+			else if ((prediction > 0.10) && (prediction < .20)) {
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + mediumRisk + "</dd>";
+			}
+			else if (prediction <= .10) {
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + lowRisk + "</dd>";
+			}
+			else {
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + unknownRisk + "</dd>";
+			}
+			
+
+			/*content = attachLegendCard();*/
+		}
 	}
 	else {
 		content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
-	
-		if (prediction >= 0.20) {
-			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + highRisk + "</dd>";
-		}
-		else if ((prediction > 0.10) && (prediction < .20)) {
-			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + mediumRisk + "</dd>";
-		}
-		else if (prediction <= .10) {
-			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + lowRisk + "</dd>";
-		}
-		else {
-			content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + unknownRisk + "</dd>";
-		}
-		
-		attachLegendCard();
+		content += "<dt id='lead_level'>Predicted Risk:</dt> <dd>No prediction available.</dd>";
 	}
 	
 	content += "</dl>";
@@ -1130,6 +1140,11 @@ function attachLocationCard(type, marker, address, content) {
 			});
 		}*/
 		
+		/* Insert the saved location address in the location bar on the report page. */
+		var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+		if (($pageId.indexOf("report") != -1) && (type == "savedLocation"))
+			$("#location").val(address + ", Flint, MI");
+
 		$("#location_card .card-inner").empty().html(content);
 		
 		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1)) {
@@ -1708,13 +1723,14 @@ $(document).ready(function() {
 				}
 			}
 		}
-		
+
 		// location has already been saved
 		if (isSaved) {
 			var temp = locationMarker;
 			
 			// remove from local storage
 			savedLocationNum = unsaveLocation(latLong);
+			console.log(savedLocationNum);
 			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
 			temp.setIcon(locationIcon);
 			

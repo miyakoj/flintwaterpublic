@@ -401,12 +401,12 @@ if (@isset($_GET["pid"])) {
 										<div id='report_step1_content' class='stepper-vert-content'>
 											<div class='form-group'>
 											<label for='location' class='sr-only'>Enter the Location:</label>
-											<input id='location' class='form-control' type='text' name='location' placeholder='Enter the location' required />
+											<input id='location' class='form-control' type='text' name='location' placeholder='Enter a location or click a favorite location on the map' tabindex='20' required />
 											</div>
 											
 											<div class='btn_group'>
-											<button class='next_button btn btn-flat btn-primary disabled' href='#'>Next</button>
-											<button class='cancel_button btn btn-flat' href='#'>Cancel</button>
+											<button class='next_button btn btn-flat btn-primary disabled' href='#' tabindex='21'>Next</button>
+											<button class='cancel_button btn btn-flat' href='#' tabindex='22'>Cancel</button>
 											</div>
 										</div>
 										
@@ -420,7 +420,7 @@ if (@isset($_GET["pid"])) {
 										<div id='report_step2_content' class='stepper-vert-content hide'>
 											<div class='form-group'>
 											<label for='problem_type'>Select the problem:</label>
-											<select id='problem_type' name='problem_type' placeholder='Please choose a problem type.' class='form-control' required>
+											<select id='problem_type' name='problem_type' placeholder='Please choose a problem type.' class='form-control' tabindex='23' required>
 												<option value=''></option> 
 												<option value='Discolored Water'>Discolored Water</option>
 												<option value='Water Main Break'>Water Main Break</option>
@@ -430,13 +430,13 @@ if (@isset($_GET["pid"])) {
 											
 											<div class='form-group'>
 											<label for='problem_text'>Describe the problem:</label>
-											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit' required></textarea>
+											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit' tabindex='24' required></textarea>
 											<p class='char_count'></p>
 											</div>
 											
 											<div class='btn_group'>
-											<button class='next_button btn btn-flat btn-primary disabled' href='#'>Next</button>
-											<button class='cancel_button btn btn-flat' href='#'>Cancel</button>
+											<button class='next_button btn btn-flat btn-primary disabled' href='#' tabindex='25'>Next</button>
+											<button class='cancel_button btn btn-flat' href='#' tabindex='26'>Cancel</button>
 											</div>
 										</div>
 										
@@ -452,23 +452,23 @@ if (@isset($_GET["pid"])) {
 												<h5>Contact preference:</h5>
 												
 												<label class='radio-inline'>
-													<input type='radio' name='contact_radio_options' id='email_choice' value='email' /> Email
+													<input type='radio' name='contact_radio_options' id='email_choice' value='email' tabindex='27' /> Email
 												</label>
 												<label class='radio-inline'>
-													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone' /> Phone
+													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone' tabindex='28' /> Phone
 												</label>
 											</div>-->
 											
 											<div class='form-group'>
 											<label for='email'>Email address:</label>
-											<input id='email' class='form-control' type='email' name='email' placeholder='user@email.com' required />
+											<input id='email' class='form-control' type='email' name='email' placeholder='user@email.com' tabindex='29' required />
 											</div>
 											
-											<!--<input id='phone' class='form-control hide' type='tel' name='phone' placeholder='(555) 555-5555' />-->
+											<!--<input id='phone' class='form-control hide' type='tel' name='phone' placeholder='(555) 555-5555' tabindex='30' />-->
 											
 											<div class='btn_group'>
-											<button type='submit' class='next_button btn btn-flat btn-primary disabled'>Submit</button>
-											<button type='button' class='cancel_button btn btn-flat'>Cancel</button>
+											<button type='submit' class='next_button btn btn-flat btn-primary disabled' tabindex='31'>Submit</button>
+											<button type='button' class='cancel_button btn btn-flat' tabindex='32'>Cancel</button>
 											</div>
 										</div>
 									</div>

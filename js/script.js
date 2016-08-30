@@ -664,17 +664,20 @@ $(document).ready(function() {
 	
 	/* Fill in location after clicking favorite location marker. */
 	$("#report_problem #location").on("focus", function() {
-		console.log($(this).attr("id"));
 		var autocomplete = initAutocomplete($(this).attr("id"));
-		console.log(autocomplete);
 		
-		autocomplete.addListener('place_changed', function() {			
+		autocomplete.addListener('place_changed', function() {
 			if (validator.element("#report_problem #location"))
 				$("#report_step1_content .next_button").removeClass("disabled");
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		});
 		
+		if (validator.element("#report_problem #location"))
+			$("#report_step1_content .next_button").removeClass("disabled");
+		else
+			$("#report_step1_content .next_button").addClass("disabled");
+	}).on("focusout", function() {
 		if (validator.element("#report_problem #location"))
 			$("#report_step1_content .next_button").removeClass("disabled");
 		else
