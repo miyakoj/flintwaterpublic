@@ -62,10 +62,10 @@ var savedLocationIcon;
 var iconSize = 30;
 
 // risk meters
-var unknownRiskSrc = 'images/unknownrisklevel.png';
-var lowRiskSrc = 'images/lowrisklevel.png';
-var mediumRiskSrc = 'images/medrisklevel.png';
-var highRiskSrc = 'images/highrisk.png';
+var unknownRiskSrc = "images/unknownrisklevel.png";
+var lowRiskSrc = "images/lowrisklevel.png";
+var mediumRiskSrc = "images/medrisklevel.png";
+var highRiskSrc = "images/highrisk.png";
 
 var leadLevelOfInput;
 
@@ -279,7 +279,7 @@ function initMap() {
 	bindInfoWindow("waterplant", waterplantMarker, map, infoWindow, waterplantContent);	
 	waterplantMarker.setMap(null);
 	
-	// Create the search box and link it to the UI element.
+	// Create the search box and link it to the UI element only on the main map page.
 	var input = document.getElementById('search_input');
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
@@ -288,12 +288,12 @@ function initMap() {
 	map.addListener('idle', function(){
 		$("#search_input").css("display", "block");
 	});
-	
+
 	// Bias the SearchBox results towards current map's viewport.
 	map.addListener('bounds_changed', function() {
 		searchBox.setBounds(map.getBounds());
 	});
-
+	
 	// If the map is clicked, hide the resource and location cards
 	 map.addListener('click', function() {
     	$("#resource_card, #location_card, #legend_card").hide();
@@ -577,9 +577,9 @@ function initMap() {
 function initAutocomplete(inputId) {
 	var input = document.getElementById(inputId);
 	var autocomplete = new google.maps.places.Autocomplete(input, {
-		types: ['geocode']
+		bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681}),
+		types: ["geocode"]
 	});
-	autocomplete.setBounds(new google.maps.LatLngBounds({lat: 43.021, lng: -83.681}));
 	
 	return autocomplete;
 }

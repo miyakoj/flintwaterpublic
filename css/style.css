@@ -19,8 +19,12 @@ html, body {
 	margin: 20px 16px 20px 16px!important;
 }
 
-h3, h4, h5 {
-	margin-top:0;
+h2, h3, h4, h5 {
+	margin-top:0!important;
+}
+
+input, select, textarea {
+	padding:3px 6px!important;
 }
 
 /*#header_top {
@@ -428,6 +432,10 @@ body[id="index_page"] main {
 	display:none;
 }
 
+.char_count span {
+	font-weight:bold;
+}
+
 /*.saved_locations img {
 	width:25px;
 	height:auto;
@@ -565,8 +573,8 @@ footer #copyright p span:last-child {
 }
 	
 
-/* Alert Box */
-.alert {
+/* Dismissable Alert Box */
+.alert-dismissible {
 	width:45rem;
 	position:absolute;
 	top:0;
@@ -574,7 +582,7 @@ footer #copyright p span:last-child {
 	display:none;
 }
 
-.alert .close {
+.alert-dismissible .close {
 	top:-10px!important;
 }
 

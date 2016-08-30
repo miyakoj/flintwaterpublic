@@ -386,9 +386,10 @@ if (@isset($_GET["pid"])) {
 					<div id='topbar' class='col-xs-12'></div>
 				
 					<div id='stepper_content' class='col-xs-12'>
-						<form method='post'>
+						<h2>Report a Problem</h2>
+						
 						<div id='steppers' class='stepper-vert'>
-									<h2>Report a Problem</h2>
+						<form>
 									<div class='stepper-vert-inner'>
 										<div id='report_step1' class='stepper active'>
 											<div class='stepper-step'>
@@ -399,13 +400,13 @@ if (@isset($_GET["pid"])) {
 										</div>
 										<div id='report_step1_content' class='stepper-vert-content'>
 											<div class='form-group'>
-											<label for='location_selector' class='sr-only'>Enter the Location:</label>
-											<input id='location_selector' class='form-control' type='text' name='location' placeholder='Enter the location' />
+											<label for='location' class='sr-only'>Enter the Location:</label>
+											<input id='location' class='form-control' type='text' name='location' placeholder='Enter the location' required />
 											</div>
 											
 											<div class='btn_group'>
-											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Next</a>
-											<a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+											<button class='next_button btn btn-flat btn-primary disabled' href='#'>Next</button>
+											<button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 											</div>
 										</div>
 										
@@ -418,8 +419,8 @@ if (@isset($_GET["pid"])) {
 										</div>
 										<div id='report_step2_content' class='stepper-vert-content hide'>
 											<div class='form-group'>
-											<label for='problem_selector'>Select the problem:</label>
-											<select id='problem_selector' title='Please choose a problem type.' class='form-control'>
+											<label for='problem_type'>Select the problem:</label>
+											<select id='problem_type' name='problem_type' placeholder='Please choose a problem type.' class='form-control' required>
 												<option value=''></option> 
 												<option value='Discolored Water'>Discolored Water</option>
 												<option value='Water Main Break'>Water Main Break</option>
@@ -429,13 +430,13 @@ if (@isset($_GET["pid"])) {
 											
 											<div class='form-group'>
 											<label for='problem_text'>Describe the problem:</label>
-											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit'></textarea>
+											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit' required></textarea>
 											<p class='char_count'></p>
-											</div>											
+											</div>
 											
 											<div class='btn_group'>
-											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Next</a>
-											<a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+											<button class='next_button btn btn-flat btn-primary disabled' href='#'>Next</button>
+											<button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 											</div>
 										</div>
 										
@@ -447,27 +448,27 @@ if (@isset($_GET["pid"])) {
 											<span class='stepper-text'>Contact information</span>
 										</div>
 										<div id='report_step3_content' class='stepper-vert-content hide'>
-											<div id='contact_pref' class='form-group'>
+											<!--<div id='contact_pref' class='form-group'>
 												<h5>Contact preference:</h5>
 												
 												<label class='radio-inline'>
-													<input type='radio' name='contact_radio_options' id='email_choice' value='email'> Email
+													<input type='radio' name='contact_radio_options' id='email_choice' value='email' /> Email
 												</label>
 												<label class='radio-inline'>
-													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone'> Phone
+													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone' /> Phone
 												</label>
-											</div>
+											</div>-->
 											
 											<div class='form-group'>
-											<label for='email_address'>Email address:</label>
-											<input id='email_address' class='form-control' type='email' name='email' placeholder='user@email.com' />
+											<label for='email'>Email address:</label>
+											<input id='email' class='form-control' type='email' name='email' placeholder='user@email.com' required />
 											</div>
 											
-											<input id='phone_number' class='form-control hide' type='tel' name='phone' placeholder='(555) 555-5555' />
+											<!--<input id='phone' class='form-control hide' type='tel' name='phone' placeholder='(555) 555-5555' />-->
 											
 											<div class='btn_group'>
-											<a class='next_button btn btn-flat btn-primary disabled' href='#'>Submit</a>
-											<a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+											<button type='submit' class='next_button btn btn-flat btn-primary disabled'>Submit</button>
+											<button type='button' class='cancel_button btn btn-flat'>Cancel</button>
 											</div>
 										</div>
 									</div>
@@ -475,8 +476,8 @@ if (@isset($_GET["pid"])) {
 							</div>
 							
 							<div id='sidebar' class='col-sm-7'></div>
+						<form>
 						</div>
-						</form>
 					</div>";
 		break;
 		
