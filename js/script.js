@@ -585,8 +585,8 @@ $(document).ready(function() {
 		messages: {
 			problemType: "Please select a problem type.",
 			description: "Please describe the problem.",
-			email: "Please enter a valid email address.",
-			phone: "Please enter the phone number in (555) 555-5555 format."
+			email: "Please enter a valid email address."
+			//phone: "Please enter the phone number in (555) 555-5555 format."
 		},
 		submitHandler: function(form) {
 			var location;
