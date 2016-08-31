@@ -4,7 +4,7 @@ $(document).ready(function() {
 	var $activeNode;
 	
 	/* Position alert in the middle of the page. */
-	$(".alert").css({
+	$("#page_alert").css({
 		"top": function() {
 			return this.top = (windowHeight - $(".alert").height()) / 2;
 		},
@@ -62,16 +62,19 @@ $(document).ready(function() {
 	});
 	
 	$("footer .card-action a").each(function(i) {
-		id = $(this).attr("id");
-		page = id.slice(0, id.indexOf("_"));
-		
-		$(this).attr("href", "page.php?pid=" + page);
+		if ($(this).attr("href").indexOf("#") == 0) {
+			id = $(this).attr("id");
+			page = id.slice(0, id.indexOf("_"));
+			
+			$(this).attr("href", "page.php?pid=" + page);
+		}
 	});
 	
 	id = $("footer #about_link").attr("id");
 	page = id.slice(0, id.indexOf("_"));
 	
 	$("footer #about_link").attr("href", "page.php?pid=" + page);
+	
 	
 	/* Mark the tab of the current page as active. */
 	$pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
@@ -142,10 +145,16 @@ $(document).ready(function() {
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
 	//else for the index, news, and about pages
+	
 		
 	/* Resize the provider info popups. */
 	//console.log($("#provider_popup").parent());
 	//$("#provider_popup").parent().parent().css("width", "300px");
+	
+	
+	/* Make sure all the footer cards are the same height. */
+	$("footer .card .card-inner").css("height", $("#report_card .card-inner").css("height"));	
+	
 	
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
@@ -336,6 +345,8 @@ $(document).ready(function() {
 			$("#" + filter_type + "_" + $nodeSubstring + "2").removeClass("hide").addClass("active");
 			$("#" + filter_type + "_" + $nodeSubstring + "2_content").removeClass("hide");
 			
+			
+			
 			if ($pageId.indexOf("test") != -1) {
 				$("#map").addClass("hide");
 				$(".help_video").removeClass("hide");
@@ -407,6 +418,10 @@ $(document).ready(function() {
 			/* Use a loop to take the filter page into account, which has three clickables in step 1. */
 			$("div[id$='step1_content'] .next_button").each(function() {
 				$(this).on("click", function() {
+					if ($(this).hasClass("disabled")) {
+						return false;
+					}
+					
 					/* Retrieve which type of filter was clicked if on the filter page. */
 					var filter_type = "";
 					
@@ -416,6 +431,8 @@ $(document).ready(function() {
 					}
 					
 					console.log("filter_type = " + filter_type);
+					
+					
 					
 					if ($("#stepper_content").hasClass("brief"))
 						$("#" + $nodeSubstring + "1, div[id$='step1_content']").addClass("hide");
@@ -442,6 +459,10 @@ $(document).ready(function() {
 			});
 			
 			$("div[id$='step2_content'] .next_button").on("click", function() {
+				if ($(this).hasClass("disabled")) {
+					return false;
+				}
+					
 				/* Retrieve which type of filter was clicked if on the filter page. */
 				var filter_type = "";
 				
@@ -512,7 +533,11 @@ $(document).ready(function() {
 		else {
 			/* Use a loop to take into account the filter page which has three clickables in step 1. */
 			$("div[id$='step1_content'] .next_button").each(function() {
-				$(this).on("click", function() {
+				$(this).on("click", function(event) {
+					if ($(this).hasClass("disabled")) {
+						return false;
+					}
+					
 					/* Retrieve which type of filter was clicked if on the filter page. */
 					var filter_type = "";
 					
@@ -545,6 +570,10 @@ $(document).ready(function() {
 			});
 			
 			$("div[id$='step2_content'] .next_button").on("click", function() {
+				if ($(this).hasClass("disabled")) {
+					return false;
+				}
+				
 				/* Retrieve which type of filter was clicked if on the filter page. */
 				var filter_type = "";
 				
@@ -578,7 +607,7 @@ $(document).ready(function() {
 	
 	/* Report a Problem form processing. */	
 	var validator = $("#report_problem form").validate({
-		debug: true,
+		debug: false,
 		errorPlacement: function(error, element) {
 			element.after(error);
 		},
@@ -589,23 +618,26 @@ $(document).ready(function() {
 			//phone: "Please enter the phone number in (555) 555-5555 format."
 		},
 		submitHandler: function(form) {
-			var location;
+			var location = $("#location").val().replace(", United States", "");
 			
-			if ($("#location").val().indexOf("United States") != -1)
+			/*if ($("#location").val().indexOf("United States") != -1)
 				location = $("#location").val().replace(", United States", "");
 			else
-				location = $("#location").val();
+				location = $("#location").val();*/
 			
 			$(form).ajaxSubmit({
 				method: "POST",
 				url: "includes/functions.php",
 				data: {
-					type: "report",
+					type: "problem_report",
 					location: location,
 					problemType: $("#problem_type").val(),
 					description: $("#problem_text").val(),
 					email: $("#email").val()
 					//phone: $("#phone").val()
+				},
+				beforeSend: function() {
+					console.log(data);
 				},
 				complete: function(resp) {
 					console.log(resp);
