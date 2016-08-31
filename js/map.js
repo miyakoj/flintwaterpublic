@@ -106,7 +106,7 @@ function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
 	  zoom: 13,
-	  mapTypeControl:false
+	  mapTypeControl: false
 	});
 	
 	/* Centering and resizing */
@@ -220,7 +220,7 @@ function initMap() {
 		var content;
 		
 		for (var i = 1; i <= numberSaved; i++) {
-			if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
+			//if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
 				locationPosition = localStorage.getItem("savedLocationPosition"+i);
 				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
 				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
@@ -232,24 +232,47 @@ function initMap() {
 					icon: savedLocationIcon
 				});
 				
-				$("#location_card #card_save .material-icons").html("star");
-				
 				var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 					+ streetAddress + "'";
 
 				queryFusionTable(query, function(result) {
 					content = createLocationContent(tempLocationMarker, streetAddress, result);
-					
 					attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+					
+					savedMarkers.push(tempLocationMarker);
+					savedLocationMarkers.push(tempLocationMarker);
 				});
-				
-				savedMarkers.push(tempLocationMarker);
-				savedLocationMarkers.push(tempLocationMarker);
-			}
-			else {
-				$("#location_card #card_save .material-icons").html("star_border");
-			}
+			//}
 		}
+		
+		/*tempLocationMarker = new google.maps.Marker({
+			position: {lat:latitude, lng:longitude},
+			map: map,
+			icon: savedLocationIcon
+		});
+		
+		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+			+ streetAddress + "'";
+
+		queryFusionTable(query, function(result) {
+			content = createLocationContent(tempLocationMarker, streetAddress, result);
+			attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+			
+			if (latLong)
+				isSaved = checkIfSaved(latLong);
+			else {
+				for (var i = 1; i <= numberSaved; i++) {
+					if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
+						console.log(localStorage.getItem("savedLocationPosition"+i));
+						latLong = localStorage.getItem("savedLocationPosition"+i);
+						isSaved = true;
+					}
+				}
+			}
+		});
+		
+		savedMarkers.push(tempLocationMarker);
+		savedLocationMarkers.push(tempLocationMarker);*/
 	}
 
 	// Construction Junk
@@ -633,14 +656,34 @@ function setUpFusionTable() {
 }
 
 function addFusionListener(object) {
-	google.maps.event.addListener(object, 'click', function(event) {		
-		var content = createLocationContent(object, event.row['Address'].value, event);
+	google.maps.event.addListener(object, "click", function(event) {		
+		var content = createLocationContent(object, event.row["Address"].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 
 		$("#location_card .dl-horizontal").remove("#legend");
 		$("#location_card #211_info").after(attachLegendCard());
-		//$("#location_card .card-action").hide();
+		
+		var isSaved = false;
+		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
+
+		if (checkIfSaved(latLng)) {
+			isSaved = true;
+			
+			var tempLocationMarker = new google.maps.Marker({
+				position: {
+					lat: parseFloat(event.row["latitude"].value),
+					lng: parseFloat(event.row["longitude"].value)
+				},
+				map: map,
+				icon: savedLocationIcon
+			});
+			
+			attachLocationCard("savedLocation", tempLocationMarker, event.row["Address"].value, content)
+			
+			savedMarkers.push(tempLocationMarker);
+			savedLocationMarkers.push(tempLocationMarker);
+		}
 		
 		sizeCardInfo();
 		$("#location_card").show();
@@ -1064,10 +1107,10 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		prediction = object.row["Prediction"].value;
 	}
 	
-	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
-	var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
-	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
-	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";
+	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='Unknown Risk' class='risk_meter' /> ";
+	var lowRisk = "<img src='" + lowRiskSrc + "' title ='Low Risk' class ='risk_meter' /> ";
+	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='Medium Risk' class='risk_meter' /> ";
+	var highRisk = "<img src='" + highRiskSrc + "' title ='High Risk' class='risk_meter' /> ";
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	content += "<dl id='fusion_data' class='dl-horizontal'>";
@@ -1133,22 +1176,10 @@ function attachLocationCard(type, marker, address, content) {
 		
 		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1) || (type.indexOf("unsavedLocation") != -1)) {
 			$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-			
-			/* Dynamically size the location card info elements. */
-			/*$("#location_card .dl-horizontal dt").css({
-				"width": function() {
-					return ($("#location_card").innerWidth() * 0.35) + "px";
-				}
-			});
-			
-			$("#location_card .dl-horizontal dd").css({
-				"margin-left": function() {
-					return ($("#location_card").innerWidth() * 0.4) + "px";
-				}
-			});*/
 		}
-		/*else
-			$("#location_card .card-action").hide();*/
+		
+		if (type.indexOf("savedLocation") != -1)
+			$("#location_card #card_save .material-icons").html("star");
 		
 		sizeCardInfo();
 		$("#location_card .card-action").show();
@@ -1336,9 +1367,7 @@ function setMarkers() {
 	}
 }
 
-function checkIfSaved(latLong) {
-	console.log("in checkIfSaved");
-	
+function checkIfSaved(latLong) {	
 	var numberSaved = parseInt(localStorage["numberSaved"]);
 	var returnVal = false;
 	for (var i=1; i <= numberSaved; i++) {
@@ -1348,16 +1377,10 @@ function checkIfSaved(latLong) {
 		}
 	}
 	
-	console.log(returnVal);
-	
-	if (returnVal == true) {
+	if (returnVal == true)
 		$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star");
-		console.log("filled star");
-	}
-	else {
+	else
 		$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star_border");
-		console.log("unfilled star");
-	}
 		
 	return returnVal;
 }
@@ -1379,7 +1402,8 @@ function saveLocation(latLong, address, icon, type) {
 	localStorage.setItem("savedLocationIcon"+numberSaved, icon);
 	
 	$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star");
-	console.log("filled star");
+	
+	console.log(localStorage); 
 }
 
 function unsaveLocation(latLong) {
@@ -1400,7 +1424,6 @@ function unsaveLocation(latLong) {
 	}
 	
 	$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star_border");
-	console.log("unfilled star");
 	
 	return (numberSaved+1);
 }
@@ -1455,7 +1478,7 @@ $(document).ready(function() {
 	});
 	*/
 	
-	localStorage.clear();
+	//localStorage.clear();
 	console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {
@@ -1619,10 +1642,8 @@ $(document).ready(function() {
 			
 			// remove from local storage
 			savedLocationNum = unsaveLocation(latLong);
-			console.log("savedLocationNum = " + savedLocationNum);
 			savedIcon = localStorage.getItem("savedLocationIcon"+savedLocationNum);
-			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
-			console.log("savedIcon = " + savedIcon);
+			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
 			
 			// change image on card to star outline
 			$("#resource_card #card_save .material-icons").html("star_outline");
@@ -1633,11 +1654,7 @@ $(document).ready(function() {
 					savedMarkers.splice(i, 1);
 			}
 			
-			// restore unsaved location icon
-			console.log(temp);
-			console.log("temp.getIcon().url = " + temp.getIcon().url);
-			console.log(waterPickupIcon);
-			
+			// restore unsaved location icon			
 			if (savedIcon.indexOf(waterPickupIcon.url) != -1) 
 				oldIcon = waterPickupIcon;
 			else if (savedIcon.indexOf(recycleIcon.url) != -1)
@@ -1650,11 +1667,10 @@ $(document).ready(function() {
 				oldIcon = filterIcon;
 			
 			temp.setIcon(oldIcon);
-			console.log("temp.getIcon().url = " + temp.getIcon().url);
 			
 			// add to all markers and reset map
 			allMarkers.push(temp);
-			// setMarkers();
+			setMarkers();
 		}
 		// resource has not been saved
 		else {
@@ -1729,18 +1745,7 @@ $(document).ready(function() {
 		
 		if (locationMarker.getPosition()) {
 			latLong = locationMarker.getPosition();
-			
-			if (latLong)
-				isSaved = checkIfSaved(latLong);
-			else {
-				for (var i = 1; i <= numberSaved; i++) {
-					if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
-						console.log(localStorage.getItem("savedLocationPosition"+i));
-						latLong = localStorage.getItem("savedLocationPosition"+i);
-						isSaved = true;
-					}
-				}
-			}
+			isSaved = checkIfSaved(latLong);
 			
 			// location has already been saved
 			if (isSaved) {
@@ -1748,7 +1753,6 @@ $(document).ready(function() {
 				
 				// remove from local storage
 				savedLocationNum = unsaveLocation(latLong);
-				console.log(savedLocationNum);
 				localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
 				temp.setIcon(locationIcon);
 				
@@ -1763,7 +1767,7 @@ $(document).ready(function() {
 				
 				// add to all markers and reset map
 				allMarkers.push(temp);
-				// setMarkers();
+				setMarkers();
 			}
 			// location has not been saved
 			else {
@@ -1815,12 +1819,8 @@ $(document).ready(function() {
 					
 					// remove from local storage
 					savedLocationNum = unsaveLocation(latLong);
-					console.log(savedLocationNum);
 					localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
 					temp.setIcon(locationIcon);
-					
-					// change image on card to star outline
-					//$("#location_card #card_save .material-icons").html("star_border");
 					
 					// remove from savedMarkers 
 					for (var i = 0; i < savedMarkers.length; i++) {
@@ -1828,9 +1828,8 @@ $(document).ready(function() {
 							savedMarkers.splice(i, 1);
 					}
 					
-					// add to all markers and reset map
+					// add to all markers
 					allMarkers.push(temp);
-					// setMarkers();
 				}
 				// location has not been saved
 				else {
@@ -1838,9 +1837,6 @@ $(document).ready(function() {
 					
 					// add to local storage
 					saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
-					
-					// change image on card to filled star
-					//$("#location_card #card_save .material-icons").html("star");
 					
 					// remove from allMarkers 
 					for (var i = 0; i < allMarkers.length; i++) {
@@ -1857,17 +1853,7 @@ $(document).ready(function() {
 				}
 			});
 		}
-		
-		console.log(localStorage);
 	});
-
-	// closes the location card and removes the marker
-	/*$("#location_card .card-inner button").on("click", function() {
-		locationMarker[0].setMap(null);
-		$("#location_card").css("display", "none");
-		$("#search_input").val('');
-		displaySavedLocations();
-	});*/
 
 	$("#location_card .close, #resource_card .close, #legend_card .close").on("click", function() {
 		$(this).parent().hide();
