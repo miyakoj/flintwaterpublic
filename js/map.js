@@ -222,59 +222,28 @@ function initMap() {
 		var content;
 		
 		for (var i = 1; i <= numberSaved; i++) {
-			//if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
-				locationPosition = localStorage.getItem("savedLocationPosition"+i);
-				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
-				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
-				streetAddress = localStorage.getItem("savedLocationAddress"+i);
-				
-				tempLocationMarker = new google.maps.Marker({
-					position: {lat:latitude, lng:longitude},
-					map: map,
-					icon: savedLocationIcon
-				});
-				
-				var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-					+ streetAddress + "'";
-
-				queryFusionTable(query, function(result) {
-					content = createLocationContent(tempLocationMarker, streetAddress, result);
-					attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
-					
-					savedMarkers.push(tempLocationMarker);
-					savedLocationMarkers.push(tempLocationMarker);
-				});
-			//}
-		}
-		
-		/*tempLocationMarker = new google.maps.Marker({
-			position: {lat:latitude, lng:longitude},
-			map: map,
-			icon: savedLocationIcon
-		});
-		
-		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-			+ streetAddress + "'";
-
-		queryFusionTable(query, function(result) {
-			content = createLocationContent(tempLocationMarker, streetAddress, result);
-			attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+			locationPosition = localStorage.getItem("savedLocationPosition"+i);
+			latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
+			longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+			streetAddress = localStorage.getItem("savedLocationAddress"+i);
 			
-			if (latLong)
-				isSaved = checkIfSaved(latLong);
-			else {
-				for (var i = 1; i <= numberSaved; i++) {
-					if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
-						console.log(localStorage.getItem("savedLocationPosition"+i));
-						latLong = localStorage.getItem("savedLocationPosition"+i);
-						isSaved = true;
-					}
-				}
-			}
-		});
-		
-		savedMarkers.push(tempLocationMarker);
-		savedLocationMarkers.push(tempLocationMarker);*/
+			tempLocationMarker = new google.maps.Marker({
+				position: {lat:latitude, lng:longitude},
+				map: map,
+				icon: savedLocationIcon
+			});
+			
+			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+				+ streetAddress + "'";
+
+			queryFusionTable(query, function(result) {					
+				content = createLocationContent(tempLocationMarker, streetAddress, result);
+				attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+				
+				savedMarkers.push(tempLocationMarker);
+				savedLocationMarkers.push(tempLocationMarker);
+			});
+		}
 	}
 
 	// Construction Junk
@@ -1188,10 +1157,13 @@ function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {
 		$("#resource_card").hide();
 		
-		/* Insert the saved location address in the location bar on the report page. */
+		/* Insert the saved location address in the location bar on the report page when clicked. */
 		var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
-		if (($pageId.indexOf("report") != -1) && (type == "savedLocation"))
-			$("#location").val(address + ", Flint, MI");
+		if (($pageId.indexOf("report") != -1) && (type == "savedLocation")) {
+			var correctedAddr = capitalizeEachWord(address.toLowerCase());
+			$("#location").val(correctedAddr + ", Flint, MI");
+			$("#report_step1_content .next_button").removeClass("disabled");
+		}
 
 		$("#location_card .card-inner").empty().html(content);
 		
@@ -1485,20 +1457,16 @@ function sizeCardInfo() {
 	});
 }
 
+/* Capialize the first character in each word.
+   From: http://alvinalexander.com/javascript/how-to-capitalize-each-word-javascript-string
+*/
+function capitalizeEachWord(str) {
+    return str.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+}
+
 $(document).ready(function() {
-	/* Get the data from the database and save it into JSON files. */
-	/*$.ajax({
-		method: "POST",
-		url: "includes/json_processing.php",
-		complete: function(resp) {
-			if (resp.responseText == "error") {
-				$(".alert-warning").append("<strong>Error:</strong> The map data didn't load successfully.")
-				$(".alert-warning").css("display", "block");
-			}
-		}
-	});
-	*/
-	
 	//localStorage.clear();
 	console.log(localStorage);
 
@@ -1721,39 +1689,34 @@ $(document).ready(function() {
 	});
 
 	// sends problem reported to db when report issue is selected from #resource_card
-	$("#resource_card .dropdown-menu li").on("click", function(event){
-		var selectedReason = $(event.target).text(); // Get the text of the element
+	$("#resource_card .dropdown-menu a").on("click", function(event){
+		var selectedReason = $(this).text(); // Get the text of the element
 		var resourceAddress = $("#resource_card #provider_address").html();	// Get the address of the element
-		var problemObject = {type:"resource", reason: selectedReason, address: resourceAddress};
+		
+		if ($(this).parent().hasClass("disabled"))
+			return false;
 
 		$.ajax({
 			method: "POST",
 			url: "includes/functions.php",
-			data: problemObject,
-			success: function(data){
+			data: {
+				type: "resource_report",
+				reason: selectedReason,
+				address: resourceAddress
+			},
+			complete: function(response) {
+				console.log();
+				
+				console.log("Resource report data wasn't saved.");
+			}
+			/*success: function(data){
 				console.log("Resource report data successfully saved.");
 			},
 			error: function(response) {
 				console.log("Resource report data wasn't saved.");
-			}
+			}*/
 		});
 	});
-	
-	/* When a saved location is clicked, put the location in search bar and search. */
-	/*$(document).on("click", '.saved-location', function() {
-		$('#search_input').val($(this).text());
-		// $('#search_button').click();
-
-		var input = $(this).text();
-
-		google.maps.event.trigger(input, 'focus');
-		
-		google.maps.event.trigger(input, 'keydown', function() {
-			keyCode: 13
-		});
-			
-		updateLocationZoom();
-	});*/
 	
 	// saves/unsaves a non-resource location when save button is clicked on the location card
 	$("#location_card #card_save").on("click", function() {

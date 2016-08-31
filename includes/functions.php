@@ -7,11 +7,11 @@ use google\appengine\api\mail\Message;
 $reportId = mt_rand(0,9999999999);
 $paddedId = sprintf("%010d", $reportId);	// Pad the number with zeros.
 
-if ($_POST["type"] == "resource") {
+if ($_POST["type"] == "resource_report") {
     $result = queries("inaccuracy", "" , $paddedId);
     echo $result;
 }
-else if ($_POST["type"] == "report") {
+else if ($_POST["type"] == "problem_report") {
     //$result = queries("report", "" , $paddedId);
 	
 	$result = TRUE;

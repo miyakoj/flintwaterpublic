@@ -7,11 +7,23 @@ a {
 }
 
 .btn-primary {
-	color:#FFF!important;
+	color: rgba(255,255,255,.87)!important;
+}
+
+.card-action a {
+	color:#666!important;
+}
+
+li[class*='disabled'] a {
+	color:#CCC!important;
 }
 
 .icon, .material-icons {
 	font-family:"Material Icons"!important;
+}
+
+.glyphicon {
+	font-family:"Glyphicons Halflings"!important;
 }
 
 html, body {
@@ -144,7 +156,6 @@ html, body {
 
 .btn, .btn-primary, .resource_buttons {
 	font-size: 13px;
-	color: rgba(255,255,255,.87);
 	line-height: 32px;
 	height: 32px;
 	padding: 0 12px;
