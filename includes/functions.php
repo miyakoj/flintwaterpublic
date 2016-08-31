@@ -12,9 +12,8 @@ if ($_POST["type"] == "resource_report") {
     echo $result;
 }
 else if ($_POST["type"] == "problem_report") {
-    //$result = queries("report", "" , $paddedId);
-	
-	$result = TRUE;
+    $result = queries("report", "" , $paddedId);
+	echo $result;
 	
 	if ($result)
 		email_user();
@@ -22,17 +21,18 @@ else if ($_POST["type"] == "problem_report") {
 		echo 0;
 }
 
-function email_user() {	
+function email_user() {
 	$to = sprintf("%s", $_POST["email"]);
-	$from = "umflinth20@google.com";
+	$from = "umflintH2O@gmail.com";
 	$subject = "A Message from Unite Flint";
+	$msg = "";
 	
-	if ($_POST["type"] == "report") {
+	if ($_POST["type"] == "problem_report") {
 		$msg = sprintf("<p>Thank you for your submission. Someone will be in contact with you to follow up on your report.</p>
 			<p>Here is a copy of your report for your records:</p>
-			<p><strong>Location:</strong> %s</p>
-			<p><strong>Problem Type:</strong> %s</p>
-			<p><strong>Problem Description:</strong> %s</p>", $_POST['location'], $_POST['problemType'], htmlspecialchars($_POST['description']));
+			<p><strong>Location:</strong><br />%s</p>
+			<p><strong>Problem Type:</strong><br /> %s</p>
+			<p><strong>Problem Description:</strong><br /> %s</p>", $_POST["location"], $_POST["problemType"], htmlspecialchars($_POST["description"]));
 	}
 	
 	try {

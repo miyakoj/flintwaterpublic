@@ -393,15 +393,19 @@ $(document).ready(function() {
 			$(".help_video").addClass("hide");
 			
 			/* Set the map to display only test kits. */
+			oldResourceActiveArray = resourceActiveArray;
 			resourceActiveArray = [0, 0, 0, 0, 1, 0, 0, 0];
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			localStorage.setItem("saved_resource_array", JSON.stringify(oldResourceActiveArray));
 		}
 		else if ($pageId.indexOf("report") != -1) {
 			$(".help_video").addClass("hide");
 			
 			/* Remove all resource markers from the map. */
+			oldResourceActiveArray = resourceActiveArray;
 			resourceActiveArray = [0, 0, 0, 0, 0, 0, 0, 0];
-			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));			
+			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+			localStorage.setItem("saved_resource_array", JSON.stringify(oldResourceActiveArray));
 		}
 		else if ($pageId.indexOf("filter") != -1) {
 			$("#PUR_video").addClass("hide");
@@ -627,7 +631,7 @@ $(document).ready(function() {
 				location = $("#location").val();*/
 			
 			$(form).ajaxSubmit({
-				method: "POST",
+				type: "POST",
 				url: "includes/functions.php",
 				data: {
 					type: "problem_report",
@@ -637,12 +641,7 @@ $(document).ready(function() {
 					email: $("#email").val()
 					//phone: $("#phone").val()
 				},
-				beforeSend: function() {
-					console.log(data);
-				},
 				complete: function(resp) {
-					console.log(resp);
-					
 					if (resp.responseText.indexOf("1") != -1) {
 						$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
 						$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
@@ -656,8 +655,6 @@ $(document).ready(function() {
 					$("#report_problem .alert").show();
 				}
 			});
-			
-			return false;
 		}
 	});
 	
@@ -759,6 +756,11 @@ $(document).ready(function() {
 			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
 		else
 			$("#report_problem #report_step3_content .next_button").addClass("disabled");
+	}).on("focusout", function() {
+		if (validator.element("#report_problem #email"))
+			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step3_content .next_button").addClass("disabled");
 	});
 	
 	$("#report_problem #phone").on("keyup", function() {
@@ -770,7 +772,7 @@ $(document).ready(function() {
 	
 	
 	/* Steppers for the submit information page. */
-	$("#submit_link").on("click", function() {
+	/*$("#submit_link").on("click", function() {
 	    $("#submit_step1").addClass("active");
 		$("#submit_step1_content").removeClass("hide");
 		$("#submit_step2_content").addClass("hide");
@@ -799,7 +801,7 @@ $(document).ready(function() {
 		//TODO save these values to the db
 		alert("Thank you for your submission!");
 		$(window).attr("location", "index.php");
-	});
+	});*/
 	
 	
 	/* Dynamically add script tags only to pages where they're relevant. */

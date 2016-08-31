@@ -27,6 +27,7 @@ var savedMarkers = [];
 var allMarkers = [];
 var allMarkersString = [];
 var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  // lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
+var oldResourceActiveArray; // the saved resource array that's stored when the user visits the "test my water" or "report" pages
 var savedLocationMarkers = [];
 var locationMarker;
 var markerImg;
@@ -85,6 +86,8 @@ function checkAuth() {
 
 function initMap() {
 	$("#resource_card, #location_card").hide();
+	
+	attachLegendCard();
 
 	/* Position the map in the correct element if it exists on the page. */
 	if($("#search_input").length != 0)
@@ -93,14 +96,11 @@ function initMap() {
 	/* Size the map based on the window size. */
 	var mapHeight;
 	
-	attachLegendCard();
-	
 	if (windowHeight < 800)
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - ($("#legend").outerHeight()) - 25;
 	else
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height"));
 
-	console.log(mapHeight);
 	$("#map_container").css("height", mapHeight + "px");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
@@ -1005,6 +1005,7 @@ function setUpInitialMap() {
 	if ((localStorage !== "undefined") && (retrieveArray != null)) {
 		resourceActiveArray = JSON.parse(retrieveArray);
 		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
+		localStorage.setItem("saved_resource_array", JSON.stringify(resourceActiveArray));
 	}
 	else {
 		localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
@@ -1671,24 +1672,19 @@ $(document).ready(function() {
 			return false;
 
 		$.ajax({
-			method: "POST",
+			type: "POST",
 			url: "includes/functions.php",
 			data: {
 				type: "resource_report",
 				reason: selectedReason,
 				address: resourceAddress
 			},
-			complete: function(response) {
-				console.log();
-				
-				console.log("Resource report data wasn't saved.");
+			complete: function(response) {				
+				if (response.responseText.indexOf("1") != -1)
+					console.log("Resource report data successfully submitted.");
+				else
+					console.log("Resource report data wasn't submitted.");
 			}
-			/*success: function(data){
-				console.log("Resource report data successfully saved.");
-			},
-			error: function(response) {
-				console.log("Resource report data wasn't saved.");
-			}*/
 		});
 	});
 	
