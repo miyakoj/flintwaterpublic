@@ -108,7 +108,7 @@ function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
 	  zoom: 13,
-	  mapTypeControl:false
+	  mapTypeControl: false
 	});
 	
 	/* Centering and resizing */
@@ -222,7 +222,7 @@ function initMap() {
 		var content;
 		
 		for (var i = 1; i <= numberSaved; i++) {
-			if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
+			//if (localStorage.getItem("savedLocationType"+i).indexOf("Non-Resource") != -1) {
 				locationPosition = localStorage.getItem("savedLocationPosition"+i);
 				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
 				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
@@ -234,24 +234,47 @@ function initMap() {
 					icon: savedLocationIcon
 				});
 				
-				$("#location_card #card_save .material-icons").html("star");
-				
 				var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 					+ streetAddress + "'";
 
 				queryFusionTable(query, function(result) {
 					content = createLocationContent(tempLocationMarker, streetAddress, result);
-					
 					attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+					
+					savedMarkers.push(tempLocationMarker);
+					savedLocationMarkers.push(tempLocationMarker);
 				});
-				
-				savedMarkers.push(tempLocationMarker);
-				savedLocationMarkers.push(tempLocationMarker);
-			}
-			else {
-				$("#location_card #card_save .material-icons").html("star_border");
-			}
+			//}
 		}
+		
+		/*tempLocationMarker = new google.maps.Marker({
+			position: {lat:latitude, lng:longitude},
+			map: map,
+			icon: savedLocationIcon
+		});
+		
+		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+			+ streetAddress + "'";
+
+		queryFusionTable(query, function(result) {
+			content = createLocationContent(tempLocationMarker, streetAddress, result);
+			attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+			
+			if (latLong)
+				isSaved = checkIfSaved(latLong);
+			else {
+				for (var i = 1; i <= numberSaved; i++) {
+					if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
+						console.log(localStorage.getItem("savedLocationPosition"+i));
+						latLong = localStorage.getItem("savedLocationPosition"+i);
+						isSaved = true;
+					}
+				}
+			}
+		});
+		
+		savedMarkers.push(tempLocationMarker);
+		savedLocationMarkers.push(tempLocationMarker);*/
 	}
 
 	// Construction Junk
@@ -290,8 +313,19 @@ function initMap() {
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	
 	// Changes CSS to make search bar visible, making sure it doesn't load before the map does
-	map.addListener('idle', function(){
+	map.addListener('idle', function() {
 		$("#search_input").css("display", "block");
+	});
+	
+	$("#search_input").keyup(function() {
+		if ($("#search_input").val()) {
+			$("#search_button").css("color", "#FFF");
+			activeSearch = 1;
+		}
+		else {
+			$("#search_button").css("color", "#61b1ff");
+			activeSearch = 0;
+		}
 	});
 	
 	// Bias the SearchBox results towards current map's viewport.
@@ -392,9 +426,10 @@ function initMap() {
 	  
 		map.fitBounds(bounds);
 
-		/* Display appropriate lead rating and message. */		
+		/* Display appropriate lead rating and message. */
 		var inputAddress = place.formatted_address.split(',');
 		var streetAddress = inputAddress[0].toUpperCase();
+		var latLong;
 		
 		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 					+ streetAddress + "'";
@@ -404,27 +439,26 @@ function initMap() {
 				content = createLocationContent(locationMarker, streetAddress, result);
 				$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 				
-				/* Dynamically size the location card info elements. */
-				$("#location_card .dl-horizontal dt").css({
-					"width": function() {
-						return ($("#location_card").innerWidth() * 0.35) + "px";
-					}
-				});
-				
-				$("#location_card .dl-horizontal dd").css({
-					"margin-left": function() {
-						return ($("#location_card").innerWidth() * 0.4) + "px";
-					}
-				});
-				
-				$("#location_card .card-action").show();
+				latLong = "(" + result.rows[0][0] + ", " + result.rows[0][1] + ")";
 			}
 			else {
-				content = "<h5 id='address'>" + streetAddress + "</h5> <p>There is no data available for this location.</p>";
+				latLong = locationMarker.getPosition();
+				
+				content = "<h5 id='address'>" + streetAddress + "</h5>";
+				content += "<dl id='fusion_data' class='dl-horizontal'>";
+				content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
+				content += "<dt id='lead_level'>Predicted Risk:</dt> <dd>No prediction available.</dd>";
+				content += "</dl>";
+				content += "<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
+				
 				$("#location_card .card-inner").empty().html(content);
-				$("#location_card .card-action").hide();
 			}
 			
+			sizeCardInfo();
+			checkIfSaved(latLong);
+			attachLocationCard("unsavedLocation", locationMarker, streetAddress, content);
+			
+			$("#location_card .card-action").show();
 			$("#location_card").show();
 			
 		});
@@ -625,16 +659,12 @@ function setUpFusionTable() {
 }
 
 function addFusionListener(object) {
-	google.maps.event.addListener(object, 'click', function(event) {
-		//var html = "<div>";
-								
-		//var icon1 = 'http://pix.iemoji.com/lg33/0271.png';
-		//var image1 = "<img src='" + icon1 + "' title ='banana' /> ";
-		
-		var content = createLocationContent(object, event.row['Address'].value, event);
+	google.maps.event.addListener(object, "click", function(event) {		
+		var content = createLocationContent(object, event.row["Address"].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 
+<<<<<<< HEAD
 		/* Dynamically size the location card info elements. */
 		$("#location_card .dl-horizontal dt").css({
 			"width": function() {
@@ -651,6 +681,33 @@ function addFusionListener(object) {
 		//$("#location_card .dl-horizontal").remove("#legend");
 		//$("#location_card #211_info").after(attachLegendCard());
 		$("#location_card .card-action").hide();
+=======
+		$("#location_card .dl-horizontal").remove("#legend");
+		$("#location_card #211_info").after(attachLegendCard());
+		
+		var isSaved = false;
+		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
+
+		if (checkIfSaved(latLng)) {
+			isSaved = true;
+			
+			var tempLocationMarker = new google.maps.Marker({
+				position: {
+					lat: parseFloat(event.row["latitude"].value),
+					lng: parseFloat(event.row["longitude"].value)
+				},
+				map: map,
+				icon: savedLocationIcon
+			});
+			
+			attachLocationCard("savedLocation", tempLocationMarker, event.row["Address"].value, content)
+			
+			savedMarkers.push(tempLocationMarker);
+			savedLocationMarkers.push(tempLocationMarker);
+		}
+		
+		sizeCardInfo();
+>>>>>>> origin/master
 		$("#location_card").show();
 	});
 }
@@ -806,8 +863,7 @@ function callStorageAPI(object) {
 					content += "<div>";
 					content += "<h5><b>About this area</b></h5>";
 					content += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
-					content += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>"
-				/*	content += "<p><small>Zoom in see more details</small></p>"*/
+					content += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>";
 					content += "</div>";
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
@@ -823,6 +879,7 @@ function callStorageAPI(object) {
 					var title = provider.locationName;
 					
 					var isSaved = false;
+					
 					if (checkIfSaved(latLng))
 						isSaved = true;
 					
@@ -1064,10 +1121,17 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		prediction = object.row["Prediction"].value;
 	}
 	
+<<<<<<< HEAD
 	/*var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
 	var lowRisk = "<img src='" + moderateRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
 	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
 	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";*/
+=======
+	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='Unknown Risk' class='risk_meter' /> ";
+	var lowRisk = "<img src='" + lowRiskSrc + "' title ='Low Risk' class ='risk_meter' /> ";
+	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='Medium Risk' class='risk_meter' /> ";
+	var highRisk = "<img src='" + highRiskSrc + "' title ='High Risk' class='risk_meter' /> ";
+>>>>>>> origin/master
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	content += "<dl id='fusion_data' class='dl-horizontal'>";
@@ -1124,18 +1188,6 @@ function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {
 		$("#resource_card").hide();
 		
-		/* Only specific location info. */
-		/*if ((address.length != 0) && (content.length == 0)) {
-			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-						+ address + "'";
-						
-			console.log(query);
-
-			queryFusionTable(query, function(result) {
-				content = createLocationContent(marker, address, result);
-			});
-		}*/
-		
 		/* Insert the saved location address in the location bar on the report page. */
 		var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 		if (($pageId.indexOf("report") != -1) && (type == "savedLocation"))
@@ -1143,27 +1195,15 @@ function attachLocationCard(type, marker, address, content) {
 
 		$("#location_card .card-inner").empty().html(content);
 		
-		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1)) {
+		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1) || (type.indexOf("unsavedLocation") != -1)) {
 			$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-			
-			/* Dynamically size the location card info elements. */
-			$("#location_card .dl-horizontal dt").css({
-				"width": function() {
-					return ($("#location_card").innerWidth() * 0.35) + "px";
-				}
-			});
-			
-			$("#location_card .dl-horizontal dd").css({
-				"margin-left": function() {
-					return ($("#location_card").innerWidth() * 0.4) + "px";
-				}
-			});
-			
-			$("#location_card .card-action").show();
 		}
-		else
-			$("#location_card .card-action").hide();
 		
+		if (type.indexOf("savedLocation") != -1)
+			$("#location_card #card_save .material-icons").html("star");
+		
+		sizeCardInfo();
+		$("#location_card .card-action").show();
 		$("#location_card").show();
 		
 		savedLocationMarkers.push(marker);
@@ -1348,13 +1388,22 @@ function setMarkers() {
 	}
 }
 
-function checkIfSaved(latLong) {
+function checkIfSaved(latLong) {	
 	var numberSaved = parseInt(localStorage["numberSaved"]);
 	var returnVal = false;
 	for (var i=1; i <= numberSaved; i++) {
-		if (localStorage.getItem("savedLocationPosition"+i) == latLong)
-			return true;
+		if (localStorage.getItem("savedLocationPosition"+i) == latLong) {
+			returnVal = true;
+			break;
+		}
 	}
+	
+	if (returnVal == true)
+		$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star");
+	else
+		$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star_border");
+		
+	return returnVal;
 }
 
 function saveLocation(latLong, address, icon, type) {
@@ -1372,6 +1421,10 @@ function saveLocation(latLong, address, icon, type) {
 	localStorage.setItem("savedLocationAddress"+numberSaved, address);
 	localStorage.setItem("savedLocationType"+numberSaved, type);
 	localStorage.setItem("savedLocationIcon"+numberSaved, icon);
+	
+	$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star");
+	
+	console.log(localStorage); 
 }
 
 function unsaveLocation(latLong) {
@@ -1390,6 +1443,8 @@ function unsaveLocation(latLong) {
 				localStorage.setItem("numberSaved", numberSaved);
 		}
 	}
+	
+	$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star_border");
 	
 	return (numberSaved+1);
 }
@@ -1414,6 +1469,21 @@ function unsaveLocation(latLong) {
 		}
 	
 }*/
+
+/* Dynamically size the location card info elements. */
+function sizeCardInfo() {
+	$("#location_card .dl-horizontal dt").css({
+		"width": function() {
+			return ($("#location_card").innerWidth() * 0.35) + "px";
+		}
+	});
+	
+	$("#location_card .dl-horizontal dd").css({
+		"margin-left": function() {
+			return ($("#location_card").innerWidth() * 0.4) + "px";
+		}
+	});
+}
 
 $(document).ready(function() {
 	/* Get the data from the database and save it into JSON files. */
@@ -1593,10 +1663,8 @@ $(document).ready(function() {
 			
 			// remove from local storage
 			savedLocationNum = unsaveLocation(latLong);
-			console.log("savedLocationNum = " + savedLocationNum);
 			savedIcon = localStorage.getItem("savedLocationIcon"+savedLocationNum);
-			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
-			console.log("savedIcon = " + savedIcon);
+			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
 			
 			// change image on card to star outline
 			$("#resource_card #card_save .material-icons").html("star_outline");
@@ -1607,11 +1675,7 @@ $(document).ready(function() {
 					savedMarkers.splice(i, 1);
 			}
 			
-			// restore unsaved location icon
-			console.log(temp);
-			console.log("temp.getIcon().url = " + temp.getIcon().url);
-			console.log(waterPickupIcon);
-			
+			// restore unsaved location icon			
 			if (savedIcon.indexOf(waterPickupIcon.url) != -1) 
 				oldIcon = waterPickupIcon;
 			else if (savedIcon.indexOf(recycleIcon.url) != -1)
@@ -1624,11 +1688,10 @@ $(document).ready(function() {
 				oldIcon = filterIcon;
 			
 			temp.setIcon(oldIcon);
-			console.log("temp.getIcon().url = " + temp.getIcon().url);
 			
 			// add to all markers and reset map
 			allMarkers.push(temp);
-			// setMarkers();
+			setMarkers();
 		}
 		// resource has not been saved
 		else {
@@ -1694,82 +1757,126 @@ $(document).ready(function() {
 	
 	// saves/unsaves a non-resource location when save button is clicked on the location card
 	$("#location_card #card_save").on("click", function() {
-		var latLong;
-		
-		if (locationMarker)
-			latLong = locationMarker.getPosition();
-		
 		var streetAddress = $("#location_card #address").text();
+		var latLong;
 		var numberSaved = parseInt(localStorage.getItem("numberSaved"));
 		var isSaved = false;
 		var unsavedIcon = locationIcon.url;
 		var savedLocationNum;
 		
-		//console.log("geocoded latLong:");
-		//console.log(latLong.lat() + ", " + latLong.lng());
-		
-		if (latLong)
+		if (locationMarker.getPosition()) {
+			latLong = locationMarker.getPosition();
 			isSaved = checkIfSaved(latLong);
-		else {
-			for (var i = 1; i <= numberSaved; i++) {
-				if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
-					console.log(localStorage.getItem("savedLocationPosition"+i));
-					latLong = localStorage.getItem("savedLocationPosition"+i);
-					isSaved = true;
+			
+			// location has already been saved
+			if (isSaved) {
+				var temp = locationMarker;
+				
+				// remove from local storage
+				savedLocationNum = unsaveLocation(latLong);
+				localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
+				temp.setIcon(locationIcon);
+				
+				// change image on card to star outline
+				$("#location_card #card_save .material-icons").html("star_border");
+				
+				// remove from savedMarkers 
+				for (var i = 0; i < savedMarkers.length; i++) {
+					if (savedMarkers[i].getPosition() == latLong)
+						savedMarkers.splice(i, 1);
+				}
+				
+				// add to all markers and reset map
+				allMarkers.push(temp);
+				setMarkers();
+			}
+			// location has not been saved
+			else {
+				var temp;
+				
+				// add to local storage
+				saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
+				
+				// change image on card to filled star
+				$("#location_card #card_save .material-icons").html("star");
+				
+				// remove from allMarkers 
+				for (var i = 0; i < allMarkers.length; i++) {
+					if (allMarkers[i].getPosition() == latLong)
+						allMarkers.splice(i,1);
+					
+					temp = locationMarker;
+					
+					// change the location icon to the saved icon
+					temp.setIcon(savedLocationIcon);
+					
+					savedMarkers.push(temp);
 				}
 			}
 		}
-
-		// location has already been saved
-		if (isSaved) {
-			var temp = locationMarker;
-			
-			// remove from local storage
-			savedLocationNum = unsaveLocation(latLong);
-			console.log(savedLocationNum);
-			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
-			temp.setIcon(locationIcon);
-			
-			// change image on card to star outline
-			$("#location_card #card_save .material-icons").html("star_border");
-			
-			// remove from savedMarkers 
-			for (var i = 0; i < savedMarkers.length; i++) {
-				if (savedMarkers[i].getPosition() == latLong)
-					savedMarkers.splice(i, 1);
-			}
-			
-			// add to all markers and reset map
-			allMarkers.push(temp);
-			// setMarkers();
-		}
-		// location has not been saved
 		else {
-			var temp;
-			
-			// add to local storage
-			saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
-			
-			// change image on card to filled star
-			$("#location_card #card_save .material-icons").html("star");
-			
-			// remove from allMarkers 
-			for (var i = 0; i < allMarkers.length; i++) {
-				if (allMarkers[i].getPosition() == latLong)
-					allMarkers.splice(i,1);
+			var fusionPosQuery = "SELECT 'latitude', 'longitude' FROM " + fusionTableId + " WHERE Address='" 
+			+ streetAddress + "'";
+
+			queryFusionTable(fusionPosQuery, function(result) {
+				if (result.rows != undefined)
+					latLong = "(" + result.rows[0][0] + ", " + result.rows[0][1] + ")";
 				
-				temp = locationMarker;
+				if (latLong)
+					isSaved = checkIfSaved(latLong);
+				else {
+					for (var i = 1; i <= numberSaved; i++) {
+						if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
+							console.log(localStorage.getItem("savedLocationPosition"+i));
+							latLong = localStorage.getItem("savedLocationPosition"+i);
+							isSaved = true;
+						}
+					}
+				}
 				
-				// change the location icon to the saved icon
-				temp.setIcon(savedLocationIcon);
-				
-				savedMarkers.push(temp);
-			}
+				// location has already been saved
+				if (isSaved) {
+					var temp = locationMarker;
+					
+					// remove from local storage
+					savedLocationNum = unsaveLocation(latLong);
+					localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
+					temp.setIcon(locationIcon);
+					
+					// remove from savedMarkers 
+					for (var i = 0; i < savedMarkers.length; i++) {
+						if (savedMarkers[i].getPosition() == latLong)
+							savedMarkers.splice(i, 1);
+					}
+					
+					// add to all markers
+					allMarkers.push(temp);
+				}
+				// location has not been saved
+				else {
+					var temp;
+					
+					// add to local storage
+					saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
+					
+					// remove from allMarkers 
+					for (var i = 0; i < allMarkers.length; i++) {
+						if (allMarkers[i].getPosition() == latLong)
+							allMarkers.splice(i,1);
+						
+						temp = locationMarker;
+						
+						// change the location icon to the saved icon
+						temp.setIcon(savedLocationIcon);
+						
+						savedMarkers.push(temp);
+					}
+				}
+			});
 		}
-		
-		console.log(localStorage);
 	});
 
+<<<<<<< HEAD
 	// closes the location card and removes the marker
 	/*$("#location_card .card-inner button").on("click", function() {
 		locationMarker[0].setMap(null);
@@ -1779,18 +1886,10 @@ $(document).ready(function() {
 	});*/
 
 	$("#location_card .close, #resource_card .close").on("click", function() {
+=======
+	$("#location_card .close, #resource_card .close, #legend_card .close").on("click", function() {
+>>>>>>> origin/master
 		$(this).parent().hide();
 		$("#legend_card").show();
-	});
-	
-	$("#search_input").keyup(function() {
-		if ($("#search_input").val()) {
-			$("#search_button").css("color", "#FFF");
-			activeSearch = 1;
-		}
-		else {
-			$("#search_button").css("color", "#61b1ff");
-			activeSearch = 0;
-		}
 	});
 });
