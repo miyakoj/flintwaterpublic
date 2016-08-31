@@ -633,24 +633,6 @@ function addFusionListener(object) {
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 
-<<<<<<< HEAD
-		/* Dynamically size the location card info elements. */
-		$("#location_card .dl-horizontal dt").css({
-			"width": function() {
-				return ($("#location_card").innerWidth() * 0.35) + "px";
-			}
-		});
-		
-		$("#location_card .dl-horizontal dd").css({
-			"margin-left": function() {
-				return ($("#location_card").innerWidth() * 0.4) + "px";
-			}
-		});
-		//attachLegendCard();
-		//$("#location_card .dl-horizontal").remove("#legend");
-		//$("#location_card #211_info").after(attachLegendCard());
-		$("#location_card .card-action").hide();
-=======
 		$("#location_card .dl-horizontal").remove("#legend");
 		$("#location_card #211_info").after(attachLegendCard());
 		
@@ -676,7 +658,6 @@ function addFusionListener(object) {
 		}
 		
 		sizeCardInfo();
->>>>>>> origin/master
 		$("#location_card").show();
 	});
 }
@@ -1090,17 +1071,10 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		prediction = object.row["Prediction"].value;
 	}
 	
-<<<<<<< HEAD
 	/*var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
 	var lowRisk = "<img src='" + moderateRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
 	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
 	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";*/
-=======
-	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='Unknown Risk' class='risk_meter' /> ";
-	var lowRisk = "<img src='" + lowRiskSrc + "' title ='Low Risk' class ='risk_meter' /> ";
-	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='Medium Risk' class='risk_meter' /> ";
-	var highRisk = "<img src='" + highRiskSrc + "' title ='High Risk' class='risk_meter' /> ";
->>>>>>> origin/master
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	content += "<dl id='fusion_data' class='dl-horizontal'>";
@@ -1839,7 +1813,6 @@ $(document).ready(function() {
 		}
 	});
 
-<<<<<<< HEAD
 	// closes the location card and removes the marker
 	/*$("#location_card .card-inner button").on("click", function() {
 		locationMarker[0].setMap(null);
@@ -1849,9 +1822,6 @@ $(document).ready(function() {
 	});*/
 
 	$("#location_card .close, #resource_card .close").on("click", function() {
-=======
-	$("#location_card .close, #resource_card .close, #legend_card .close").on("click", function() {
->>>>>>> origin/master
 		$(this).parent().hide();
 		$("#legend_card").show();
 	});
