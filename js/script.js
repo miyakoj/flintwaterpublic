@@ -116,8 +116,9 @@ $(document).ready(function() {
 				return $("#location_card").outerWidth();
 			},
 			"top": function() {
-				console.log($("#location_card").css("top") + ", " + $("#location_card").outerHeight(true));
-				return parseInt($("#location_card").css("top")) + $("#location_card").outerHeight(true) + 10 + "px";
+				return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
+				/*console.log($("#location_card").css("top") + ", " + $("#location_card").outerHeight(true));
+				return parseInt($("#location_card").css("top")) + $("#location_card").outerHeight(true) + 10 + "px";*/
 			},
 			"left": function() {
 				return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";

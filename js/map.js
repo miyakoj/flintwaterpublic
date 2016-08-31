@@ -63,7 +63,7 @@ var iconSize = 30;
 
 // risk meters
 var unknownRiskSrc = "images/unknownrisklevel.png";
-var lowRiskSrc = "images/lowrisklevel.png";
+var moderateRiskSrc = "images/moderaterisklevel.png";
 var mediumRiskSrc = "images/medrisklevel.png";
 var highRiskSrc = "images/highrisk.png";
 
@@ -84,7 +84,7 @@ function checkAuth() {
 }
 
 function initMap() {
-	$("#resource_card, #location_card, #legend_card").hide();
+	$("#resource_card, #location_card").hide();
 
 	/* Position the map in the correct element if it exists on the page. */
 	if($("#search_input").length != 0)
@@ -93,12 +93,14 @@ function initMap() {
 	/* Size the map based on the window size. */
 	var mapHeight;
 	
+	attachLegendCard();
+	
 	if (windowHeight < 800)
-		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height")) - 25;
+		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - ($("#legend").outerHeight()) - 25;
 	else
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height"));
 
-	
+	console.log(mapHeight);
 	$("#map_container").css("height", mapHeight + "px");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
@@ -299,7 +301,8 @@ function initMap() {
 
 	// If the map is clicked, hide the resource and location cards
 	 map.addListener('click', function() {
-    	$("#resource_card, #location_card, #legend_card").hide();
+    	$("#resource_card, #location_card").hide();
+		$("#legend_card").show();
   	});
 
 	 map.addListener('zoom_changed', function() {
@@ -429,7 +432,7 @@ function initMap() {
 	
 	// Check the saved locations if enter is pressed while in the search box
 	$("#search_input").on("keydown", function(event) {
-		$("#resource_card, #legend_card").hide();
+		$("#resource_card").hide();
 		
 		if (event.which == 13)
 			updateLocationZoom();
@@ -437,10 +440,10 @@ function initMap() {
 	
 	// hide the location card if the search box is empty
 	$("#search_input").on("change", function(event) {
-		//$("#resource_card, #legend_card").hide();
+		//$("#resource_card").hide();
 		
 		if ($(this).val() == "")
-			$("#location_card, #legend_card, #legend").hide();
+			$("#location_card").hide();
 	});
 	
 	// Trigger search on button click
@@ -644,8 +647,9 @@ function addFusionListener(object) {
 				return ($("#location_card").innerWidth() * 0.4) + "px";
 			}
 		});
-		$("#location_card .dl-horizontal").remove("#legend");
-		$("#location_card #211_info").after(attachLegendCard());
+		//attachLegendCard();
+		//$("#location_card .dl-horizontal").remove("#legend");
+		//$("#location_card #211_info").after(attachLegendCard());
 		$("#location_card .card-action").hide();
 		$("#location_card").show();
 	});
@@ -654,41 +658,33 @@ function addFusionListener(object) {
 
 function attachLegendCard() {
 	var placeholderDetails = "<div id='legend'>";
-
 	
-	var unknownIconSrc = "images/unknown_icon.png";
-	var lowIconSrc = "images/low_icon.png";
-	var mediumIconSrc = "images/medium_icon.png";
-	var highIconSrc = "images/high_icon.png";
+	var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='unknown risk' class='legend_icons center-block' /> ";
+	var lowIcon = "<img src='" + moderateRiskSrc + "' title ='low risk' class ='legend_icons center-block' /> ";
+	var mediumIcon = "<img src='" + mediumRiskSrc + "' title ='medium risk' class='legend_icons center-block' /> ";
+	var highIcon = "<img src='" + highRiskSrc + "' title ='high risk' class='legend_icons center-block' /> ";
 	
-	var unknownIcon = "<img src='" + unknownIconSrc + "' title ='unknown risk' class='legend_icons center-block' /> ";
-	var lowIcon = "<img src='" + lowIconSrc + "' title ='low risk' class ='legend_icons center-block' /> ";
-	var mediumIcon = "<img src='" + mediumIconSrc + "' title ='medium risk' class='legend_icons center-block' /> ";
-	var highIcon = "<img src='" + highIconSrc + "' title ='high risk' class='legend_icons center-block' /> ";
-	
-	if (windowWidth <= 600) {
+	//if (windowWidth <= 600) {
 		placeholderDetails += "<div class='row'>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += unknownIcon + "<span>Unknown</span>"; 
+		placeholderDetails += unknownIcon + "<span>No Results</span>"; 
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
 		placeholderDetails += lowIcon + "<span>Low</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += mediumIcon + "<span>Medium</span>";
+		placeholderDetails += mediumIcon + "<span>Moderate</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
 		placeholderDetails += highIcon + "<span>High</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
-		return placeholderDetails;
+		//return placeholderDetails;
 		//$("location_card .card-inner").html(details);
-		/*$("#legend_card .card-inner").empty().html(details);
-		$("#legend_card .card-action").hide();
-		$("#legend_card").show();*/
-	}
-	else {
+
+	//}
+	/*else {
 		placeholderDetails += "<div class=row>";
 		placeholderDetails += "<div class='col-md-5 text-center'>"
 		placeholderDetails += unknownIcon + "<span>Unknown</span>"; 
@@ -700,9 +696,10 @@ function attachLegendCard() {
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
-	}
-	
+	}*/
 	$("#legend_card .card-inner").empty().html(placeholderDetails);
+    $("#legend_card .card-action").hide();
+    $("#legend_card").show();
 	
 	//$("#legend_card").show();
 
@@ -711,7 +708,6 @@ function attachLegendCard() {
 
 function hideLegendCard() {
 	$("#legend_card").hide();
-	console.log(windowWidth);
 	if (windowWidth <= 600) {
 		$("#location_card").css({
 			"left": "5px",
@@ -1068,10 +1064,10 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		prediction = object.row["Prediction"].value;
 	}
 	
-	var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
-	var lowRisk = "<img src='" + lowRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
+	/*var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
+	var lowRisk = "<img src='" + moderateRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
 	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
-	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";
+	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";*/
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	content += "<dl id='fusion_data' class='dl-horizontal'>";
@@ -1080,27 +1076,27 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 		if (leadLevel != "") {
 			content += "<dt id='lead_level'>Lead Level:</dt> <dd>" + leadLevel + "</dd>";
 			content += "<dt id='last_tested'>Last Tested:</dt> <dd>" + testDate + "</dd>";
-			hideLegendCard();
 		}
 		else {
 			content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
 		
 			if (prediction >= 0.20) {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + highRisk + "</dd>";
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "High" + "</dd>";
 			}
 			else if ((prediction > 0.10) && (prediction < .20)) {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + mediumRisk + "</dd>";
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Medium" + "</dd>";
 			}
 			else if (prediction <= .10) {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + lowRisk + "</dd>";
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Moderate" + "</dd>";
 			}
 			else {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + unknownRisk + "</dd>";
+				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Unknown" + "</dd>";
 			}
-			
+
 
 			/*content = attachLegendCard();*/
 		}
+		hideLegendCard();
 	}
 	else {
 		content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
@@ -1126,7 +1122,7 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 
 function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {
-		$("#resource_card, #legend_card").hide();
+		$("#resource_card").hide();
 		
 		/* Only specific location info. */
 		/*if ((address.length != 0) && (content.length == 0)) {
@@ -1178,7 +1174,7 @@ function attachLocationCard(type, marker, address, content) {
 function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
 		marker.addListener("click", function() {
-			$("#location_card, #legend_card").hide();
+			$("#location_card").hide();
 			
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
@@ -1438,7 +1434,7 @@ $(document).ready(function() {
 
 	if (typeof(Storage) !== "undefined") {
 		$("#heatmap_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			//if (resourceActiveArray[0] == 1 && $("#heatmap_btn").hasClass("active")) {
 			if (resourceActiveArray[0] == 1) {
@@ -1455,7 +1451,7 @@ $(document).ready(function() {
 		});
 
 		$("#water_pickup_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			if (resourceActiveArray[1] == 1) {
 				resourceActiveArray[1] = 0;
@@ -1474,7 +1470,7 @@ $(document).ready(function() {
 		});
 
 		$("#recycling_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			if (resourceActiveArray[2] == 1) {
 				resourceActiveArray[2] = 0;
@@ -1493,7 +1489,7 @@ $(document).ready(function() {
 		});
 
 		$("#water_testing_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			if (resourceActiveArray[4] == 1) {
 				resourceActiveArray[4] = 0;
@@ -1512,7 +1508,7 @@ $(document).ready(function() {
 		});
 
 		$("#blood_testing_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			if (resourceActiveArray[5] == 1) {
 				resourceActiveArray[5] = 0;
@@ -1531,7 +1527,7 @@ $(document).ready(function() {
 		});
 
 		$("#water_filters_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			if (resourceActiveArray[3] == 1) {
 				resourceActiveArray[3] = 0;
@@ -1550,7 +1546,7 @@ $(document).ready(function() {
 		});
 
 		$("#pipes_btn").on("click", function() {
-			$("#resource_card, #location_card, #legend_card").hide();
+			$("#resource_card, #location_card").hide();
 			
 			if (resourceActiveArray[6] == 1) {
 				resourceActiveArray[6] = 0;
@@ -1782,8 +1778,9 @@ $(document).ready(function() {
 		displaySavedLocations();
 	});*/
 
-	$("#location_card .close, #resource_card .close, #legend_card .close").on("click", function() {
+	$("#location_card .close, #resource_card .close").on("click", function() {
 		$(this).parent().hide();
+		$("#legend_card").show();
 	});
 	
 	$("#search_input").keyup(function() {

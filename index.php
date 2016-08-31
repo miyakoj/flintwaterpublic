@@ -76,8 +76,6 @@ $content = "<div id='map_container'>
 		</div>
 		
 		<div id='legend_card' class='card'>
-				<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>	
-			
 			<div class='card-main'>
 				<div class='card-inner'></div>
 			</div>

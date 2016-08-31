@@ -237,7 +237,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	z-index:2000!important;
 }*/
 
-#location_card, #resource_card, #legend_card {
+#location_card, #resource_card {
 	margin:0;
 	position:absolute;
 	bottom:5px;
@@ -274,15 +274,32 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	height:18px!important;
 	vertical-align:middle;
 }
+#legend_card {
+    margin:0;
+	position:absolute;
+	bottom:0;
+	left:0;
+	right:0;
+	display:none;
+	z-index:195!important;
+}
 
-/*#legend_card .card-inner {
-	margin-top:10px!important;
-	margin-bottom:10px!important;
-}*/
+#legend_card .row {
+	font-size: .9em;
+}
+
+#legend_card .card-inner {
+	margin: 15px 0px!important;
+}
+
+#legend_card .col-xs-3 {
+	padding-left: .5em;
+	padding-right: .5em;
+}
 
 .legend_icons {
-	height: 20px;
-	width: 20px;
+	height: 16px;
+	width: 16px;
 }
 
 #resource_card {
