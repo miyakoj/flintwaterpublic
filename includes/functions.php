@@ -27,6 +27,9 @@ else {
 		else
 			echo 0;
 	}
+	else if ($_POST["type"] == "site_report") {	
+		email_user();
+	}
 }
 
 function email_user() {
@@ -41,6 +44,9 @@ function email_user() {
 			<p><strong>Location:</strong><br />%s</p>
 			<p><strong>Problem Type:</strong><br /> %s</p>
 			<p><strong>Problem Description:</strong><br /> %s</p>", $_POST["location"], $_POST["problemType"], htmlspecialchars($_POST["description"]));
+	}
+	else if ($_POST["type"] == "site_report") {
+		$msg = sprintf("<p><strong>Site Problem Description:</strong><br /> %s</p>", htmlspecialchars($_POST["description"]));
 	}
 	
 	try {

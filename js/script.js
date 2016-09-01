@@ -612,7 +612,7 @@ $(document).ready(function() {
 	//$("#report_problem #phone").val("");
 	
 	/* Report a Problem form processing. */	
-	var validator = $("#report_problem form").validate({
+	$("#report_problem form").validate({
 		debug: false,
 		errorPlacement: function(error, element) {
 			element.after(error);
@@ -798,6 +798,45 @@ $(document).ready(function() {
 		alert("Thank you for your submission!");
 		$(window).attr("location", "index.php");
 	});*/
+	
+	
+	/* Site problem form. */
+	$("#site_report form").validate({
+		debug: false,
+		errorPlacement: function(error, element) {
+			element.after(error);
+		},
+		messages: {
+			email: "Please enter a valid email address.",
+			description: "Please describe the problem."
+		},
+		submitHandler: function(form) {			
+			$(form).ajaxSubmit({
+				type: "POST",
+				url: "includes/functions.php",
+				data: {
+					type: "site_report",
+					email: $("#email").val(),
+					description: $("#problem_text").val()
+				},
+				complete: function(resp) {
+					console.log(resp);
+					
+					/*if (resp.responseText.indexOf("1") != -1) {
+						$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
+						$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
+						$("#report_problem form").resetForm();
+					}
+					else {
+						$("#report_problem div[class*='alert-danger']").remove();
+						$("#report_problem form").after("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your report. Please try again.</div>");
+					}
+					
+					$("#report_problem .alert").show();*/
+				}
+			});
+		}
+	});
 	
 	
 	/* Dynamically add script tags only to pages where they're relevant. */

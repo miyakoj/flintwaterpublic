@@ -613,6 +613,10 @@ footer #copyright p span:last-child {
 	z-index:1000;
 }
 
+#site_report h4 {
+	margin-bottom:0;
+}
+
 /* Tooltip */
 .tooltip.top .tooltip-arrow {
   bottom:0;

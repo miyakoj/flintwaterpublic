@@ -153,19 +153,29 @@
 <div id="site_report" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
+			<form>
 			<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			<h4 class="modal-title">Report a Site Problem</h4>
 			</div>
 			
 			<div class="modal-body">
-			
+				<div class="form-group">
+				<label for="email">Email:</label>
+				<input id="email" class="form-control" type="text" name="email" placeholder="Enter your email address if you want a response" tabindex="20" />
+				</div>
+				
+				<div class="form-group">
+				<label for="problem_text">Problem:</label>
+				<textarea id="problem_text" class="form-control textarea-autosize" rows="5" name="problem_text" tabindex="21" required></textarea>
+				</div>
 			</div>
 			
 			<div class="modal-footer">
 			<button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary">Submit</button>
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
