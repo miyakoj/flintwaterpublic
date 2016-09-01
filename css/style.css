@@ -27,6 +27,10 @@ input, select, textarea {
 	padding:3px 6px!important;
 }
 
+.emphasis {
+	font-weight:bold;
+}
+
 /*#header_top {
 	padding:7px 10px 5px 10px;
 }*/
@@ -602,6 +606,11 @@ footer #copyright p span:last-child {
 
 .alert-dismissible .close {
 	top:-10px!important;
+}
+
+/* Modals */
+#site_report {
+	z-index:1000;
 }
 
 /* Tooltip */

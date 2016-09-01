@@ -33,11 +33,11 @@ $content = "<div id='map_container'>
 				<div class='card-inner'></div>
 				
 				<div class='card-action'>
-					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'><span class='sr-only'>More Info</span>
-					<span class='material-icons'>info_outline</span></button>
+					<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'>
+					<span class='material-icons'>star_border</span> <span>Save</span></button>
 					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only'>Save</span>
-					<span class='material-icons'>star_border</span></button>
+					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'>
+					<span class='material-icons'>info_outline</span> <span class='sr-only'>More Info</span></button>
 				</div>
 			</div>
 		</div>
@@ -49,13 +49,13 @@ $content = "<div id='map_container'>
 				<div class='card-inner'></div>
 				
 				<div class='card-action'>
-					<button id='card_directions' class='btn btn-flat pull-left' title='Get Directions'>Get Directions</button>
+					<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='material-icons'>star_border</span> <span>Save</span></button>
 					
-					<ul id='card_report_menu' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
+					<ul id='card_report_menu' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li>
 							<div class='dropdown'>
-							<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><span class='sr-only'>Report an Inaccuracy</span>
-							<span class='material-icons'>error</span></a>
+							<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+							<span class='material-icons'>error</span> <span>Report</span></a>
 							
 							<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
 								<li><a href='#'>Temporarily Closed</a></li>
@@ -70,7 +70,7 @@ $content = "<div id='map_container'>
 						</li>
 					</ul>
 					
-					<button id='card_save' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='sr-only'>Save</span><span class='material-icons'>star_border</span></button>
+					<button id='card_directions' class='btn btn-flat pull-right' title='Get Directions'>Get Directions</button>
 				</div>
 			</div>
 		</div>

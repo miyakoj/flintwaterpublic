@@ -609,7 +609,7 @@ $(document).ready(function() {
 	$("#report_problem #problem_text").val("");
 	$("#report_problem #email_choice, #report_problem #phone_choice").prop("checked", false);
 	$("#report_problem #email").val("");
-	$("#report_problem #phone").val("");
+	//$("#report_problem #phone").val("");
 	
 	/* Report a Problem form processing. */	
 	var validator = $("#report_problem form").validate({
@@ -625,11 +625,6 @@ $(document).ready(function() {
 		},
 		submitHandler: function(form) {
 			var location = $("#location").val().replace(", United States", "");
-			
-			/*if ($("#location").val().indexOf("United States") != -1)
-				location = $("#location").val().replace(", United States", "");
-			else
-				location = $("#location").val();*/
 			
 			$(form).ajaxSubmit({
 				type: "POST",

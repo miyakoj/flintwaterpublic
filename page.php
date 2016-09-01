@@ -55,8 +55,8 @@ if (@isset($_GET["pid"])) {
 											<li>Residents who need transportation or any other assistance can call <a href='http://www.centralmichigan211.org'>211</a>.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
-										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										  <button class='next_button btn btn-flat btn-primary' href='#'>Next</a>
+										  <button class='cancel_button btn btn-flat' href='#'>Cancel</a>
 										  </div>
 										</div>
 										
@@ -80,9 +80,9 @@ if (@isset($_GET["pid"])) {
 											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 										   </ul>
 										   <div class='btn_group'>
-										   <a class='back_button btn btn-flat btn-primary' href='#'>Back</a>
-										   <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
-										   <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										   <button class='back_button btn btn-flat btn-primary' href='#'>Back</button>
+										   <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
+										   <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 										  </div>
 										</div>
 										
@@ -99,8 +99,8 @@ if (@isset($_GET["pid"])) {
 											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <a class='back_button btn btn-flat btn-primary' href='#'>Back</a>
-										  <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										  <button class='back_button btn btn-flat btn-primary' href='#'>Back</button>
+										  <button class='next_button btn btn-flat btn-primary' href='#'>Return to map</button>
 										 </div>
 										</div>
 									</div>
@@ -174,8 +174,8 @@ if (@isset($_GET["pid"])) {
 										<li>Screw in the adapter.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='Brita_step2_button' class='next_button btn btn-primary btn-flat'>Next</a>
-								  <a class='cancel_button btn btn-flat'>Cancel</a>
+								  <button id='Brita_step2_button' class='next_button btn btn-primary btn-flat'>Next</button>
+								  <button class='cancel_button btn btn-flat'>Cancel</button>
 								  </div>
 								</div>
 								
@@ -191,8 +191,8 @@ if (@isset($_GET["pid"])) {
 									 <li>Next, screw the adapter on.</li>
 								   </ul>
 								   <div class='btn_group'>
-								  <a id='PUR_step2_button' class='next_button btn btn-primary btn-flat'>Next</a>
-								  <a class='cancel_button btn btn-flat'>Cancel</a>
+								  <button id='PUR_step2_button' class='next_button btn btn-primary btn-flat'>Next</button>
+								  <button class='cancel_button btn btn-flat'>Cancel</button>
 								  </div>
 								</div>
 								
@@ -200,8 +200,8 @@ if (@isset($_GET["pid"])) {
 								   <p>ZeroWater pitchers do not require an adapter. No installation video is available.</p>
 								   
 								   <div class='btn_group'>
-								  <a id='ZeroWater_step2_button' class='next_button btn btn-primary btn-flat'>Next</a>
-								  <a class='cancel_button btn btn-flat'>Cancel</a>
+								  <button id='ZeroWater_step2_button' class='next_button btn btn-primary btn-flat'>Next</button>
+								  <button class='cancel_button btn btn-flat'>Cancel</button>
 								  </div>
 								</div>
 										
@@ -221,7 +221,7 @@ if (@isset($_GET["pid"])) {
 									<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a class='next_button btn btn-primary btn-flat'>Return to map</a>
+								 <button class='next_button btn btn-primary btn-flat'>Return to map</button>
 								 </div>
 								</div>
 								
@@ -234,7 +234,7 @@ if (@isset($_GET["pid"])) {
 										<li>Push the filter unit onto the adapter until you hear a click.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a class='next_button btn btn-primary btn-flat'>Return to map</a>
+								 <button class='next_button btn btn-primary btn-flat'>Return to map</button>
 								 </div>
 								</div>
 								
@@ -246,7 +246,7 @@ if (@isset($_GET["pid"])) {
 										<li>Screw the filter into the bottom of the reservoir.</li>
 								  </ul>
 								  <div class='btn_group'>
-								 <a class='next_button btn btn-primary btn-flat'>Return to map</a>
+								 <button class='next_button btn btn-primary btn-flat'>Return to map</button>
 								 </div>
 								</div>
 										</div>
@@ -284,8 +284,8 @@ if (@isset($_GET["pid"])) {
 											<li>Turn the aerator clockwise without crushing aerator.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
-										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										  <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
+										  <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 										  </div>
 										</div>
 										
@@ -307,8 +307,8 @@ if (@isset($_GET["pid"])) {
 											<li>Clean aerator by gently scrubbing with a toothbrush.</li>
 										  </ul>
 										   <div class='btn_group'>
-										  <a class='next_button btn btn-flat btn-primary' href='#'>Next</a>
-										  <a class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										  <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
+										  <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 										  </div>
 										</div>
 										
@@ -326,7 +326,7 @@ if (@isset($_GET["pid"])) {
 											<li>Tighten with pliers, but not too tightly.</li>
 										  </ul>
 										  <div class='btn_group'>
-										 <a class='next_button btn btn-flat btn-primary' href='#'>Return to map</a>
+										 <button class='next_button btn btn-flat btn-primary' href='#'>Return to map</button>
 										 </div>
 										</div>
 									</div>
@@ -355,8 +355,8 @@ if (@isset($_GET["pid"])) {
 								  <h6>Thank you for doing your part!</h6>
 								  
 								  <div class='btn_group'>
-								  <a id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  <button id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</button>
+								  <button class='cancel_button btn btn-flat btn-primary'>Cancel</button>
 								  </div>
 								</div>
 								
@@ -372,8 +372,8 @@ if (@isset($_GET["pid"])) {
 									<input class='form-control' id='locationTextField' onFocus='initAutocomplete()'>
 									
 								   <div class='btn_group'>
-								  <a id='step2_click' class='btn btn-flat btn-primary disabled'>Continue</a>
-								  <a class='cancel_button btn btn-flat btn-primary'>Cancel</a>
+								  <button type='submit' id='step2_click' class='btn btn-flat btn-primary disabled'>Continue</button>
+								  <button type='button' class='cancel_button btn btn-flat btn-primary'>Cancel</button>
 								  </div>
 								</div>
 							</div>
@@ -468,7 +468,7 @@ if (@isset($_GET["pid"])) {
 											
 											<div class='btn_group'>
 											<button type='submit' class='next_button btn btn-flat btn-primary disabled' tabindex='31'>Submit</button>
-											<button type='button' class='cancel_button btn btn-flat' tabindex='32'>Cancel</button>
+											<button class='cancel_button btn btn-flat' tabindex='32'>Cancel</button>
 											</div>
 										</div>
 									</div>
@@ -488,7 +488,7 @@ if (@isset($_GET["pid"])) {
 			<div class='col-md-6'><img id='umf_logo' src='images/umf_logo.png' /></div>
 			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
 			</div></div>
-			<p>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and <a href='http://www.umich.edu'>University of Michigan-Ann Arbor</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>";
+			<p>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and <a href='http://www.umich.edu'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>";
 		break;
 	}
 }		
