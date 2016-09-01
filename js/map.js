@@ -62,12 +62,13 @@ var savedLocationIcon;
 var iconSize = 30;
 
 // risk meters
-var unknownRiskSrc = "images/unknownrisklevel.png";
-var moderateRiskSrc = "images/moderaterisklevel.png";
-var mediumRiskSrc = "images/medrisklevel.png";
-var highRiskSrc = "images/highrisk.png";
+var unknownRiskSrc = "images/graybar.png";
+var lowRiskSrc = "images/yellowbar.png";
+var moderateRiskSrc = "images/brownbar.png";
+var highRiskSrc = "images/redbar.png";
 
 var leadLevelOfInput;
+var findHeight = 0;
 
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
@@ -100,7 +101,7 @@ function initMap() {
 	else
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height"));
 
-	console.log(mapHeight);
+
 	$("#map_container").css("height", mapHeight + "px");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
@@ -633,8 +634,8 @@ function addFusionListener(object) {
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 
-		$("#location_card .dl-horizontal").remove("#legend");
-		$("#location_card #211_info").after(attachLegendCard());
+		//$("#location_card .dl-horizontal").remove("#legend");
+		//$("#location_card #211_info").after(attachLegendCard());
 		
 		var isSaved = false;
 		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
@@ -663,54 +664,36 @@ function addFusionListener(object) {
 }
 
 
-function attachLegendCard() {
-	var placeholderDetails = "<div id='legend'>";
+function attachLegendCard(findHeight) {
+
+		var placeholderDetails = "<div id='legend'>";
 	
-	var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='unknown risk' class='legend_icons center-block' /> ";
-	var lowIcon = "<img src='" + moderateRiskSrc + "' title ='low risk' class ='legend_icons center-block' /> ";
-	var mediumIcon = "<img src='" + mediumRiskSrc + "' title ='medium risk' class='legend_icons center-block' /> ";
-	var highIcon = "<img src='" + highRiskSrc + "' title ='high risk' class='legend_icons center-block' /> ";
+		var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='no lead results' class='legend_icons' /> ";
+		var lowIcon = "<img src='" + lowRiskSrc + "' title ='low lead' class ='legend_icons' /> ";
+		var moderateIcon = "<img src='" + moderateRiskSrc + "' title ='moderate lead' class='legend_icons' /> ";
+		var highIcon = "<img src='" + highRiskSrc + "' title ='high lead' class='legend_icons' /> ";
 	
-	//if (windowWidth <= 600) {
+
 		placeholderDetails += "<div class='row'>";
-		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += unknownIcon + "<span>No Results</span>"; 
-		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
 		placeholderDetails += lowIcon + "<span>Low</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += mediumIcon + "<span>Moderate</span>";
+		placeholderDetails += moderateIcon + "<span>Moderate</span>";
 		placeholderDetails += "</div>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
 		placeholderDetails += highIcon + "<span>High</span>";
 		placeholderDetails += "</div>";
+		placeholderDetails += "<div class='col-xs-3 text-center'>";
+		placeholderDetails += unknownIcon + "<span>No Results</span>"; 
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
-		//return placeholderDetails;
-		//$("location_card .card-inner").html(details);
+		placeholderDetails += "</div>";
 
-	//}
-	/*else {
-		placeholderDetails += "<div class=row>";
-		placeholderDetails += "<div class='col-md-5 text-center'>"
-		placeholderDetails += unknownIcon + "<span>Unknown</span>"; 
-		placeholderDetails += mediumIcon + "<span>Medium</span>";
-		placeholderDetails += "</div>";
-		placeholderDetails += "<div class='col-md-5 text-center'>"
-		placeholderDetails += lowIcon + "<span>Low</span>";
-		placeholderDetails += highIcon + "<span>High</span>"
-		placeholderDetails += "</div>";
-		placeholderDetails += "</div>";
-		placeholderDetails += "</div>";
-	}*/
-	$("#legend_card .card-inner").empty().html(placeholderDetails);
-    $("#legend_card .card-action").hide();
-    $("#legend_card").show();
-	
-	//$("#legend_card").show();
-
-	//return placeholderDetails;
+		$("#legend_card .card-inner").empty().html(placeholderDetails);
+		$("#legend_card .card-action").hide();
+		$("#legend_card").show();
+		
 }
 
 function hideLegendCard() {
@@ -1100,8 +1083,6 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Unknown" + "</dd>";
 			}
 
-
-			/*content = attachLegendCard();*/
 		}
 		hideLegendCard();
 	}

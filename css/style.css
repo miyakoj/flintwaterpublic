@@ -277,7 +277,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #legend_card {
     margin:0;
 	position:absolute;
-	bottom:0;
+	bottom:-54px;
 	left:0;
 	right:0;
 	display:none;
@@ -289,7 +289,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 #legend_card .card-inner {
-	margin: 15px 0px!important;
+	margin: 14px 0px!important;
 }
 
 #legend_card .col-xs-3 {
@@ -298,8 +298,9 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 .legend_icons {
-	height: 16px;
-	width: 16px;
+	display: block;
+	height: .5em;
+	width: 100%;
 }
 
 #resource_card {

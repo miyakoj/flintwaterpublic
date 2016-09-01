@@ -93,7 +93,8 @@ $(document).ready(function() {
 	/* General layout/CSS differences between the mobile and desktop versions. */
 	/* Phones only. */
 	if (windowWidth < 600) {
-		$("#location_card, #resource_card, #legend_card").appendTo($("body"));
+		$("#location_card, #resource_card").appendTo($("body"));
+		$("#legend_card").appendTo($("map-container"));
 		
 		$("#resource_card #card_report_menu").on("click", function() {
 			$(this).find("li:first-child").addClass("dropup open");
