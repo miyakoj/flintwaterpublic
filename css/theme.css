@@ -187,7 +187,6 @@ html, body {
 #toggles .list {
 	display:table;
     border-spacing:10px 3px;
-    padding-bottom:20px;
 }
 
 #toggles .list label {
