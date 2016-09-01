@@ -237,7 +237,7 @@ function initMap() {
 				+ streetAddress + "'";
 
 			queryFusionTable(query, function(result) {					
-				content = createLocationContent(tempLocationMarker, streetAddress, result);
+				content = createLocationContent(streetAddress, result);
 				attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
 				
 				savedMarkers.push(tempLocationMarker);
@@ -405,7 +405,7 @@ function initMap() {
 
 		queryFusionTable(query, function(result) {
 			if (result.rows != undefined) {
-				content = createLocationContent(locationMarker, streetAddress, result);
+				content = createLocationContent(streetAddress, result);
 				$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 				
 				latLong = "(" + result.rows[0][0] + ", " + result.rows[0][1] + ")";
@@ -414,16 +414,14 @@ function initMap() {
 				latLong = locationMarker.getPosition();
 				
 				content = "<h5 id='address'>" + streetAddress + "</h5>";
-				content += "<dl id='fusion_data' class='dl-horizontal'>";
-				content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
-				content += "<dt id='lead_level'>Predicted Risk:</dt> <dd>No prediction available.</dd>";
-				content += "</dl>";
-				content += "<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
+				content += "<p>No test data available.<br />";
+				content += "No prediction available.</p>";
+				content += "<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>"
 				
 				$("#location_card .card-inner").empty().html(content);
 			}
 			
-			sizeCardInfo();
+			//sizeCardInfo();
 			checkIfSaved(latLong);
 			attachLocationCard("unsavedLocation", locationMarker, streetAddress, content);
 			
@@ -629,7 +627,7 @@ function setUpFusionTable() {
 
 function addFusionListener(object) {
 	google.maps.event.addListener(object, "click", function(event) {		
-		var content = createLocationContent(object, event.row["Address"].value, event);
+		var content = createLocationContent(event.row["Address"].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 
@@ -885,7 +883,8 @@ function callStorageAPI(object) {
 					
 					allMarkersString.push(resourcesAvailable);
 					
-					var content = "<h5 id='provider_title'>" + title + "</h5> <p id='provider_address'>" + provider.aidAddress + "</p>";
+					var content = "<p id='provider_resources'>" + images + "</p>";
+					content += "<h5 id='provider_title'>" + title + "</h5> <p id='provider_address'>" + provider.aidAddress + "</p>";
 					
 					if (provider.phone.length > 0)
 						content += "<p id='provider_phone'>" + provider.phone + "</p>";
@@ -897,7 +896,7 @@ function callStorageAPI(object) {
 						content += "<p id='provider_notes'>" + provider.notes + "</p>";
 					
 					// content += "<p>" + images + "</p></div>";
-					content += "<p id='provider_resources'>" + images + "</p>"
+					
 					content += "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
 
 					/*If the resource is saved, display on map always if not then do not display*/
@@ -1054,11 +1053,10 @@ function queryFusionTable(query, callback) {
 }
 
 /* Location info card content generation. */
-function createLocationContent(tempLocationMarker, streetAddress, object) {
+function createLocationContent(streetAddress, object) {
 	var leadLevel;
 	var testDate;
 	var prediction;
-	//var leadMsg = "OK to use filtered water, except children under 6 and pregnant women.";
 	var tempAddr;
 	
 	if (object.kind !== undefined) {		
@@ -1069,6 +1067,7 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 	else {		
 		leadLevel = object.row["leadlevel"].value;
 		testDate = object.row["testDate"].value;
+		testDate = testDate.slice(0, testDate.indexOf(" "));
 		prediction = object.row["Prediction"].value;
 	}
 	
@@ -1078,51 +1077,38 @@ function createLocationContent(tempLocationMarker, streetAddress, object) {
 	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";*/
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
-	content += "<dl id='fusion_data' class='dl-horizontal'>";
 	
 	if (!isNaN(leadLevel)) {
-		if (leadLevel != "") {
-			content += "<dt id='lead_level'>Lead Level:</dt> <dd>" + leadLevel + "</dd>";
-			content += "<dt id='last_tested'>Last Tested:</dt> <dd>" + testDate + "</dd>";
+		if (leadLevel != "") {			
+			if (leadLevel < 15)
+				content += "<p class='emphasis'>Low Lead Level</p>";
+			else if (leadLevel < 50)
+				content += "<p class='emphasis'>Moderate Lead Level</p>";
+			else
+				content += "<p class='emphasis'>High Lead Level</p>";				
+			
+			content += "<p>Last tested " + testDate + " with a lead result of " + leadLevel + " ppb.</p>";
 		}
 		else {
-			content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
+			content += "<p class='emphasis'>No Test Results</p>";
 		
 			if (prediction >= 0.20) {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "High" + "</dd>";
+				content += "<p>High risk of elevated lead levels. Testing is recommended.</p>";
 			}
 			else if ((prediction > 0.10) && (prediction < .20)) {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Medium" + "</dd>";
+				content += "<p>Moderate risk of elevated lead levels. Testing is recommended.</p>";
 			}
 			else if (prediction <= .10) {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Moderate" + "</dd>";
+				content += "<p>At risk for elevated lead levels. Testing is recommended.</p>";
 			}
-			else {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Unknown" + "</dd>";
-			}
-
-
-			/*content = attachLegendCard();*/
 		}
+		
 		hideLegendCard();
 	}
 	else {
-		content += "<dt id='lead_level'>Lead Level:</dt> <dd>No test data available.</dd>";
-		content += "<dt id='lead_level'>Predicted Risk:</dt> <dd>No prediction available.</dd>";
+		content += "<p>No test results available.<br />";
+		content += "No lead prediction available.</p>";
 	}
-	
-	content += "</dl>";
-
-	/*if (leadLevelOfInput >= 0 && leadLevelOfInput < 15) {
-		leadPrediction = "Predicted low lead levels";
-	}
-	else if (leadLevelOfInput >= 15 && leadLevelOfInput < 150) {
-		leadPrediction = "Predicted medium lead levels";
-	}
-	else if (leadLevelOfInput >= 150) {
-		leadPrediction = "Predicted high lead levels";
-		leadMsg = "Not safe to drink even if filtered."
-	}*/
 	
 	return content;
 }
@@ -1421,13 +1407,13 @@ function unsaveLocation(latLong) {
 function sizeCardInfo() {
 	$("#location_card .dl-horizontal dt").css({
 		"width": function() {
-			return ($("#location_card").innerWidth() * 0.35) + "px";
+			return ($("#location_card").innerWidth() * 0.45) + "px";
 		}
 	});
 	
 	$("#location_card .dl-horizontal dd").css({
 		"margin-left": function() {
-			return ($("#location_card").innerWidth() * 0.4) + "px";
+			return ($("#location_card").innerWidth() * 0.3) + "px";
 		}
 	});
 }

@@ -7,18 +7,26 @@ use google\appengine\api\mail\Message;
 $reportId = mt_rand(0,9999999999);
 $paddedId = sprintf("%010d", $reportId);	// Pad the number with zeros.
 
-if ($_POST["type"] == "resource_report") {
-    $result = queries("inaccuracy", "" , $paddedId);
-    echo $result;
-}
-else if ($_POST["type"] == "problem_report") {
-    $result = queries("report", "" , $paddedId);
-	echo $result;
+$json = file_get_contents("php://input");
+
+if (!$json) {
+	$obj = json_decode($json);
 	
-	if ($result)
-		email_user();
-	else
-		echo 0;
+	$result = queries("resource_report", "" , $paddedId, $obj);
+}
+else {
+	if ($_POST["type"] == "resource_report") {	
+		$result = queries("resource_report", "" , $paddedId);
+		echo $result;
+	}
+	else if ($_POST["type"] == "problem_report") {
+		$result = queries("problem_report", "" , $paddedId);
+		
+		if ($result)
+			email_user();
+		else
+			echo 0;
+	}
 }
 
 function email_user() {
