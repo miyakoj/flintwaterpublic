@@ -102,10 +102,6 @@ function initMap() {
 	else
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height"));
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 	$("#map_container").css("height", mapHeight + "px");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
@@ -1088,13 +1084,6 @@ function createLocationContent(streetAddress, object) {
 			else if (prediction <= .10) {
 				content += "<p>At risk for elevated lead levels. Testing is recommended.</p>";
 			}
-<<<<<<< HEAD
-			else {
-				content += "<dt id='risk'>Predicted Risk:</dt> <dd>" + "Unknown" + "</dd>";
-			}
-
-=======
->>>>>>> origin/master
 		}
 		
 		hideLegendCard();
