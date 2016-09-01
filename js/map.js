@@ -662,7 +662,7 @@ function addFusionListener(object) {
 }
 
 
-function attachLegendCard(findHeight) {
+function attachLegendCard() {
 
 		var placeholderDetails = "<div id='legend'>";
 	
