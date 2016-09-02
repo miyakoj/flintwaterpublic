@@ -664,7 +664,7 @@ $(document).ready(function() {
 	$("#report_problem #problem_type").rules("add", {required: true});
 	$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
 	
-	$.validator.methods.email = function(value, element) {
+	var validator = $.validator.methods.email = function(value, element) {
 		return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
 	}
 	$("#email").rules("add", {
@@ -801,7 +801,9 @@ $(document).ready(function() {
 	
 	
 	/* Site problem form. */
-	$("#site_report form").validate({
+	//$("#comments form .modal-footer button[type='submit']").removeClass("disabled");
+	
+	var comments_validator = $("#comments form").validate({
 		debug: false,
 		errorPlacement: function(error, element) {
 			element.after(error);

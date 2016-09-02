@@ -27,7 +27,7 @@ $content = "<div id='map_container'>
 		<input id='search_input' class='controls' type='text' placeholder='Search for a location' />
 		
 		<div id='location_card' class='card'>
-			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+			<button type='button' class='close' aria-label='Close'><span class='material-icons' aria-hidden='true'>close</span></button>
 			
 			<div class='card-main'>
 				<div class='card-inner'></div>
@@ -43,7 +43,7 @@ $content = "<div id='map_container'>
 		</div>
 
 		<div id='resource_card' class='card'>
-			<button type='button' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+			<button type='button' class='close' aria-label='Close'><span class='material-icons' aria-hidden='true'>close</span></button>
 			
 			<div class='card-main'>				
 				<div class='card-inner'></div>

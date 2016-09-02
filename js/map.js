@@ -663,7 +663,6 @@ function addFusionListener(object) {
 
 
 function attachLegendCard() {
-
 		var placeholderDetails = "<div id='legend'>";
 	
 		var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='no lead results' class='legend_icons' /> ";
@@ -689,7 +688,6 @@ function attachLegendCard() {
 		placeholderDetails += "</div>";
 
 		$("#legend_card .card-inner").empty().html(placeholderDetails);
-		$("#legend_card .card-action").hide();
 		$("#legend_card").show();
 		
 }
@@ -798,6 +796,8 @@ function callStorageAPI(object) {
 					content += "</div>";
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
+					
+					$("#location_card .card-action").hide();
 				}
 			}
 			/* Provider Data */
@@ -1118,9 +1118,15 @@ function attachLocationCard(type, marker, address, content) {
 		if (type.indexOf("savedLocation") != -1)
 			$("#location_card #card_save .material-icons").html("star");
 		
-		sizeCardInfo();
-		$("#location_card .card-action").show();
+		
+		if (type.indexOf("leadArea") != -1)
+			$("#location_card .card-action").hide();
+		else
+			$("#location_card .card-action").show();
+		
 		$("#location_card").show();
+		
+		sizeCardInfo();
 		
 		savedLocationMarkers.push(marker);
 	});

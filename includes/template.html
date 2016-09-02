@@ -141,7 +141,7 @@
 				</div>
 			
 				<div id="copyright_row" class="row">
-					<div id="copyright" class="col-md-12"><p><span>&copy;2016</span> <span><a id="about_link" href="#">About this site</a></span> <span><a id="site_report_link" href="#site_report" data-toggle="modal">Report a site problem</a></span></p></div>
+					<div id="copyright" class="col-md-12"><p><span>&copy;2016</span> <span><a id="about_link" href="#">About this site</a></span> <span><a id="site_report_link" href="#site_report" data-toggle="modal">Contact Us</a></span></p></div>
 				</div>
 			</div>
 		  </div>
@@ -150,13 +150,13 @@
   </div>
 </div>
 
-<div id="site_report" class="modal fade" tabindex="-1" role="dialog">
+<div id="comments" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
 			<form>
 			<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			<h4 class="modal-title">Report a Site Problem</h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="material-icons" aria-hidden="true">close</span></button>
+			<h4 class="modal-title">Contact Us</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -166,14 +166,14 @@
 				</div>
 				
 				<div class="form-group">
-				<label for="problem_text">Problem:</label>
-				<textarea id="problem_text" class="form-control textarea-autosize" rows="5" name="problem_text" tabindex="21" required></textarea>
+				<label for="comments">Comments:</label>
+				<textarea id="comments" class="form-control textarea-autosize" rows="5" name="comments" tabindex="21" required></textarea>
 				</div>
 			</div>
 			
 			<div class="modal-footer">
 			<button type="button" class="btn btn-flat" data-dismiss="modal">Close</button>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary disabled">Submit</button>
 			</div>
 			</form>
 		</div>

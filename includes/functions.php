@@ -8,11 +8,10 @@ $reportId = mt_rand(0,9999999999);
 $paddedId = sprintf("%010d", $reportId);	// Pad the number with zeros.
 
 $json = file_get_contents("php://input");
+$obj = json_decode($json);
 
-if (!$json) {
-	$obj = json_decode($json);
-	
-	$result = queries("resource_report", "" , $paddedId, $obj);
+if ($obj) {
+	$result = queries("problem_report", "" , $paddedId, $obj);
 }
 else {
 	if ($_POST["type"] == "resource_report") {	
