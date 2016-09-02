@@ -223,21 +223,21 @@ function initMap() {
 		var content;
 		
 		for (var i = 1; i <= numberSaved; i++) {
-			locationPosition = localStorage.getItem("savedLocationPosition"+i);
-			latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
-			longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
-			streetAddress = localStorage.getItem("savedLocationAddress"+i);
-			
-			tempLocationMarker = new google.maps.Marker({
-				position: {lat:latitude, lng:longitude},
-				map: map,
-				icon: savedLocationIcon
-			});
-			
 			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 				+ streetAddress + "'";
 
-			queryFusionTable(query, function(result) {					
+			queryFusionTable(query, function(result) {
+				locationPosition = localStorage.getItem("savedLocationPosition"+i);
+				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
+				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+				streetAddress = localStorage.getItem("savedLocationAddress"+i);
+				
+				tempLocationMarker = new google.maps.Marker({
+					position: {lat:latitude, lng:longitude},
+					map: map,
+					icon: savedLocationIcon
+				});
+			
 				content = createLocationContent(streetAddress, result);
 				attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
 				
@@ -1028,7 +1028,7 @@ function setUpInitialMap() {
 
 function queryFusionTable(query, callback) {
 	return $.ajax({
-		method: "GET",
+		type: "GET",
 		dataType: "jsonp",
 		url: "https://www.googleapis.com/fusiontables/v2/query?sql=" + encodeURI(query) + "&key=" + apiKey,
 		success: callback
@@ -1042,26 +1042,21 @@ function createLocationContent(streetAddress, object) {
 	var prediction;
 	var tempAddr;
 	
-	if (object.kind !== undefined) {		
-		leadLevel = object.rows[0][0];
-		testDate = object.rows[0][1];
-		prediction = object.rows[0][2];
-	}
-	else {		
-		leadLevel = object.row["leadlevel"].value;
-		testDate = object.row["testDate"].value;
-		testDate = testDate.slice(0, testDate.indexOf(" "));
-		prediction = object.row["Prediction"].value;
-	}
-	
-	/*var unknownRisk = "<img src='" + unknownRiskSrc + "' title ='unknownRisk' class='risk_meter' /> ";
-	var lowRisk = "<img src='" + moderateRiskSrc + "' title ='lowRisk' class ='risk_meter' /> ";
-	var mediumRisk = "<img src='" + mediumRiskSrc + "' title ='medRisk' class='risk_meter' /> ";
-	var highRisk = "<img src='" + highRiskSrc + "' title ='highRisk' class='risk_meter' /> ";*/
-	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	
 	if (!isNaN(leadLevel)) {
+		if (object.kind !== undefined) {		
+			leadLevel = object.rows[0][0];
+			testDate = object.rows[0][1];
+			prediction = object.rows[0][2];
+		}
+		else {		
+			leadLevel = object.row["leadlevel"].value;
+			testDate = object.row["testDate"].value;
+			testDate = testDate.slice(0, testDate.indexOf(" "));
+			prediction = object.row["Prediction"].value;
+		}
+		
 		if (leadLevel != "") {			
 			if (leadLevel < 15)
 				content += "<p class='emphasis'>Low Lead Level</p>";
