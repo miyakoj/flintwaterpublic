@@ -438,4 +438,10 @@ footer .card-action btn {
 	footer #site_desc p {
 		text-align:center;
 	}
+	
+	#show_me_menu .dropdown-menu span{
+		color: rgba(0,0,0,.87);
+		font-size: 14px;
+		font-weight: 400;
+	}
 }
