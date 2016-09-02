@@ -213,32 +213,38 @@ function initMap() {
 	// Create a marker for the place.
 	locationMarker = new google.maps.Marker({map: map});
 	
-	/* Load saved non-resource locations. */
+	/* Load saved non-resource locations. 
+	   Some code from: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707
+	*/
+	//window.jsonpCallbacks = {};
 	var numberSaved = parseInt(localStorage["numberSaved"]);
 	
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
-		var locationPosition;
-		var tempLocationMarker;
-		var streetAddress;
-		var content;
-		
 		for (var i = 1; i <= numberSaved; i++) {
+			var locationPosition = localStorage.getItem("savedLocationPosition"+i);
+			var latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
+			var longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+			var streetAddress = localStorage.getItem("savedLocationAddress"+i);
+			
+			var tempLocationMarker = new google.maps.Marker({
+				position: {lat:latitude, lng:longitude},
+				map: map,
+				icon: savedLocationIcon
+			});
+				
 			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 				+ streetAddress + "'";
+				
+			/*(function(index){
+				window.jsonpCallbacks["myQueryCallback"+index] = function(query){
+					myQueryCallback(query, index);
+				};
+			})(i);*/
 
 			queryFusionTable(query, function(result) {
-				locationPosition = localStorage.getItem("savedLocationPosition"+i);
-				latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
-				longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
-				streetAddress = localStorage.getItem("savedLocationAddress"+i);
+				console.log(result);
 				
-				tempLocationMarker = new google.maps.Marker({
-					position: {lat:latitude, lng:longitude},
-					map: map,
-					icon: savedLocationIcon
-				});
-			
-				content = createLocationContent(streetAddress, result);
+				var content = createLocationContent(streetAddress, result);
 				attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
 				
 				savedMarkers.push(tempLocationMarker);
@@ -1033,6 +1039,13 @@ function queryFusionTable(query, callback) {
 		url: "https://www.googleapis.com/fusiontables/v2/query?sql=" + encodeURI(query) + "&key=" + apiKey,
 		success: callback
 	});
+	
+	/*return $.ajax({
+		type: "GET",
+		dataType: "jsonp",
+		url: "https://www.googleapis.com/fusiontables/v2/query?sql=" + encodeURI(query) + "&key=" + apiKey,
+		jsonpCallback: "jsonpCallbacks.myQueryCallback"+i
+	});*/
 }
 
 /* Location info card content generation. */

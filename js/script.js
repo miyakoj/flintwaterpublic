@@ -654,6 +654,119 @@ $(document).ready(function() {
 		}
 	});
 	
+	/* Set the validation rules. */
+	$("#report_problem #location").rules("add", {required: true, location: true});
+	
+	jQuery.validator.addMethod("location", function(value, element, params) {
+		return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
+	}, jQuery.validator.format("Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization."));
+	
+	$("#report_problem #problem_type").rules("add", {required: true});
+	$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
+	
+	$.validator.methods.email = function(value, element) {
+		return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
+	};
+	
+	$("#email").rules("add", {
+		required: true,
+		email: true/*{
+			depends: function(element) {
+				return $("#email").is(":checked");
+			}
+		}*/
+	});
+	
+	/*$.validator.methods.phoneUS = function(value, element) {
+		return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
+	}
+	$("#phone").rules("add", {
+		required: true,
+		phoneUS: {
+			depends: function(element) {
+				return $("#phone").is(":checked");
+			}
+		}
+	});*/
+	
+	/* Fill in location after clicking favorite location marker. */
+	$("#report_problem #location").on("focus", function() {
+		var autocomplete = initAutocomplete($(this).attr("id"));
+		
+		autocomplete.addListener('place_changed', function() {
+			if (report_validator.element("#report_problem #location"))
+				$("#report_step1_content .next_button").removeClass("disabled");
+			else
+				$("#report_step1_content .next_button").addClass("disabled");
+		});
+		
+		if (report_validator.element("#report_problem #location"))
+			$("#report_step1_content .next_button").removeClass("disabled");
+		else
+			$("#report_step1_content .next_button").addClass("disabled");
+	}).on("focusout", function() {
+		if (report_validator.element("#report_problem #location"))
+			$("#report_step1_content .next_button").removeClass("disabled");
+		else
+			$("#report_step1_content .next_button").addClass("disabled");
+	});
+	
+	//var report_location = document.getElementById("location");
+	
+	/* Enable step 2 button once both fields are completed. */	
+	/* Count the characters of the problem description. */
+	$(".char_count").html("<span>Characters remaining:</span> 500");
+	$("#report_problem #problem_text").on("keyup", function(event) {
+		$(".char_count").html("<span>Characters remaining:</span> " + (500 - $(this).val().length));
+	});
+	
+	$("#report_problem #problem_type").on("focusout", function() {
+		if (report_validator.element("#report_problem #problem_type") && report_validator.element("#report_problem #problem_text"))
+			$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step2_content .next_button").addClass("disabled");
+	});
+	
+	$("#report_problem #problem_text").on("keyup", function() {
+		if (report_validator.element("#report_problem #problem_type") && report_validator.element("#report_problem #problem_text"))
+			$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step2_content .next_button").addClass("disabled");
+	});
+	
+	/* Enable step 3 button once one of the contact fields is completed and valid. */
+	$("#report_problem #contact_pref input[type='radio']").on("change", function() {
+		var selected = $(this).filter(":checked").val();
+		
+		if (selected.indexOf("email") != -1) {
+			$("#phone").addClass("hide");
+			$("#email").removeClass("hide");
+		}
+		else if (selected.indexOf("phone") != -1) {
+			$("#email").addClass("hide");
+			$("#phone").removeClass("hide");
+		}
+	});
+	
+	$("#report_problem #email").on("keyup", function() {
+		if (report_validator.element("#report_problem #email"))
+			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step3_content .next_button").addClass("disabled");
+	}).on("focusout", function() {
+		if (report_validator.element("#report_problem #email"))
+			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step3_content .next_button").addClass("disabled");
+	});
+	
+	/*$("#report_problem #phone").on("keyup", function() {
+		if (report_validator.element("#report_problem #phone"))
+			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+		else
+			$("#report_problem #report_step3_content .next_button").addClass("disabled");
+	});*/
+	
 	
 	/* Steppers for the submit information page. */
 	/*$("#submit_link").on("click", function() {
