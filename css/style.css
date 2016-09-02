@@ -154,6 +154,15 @@ header {
 	display:none;
 }
 
+#show_me_menu li{
+	color: rgba(0,0,0,.87);
+    margin: 0;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 400;
+    height: 48px;
+    line-height: 48px;
+}
 
 /* Map-Related Styles. */
 #toggles {
@@ -284,7 +293,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	bottom:-54px;
 	left:0;
 	right:0;
-	display:none;
+	display:block;
 	z-index:195!important;
 }
 
