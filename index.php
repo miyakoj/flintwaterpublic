@@ -27,35 +27,35 @@ $content = "<div id='map_container'>
 		<input id='search_input' class='controls' type='text' placeholder='Search for a location' />
 		
 		<div id='location_card' class='card'>
-			<button type='button' class='close' aria-label='Close'><span class='material-icons' aria-hidden='true'>close</span></button>
+			<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
 			
 			<div class='card-main'>
 				<div class='card-inner'></div>
 				
 				<div class='card-action'>
 					<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'>
-					<span class='material-icons'>star_border</span> <span>Save</span></button>
+					<span class='icon icon-lg'>star_border</span> Save</button>
 					
 					<button id='more_info_button' class='btn btn-flat pull-right' data-toggle='tooltip' data-placement='top' title='More Information'>
-					<span class='material-icons'>info_outline</span> <span class='sr-only'>More Info</span></button>
+					<span class='icon icon-lg'>info_outline</span> More Info</button>
 				</div>
 			</div>
 		</div>
 
 		<div id='resource_card' class='card'>
-			<button type='button' class='close' aria-label='Close'><span class='material-icons' aria-hidden='true'>close</span></button>
+			<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
 			
 			<div class='card-main'>				
 				<div class='card-inner'></div>
 				
 				<div class='card-action'>
-					<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='material-icons'>star_border</span> <span>Save</span></button>
+					<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='icon icon-lg'>star_border</span> Save</button>
 					
 					<ul id='card_report_menu' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
 					    <li>
 							<div class='dropdown'>
 							<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-							<span class='material-icons'>error</span> <span>Report</span></a>
+							<span class='icon icon-lg'>error</span> Report</a>
 							
 							<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
 								<li><a href='#'>Temporarily Closed</a></li>

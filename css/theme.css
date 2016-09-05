@@ -14,7 +14,7 @@ li[class*='disabled'] a {
 	color:#CCC!important;
 }
 
-.icon, .material-icons {
+.icon {
 	font-family:"Material Icons"!important;
 }
 

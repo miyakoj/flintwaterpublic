@@ -62,11 +62,17 @@ var savedResourceIcon;
 var savedLocationIcon;
 var iconSize = 30;
 
-// risk meters
+/* Meters for predicted risk. */
 var unknownRiskSrc = "images/graybar.png";
 var lowRiskSrc = "images/yellowbar.png";
 var moderateRiskSrc = "images/brownbar.png";
 var highRiskSrc = "images/redbar.png";
+
+/* Meters for actual lead data. */
+var unknownRiskCircle = "images/unknownrisklevel.png";
+var lowRiskCircle = "images/lowrisklevel.png";
+var medRiskCircle = "images/medrisklevel.png";
+var highRiskCircle = "images/highrisklevel.png";
 
 var leadLevelOfInput;
 var findHeight = 0;
@@ -213,43 +219,39 @@ function initMap() {
 	// Create a marker for the place.
 	locationMarker = new google.maps.Marker({map: map});
 	
-	/* Load saved non-resource locations. 
-	   Some code from: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707
-	*/
-	//window.jsonpCallbacks = {};
+	/* Load saved non-resource locations. */
 	var numberSaved = parseInt(localStorage["numberSaved"]);
+	window.jsonpCallbacks = {};
 	
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		for (var i = 1; i <= numberSaved; i++) {
-			var locationPosition = localStorage.getItem("savedLocationPosition"+i);
-			var latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
-			var longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
 			var streetAddress = localStorage.getItem("savedLocationAddress"+i);
-			
-			var tempLocationMarker = new google.maps.Marker({
-				position: {lat:latitude, lng:longitude},
-				map: map,
-				icon: savedLocationIcon
-			});
 				
 			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 				+ streetAddress + "'";
-				
-			/*(function(index){
-				window.jsonpCallbacks["myQueryCallback"+index] = function(query){
-					myQueryCallback(query, index);
+			
+			/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
+			(function(index){				
+				window.jsonpCallbacks["fusionQueryCallback"+index] = function(data) {
+					var locationPosition = localStorage.getItem("savedLocationPosition"+index);
+					var latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
+					var longitude = parseFloat(locationPosition.slice(locationPosition.indexOf(" ")+1, locationPosition.indexOf(")")));
+					
+					var tempLocationMarker = new google.maps.Marker({
+						position: {lat:latitude, lng:longitude},
+						map: map,
+						icon: savedLocationIcon
+					});
+			
+					var content = fusionQueryCallback(data, streetAddress);
+					attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
+					
+					savedMarkers.push(tempLocationMarker);
+					savedLocationMarkers.push(tempLocationMarker);
 				};
-			})(i);*/
-
-			queryFusionTable(query, function(result) {
-				console.log(result);
-				
-				var content = createLocationContent(streetAddress, result);
-				attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
-				
-				savedMarkers.push(tempLocationMarker);
-				savedLocationMarkers.push(tempLocationMarker);
-			});
+			})(i);
+			
+			queryFusionTable(query, "jsonpCallbacks.fusionQueryCallback"+i);
 		}
 	}
 
@@ -295,13 +297,10 @@ function initMap() {
 	
 	$("#search_input").keyup(function() {
 		if ($("#search_input").val()) {
-			$("#search_button").css("color", "#FFF");
 			activeSearch = 1;
 		}
-		else {
-			$("#search_button").css("color", "#61b1ff");
+		else 
 			activeSearch = 0;
-		}
 	});
 	
 	// Bias the SearchBox results towards current map's viewport.
@@ -341,64 +340,18 @@ function initMap() {
 
 	  // For each place, get the icon, name and location.
 	  var bounds = new google.maps.LatLngBounds();
-
-	  // get rid of previous markers if they exist
-	  /*if (locationMarker.length > 0) {
-	  		locationMarker[0].setMap(map);
-	  		locationMarker = [];
-	  }
-	  
-	  // Create a marker for the place.
-	  locationMarker.push(new google.maps.Marker({
-		position: place.geometry.location,
-		map: map,
-		title: place.name,
-		icon: markerIcon,
-	  }));*/
 	  
 	// Update the location marker for the address searched.
 	locationMarker.setPosition(place.geometry.location);
 	locationMarker.setTitle(place.name);
 	locationMarker.setIcon(locationIcon);
 
-	  if (place.geometry.viewport) {
-		// Only geocodes have viewport.
+	  if (place.geometry.viewport)
 		bounds.union(place.geometry.viewport);
-	  }
-	  else {
+	  else
 		bounds.extend(place.geometry.location);
-	  }
 	  
 	  updateLocationZoom();
-	  
-	  /*places.forEach(function(place) {
-		var markerIcon = {
-		  url: 'images/locationicon.png',
-		  size: new google.maps.Size(64, 64),
-		  origin: new google.maps.Point(0, 0),
-		  anchor: new google.maps.Point(17, 34),
-		  scaledSize: new google.maps.Size(iconSize, iconSize)
-		};
-		
-		updateLocationZoom();
-
-		// Create a marker for the place.
-		locationMarker.push(new google.maps.Marker({
-			position: place.geometry.location,
-			map: map,
-			title: place.name,
-			icon: markerIcon
-		}));
-
-		if (place.geometry.viewport) {
-		  // Only geocodes have viewport.
-		  bounds.union(place.geometry.viewport);
-		}
-		else {
-		  bounds.extend(place.geometry.location);
-		}
-	  }); */
-
 	  
 		map.fitBounds(bounds);
 
@@ -409,33 +362,21 @@ function initMap() {
 		
 		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
 					+ streetAddress + "'";
-
-		queryFusionTable(query, function(result) {
-			if (result.rows != undefined) {
-				content = createLocationContent(streetAddress, result);
-				$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-				
-				latLong = "(" + result.rows[0][0] + ", " + result.rows[0][1] + ")";
-			}
-			else {
-				latLong = locationMarker.getPosition();
-				
-				content = "<h5 id='address'>" + streetAddress + "</h5>";
-				content += "<p>No test data available.<br />";
-				content += "No prediction available.</p>";
-				content += "<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>"
-				
-				$("#location_card .card-inner").empty().html(content);
-			}
+					
+		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
+		window.jsonpCallbacks["searchQueryCallback"] = function(data) {		
+			var content = fusionQueryCallback(data, streetAddress);
+			createLocationCardContent("location", content);
+			attachLocationCard("location", locationMarker, streetAddress, content);
 			
-			//sizeCardInfo();
-			checkIfSaved(latLong);
-			attachLocationCard("unsavedLocation", locationMarker, streetAddress, content);
-			
-			$("#location_card .card-action").show();
-			$("#location_card").show();
-			
-		});
+			savedMarkers.push(locationMarker);
+			savedLocationMarkers.push(locationMarker);
+		};
+		
+		queryFusionTable(query, "jsonpCallbacks.searchQueryCallback");
+		
+		$("#location_card .card-action").show();
+		$("#location_card").show();
 	});
 	
 	// Check the saved locations if enter is pressed while in the search box
@@ -585,9 +526,10 @@ function initMap() {
 		}
 	});
 	
-	setUpInitialMap();
+	setupResourceMarkers();
 }
 
+/* Search bar autocomplete. */
 function initAutocomplete(inputId) {
 	var input = document.getElementById(inputId);
 	var autocomplete = new google.maps.places.Autocomplete(input, {
@@ -637,9 +579,6 @@ function addFusionListener(object) {
 		var content = createLocationContent(event.row["Address"].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-
-		//$("#location_card .dl-horizontal").remove("#legend");
-		//$("#location_card #211_info").after(attachLegendCard());
 		
 		var isSaved = false;
 		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
@@ -662,7 +601,6 @@ function addFusionListener(object) {
 			savedLocationMarkers.push(tempLocationMarker);
 		}
 		
-		sizeCardInfo();
 		$("#location_card").show();
 	});
 }
@@ -695,11 +633,11 @@ function attachLegendCard() {
 
 		$("#legend_card .card-inner").empty().html(placeholderDetails);
 		$("#legend_card").show();
-		
 }
 
 function hideLegendCard() {
 	$("#legend_card").hide();
+	
 	if (windowWidth <= 600) {
 		$("#location_card").css({
 			"left": "5px",
@@ -735,12 +673,15 @@ function callStorageAPI(object) {
 				js_obj = $.parseJSON(resp.body);
 				
 				leadLayerBirdView_markers = [];
+				
 				var latDist = 0.00366980384615384615384615384615;
 				var lngDist = 0.00409039615384615384615384615385;
+				
 				for (var i=0; i<js_obj.area.length; i++) {  
-					var temp = js_obj.area[i]; 					
+					var temp = js_obj.area[i];
 					var numOfTests = temp.numOfTests;
 					var numOfDangerous = temp.numOfDangerous;
+					var warningImg;
 
 					var upperLat = temp.latitude + latDist;
 					var lowerLat = temp.latitude - latDist;
@@ -757,17 +698,21 @@ function callStorageAPI(object) {
 					var color;
 					var weirdnessLevel = weirdnessEquation(temp.numOfTests, temp.numOfDangerous);
 					if (weirdnessLevel < 0) {
-						color = "#99FF99";
+						color = "#FFFF99";
+						warningImg = lowRiskCircle;
 					}
 					else if (weirdnessLevel < .6) {
-						color = "#FFFF99 ";
+						color = "#CC9866";
+						warningImg = medRiskCircle;
 					}
 					else {
-						color = "#FF6565 ";
+						color = "#FF6565";
+						warningImg = highRiskCircle;
 					}
 
-					var opacity;
-					if (numOfTests < 25) {
+					var opacity = 0.3;
+					
+					/*if (numOfTests < 25) {
 						opacity = .2;
 					}
 					else if (numOfTests < 50) {
@@ -781,7 +726,7 @@ function callStorageAPI(object) {
 					}
 					else {
 						opacity = .2;
-					}
+					}*/
 
 					var leadLevelAreaSquare = new google.maps.Polygon({
 						paths: squareCoordinates,
@@ -794,12 +739,9 @@ function callStorageAPI(object) {
 
 					leadLayerBirdView_markers.push(leadLevelAreaSquare);
 
-					var content = "";
-					content += "<div>";
-					content += "<h5><b>About this area</b></h5>";
-					content += "<p>There were <b>" + numOfTests + "</b> tests in this area. </p>";
-					content += "<p>Of these tests, <b>" + numOfDangerous + "</b> tests had dangerous lead levels. </p>";
-					content += "</div>";
+					content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' /> <h5>About this area</h5>";
+					content += "<p>" + numOfDangerous + " out of " + numOfTests + " total tests in this area had dangerous lead levels.</p>";
+					content += "<p>Zoom in for more specific test results.</p>";
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
 					
@@ -985,7 +927,7 @@ function weirdnessEquation(N, K) {
 	return weirdness;
 }
 
-function setUpInitialMap() {
+function setupResourceMarkers() {
 	var retrieveArray = localStorage.getItem("resource_array");
 		
 	console.log(localStorage);
@@ -1032,51 +974,57 @@ function setUpInitialMap() {
 }
 
 
-function queryFusionTable(query, callback) {
-	return $.ajax({
+function fusionQueryCallback(data, address) {
+	return createLocationContent(address, data);
+}
+
+
+function queryFusionTable(query, callback) {	
+	$.ajax({
 		type: "GET",
 		dataType: "jsonp",
-		url: "https://www.googleapis.com/fusiontables/v2/query?sql=" + encodeURI(query) + "&key=" + apiKey,
-		success: callback
+		url: "https://www.googleapis.com/fusiontables/v2/query?sql=" + encodeURI(query) + "&key=" + apiKey + "&callback=" + callback,
+		jsonpCallback: callback
 	});
-	
-	/*return $.ajax({
-		type: "GET",
-		dataType: "jsonp",
-		url: "https://www.googleapis.com/fusiontables/v2/query?sql=" + encodeURI(query) + "&key=" + apiKey,
-		jsonpCallback: "jsonpCallbacks.myQueryCallback"+i
-	});*/
 }
 
 /* Location info card content generation. */
-function createLocationContent(streetAddress, object) {
+function createLocationContent(streetAddress, dataObj) {
 	var leadLevel;
 	var testDate;
 	var prediction;
 	var tempAddr;
 	
+	/* Data is either from a fusion table query or from a fusion layer callback. */
+	if (dataObj.rows) {
+		leadLevel = dataObj.rows[0][0];
+		testDate = dataObj.rows[0][1];
+		prediction = dataObj.rows[0][2];
+	}
+	else if (dataObj.row) {
+		leadLevel = dataObj.row["leadlevel"].value;
+		testDate = dataObj.row["testDate"].value;
+		testDate = testDate.slice(0, testDate.indexOf(" "));
+		prediction = dataObj.row["Prediction"].value;
+	}
+	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
+	var warningImg;
 	
 	if (!isNaN(leadLevel)) {
-		if (object.kind !== undefined) {		
-			leadLevel = object.rows[0][0];
-			testDate = object.rows[0][1];
-			prediction = object.rows[0][2];
-		}
-		else {		
-			leadLevel = object.row["leadlevel"].value;
-			testDate = object.row["testDate"].value;
-			testDate = testDate.slice(0, testDate.indexOf(" "));
-			prediction = object.row["Prediction"].value;
-		}
-		
 		if (leadLevel != "") {			
-			if (leadLevel < 15)
+			if (leadLevel < 15) {
 				content += "<p class='emphasis'>Low Lead Level</p>";
-			else if (leadLevel < 50)
+				warningImg = lowRiskCircle;
+			}
+			else if (leadLevel < 50) {
 				content += "<p class='emphasis'>Moderate Lead Level</p>";
-			else
-				content += "<p class='emphasis'>High Lead Level</p>";				
+				warningImg = medRiskCircle;
+			}
+			else {
+				content += "<p class='emphasis'>High Lead Level</p>";
+				warningImg = highRiskCircle;
+			}
 			
 			content += "<p>Last tested " + testDate + " with a lead result of " + leadLevel + " ppb.</p>";
 		}
@@ -1085,18 +1033,24 @@ function createLocationContent(streetAddress, object) {
 		
 			if (prediction >= 0.20) {
 				content += "<p>High risk of elevated lead levels. Testing is recommended.</p>";
+				warningImg = highRiskCircle;
 			}
 			else if ((prediction > 0.10) && (prediction < .20)) {
 				content += "<p>Moderate risk of elevated lead levels. Testing is recommended.</p>";
+				warningImg = medRiskCircle;
 			}
 			else if (prediction <= .10) {
 				content += "<p>At risk for elevated lead levels. Testing is recommended.</p>";
+				warningImg = lowRiskCircle;
 			}
 		}
 		
+		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
+		
 		hideLegendCard();
-	}
+	}	
 	else {
+		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
 		content += "<p>No test results available.<br />";
 		content += "No lead prediction available.</p>";
 	}
@@ -1104,7 +1058,25 @@ function createLocationContent(streetAddress, object) {
 	return content;
 }
 
+/* */
+function createLocationCardContent(type, content) {
+	$("#location_card .card-inner").empty().html(content);
+		
+	if (type.search("/location/i") != -1) {
+		$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+	}
+	
+	if (type.search("/location/i") != -1)
+		$("#location_card #card_save .icon").html("star");
+	
+	if (type.indexOf("leadArea") != -1)
+		$("#location_card .card-action").hide();
+	else
+		$("#location_card .card-action").show();
+}
 
+
+/* Insert the data into the location card and show it when the marker is clicked. */
 function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {
 		$("#resource_card").hide();
@@ -1116,25 +1088,10 @@ function attachLocationCard(type, marker, address, content) {
 			$("#location").val(correctedAddr + ", Flint, MI");
 			$("#report_step1_content .next_button").removeClass("disabled");
 		}
-
-		$("#location_card .card-inner").empty().html(content);
 		
-		if ((type.indexOf("location") != -1) || (type.indexOf("savedLocation") != -1) || (type.indexOf("unsavedLocation") != -1)) {
-			$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-		}
-		
-		if (type.indexOf("savedLocation") != -1)
-			$("#location_card #card_save .material-icons").html("star");
-		
-		
-		if (type.indexOf("leadArea") != -1)
-			$("#location_card .card-action").hide();
-		else
-			$("#location_card .card-action").show();
+		createLocationCardContent(type, content);
 		
 		$("#location_card").show();
-		
-		sizeCardInfo();
 		
 		savedLocationMarkers.push(marker);
 	});
@@ -1205,9 +1162,9 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 			$("#resource_card").show();
 			
 			if (isSaved)
-				$("#resource_card #card_save .material-icons").html("star");
+				$("#resource_card #card_save .icon").html("star");
 			else
-				$("#resource_card #card_save .material-icons").html("star_border");
+				$("#resource_card #card_save .icon").html("star_border");
 			
 			resourceMarker = marker;
 		});
@@ -1329,9 +1286,9 @@ function checkIfSaved(latLong) {
 	}
 	
 	if (returnVal == true)
-		$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star");
+		$("#location_card #card_save .icon, #resource_card #card_save .icon").html("star");
 	else
-		$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star_border");
+		$("#location_card #card_save .icon, #resource_card #card_save .icon").html("star_border");
 		
 	return returnVal;
 }
@@ -1352,7 +1309,7 @@ function saveLocation(latLong, address, icon, type) {
 	localStorage.setItem("savedLocationType"+numberSaved, type);
 	localStorage.setItem("savedLocationIcon"+numberSaved, icon);
 	
-	$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star");
+	$("#location_card #card_save .icon, #resource_card #card_save .icon").html("star");
 	
 	console.log(localStorage); 
 }
@@ -1374,7 +1331,7 @@ function unsaveLocation(latLong) {
 		}
 	}
 	
-	$("#location_card #card_save .material-icons, #resource_card #card_save .material-icons").html("star_border");
+	$("#location_card #card_save .icon, #resource_card #card_save .icon").html("star_border");
 	
 	return (numberSaved+1);
 }
@@ -1400,20 +1357,7 @@ function unsaveLocation(latLong) {
 	
 }*/
 
-/* Dynamically size the location card info elements. */
-function sizeCardInfo() {
-	$("#location_card .dl-horizontal dt").css({
-		"width": function() {
-			return ($("#location_card").innerWidth() * 0.45) + "px";
-		}
-	});
-	
-	$("#location_card .dl-horizontal dd").css({
-		"margin-left": function() {
-			return ($("#location_card").innerWidth() * 0.3) + "px";
-		}
-	});
-}
+
 
 /* Capialize the first character in each word.
    From: http://alvinalexander.com/javascript/how-to-capitalize-each-word-javascript-string
@@ -1593,7 +1537,7 @@ $(document).ready(function() {
 			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
 			
 			// change image on card to star outline
-			$("#resource_card #card_save .material-icons").html("star_outline");
+			$("#resource_card #card_save .icon").html("star_outline");
 			
 			// remove from savedMarkers 
 			for (var i = 0; i < savedMarkers.length; i++) {
@@ -1627,7 +1571,7 @@ $(document).ready(function() {
 			saveLocation(latLong, streetAddress, unsavedIcon, "Resource");
 			
 			// change image on card to filled star
-			$("#resource_card #card_save .material-icons").html("star");
+			$("#resource_card #card_save .icon").html("star");
 			
 			// remove from allMarkers 
 			for (var i = 0; i < allMarkers.length; i++) {
@@ -1694,7 +1638,7 @@ $(document).ready(function() {
 				temp.setIcon(locationIcon);
 				
 				// change image on card to star outline
-				$("#location_card #card_save .material-icons").html("star_border");
+				$("#location_card #card_save .icon").html("star_border");
 				
 				// remove from savedMarkers 
 				for (var i = 0; i < savedMarkers.length; i++) {
@@ -1714,7 +1658,7 @@ $(document).ready(function() {
 				saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
 				
 				// change image on card to filled star
-				$("#location_card #card_save .material-icons").html("star");
+				$("#location_card #card_save .icon").html("star");
 				
 				// remove from allMarkers 
 				for (var i = 0; i < allMarkers.length; i++) {

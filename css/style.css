@@ -255,17 +255,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	margin-bottom:10px!important;
 }
 
-#location_card .dl-horizontal dt {
-	float:left;
-}
-
-#location_card .risk_meter {
+#location_card #risk_img {
 	width:auto;
-	height:3.5em;
-}
-
-#location_card .card-action .btn {
-	padding:10px!important;
+	height:20px;
+	margin-right:10px;
+	vertical-align:middle;
 }
 
 #location_card #more_info_button {
@@ -277,6 +271,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	height:18px!important;
 	vertical-align:middle;
 }
+
 #legend_card {
     margin:0;
 	position:absolute;
@@ -313,7 +308,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #resource_card #card_report_menu {
 	margin-top:0;
 	list-style-type:none;
-	display:block;
+	display:none!important;
 }
 
 .close {
@@ -534,7 +529,7 @@ body[id="index_page"] main {
 }
 
 
-footer {
+footer, footer #contact_us {
 	display:none;
 }
 
