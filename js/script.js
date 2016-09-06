@@ -234,12 +234,12 @@ $(document).ready(function() {
 			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
 		}
 		else {*/
-			$("div[id$='step2_content'] .back_button, div[id$='step3_content'] .back_button").css({
+		/*	$("div[id$='step2_content'] .back_button, div[id$='step3_content'] .back_button").css({
 				"padding": "0",
 				"position": "absolute",
 				"top": "0",
 				"left": "0"
-			}).removeClass("btn-primary").prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");
+			}).removeClass("btn-primary").prepend("<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span> ");*/
 			
 			$("div[id$='step1_content'] .next_button, div[id$='step2_content'] .next_button, div[id$='step3_content'] .next_button").css({
 				"padding": "0",
@@ -247,6 +247,7 @@ $(document).ready(function() {
 				"top": "0",
 				"right": "0"
 			}).removeClass("btn-primary").append(" <span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span>");
+			
 		//}
 		
 		/* Unhide all step titles when the steppers are expanded and modify appearance of buttons. */
@@ -420,7 +421,13 @@ $(document).ready(function() {
 			
 			$("div[id*='" + $nodeSubstring + "']").addClass("cancel_stepper_border");
 			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
-			
+			$("#allFilters_step1_content .next_button").css({
+						"padding": "0",
+						"position": "static",
+						"top": "initial",
+						"right": "initial"
+			});
+			$("#allFilters_step1_content .glyphicon").remove();
 			/* Use a loop to take the filter page into account, which has three clickables in step 1. */
 			$("div[id$='step1_content'] .next_button").each(function() {
 				$(this).on("click", function() {
@@ -527,7 +534,7 @@ $(document).ready(function() {
 				if ($("#stepper_content").hasClass("brief")) {
 					$("div[id$='" + filter_type + "_step3_content'] .btn_group").prepend("&nbsp;").append("<img class='progress_img center-block' src='images/stepper2.png' />");
 				}
-				
+				$("#water_step3_content").css("border-left", "0px!important");
 				$("div[id$='step3_content'] .next_button").css("display", "none");
 				
 				if ($pageId.indexOf("test") != -1) {

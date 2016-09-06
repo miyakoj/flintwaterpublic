@@ -75,7 +75,6 @@ var medRiskCircle = "images/medrisklevel.png";
 var highRiskCircle = "images/highrisklevel.png";
 
 var leadLevelOfInput;
-var findHeight = 0;
 
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
@@ -634,18 +633,7 @@ function attachLegendCard() {
 		$("#legend_card .card-inner").empty().html(placeholderDetails);
 		$("#legend_card").show();
 }
-
-function hideLegendCard() {
-	$("#legend_card").hide();
 	
-	if (windowWidth <= 600) {
-		$("#location_card").css({
-			"left": "5px",
-			"right": "5px",
-			"bottom": "5px",
-		});
-	}
-}
 
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
 function callStorageAPI(object) {
@@ -1047,7 +1035,7 @@ function createLocationContent(streetAddress, dataObj) {
 		
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
 		
-		hideLegendCard();
+		$("#legend_card").hide();
 	}	
 	else {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
@@ -1079,7 +1067,7 @@ function createLocationCardContent(type, content) {
 /* Insert the data into the location card and show it when the marker is clicked. */
 function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {
-		$("#resource_card").hide();
+		$("#resource_card, #legend_card").hide();
 		
 		/* Insert the saved location address in the location bar on the report page when clicked. */
 		var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
@@ -1101,7 +1089,8 @@ function attachLocationCard(type, marker, address, content) {
 function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
 		marker.addListener("click", function() {
-			$("#location_card").hide();
+			$("#location_card, #legend_card").hide();
+			
 			
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
