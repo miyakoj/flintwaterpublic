@@ -1,7 +1,47 @@
+var windowWidth = window.innerWidth;
+var windowHeight = window.innerHeight;
+var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+console.log("$pageId = " + $pageId);
+var $activeNode;
+
+/* Allow ajax caching. */
+/*$.ajaxSetup({
+	cache: true
+});*/
+
+/* Dynamically load scripts only on pages where they're relevant. */
+var js_api = "https://www.google.com/jsapi";
+var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places' async defer></script>";
+//<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>-->
+var map_js = "<script src='js/map.js'></script>";
+var client_api = "<script src='https://apis.google.com/js/client.js?onload=setAPIKey'></script>";
+var form_submit_js = "<script src='js/jquery.form.min.js'></script>";
+var form_validation_js = "<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js'></script>";
+var form_validation_addl_js = "<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js'></script>";	
+var news_js = "/js/news.js";
+var alert_js = "<script src='js/alerts.js'></script>";
+
+/*if ($pageId.indexOf("index") != -1) {
+	$("head script[src*='script']").before(map_api, client_api);
+	$("head script[src*='script']").after(map_js, client_api);
+}*/
+//console.log("$pageId = " + $pageId);
+
+//$("script[src*='jquery.min.js']").after(form_submit_js, form_validation_js);
+//$("#main [src*='script.js']").after(map_js);
+
+/*if ($pageId.indexOf("news") != -1) {
+	$.getScript(js_api);
+	
+	$.getScript(news_js, function(data, textStatus, jqxhr) {
+		console.log(jqxhr);
+		//eval(data);
+	});
+	
+	// alert_js
+}*/
+
 $(document).ready(function() {
-	var windowWidth = window.innerWidth;
-	var windowHeight = window.innerHeight;
-	var $activeNode;
 	
 	/* Position alert in the middle of the page. */
 	$("#page_alert").css({
@@ -27,7 +67,8 @@ $(document).ready(function() {
 	$("#header_top #language_menu .dropdown-menu").css("min-width", $("#header_top #language_menu").css("min-width"));
 	
 	/* Scale the popup markers based on screen size. */
-	$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
+	if (($pageId.indexOf("index") != -1) && ($pageId.indexOf("test") != -1) && $pageId.indexOf("report") != -1)
+		$(".marker_popup_icons").css({"width": iconSize + "px", "height": "auto"});
 	
 	/* Dynamically generate page links. */
 	var id;
@@ -77,9 +118,6 @@ $(document).ready(function() {
 	
 	
 	/* Mark the tab of the current page as active. */
-	$pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
-	console.log("$pageId = " + $pageId);
-	
 	if ($pageId.indexOf("index") != -1)
 		$("#map_link").parent().addClass("active");
 	else {
@@ -148,10 +186,6 @@ $(document).ready(function() {
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
 	//else for the index, news, and about pages
 	
-		
-	/* Resize the provider info popups. */
-	//console.log($("#provider_popup").parent());
-	//$("#provider_popup").parent().parent().css("width", "300px");
 	
 	
 	/* Make sure all the footer cards are the same height. */
@@ -610,169 +644,171 @@ $(document).ready(function() {
 	
 
 	/* Report a Problem page */	
-	/* Make sure each form field is reset to default. */
-	$("#report_problem #location").val("");
-	$("#report_problem #problem_type").val(0);
-	$("#report_problem #problem_text").val("");
-	$("#report_problem #email_choice, #report_problem #phone_choice").prop("checked", false);
-	$("#report_problem #email").val("");
-	//$("#report_problem #phone").val("");
-	
-	/* Report a Problem form processing. */	
-	var report_validator = $("#report_problem form").validate({
-		debug: false,
-		errorPlacement: function(error, element) {
-			element.after(error);
-		},
-		messages: {
-			problemType: "Please select a problem type.",
-			description: "Please describe the problem.",
-			email: "Please enter a valid email address."
-			//phone: "Please enter the phone number in (555) 555-5555 format."
-		},
-		submitHandler: function(form) {
-			var location = $("#location").val().replace(", United States", "");
-			
-			$(form).ajaxSubmit({
-				type: "POST",
-				url: "includes/functions.php",
-				data: {
-					type: "problem_report",
-					location: location,
-					problemType: $("#problem_type").val(),
-					description: $("#problem_text").val(),
-					email: $("#email").val()
-					//phone: $("#phone").val()
-				},
-				complete: function(resp) {
-					if (resp.responseText.indexOf("1") != -1) {
-						$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
-						$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
-						$("#report_problem form").resetForm();
-					}
-					else {
-						$("#report_problem div[class*='alert-danger']").remove();
-						$("#report_problem form").after("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your report. Please try again.</div>");
-					}
-					
-					$("#report_problem .alert").show();
-				}
-			});
-		}
-	});
-	
-	/* Set the validation rules. */
-	$("#report_problem #location").rules("add", {required: true, location: true});
-	
-	jQuery.validator.addMethod("location", function(value, element, params) {
-		return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
-	}, jQuery.validator.format("Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization."));
-	
-	$("#report_problem #problem_type").rules("add", {required: true});
-	$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
-	
-	$.validator.methods.email = function(value, element) {
-		return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
-	};
-	
-	$("#email").rules("add", {
-		required: true,
-		email: true/*{
-			depends: function(element) {
-				return $("#email").is(":checked");
-			}
-		}*/
-	});
-	
-	/*$.validator.methods.phoneUS = function(value, element) {
-		return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
-	}
-	$("#phone").rules("add", {
-		required: true,
-		phoneUS: {
-			depends: function(element) {
-				return $("#phone").is(":checked");
-			}
-		}
-	});*/
-	
-	/* Fill in location after clicking favorite location marker. */
-	$("#report_problem #location").on("focus", function() {
-		var autocomplete = initAutocomplete($(this).attr("id"));
+	if ($pageId.indexOf("report") != -1) {
+		/* Make sure each form field is reset to default. */
+		$("#report_problem #location").val("");
+		$("#report_problem #problem_type").val(0);
+		$("#report_problem #problem_text").val("");
+		$("#report_problem #email_choice, #report_problem #phone_choice").prop("checked", false);
+		$("#report_problem #email").val("");
+		//$("#report_problem #phone").val("");
 		
-		autocomplete.addListener('place_changed', function() {
+		/* Report a Problem form processing. */	
+		var report_validator = $("#report_problem form").validate({
+			debug: false,
+			errorPlacement: function(error, element) {
+				element.after(error);
+			},
+			messages: {
+				problemType: "Please select a problem type.",
+				description: "Please describe the problem.",
+				email: "Please enter a valid email address."
+				//phone: "Please enter the phone number in (555) 555-5555 format."
+			},
+			submitHandler: function(form) {
+				var location = $("#location").val().replace(", United States", "");
+				
+				$(form).ajaxSubmit({
+					type: "POST",
+					url: "includes/functions.php",
+					data: {
+						type: "problem_report",
+						location: location,
+						problemType: $("#problem_type").val(),
+						description: $("#problem_text").val(),
+						email: $("#email").val()
+						//phone: $("#phone").val()
+					},
+					complete: function(resp) {
+						if (resp.responseText.indexOf("1") != -1) {
+							$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
+							$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
+							$("#report_problem form").resetForm();
+						}
+						else {
+							$("#report_problem div[class*='alert-danger']").remove();
+							$("#report_problem form").after("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your report. Please try again.</div>");
+						}
+						
+						$("#report_problem .alert").show();
+					}
+				});
+			}
+		});
+		
+		/* Set the validation rules. */
+		$("#report_problem #location").rules("add", {required: true, location: true});
+		
+		jQuery.validator.addMethod("location", function(value, element, params) {
+			return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
+		}, jQuery.validator.format("Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization."));
+		
+		$("#report_problem #problem_type").rules("add", {required: true});
+		$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
+		
+		$.validator.methods.email = function(value, element) {
+			return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
+		};
+		
+		$("#email").rules("add", {
+			required: true,
+			email: true/*{
+				depends: function(element) {
+					return $("#email").is(":checked");
+				}
+			}*/
+		});
+		
+		/*$.validator.methods.phoneUS = function(value, element) {
+			return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
+		}
+		$("#phone").rules("add", {
+			required: true,
+			phoneUS: {
+				depends: function(element) {
+					return $("#phone").is(":checked");
+				}
+			}
+		});*/
+		
+		/* Fill in location after clicking favorite location marker. */
+		$("#report_problem #location").on("focus", function() {
+			var autocomplete = initAutocomplete($(this).attr("id"));
+			
+			autocomplete.addListener('place_changed', function() {
+				if (report_validator.element("#report_problem #location"))
+					$("#report_step1_content .next_button").removeClass("disabled");
+				else
+					$("#report_step1_content .next_button").addClass("disabled");
+			});
+			
+			if (report_validator.element("#report_problem #location"))
+				$("#report_step1_content .next_button").removeClass("disabled");
+			else
+				$("#report_step1_content .next_button").addClass("disabled");
+		}).on("focusout", function() {
 			if (report_validator.element("#report_problem #location"))
 				$("#report_step1_content .next_button").removeClass("disabled");
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		});
 		
-		if (report_validator.element("#report_problem #location"))
-			$("#report_step1_content .next_button").removeClass("disabled");
-		else
-			$("#report_step1_content .next_button").addClass("disabled");
-	}).on("focusout", function() {
-		if (report_validator.element("#report_problem #location"))
-			$("#report_step1_content .next_button").removeClass("disabled");
-		else
-			$("#report_step1_content .next_button").addClass("disabled");
-	});
-	
-	//var report_location = document.getElementById("location");
-	
-	/* Enable step 2 button once both fields are completed. */	
-	/* Count the characters of the problem description. */
-	$(".char_count").html("<span>Characters remaining:</span> 500");
-	$("#report_problem #problem_text").on("keyup", function(event) {
-		$(".char_count").html("<span>Characters remaining:</span> " + (500 - $(this).val().length));
-	});
-	
-	$("#report_problem #problem_type").on("focusout", function() {
-		if (report_validator.element("#report_problem #problem_type") && report_validator.element("#report_problem #problem_text"))
-			$("#report_problem #report_step2_content .next_button").removeClass("disabled");
-		else
-			$("#report_problem #report_step2_content .next_button").addClass("disabled");
-	});
-	
-	$("#report_problem #problem_text").on("keyup", function() {
-		if (report_validator.element("#report_problem #problem_type") && report_validator.element("#report_problem #problem_text"))
-			$("#report_problem #report_step2_content .next_button").removeClass("disabled");
-		else
-			$("#report_problem #report_step2_content .next_button").addClass("disabled");
-	});
-	
-	/* Enable step 3 button once one of the contact fields is completed and valid. */
-	$("#report_problem #contact_pref input[type='radio']").on("change", function() {
-		var selected = $(this).filter(":checked").val();
+		//var report_location = document.getElementById("location");
 		
-		if (selected.indexOf("email") != -1) {
-			$("#phone").addClass("hide");
-			$("#email").removeClass("hide");
-		}
-		else if (selected.indexOf("phone") != -1) {
-			$("#email").addClass("hide");
-			$("#phone").removeClass("hide");
-		}
-	});
-	
-	$("#report_problem #email").on("keyup", function() {
-		if (report_validator.element("#report_problem #email"))
-			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
-		else
-			$("#report_problem #report_step3_content .next_button").addClass("disabled");
-	}).on("focusout", function() {
-		if (report_validator.element("#report_problem #email"))
-			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
-		else
-			$("#report_problem #report_step3_content .next_button").addClass("disabled");
-	});
-	
-	/*$("#report_problem #phone").on("keyup", function() {
-		if (report_validator.element("#report_problem #phone"))
-			$("#report_problem #report_step3_content .next_button").removeClass("disabled");
-		else
-			$("#report_problem #report_step3_content .next_button").addClass("disabled");
-	});*/
+		/* Enable step 2 button once both fields are completed. */	
+		/* Count the characters of the problem description. */
+		$(".char_count").html("<span>Characters remaining:</span> 500");
+		$("#report_problem #problem_text").on("keyup", function(event) {
+			$(".char_count").html("<span>Characters remaining:</span> " + (500 - $(this).val().length));
+		});
+		
+		$("#report_problem #problem_type").on("focusout", function() {
+			if (report_validator.element("#report_problem #problem_type") && report_validator.element("#report_problem #problem_text"))
+				$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+			else
+				$("#report_problem #report_step2_content .next_button").addClass("disabled");
+		});
+		
+		$("#report_problem #problem_text").on("keyup", function() {
+			if (report_validator.element("#report_problem #problem_type") && report_validator.element("#report_problem #problem_text"))
+				$("#report_problem #report_step2_content .next_button").removeClass("disabled");
+			else
+				$("#report_problem #report_step2_content .next_button").addClass("disabled");
+		});
+		
+		/* Enable step 3 button once one of the contact fields is completed and valid. */
+		$("#report_problem #contact_pref input[type='radio']").on("change", function() {
+			var selected = $(this).filter(":checked").val();
+			
+			if (selected.indexOf("email") != -1) {
+				$("#phone").addClass("hide");
+				$("#email").removeClass("hide");
+			}
+			else if (selected.indexOf("phone") != -1) {
+				$("#email").addClass("hide");
+				$("#phone").removeClass("hide");
+			}
+		});
+		
+		$("#report_problem #email").on("keyup", function() {
+			if (report_validator.element("#report_problem #email"))
+				$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+			else
+				$("#report_problem #report_step3_content .next_button").addClass("disabled");
+		}).on("focusout", function() {
+			if (report_validator.element("#report_problem #email"))
+				$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+			else
+				$("#report_problem #report_step3_content .next_button").addClass("disabled");
+		});
+		
+		/*$("#report_problem #phone").on("keyup", function() {
+			if (report_validator.element("#report_problem #phone"))
+				$("#report_problem #report_step3_content .next_button").removeClass("disabled");
+			else
+				$("#report_problem #report_step3_content .next_button").addClass("disabled");
+		});*/
+	}
 	
 	
 	/* Steppers for the submit information page. */
@@ -855,26 +891,4 @@ $(document).ready(function() {
 		else
 			$("#comments_form .submit_button").addClass("disabled");
 	});*/
-	
-	
-	/* Dynamically add script tags only to pages where they're relevant. */
-	// MAP API
-	var js_api = "<script src='https://www.google.com/jsapi'></script>";
-	var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAr4wgD-8jV8G7gv600mD75Ht1eS3B4siI&libraries=visualization,places' async defer></script>";
-	var map_js = "<script src='js/map.js'></script>";
-	var client_api = "<script src='https://apis.google.com/js/client.js?onload=setAPIKey'></script>";
-	var news_js = "<script src='js/news.js'></script>";
-	var alert_js = "<script src='js/alerts.js'></script>";
-	
-	/*if ($pageId.indexOf("index") != -1) {
-		$("head script[src*='script']").before(map_api, client_api);
-		$("head script[src*='script']").after(map_js, client_api);
-	}*/
-	//console.log("$pageId = " + $pageId);
-	
-	/*if ($pageId.indexOf("news") != -1) {
-		//$("head script[src*='script']").before(js_api);
-		$("head").append(news_js);
-		// + "\n" + alert_js
-	}*/
 });

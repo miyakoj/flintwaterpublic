@@ -4,6 +4,9 @@ google.setOnLoadCallback(onStartup);
 function onStartup() {
 	mLive();
     michiganRadio();
+	
+	if ($("#page_cards .card-inner p").html() == undefined)
+		$("#page_cards .card-inner").prepend("<p class='text-center'>There are no news articles available.</p>");
 }
 
 function mLive() {

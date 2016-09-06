@@ -11,7 +11,10 @@ $json = file_get_contents("php://input");
 $obj = json_decode($json);
 
 if ($obj) {
-	$result = queries("problem_report", "" , $paddedId, $obj);
+	if ($obj->{"type"} == "problem_report")
+		$result = queries("problem_report", "" , $paddedId, $obj);
+	else if (stripos($obj->{"type"}, "survey"))
+		$result = queries("survey", "" , $paddedId, $obj);
 }
 else {
 	if ($_POST["type"] == "resource_report") {	

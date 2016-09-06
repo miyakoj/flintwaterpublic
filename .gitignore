@@ -1,8 +1,6 @@
 *.log
-*.yaml
-*.yaml
 app.yaml
-*.yaml
+cron.yaml
 *.yaml
 navbar_test.html
 *.bak

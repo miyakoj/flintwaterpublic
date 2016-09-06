@@ -76,6 +76,9 @@ var highRiskCircle = "images/highrisklevel.png";
 
 var leadLevelOfInput;
 
+/* Stores fusion table query callbacks. */
+window.jsonpCallbacks = {};
+
 function setAPIKey() {
 	gapi.client.setApiKey(apiKey);
 	gapi.load("client:auth2", checkAuth);
@@ -220,7 +223,6 @@ function initMap() {
 	
 	/* Load saved non-resource locations. */
 	var numberSaved = parseInt(localStorage["numberSaved"]);
-	window.jsonpCallbacks = {};
 	
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		for (var i = 1; i <= numberSaved; i++) {
