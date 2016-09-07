@@ -811,44 +811,14 @@ $(document).ready(function() {
 	}
 	
 	
-	/* Steppers for the submit information page. */
-	/*$("#submit_link").on("click", function() {
-	    $("#submit_step1").addClass("active");
-		$("#submit_step1_content").removeClass("hide");
-		$("#submit_step2_content").addClass("hide");
-		$("#submit_step3_content").addClass("hide");
-	});
-	
-    $("#submit_info #step1_click").click(function() {
-		$("#submit_step1").removeClass("active").addClass("done");
-		$("#submit_step1_content").addClass("hide");
-		$("#submit_step2_content").removeClass("hide");
-		$("#submit_step2").addClass("active");
-	});
-	
-	$("#submit_info #step2_click").on("click", function() {
-		$("#submit_step2").removeClass("active").addClass("done");
-		$("#submit_step2_content").addClass("hide");
-		$("#submit_step3").addClass("active");
-		$("#submit_step3_content").removeClass("hide").addClass("cancel_stepper_border");
-	});
-	
-	$("#submit_info #submit_button").on("submit", function() {
-		//var location = $("#report_page #report_info #locationTextField").val();
-		//var problemType = $("#report_page #report_info #ProblemSelector").val();
-		//var description = $("#report_page #report_info textarea").val();
-		console.log("click worked");
-		//TODO save these values to the db
-		alert("Thank you for your submission!");
-		$(window).attr("location", "index.php");
-	});*/
+	/* Steppers for the survey page. */
 	
 	
 	/* Site problem form. */
-	$("#comments #comments").val("");
-	$("#comments #email").val("");
+	$("#comments_form #email").val("");
+	$("#comments_form #comments").val("");
 	
-	/*var comments_validator = $("#comments_form form").validate({
+	var comments_validator = $("#comments_form form").validate({
 		debug: false,
 		errorPlacement: function(error, element) {
 			element.after(error);
@@ -863,23 +833,22 @@ $(document).ready(function() {
 				url: "includes/functions.php",
 				data: {
 					type: "site_report",
-					email: $("#email").val(),
-					description: $("#problem_text").val()
+					email: $("#comments_form #email").val(),
+					description: $("#comments_form #comments").val()
 				},
 				complete: function(resp) {
 					console.log(resp);
 					
 					if (resp.responseText.indexOf("1") != -1) {
-						$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
-						$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
-						$("#report_problem form").resetForm();
+						$("#comments_form div[class*='alert-danger']").remove();
+						$("#comments_form .modal-content").html("<div class='alert alert-success' role='alert'>Your comments have been successfully submitted.</div>").resetForm();
 					}
 					else {
-						$("#report_problem div[class*='alert-danger']").remove();
-						$("#report_problem form").after("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your report. Please try again.</div>");
+						$("#comments_form div[class*='alert-danger']").remove();
+						$("#comments_form .modal-body").append("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your comments. Please try again.</div>");
 					}
 					
-					$("#report_problem .alert").show();
+					$("#comments_form .alert").show();
 				}
 			});
 		}
@@ -890,5 +859,5 @@ $(document).ready(function() {
 			$("#comments_form .submit_button").removeClass("disabled");
 		else
 			$("#comments_form .submit_button").addClass("disabled");
-	});*/
+	});
 });

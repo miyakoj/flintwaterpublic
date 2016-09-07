@@ -164,8 +164,6 @@ html, body {
 /* Map-Related Styles. */
 #toggles {
 	background-color:#252E56!important;
-	position:relative;
-	overflow:hidden!important;
 }
 
 #toggles .active {

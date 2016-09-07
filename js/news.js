@@ -5,8 +5,9 @@ function onStartup() {
 	mLive();
     michiganRadio();
 	
-	if ($("#page_cards .card-inner p").html() == undefined)
-		$("#page_cards .card-inner").prepend("<p class='text-center'>There are no news articles available.</p>");
+	if ($("body").attr("id").includes("news_page"))
+		if ($("#news .card").length() == 0)
+			$("#news .card").prepend("<p class='text-center'>There are no news articles available.</p>");
 }
 
 function mLive() {
@@ -17,20 +18,21 @@ function mLive() {
 		   var html = '';
 			result.feed.entries.sort(function (a,b){
 			return new Date(b.publishedDate) - new Date(a.publishedDate);
-			});
+		});
+			
 	   for (var i = 0; i < result.feed.entries.length; i++) {
 		   var entry = result.feed.entries[i];
 			if(entry.categories.indexOf("tag:flint-water") != -1) {
 				placeholder = entry;
 				html += '<div class="card">';
 				html += '<div class="card-main">';
-				html += '<div class="card-inner"><p><img class="pull-left" src="../images/Mlive.jpg" alt="MLive"></p>' + '<span>MLive</span>' + '<h5>' + date(entry.publishedDate) + '</h5></div>';
-				html += '<p><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a></p><h6>' + entry.contentSnippet + '</h6></div>';
-				html += '</div>';
+				html += '<div class="card-header"><div class="card-inner"><img class="pull-left" src="../images/Mlive.jpg" alt="MLive">' + '<span class="pull-left">MLive</span>' + '<span class="pull-right">' + date(entry.publishedDate) + '</span></div></div>';
+				html += '<div class="card-inner"><h5 style="clearfix"><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a></h5>' + entry.contentSnippet + '</div>';
+				html += '</div></div>';
 			}
 	   }
+	   
 	   $("#news").html(html);
-
 	   }	
 	});
 }
@@ -48,12 +50,12 @@ function michiganRadio()  {
 	   for (var i = 0; i < result.feed.entries.length; i++) {
 		   var entry = result.feed.entries[i];
 			if(entry.title.search(/(Flint)+(')*[\w\s\d]+(water)*/) > 0){
-				placeholder = entry;
+				placeholder = entry;				
 				html += '<div class="card">';
 				html += '<div class="card-main">';
-				html += '<div class="card-inner"><p><img class="pull-left" src="../images/michigan_radio.png" alt="Michigan Radio"></p>' + '<span>Michigan Radio</span>' + '<h5>' + date(entry.publishedDate) + '</h5></div>';
-				html += '<p><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a></p><h6>' + entry.contentSnippet + '</h6></div>';
-				html += '</div>';
+				html += '<div class="card-header"><div class="card-inner"><img class="pull-left" src="../images/michigan_radio.png" alt="Michigan Radio">' + '<span class="pull-left">Michigan Radio</span>' + '<span class="pull-right">' + date(entry.publishedDate) + '</span></div></div>';
+				html += '<div class="card-inner"><h5 style="clearfix"><a href="' + entry.link +'" target="_blank">' + entry.title + " " + '</a></h5>' + entry.contentSnippet + '</div>';
+				html += '</div></div>';
 			}
 	   }
 

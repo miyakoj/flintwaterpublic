@@ -11,10 +11,15 @@ $json = file_get_contents("php://input");
 $obj = json_decode($json);
 
 if ($obj) {
-	if ($obj->{"type"} == "problem_report")
+	if ($obj->{"type"} == "problem_report") {
 		$result = queries("problem_report", "" , $paddedId, $obj);
-	else if (stripos($obj->{"type"}, "survey"))
-		$result = queries("survey", "" , $paddedId, $obj);
+		
+		if ($result)
+			email_user();
+	}
+	else if (stripos($obj->{"type"}, "survey") !== false)
+	//else if ($obj->{"type"} == "survey1")
+		$result = queries("survey1", "" , "", $obj);
 }
 else {
 	if ($_POST["type"] == "resource_report") {	
@@ -35,20 +40,34 @@ else {
 }
 
 function email_user() {
-	$to = sprintf("%s", $_POST["email"]);
-	$from = "umflintH2O@gmail.com";
-	$subject = "A Message from Unite Flint";
-	$msg = "";
-	
-	if ($_POST["type"] == "problem_report") {
-		$msg = sprintf("<p>Thank you for your submission. Someone will be in contact with you to follow up on your report.</p>
-			<p>Here is a copy of your report for your records:</p>
-			<p><strong>Location:</strong><br />%s</p>
-			<p><strong>Problem Type:</strong><br /> %s</p>
-			<p><strong>Problem Description:</strong><br /> %s</p>", $_POST["location"], $_POST["problemType"], htmlspecialchars($_POST["description"]));
+	if (($_POST["type"] == "problem_report") || ($obj->{"type"} == "problem_report")) {
+		$from = "umflintH2O@gmail.com";
+		$subject = "A Message from Unite Flint";
+		
+		if ($obj) {
+			$to = sprintf("%s", $obj->{"email"});
+			$msg = sprintf("<p>Thank you for your submission. Someone will be in contact with you to follow up on your report.</p>
+				<p>Here is a copy of your report for your records:</p>
+				<p><strong>Location:</strong><br />%s</p>
+				<p><strong>Problem Type:</strong><br /> %s</p>
+				<p><strong>Problem Description:</strong><br /> %s</p>", $obj->{"location"}, $obj->{"problemType"}, htmlspecialchars($obj->{"description"}));
+		}
+		else {
+			$to = sprintf("%s", $_POST["email"]);
+			$msg = sprintf("<p>Thank you for your submission. Someone will be in contact with you to follow up on your report.</p>
+				<p>Here is a copy of your report for your records:</p>
+				<p><strong>Location:</strong><br />%s</p>
+				<p><strong>Problem Type:</strong><br /> %s</p>
+				<p><strong>Problem Description:</strong><br /> %s</p>", $_POST["location"], $_POST["problemType"], htmlspecialchars($_POST["description"]));
+		}
 	}
 	else if ($_POST["type"] == "site_report") {
-		$msg = sprintf("<p><strong>Site Problem Description:</strong><br /> %s</p>", htmlspecialchars($_POST["description"]));
+		$to = "umflintH2O@gmail.com";
+		$from = "umflintH2O@gmail.com";
+		$subject = "A Comment About Unite Flint";
+		
+		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>
+						<p><strong>Comments:</strong><br /> %s</p>", htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["comments"]));
 	}
 	
 	try {

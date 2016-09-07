@@ -96,10 +96,6 @@
 		padding:5px!important;
 	}
 	
-	#toggles {
-		margin-bottom:-16px;
-	}
-	
 	#sidebar {
 		height:35em;
 	}
@@ -177,9 +173,9 @@
 		width:30px;
 	}
 
-	#news_page .tab-nav {
+	/*#news_page .tab-nav {
 		margin-top:24px!important;
-	}
+	}*/
 	
 	#show_me_menu .dropdown-menu {
 		border: none;

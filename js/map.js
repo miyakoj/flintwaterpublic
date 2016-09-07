@@ -309,7 +309,7 @@ function initMap() {
 		searchBox.setBounds(map.getBounds());
 	});
 
-	// If the map is clicked, hide the resource and location cards
+	// If the map is clicked, hide the resource and location cards, show the legend
 	 map.addListener('click', function() {
     	$("#resource_card, #location_card").hide();
 		$("#legend_card").show();
@@ -579,7 +579,7 @@ function addFusionListener(object) {
 	google.maps.event.addListener(object, "click", function(event) {		
 		var content = createLocationContent(event.row["Address"].value, event);
 		
-		$("#location_card .card-inner").empty().html(content).append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 		
 		var isSaved = false;
 		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
@@ -615,7 +615,6 @@ function attachLegendCard() {
 		var moderateIcon = "<img src='" + moderateRiskSrc + "' title ='moderate lead' class='legend_icons' /> ";
 		var highIcon = "<img src='" + highRiskSrc + "' title ='high lead' class='legend_icons' /> ";
 	
-
 		placeholderDetails += "<div class='row'>";
 		placeholderDetails += "<div class='col-xs-3 text-center'>";
 		placeholderDetails += lowIcon + "<span>Low</span>";
@@ -1036,8 +1035,6 @@ function createLocationContent(streetAddress, dataObj) {
 		}
 		
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
-		
-		$("#legend_card").hide();
 	}	
 	else {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
@@ -1053,7 +1050,7 @@ function createLocationCardContent(type, content) {
 	$("#location_card .card-inner").empty().html(content);
 		
 	if (type.search("/location/i") != -1) {
-		$("#location_card .card-inner").append("<p id='211_info' class='text-center'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+		$("#location_card .card-inner").append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 	}
 	
 	if (type.search("/location/i") != -1)
@@ -1092,7 +1089,6 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
 		marker.addListener("click", function() {
 			$("#location_card, #legend_card").hide();
-			
 			
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
@@ -1726,14 +1722,7 @@ $(document).ready(function() {
 			});
 		}
 	});
-
-	// closes the location card and removes the marker
-	/*$("#location_card .card-inner button").on("click", function() {
-		locationMarker[0].setMap(null);
-		$("#location_card").css("display", "none");
-		$("#search_input").val('');
-		displaySavedLocations();
-	});*/
+	
 
 	$("#location_card .close, #resource_card .close").on("click", function() {
 		$(this).parent().hide();
