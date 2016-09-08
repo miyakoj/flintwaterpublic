@@ -430,13 +430,8 @@ footer #copyright {
 	footer #site_desc p {
 		text-align:center;
 	}
-<<<<<<< HEAD
 
 	#show_me_menu .dropdown-menu span{
-=======
-	
-	#show_me_menu .dropdown-menu l{
->>>>>>> origin/master
 		color: rgba(0,0,0,.87);
 		font-size: 14px;
 		font-weight: 400;
