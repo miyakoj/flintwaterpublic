@@ -179,7 +179,7 @@ header {
 #toggles .list {
 	width:100%;
 	margin-top:0px;
-	padding-bottom:8px;
+	padding:6px 0;
 }
 
 #toggles .list label {
@@ -201,6 +201,12 @@ input[type='checkbox'] {
 
 .resource_buttons_image {
 	margin-right:3px;
+}
+
+.resource_buttons {
+	line-height: 32px;
+	height: 32px!important;
+	padding: 0 12px;
 }
 
 #search_input {
