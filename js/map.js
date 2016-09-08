@@ -138,7 +138,7 @@ function initMap() {
 	callStorageAPI("leadlevels.json");
 	callStorageAPI("leadLevels_birdview.json");
 	callStorageAPI("providers.json");
-	callStorageAPI("pipedata.json");
+	//callStorageAPI("pipedata.json");
 	
 	setUpFusionTable();
 
@@ -395,27 +395,6 @@ function initMap() {
 		if ($(this).val() == "")
 			$("#location_card").hide();
 	});
-	
-	// Trigger search on button click
-    /*$("#search_button").on("click", function() {
-		// if (activeSearch) {
-			var input = document.getElementById('search_input');
-
-			google.maps.event.trigger(input, 'focus');
-			google.maps.event.trigger(input, 'keydown', {
-				keyCode: 13
-			});
-			
-			updateLocationZoom();
-		// }	
-    /*});
-	
-	// var save_location_msg = "Save This Location";
-	// var saved_location_msg = "Saved Location";
-	
-	/* Disable the save button if there are already three saved locations. */
-	/*if ((Number(localStorage.saved_locations_count) == 3) && ($("#saved_location_button span").text() == save_location_msg))
-		$("#saved_location_button").attr("disabled", "disabled");*/
 	
 	/* Show/hide buttons and dymaically set different button text. */
 	function updateLocationZoom() {
@@ -987,7 +966,7 @@ function createLocationContent(streetAddress, dataObj) {
 	/* Data is either from a fusion table query or from a fusion layer callback. */
 	if (dataObj.rows) {
 		leadLevel = dataObj.rows[0][0];
-		testDate = dataObj.rows[0][1];
+		testDate = dataObj.rows[0][1].slice(0, dataObj.rows[0][1].indexOf(" "));
 		prediction = dataObj.rows[0][2];
 	}
 	else if (dataObj.row) {
@@ -1200,7 +1179,6 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 
 /* Set markers on the map based on type. */
 function setMarkers() {
-	console.log("setMarkers() map = " + map);
 	var zoomLvl = map.getZoom();
 	
 	// fusion table data

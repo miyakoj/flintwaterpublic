@@ -4,45 +4,31 @@ var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 console.log("$pageId = " + $pageId);
 var $activeNode;
 
-/* Allow ajax caching. */
-/*$.ajaxSetup({
-	cache: true
-});*/
+/* Dynamically load remote scripts only on pages where they're relevant. */
+var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
+//<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>
+var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
+var form_validation_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
+var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
+//var google_js_api = "https://www.google.com/jsapi";
 
-/* Dynamically load scripts only on pages where they're relevant. */
-var js_api = "https://www.google.com/jsapi";
-var map_api = "<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places' async defer></script>";
-//<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>-->
-var map_js = "<script src='js/map.js'></script>";
-var client_api = "<script src='https://apis.google.com/js/client.js?onload=setAPIKey'></script>";
-var form_submit_js = "<script src='js/jquery.form.min.js'></script>";
-var form_validation_js = "<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js'></script>";
-var form_validation_addl_js = "<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js'></script>";	
-var news_js = "/js/news.js";
-var alert_js = "<script src='js/alerts.js'></script>";
-
-/*if ($pageId.indexOf("index") != -1) {
-	$("head script[src*='script']").before(map_api, client_api);
-	$("head script[src*='script']").after(map_js, client_api);
-}*/
-//console.log("$pageId = " + $pageId);
-
-//$("script[src*='jquery.min.js']").after(form_submit_js, form_validation_js);
-//$("#main [src*='script.js']").after(map_js);
-
-/*if ($pageId.indexOf("news") != -1) {
-	$.getScript(js_api);
-	
-	$.getScript(news_js, function(data, textStatus, jqxhr) {
-		console.log(jqxhr);
-		//eval(data);
+if ($pageId.indexOf("index") != -1) {
+	$.ajax({
+		type: "GET",
+		url: map_api,
+		dataType: "script",
+		cache: true
 	});
 	
-	// alert_js
-}*/
+	$.ajax({
+		type: "GET",
+		url: client_api,
+		dataType: "script",
+		cache: true
+	});
+}
 
 $(document).ready(function() {
-	
 	/* Position alert in the middle of the page. */
 	$("#page_alert").css({
 		"top": function() {
@@ -57,9 +43,6 @@ $(document).ready(function() {
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
-	
-	/* Make the line-height of the navbar header h1 match the height of the navbar. */
-	//$(".navbar-brand").css("line-height", $("#main_menu ul").css("line-height"));
 	
 	/* Dynamically adjust the dropdown menu links. */
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
@@ -106,15 +89,17 @@ $(document).ready(function() {
 		if ($(this).attr("href").indexOf("#") == 0) {
 			id = $(this).attr("id");
 			page = id.slice(0, id.indexOf("_"));
-			
 			$(this).attr("href", "page.php?pid=" + page);
 		}
 	});
 	
-	id = $("footer #about_link").attr("id");
-	page = id.slice(0, id.indexOf("_"));
-	
-	$("footer #about_link").attr("href", "page.php?pid=" + page);
+	$("footer #copyright a").each(function(i) {		
+		if ($(this).attr("href").length == 1) {
+			id = $(this).attr("id");
+			page = id.slice(0, id.indexOf("_"));
+			$(this).attr("href", "page.php?pid=" + page);
+		}
+	});
 	
 	
 	/* Mark the tab of the current page as active. */
@@ -653,83 +638,93 @@ $(document).ready(function() {
 		$("#report_problem #email").val("");
 		//$("#report_problem #phone").val("");
 		
-		/* Report a Problem form processing. */	
-		var report_validator = $("#report_problem form").validate({
-			debug: false,
-			errorPlacement: function(error, element) {
-				element.after(error);
-			},
-			messages: {
-				problemType: "Please select a problem type.",
-				description: "Please describe the problem.",
-				email: "Please enter a valid email address."
-				//phone: "Please enter the phone number in (555) 555-5555 format."
-			},
-			submitHandler: function(form) {
-				var location = $("#location").val().replace(", United States", "");
-				
-				$(form).ajaxSubmit({
-					type: "POST",
-					url: "includes/functions.php",
-					data: {
-						type: "problem_report",
-						location: location,
-						problemType: $("#problem_type").val(),
-						description: $("#problem_text").val(),
-						email: $("#email").val()
-						//phone: $("#phone").val()
+		var report_validator;
+		
+		$.ajax({
+			type: "GET",
+			url: form_validation_js,
+			dataType: "script",
+			cache: true,
+			success: function() {
+				/* Report a Problem form processing. */
+				report_validator = $("#report_problem form").validate({
+					debug: false,
+					errorPlacement: function(error, element) {
+						element.after(error);
 					},
-					complete: function(resp) {
-						if (resp.responseText.indexOf("1") != -1) {
-							$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
-							$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
-							$("#report_problem form").resetForm();
-						}
-						else {
-							$("#report_problem div[class*='alert-danger']").remove();
-							$("#report_problem form").after("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your report. Please try again.</div>");
-						}
+					messages: {
+						problemType: "Please select a problem type.",
+						description: "Please describe the problem.",
+						email: "Please enter a valid email address."
+						//phone: "Please enter the phone number in (555) 555-5555 format."
+					},
+					submitHandler: function(form) {
+						var location = $("#location").val().replace(", United States", "");
 						
-						$("#report_problem .alert").show();
+						$(form).ajaxSubmit({
+							type: "POST",
+							url: "includes/functions.php",
+							data: {
+								type: "problem_report",
+								location: location,
+								problemType: $("#problem_type").val(),
+								description: $("#problem_text").val(),
+								email: $("#email").val()
+								//phone: $("#phone").val()
+							},
+							complete: function(resp) {
+								if (resp.responseText.indexOf("1") != -1) {
+									$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
+									$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
+									$("#report_problem form").resetForm();
+								}
+								else {
+									$("#report_problem div[class*='alert-danger']").remove();
+									$("#report_problem form").after("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your report. Please try again.</div>");
+								}
+								
+								$("#report_problem .alert").show();
+							}
+						});
 					}
 				});
+				
+				/* Set the validation rules. */
+				$("#report_problem #location").rules("add", {required: true, location: true});
+				
+				jQuery.validator.addMethod("location", function(value, element, params) {
+					return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
+				}, jQuery.validator.format("Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization."));
+				
+				$("#report_problem #problem_type").rules("add", {required: true});
+				$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
+				
+				$.validator.methods.email = function(value, element) {
+					return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
+				};
+				
+				$("#email").rules("add", {
+					required: true,
+					email: true/*{
+						depends: function(element) {
+							return $("#email").is(":checked");
+						}
+					}*/
+				});
+				
+				/*$.validator.methods.phoneUS = function(value, element) {
+					return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
+				}
+				$("#phone").rules("add", {
+					required: true,
+					phoneUS: {
+						depends: function(element) {
+							return $("#phone").is(":checked");
+						}
+					}
+				});*/
 			}
 		});
-		
-		/* Set the validation rules. */
-		$("#report_problem #location").rules("add", {required: true, location: true});
-		
-		jQuery.validator.addMethod("location", function(value, element, params) {
-			return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
-		}, jQuery.validator.format("Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization."));
-		
-		$("#report_problem #problem_type").rules("add", {required: true});
-		$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
-		
-		$.validator.methods.email = function(value, element) {
-			return this.optional(element) || /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@(([0-9a-zA-Z])+([-\w]*[0-9a-zA-Z])*\.)+[a-zA-Z]{2,9})$/.test(value);
-		};
-		
-		$("#email").rules("add", {
-			required: true,
-			email: true/*{
-				depends: function(element) {
-					return $("#email").is(":checked");
-				}
-			}*/
-		});
-		
-		/*$.validator.methods.phoneUS = function(value, element) {
-			return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);
-		}
-		$("#phone").rules("add", {
-			required: true,
-			phoneUS: {
-				depends: function(element) {
-					return $("#phone").is(":checked");
-				}
-			}
-		});*/
 		
 		/* Fill in location after clicking favorite location marker. */
 		$("#report_problem #location").on("focus", function() {
@@ -810,54 +805,73 @@ $(document).ready(function() {
 		});*/
 	}
 	
-	
-	/* Steppers for the survey page. */
-	
-	
 	/* Site problem form. */
-	$("#comments_form #email").val("");
-	$("#comments_form #comments").val("");
-	
-	var comments_validator = $("#comments_form form").validate({
-		debug: false,
-		errorPlacement: function(error, element) {
-			element.after(error);
-		},
-		messages: {
-			email: "Please enter a valid email address.",
-			description: "Please describe the problem."
-		},
-		submitHandler: function(form) {			
-			$(form).ajaxSubmit({
-				type: "POST",
-				url: "includes/functions.php",
-				data: {
-					type: "site_report",
-					email: $("#comments_form #email").val(),
-					description: $("#comments_form #comments").val()
-				},
-				complete: function(resp) {
-					console.log(resp);
-					
-					if (resp.responseText.indexOf("1") != -1) {
-						$("#comments_form div[class*='alert-danger']").remove();
-						$("#comments_form .modal-content").html("<div class='alert alert-success' role='alert'>Your comments have been successfully submitted.</div>").resetForm();
+	if ($pageId.indexOf("index") != -1) {
+		$("#comments_form #email").val("");
+		$("#comments_form #comments").val("");
+		
+		$.ajax({
+			type: "GET",
+			url: form_validation_js,
+			dataType: "script",
+			cache: true,
+			success: function() {
+				var comments_validator = $("#comments_form form").validate({
+					debug: false,
+					errorPlacement: function(error, element) {
+						element.after(error);
+					},
+					messages: {
+						email: "Please enter a valid email address.",
+						description: "Please describe the problem."
+					},
+					submitHandler: function(form) {			
+						$(form).ajaxSubmit({
+							type: "POST",
+							url: "includes/functions.php",
+							data: {
+								type: "site_report",
+								email: $("#comments_form #email").val(),
+								description: $("#comments_form #comments").val()
+							},
+							complete: function(resp) {
+								console.log(resp);
+								
+								if (resp.responseText.indexOf("1") != -1) {
+									$("#comments_form div[class*='alert-danger']").remove();
+									$("#comments_form .modal-content").html("<div class='alert alert-success' role='alert'>Your comments have been successfully submitted.</div>").resetForm();
+								}
+								else {
+									$("#comments_form div[class*='alert-danger']").remove();
+									$("#comments_form .modal-body").append("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your comments. Please try again.</div>");
+								}
+								
+								$("#comments_form .alert").show();
+							}
+						});
 					}
-					else {
-						$("#comments_form div[class*='alert-danger']").remove();
-						$("#comments_form .modal-body").append("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your comments. Please try again.</div>");
-					}
-					
-					$("#comments_form .alert").show();
-				}
-			});
-		}
-	});
+				});
+			
+				$("#comments_form #comments").on("keyup", function() {
+					if (comments_validator.element("#comments_form #comments") && comments_validator.element("#comments_form #comments"))
+						$("#comments_form .submit_button").removeClass("disabled");
+					else
+						$("#comments_form .submit_button").addClass("disabled");
+				});
+			}	
+		});
+	}
 	
-	$("#comments_form #comments").on("keyup", function() {
-		if (comments_validator.element("#comments_form #comments") && comments_validator.element("#comments_form #comments"))
-			$("#comments_form .submit_button").removeClass("disabled");
-		else
-			$("#comments_form .submit_button").addClass("disabled");
-	});
+	/*if ($pageId.indexOf("news") != -1) {
+		$.ajax({
+			type: "GET",
+			url: google_js_api,
+			dataType: "script",
+			cache: true,
+			success: function() {
+				google.load("feeds", "1");
+				google.setOnLoadCallback(onStartup);
+			}
+		});
+	}*/
 });

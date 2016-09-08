@@ -18,7 +18,6 @@ if ($obj) {
 			email_user();
 	}
 	else if (stripos($obj->{"type"}, "survey") !== false)
-	//else if ($obj->{"type"} == "survey1")
 		$result = queries("survey1", "" , "", $obj);
 }
 else {

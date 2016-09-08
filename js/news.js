@@ -5,9 +5,10 @@ function onStartup() {
 	mLive();
     michiganRadio();
 	
-	if ($("body").attr("id").includes("news_page"))
-		if ($("#news .card").length() == 0)
+	if ($("body").attr("id").includes("news_page")) {
+		if ($("#news .card").length == 0)
 			$("#news .card").prepend("<p class='text-center'>There are no news articles available.</p>");
+	}
 }
 
 function mLive() {

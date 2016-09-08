@@ -14,7 +14,7 @@ li[class*='disabled'] a {
 	color:#CCC!important;
 }
 
-.icon {
+.icon, .material-icons {
 	font-family:"Material Icons"!important;
 }
 
@@ -221,7 +221,7 @@ html, body {
 	box-sizing:border-box;
 	-moz-box-sizing:border-box;
 	outline:none;
-	box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2),0 -1px 0px rgba(0,0,0,0.02);
 }
 
 #search_input:focus {
@@ -280,8 +280,9 @@ html, body {
 
 .stepper-step {
 	font-family:"Roboto","Helvetica","Arial",sans-serif;
-	font-size: 12px;
-	font-weight: 400;
+	font-size: 14px;
+	font-weight: 500;
+	color:rgba(0,0,0,.87);
 	height: 24px;
 	line-height: 24px;
 	position: relative;
@@ -343,10 +344,6 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 	white-space:normal!important;
 }
 
-#about_page p {
-	text-align:justify;
-}
-
 
 footer #site_desc p:first-child {
 	font-size:120%;
@@ -372,15 +369,18 @@ footer .card-action btn {
 	font-size:1.3rem!important;
 }
 
+footer #copyright {
+	text-align:center;
+}
+
 .tooltip.top .tooltip-arrow {
-  border-top-color:#FFF;
-  border-width:5px 5px 0;
+  display:none;
 }
 
 .tooltip-inner {
+  background-color:#727272;
+  font-weight:500;
   color:#FFF;
-  background-color:#252E56;
-  border:solid 1px #000;
   opacity:1;
   filter:alpha(opacity=100);
 }
@@ -412,6 +412,8 @@ footer .card-action btn {
 	#show_me_menu .dropdown-menu a {
 		font-size:100%;
 		color:#337ab7!important;
+		border:none;
+		border-radius:2px;
 	}
 
 	div[id*='step'][class*='stepper']::before {
@@ -428,15 +430,11 @@ footer .card-action btn {
 	#language_menu #language_toggle {
 		font-size:1.3rem;
 	}
-	
-	#about_page p {
-		text-align:center;
-	}
-	
+
 	footer #site_desc p {
 		text-align:center;
 	}
-	
+
 	#show_me_menu .dropdown-menu span{
 		color: rgba(0,0,0,.87);
 		font-size: 14px;

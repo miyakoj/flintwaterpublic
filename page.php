@@ -13,8 +13,7 @@ if (@isset($_GET["pid"])) {
 		
 		case "news":
 			$pagetitle = "News";
-			$content = "<div id='page_cards'>
-				<nav class='tab-nav'>
+			$content = "<section class='container'><nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
 					<li id='news_tab' role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
 					<li id='alerts_tab' role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
@@ -29,7 +28,7 @@ if (@isset($_GET["pid"])) {
 					</div>
 				  </div>
 				</div>
-			</div>";
+			</section>";
 		break;
 		
 		case "test":
@@ -484,15 +483,31 @@ if (@isset($_GET["pid"])) {
 		case "about":
 			$pagetitle = "About This Site";
 			//$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-			$content = "<div id='university_images' class='container-fluid'><div class='row'>
+			$content = "<section class='container'><div id='university_images' class='container-fluid'><div class='row'>
 			<div class='col-md-6'><img id='umf_logo' src='images/umf_logo.png' /></div>
 			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
 			</div></div>
-			<p>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and <a href='http://www.umich.edu'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>";
+			
+			<p class='text-justify'>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and the <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p></section>";
+		break;
+		
+		case "disclaimer":
+			$pagetitle = "Site Disclaimer";
+			$content = "<section class='container'><p class='text-justify'><strong>Any user of the Unite Flint data portal application (\"Unite Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of Unite Flint.</strong></p>
+			
+						<p class='text-justify'>The data displayed on Unite Flint are provided as a public service, on an \"AS-IS\" basis, and for informational purposes only. University does not create these data, vouch for their accuracy, or guarantee that these are the most recent data available from the data provider. For many or all of the data, the data are by their nature approximate and will contain some inaccuracies. The data may contain errors introduced by the data provider(s) and/or by University. The names of counties and other locations shown in Unite Flint may differ from those in the original data.</p>
+						
+						<p class='text-justify'>University makes no warranty, representation or guaranty of any type as to any errors and omissions, or as to the content, accuracy, timeliness, completeness or fitness for any particular purpose or use of any data provided on Unite Flint; nor is it intended that any such warranty be implied, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.  Furthermore, University (a) expressly disclaims the accuracy, adequacy, or completeness of any data and (b) shall not be liable for any errors, omissions or other defects in, delays or interruptions in such data, or for any actions taken or not taken in reliance upon such data. Neither University nor any of its data providers will be liable for any damages relating to your use of the data provided in Unite Flint.</p>
+						
+						<p class='text-justify'>University shall reserve the right to discontinue the availability of any content on Unite Flint at any time and for any reason or no reason at all. The user assumes the entire risk related to its use of the data on Unite Flint. In no event will University be liable to you or to any third party for any direct, indirect, incidental, consequential, special or exemplary damages or lost profit resulting from any use or misuse of these data.</p></section>";
+		break;
+		
+		case "privacy":
+			$pagetitle = "Privacy Policy";
+			$content = "<section></section>";
 		break;
 	}
-}		
-
+}
 else {
 	header("Location: index.php");
 	exit();
