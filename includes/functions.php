@@ -18,7 +18,7 @@ if ($obj) {
 			email_user();
 	}
 	else if (stripos($obj->{"type"}, "survey") !== false)
-		$result = queries("survey1", "" , "", $obj);
+		$result = queries("survey", "" , "", $obj);
 }
 else {
 	if ($_POST["type"] == "resource_report") {	

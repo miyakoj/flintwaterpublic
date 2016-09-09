@@ -263,19 +263,18 @@ html, body {
 	font-weight:bold;
 }
 
-#steppers .done .stepper-step::before {
-	background-color:rgba(0,0,0,.38)!important;
+.stepper.active .stepper-step::before, .stepper.done .stepper-step::before {
+	background-color:#3A4EA2!important;
 }
 
-.active .stepper-step-icon {
-	background-color:#3a4ea2!important;
+#steppers .done .stepper-step::before, #steppers .stepper-step .stepper-step-icon {
+	background-color:#9E9E9E!important;
 }
 
-.stepper-step {
+#steppers .stepper-step {
 	font-family:"Roboto","Helvetica","Arial",sans-serif;
 	font-size: 14px;
 	font-weight: 500;
-	color:rgba(0,0,0,.87);
 	height: 24px;
 	line-height: 24px;
 	position: relative;
@@ -283,10 +282,7 @@ html, body {
 	width: 24px;
 }
 
-.stepper-step .stepper-step-icon{
-	background-color: rgba(0,0,0,.38);
-}
-.back_button span, .next_button span {
+#steppers .back_button span, .next_button span {
 	line-height:20px;
 }
 
@@ -315,16 +311,13 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 	font-size:120%;
 }
 
-/*#location_card span {
-	font-weight:bold;
-}*/
-
-#location_card #prediction, #location_card #lead_meter {
+#location_card #prediction {
 	font-weight:bold;
 }
 
-#location_card .dl-horizontal dt {
-	text-align:right;
+#location_card .card-inner p {
+	font-style:italic;
+	color:rgba(0, 0, 0, 0.65);
 }
 
 #location_card .card-action {

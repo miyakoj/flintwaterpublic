@@ -43,7 +43,7 @@ if (@isset($_GET["pid"])) {
 									<div class='stepper-vert-inner'>
 										<div id='water_step1' class='stepper active'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>1</span>
 											</div>
 											<span class='stepper-text'>Get a water test kit</span>
@@ -61,7 +61,7 @@ if (@isset($_GET["pid"])) {
 										
 										<div id='water_step2' class='stepper hide'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>2</span>
 											</div>
 											<span class='stepper-text'>Take the water sample</span>
@@ -87,7 +87,7 @@ if (@isset($_GET["pid"])) {
 										
 										<div id='water_step3' class='stepper hide'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>3</span>
 											</div>
 											<span class='stepper-text'>Drop off test results</span>
@@ -108,6 +108,39 @@ if (@isset($_GET["pid"])) {
 							
 							<div id='sidebar' class='col-sm-7'></div>
 						</div>
+					</div>
+					
+					<div id='resource_card' class='card'>
+						<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
+						
+						<div class='card-main'>				
+							<div class='card-inner'></div>
+							
+							<div class='card-action'>
+								<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='icon icon-lg'>star_border</span> Save</button>
+								
+								<ul id='card_report_menu' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
+									<li>
+										<div class='dropdown'>
+										<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+										<span class='icon icon-lg'>error</span> Report</a>
+										
+										<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
+											<li><a href='#'>Temporarily Closed</a></li>
+											<li><a href='#'>Permanently Closed</a></li>
+											<li><a href='#'>Doesn't Have Water Pickup</a></li>
+											<li><a href='#'>Doesn't Have Water Filters</a></li>
+											<li><a href='#'>Doesn't Have Test Kits</a></li>
+											<li><a href='#'>Doesn't Accept Recycling</a></li>
+											<li><a href='#'>Doesn't Perform Blood Testing</a></li>
+										</ul>
+										</div>
+									</li>
+								</ul>
+								
+								<button id='card_directions' class='btn btn-flat pull-right' title='Get Directions'>Get Directions</button>
+							</div>
+						</div>
 					</div>";
 		break;
 		
@@ -123,7 +156,7 @@ if (@isset($_GET["pid"])) {
 								<div class='stepper-vert-inner'>
 									<div id='filter_step1' class='stepper active'>
 										<div class='stepper-step'>
-											<span class='icon stepper-step-icon'>check</span>
+											<span class='icon stepper-step-icon'>done</span>
 											<span class='stepper-step-num'>1</span>
 										</div>
 										<span class='stepper-text'>Choose your filter type</span>
@@ -154,7 +187,7 @@ if (@isset($_GET["pid"])) {
 										
 								<div id='filter_step2' class='stepper'>
 									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
+										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>2</span>
 									</div>
 									<span class='stepper-text'>Install your adapter</span>
@@ -206,7 +239,7 @@ if (@isset($_GET["pid"])) {
 										
 								<div id='filter_step3' class='stepper hide'>
 									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
+										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>3</span>
 									</div>
 									<span class='stepper-text'>Install your filter</span>
@@ -269,7 +302,7 @@ if (@isset($_GET["pid"])) {
 									<div class='stepper-vert-inner'>
 										<div id='aerator_step1' class='stepper active'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>1</span>
 											</div>
 											<span class='stepper-text'>Remove the aerator</span>
@@ -290,7 +323,7 @@ if (@isset($_GET["pid"])) {
 										
 										<div id='aerator_step2' class='stepper hide'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>2</span>
 											</div>
 											<span class='stepper-text'>Clean the aerator</span>
@@ -313,7 +346,7 @@ if (@isset($_GET["pid"])) {
 										
 										<div id='aerator_step3' class='stepper hide'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>3</span>
 											</div>
 											<span class='stepper-text'>Reinstall the aerator</span>
@@ -343,7 +376,7 @@ if (@isset($_GET["pid"])) {
 							<div class='stepper-vert-inner'>
 								<div id='submit_step1' class='stepper active'>
 									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
+										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>1</span>
 									</div>
 									<span class='stepper-text'>Introduction</span>
@@ -361,7 +394,7 @@ if (@isset($_GET["pid"])) {
 								
 								<div id='submit_step2' class='stepper'>
 									<div class='stepper-step'>
-										<span class='icon stepper-step-icon'>check</span>
+										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>2</span>
 									</div>
 									<span class='stepper-text'>Enter your location</span>
@@ -392,7 +425,7 @@ if (@isset($_GET["pid"])) {
 									<div class='stepper-vert-inner'>
 										<div id='report_step1' class='stepper active'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>1</span>
 											</div>
 											<span class='stepper-text'>Enter the location</span>
@@ -411,7 +444,7 @@ if (@isset($_GET["pid"])) {
 										
 										<div id='report_step2' class='stepper hide'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>2</span>
 											</div>
 											<span class='stepper-text'>Describe the problem</span>
@@ -441,7 +474,7 @@ if (@isset($_GET["pid"])) {
 										
 										<div id='report_step3' class='stepper hide'>
 											<div class='stepper-step'>
-												<span class='icon stepper-step-icon'>check</span>
+												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>3</span>
 											</div>
 											<span class='stepper-text'>Contact information</span>

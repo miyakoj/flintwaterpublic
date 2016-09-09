@@ -226,13 +226,11 @@ function initMap() {
 	
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		for (var i = 1; i <= numberSaved; i++) {
-			var streetAddress = localStorage.getItem("savedLocationAddress"+i);
-				
-			var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-				+ streetAddress + "'";
+			var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+				+ localStorage.getItem("savedLocationAddress"+i) + "' ORDER BY 'testDate' DESC LIMIT 1";
 			
 			/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
-			(function(index){				
+			(function(index){
 				window.jsonpCallbacks["fusionQueryCallback"+index] = function(data) {
 					var locationPosition = localStorage.getItem("savedLocationPosition"+index);
 					var latitude = parseFloat(locationPosition.slice(1, locationPosition.indexOf(",")));
@@ -243,7 +241,8 @@ function initMap() {
 						map: map,
 						icon: savedLocationIcon
 					});
-			
+					
+					var streetAddress = localStorage.getItem("savedLocationAddress"+index);
 					var content = fusionQueryCallback(data, streetAddress);
 					attachLocationCard("savedLocation", tempLocationMarker, streetAddress, content);
 					
@@ -256,7 +255,7 @@ function initMap() {
 		}
 	}
 
-	// Construction Junk
+	// Construction Stuff
 	var constructionLatLng = {lat:43.019368, lng:-83.668522};
 	var constructionTitle = "Construction Zone";
 	var constructionImage = "images/construction_icon.png";
@@ -271,7 +270,7 @@ function initMap() {
 	bindInfoWindow("construction", constructionMarker, map, infoWindow, constructionContent);
 	constructionMarker.setMap(null);
 	
-	// Water Plant Junk
+	// Water Plant Stuff
 	var waterplantLatLng = {lat:43.056269, lng:-83.669625};
 	var waterplantTitle = "City of Flint Water Plant";
 	var waterplantImage = "images/water_plant_icon.png";
@@ -339,33 +338,36 @@ function initMap() {
 		if (places.length == 0)
 			return;
 
-	  // For each place, get the icon, name and location.
-	  var bounds = new google.maps.LatLngBounds();
+		// For each place, get the icon, name and location.
+		var bounds = new google.maps.LatLngBounds();
 	  
-	// Update the location marker for the address searched.
-	locationMarker.setPosition(place.geometry.location);
-	locationMarker.setTitle(place.name);
-	locationMarker.setIcon(locationIcon);
+		// Update the location marker for the address searched.
+		locationMarker.setTitle(place.name);
+		locationMarker.setIcon(locationIcon);
 
-	  if (place.geometry.viewport)
-		bounds.union(place.geometry.viewport);
-	  else
-		bounds.extend(place.geometry.location);
+		if (place.geometry.viewport)
+			bounds.union(place.geometry.viewport);
+		else
+			bounds.extend(place.geometry.location);
 	  
-	  updateLocationZoom();
+		updateLocationZoom();
 	  
 		map.fitBounds(bounds);
 
 		/* Display appropriate lead rating and message. */
 		var inputAddress = place.formatted_address.split(',');
 		var streetAddress = inputAddress[0].toUpperCase();
-		var latLong;
 		
-		var query = "SELECT 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-					+ streetAddress + "'";
+		var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+					+ streetAddress + "' ORDER BY 'testDate' DESC LIMIT 1";
 					
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
-		window.jsonpCallbacks["searchQueryCallback"] = function(data) {		
+		window.jsonpCallbacks["searchQueryCallback"] = function(data) {			
+			if (data.rows != undefined)
+				locationMarker.setPosition({lat: data.rows[0][0], lng: data.rows[0][1]});
+			else
+				locationMarker.setPosition(place.geometry.location);
+			
 			var content = fusionQueryCallback(data, streetAddress);
 			createLocationCardContent("location", content);
 			attachLocationCard("location", locationMarker, streetAddress, content);
@@ -375,6 +377,7 @@ function initMap() {
 		};
 		
 		queryFusionTable(query, "jsonpCallbacks.searchQueryCallback");
+		checkIfSaved(locationMarker.getPosition());
 		
 		$("#location_card .card-action").show();
 		$("#location_card").show();
@@ -390,45 +393,15 @@ function initMap() {
 	
 	// hide the location card if the search box is empty
 	$("#search_input").on("change", function(event) {
-		//$("#resource_card").hide();
+		$("#resource_card").hide();
 		
 		if ($(this).val() == "")
 			$("#location_card").hide();
 	});
 	
 	/* Show/hide buttons and dymaically set different button text. */
-	function updateLocationZoom() {
-		// $("#saved_locations").css("display", "none"); // hide saved locations
-		// $("#location_buttons").css("display", "block"); // unhide location buttons
-		
-		var searched_location = $("#search_input").val();
-		// var searched_location_sub = searched_location.substring(1, searched_location.length);
-
-		// console.log(localStorage.saved_location1);
-		// console.log(searched_location_sub);
-		// console.log(searched_location);
-		
-		// markerImg = "images/savedlocation.png"; // saved location icon by default
-		
-		/*if (localStorage.saved_location1 === searched_location) {
-			$("#saved_location_button span").text(saved_location_msg);
-			// $("#saved_location_button img").src("images/locationicon.png");
-		}
-		else if (localStorage.saved_location2 === searched_location) {
-			$("#saved_location_button span").text(saved_location_msg);
-			// $("#saved_location_button img").src("images/locationicon.png");
-		}
-		else if (localStorage.saved_location3 === searched_location) {
-			$("#saved_location_button span").text(saved_location_msg);
-			// $("#saved_location_button img").src("images/locationicon.png");
-		}
-		else {
-			$("#saved_location_button span").text(save_location_msg);
-			markerImg = "images/locationicon.png";
-		}*/
-		
-		 // change the location card icon dynamically
-		
+	function updateLocationZoom() {		
+		var searched_location = $("#search_input").val();		
 
 	    if (map.getZoom() < 14)
 			map.setZoom(25);
@@ -555,33 +528,28 @@ function setUpFusionTable() {
 }
 
 function addFusionListener(object) {
-	google.maps.event.addListener(object, "click", function(event) {		
+	google.maps.event.addListener(object, "click", function(event) {
 		var content = createLocationContent(event.row["Address"].value, event);
 		
 		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 		
-		var isSaved = false;
 		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
-
+		
 		if (checkIfSaved(latLng)) {
-			isSaved = true;
-			
 			var tempLocationMarker = new google.maps.Marker({
 				position: {
-					lat: parseFloat(event.row["latitude"].value),
-					lng: parseFloat(event.row["longitude"].value)
+					lat: event.row["latitude"].value,
+					lng: event.row["longitude"].value
 				},
 				map: map,
 				icon: savedLocationIcon
 			});
 			
-			attachLocationCard("savedLocation", tempLocationMarker, event.row["Address"].value, content)
-			
 			savedMarkers.push(tempLocationMarker);
 			savedLocationMarkers.push(tempLocationMarker);
 		}
 		
-		$("#location_card").show();
+		$("#location_card, #location_card .card-action").show();
 	});
 }
 
@@ -707,9 +675,9 @@ function callStorageAPI(object) {
 
 					leadLayerBirdView_markers.push(leadLevelAreaSquare);
 
-					content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' /> <h5>About this area</h5>";
-					content += "<p>" + numOfDangerous + " out of " + numOfTests + " total tests in this area had dangerous lead levels.</p>";
-					content += "<p>Zoom in for more specific test results.</p>";
+					content = "<h5>About this area</h5>";
+					content += "<div class='row'><div class='col-xs-2'><img id='risk_img' src='" + warningImg + "' /></div> <div class='col-xs-10'><strong>" + numOfDangerous + "</strong> out of <strong>" + numOfTests + "</strong> total tests in this area had dangerous lead levels.</div></div>";
+					content += "<p>Zoom in for specific lead test results.</p>";
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
 					
@@ -965,9 +933,9 @@ function createLocationContent(streetAddress, dataObj) {
 	
 	/* Data is either from a fusion table query or from a fusion layer callback. */
 	if (dataObj.rows) {
-		leadLevel = dataObj.rows[0][0];
-		testDate = dataObj.rows[0][1].slice(0, dataObj.rows[0][1].indexOf(" "));
-		prediction = dataObj.rows[0][2];
+		leadLevel = dataObj.rows[0][2];
+		testDate = dataObj.rows[0][3].slice(0, dataObj.rows[0][3].indexOf(" "));
+		prediction = dataObj.rows[0][4];
 	}
 	else if (dataObj.row) {
 		leadLevel = dataObj.row["leadlevel"].value;
@@ -977,48 +945,52 @@ function createLocationContent(streetAddress, dataObj) {
 	}
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
+	var warningMsg;
 	var warningImg;
 	
 	if (!isNaN(leadLevel)) {
 		if (leadLevel != "") {			
 			if (leadLevel < 15) {
-				content += "<p class='emphasis'>Low Lead Level</p>";
+				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
 			}
 			else if (leadLevel < 50) {
-				content += "<p class='emphasis'>Moderate Lead Level</p>";
+				warningMsg = "Moderate Lead Level";
 				warningImg = medRiskCircle;
 			}
 			else {
-				content += "<p class='emphasis'>High Lead Level</p>";
+				warningMsg = "High Lead Level";
 				warningImg = highRiskCircle;
 			}
 			
-			content += "<p>Last tested " + testDate + " with a lead result of " + leadLevel + " ppb.</p>";
+			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
+			content += "<div id='results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
 		}
 		else {
-			content += "<p class='emphasis'>No Test Results</p>";
+			content += "<div id='results' class='emphasis'>No Test Results</div>";
 		
 			if (prediction >= 0.20) {
-				content += "<p>High risk of elevated lead levels. Testing is recommended.</p>";
+				warningMsg = "High risk of elevated lead levels. Testing is recommended.";
 				warningImg = highRiskCircle;
 			}
 			else if ((prediction > 0.10) && (prediction < .20)) {
-				content += "<p>Moderate risk of elevated lead levels. Testing is recommended.</p>";
+				warningMsg = "Moderate risk of elevated lead levels. Testing is recommended.";
 				warningImg = medRiskCircle;
 			}
 			else if (prediction <= .10) {
-				content += "<p>At risk for elevated lead levels. Testing is recommended.</p>";
+				warningMsg = "At risk for elevated lead levels. Testing is recommended.";
 				warningImg = lowRiskCircle;
 			}
+			
+			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
 		}
 		
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
 	}	
 	else {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
-		content += "<p>No test results available.<br />";
-		content += "No lead prediction available.</p>";
+		content += "<div>No test results available.<br />";
+		content += "No lead prediction available.</div>";
 	}
 	
 	return content;
@@ -1028,12 +1000,12 @@ function createLocationContent(streetAddress, dataObj) {
 function createLocationCardContent(type, content) {
 	$("#location_card .card-inner").empty().html(content);
 		
-	if (type.search("/location/i") != -1) {
+	if (type.search(/location/i) != -1) {
 		$("#location_card .card-inner").append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
 	}
 	
-	if (type.search("/location/i") != -1)
-		$("#location_card #card_save .icon").html("star");
+	/*if (type.search(/location/i) != -1)
+		$("#location_card #card_save .icon").html("star");*/
 	
 	if (type.indexOf("leadArea") != -1)
 		$("#location_card .card-action").hide();
@@ -1057,9 +1029,10 @@ function attachLocationCard(type, marker, address, content) {
 		
 		createLocationCardContent(type, content);
 		
-		$("#location_card").show();
+		if (type.indexOf("leadArea") == -1)
+			checkIfSaved(marker.getPosition());
 		
-		savedLocationMarkers.push(marker);
+		$("#location_card").show();
 	});
 }
 
@@ -1072,8 +1045,6 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 			isSaved = checkIfSaved(marker.getPosition());
 			map.panTo(marker.getPosition());
 			$("#resource_card .card-inner").empty().prepend(content);
-			
-			console.log(resourcesAvailable);
 			
 			/* Disable non-relevant report choices. */
 			if (resourcesAvailable.indexOf("Blood Testing") == -1) {
@@ -1121,9 +1092,10 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 				$("#resource_card #card_report_menu a:contains('Water Pickup')").attr("href", "#");
 			}
 			
-			//console.log(map.getBounds());
-			//console.log("#map_container offset top = " + $("#map_container").offset().top);
-			//console.log(marker.getPosition());
+			$("#resource_card").css({
+				left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
+				bottom: (($("#map").height() / 2) + 10) + "px"
+			});
 			
 			$("#resource_card").show();
 			
@@ -1137,45 +1109,6 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 	}
 }
 
-// function displaySavedLocations() {
-	/*$("#location_card").css({
-		"width": function() {
-			return $("#search_input").outerWidth() + parseInt($("#search_button").outerWidth());
-		},
-		"bottom": function() {
-			return parseInt($("#search_input").css("top")) + parseInt($("#search_input").height()) + 20 + "px";
-		},
-		"left": function() {
-			return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
-		}
-	});*/
-	
-	/* Saved Location Selection Card */
-	/*if ((localStorage.getItem("saved_locations_count") !== null) && (localStorage.saved_locations_count > 0)) {
-		$("#location_card .card-inner").html("<h6>Saved Locations</h6>");
-		$("#location_card .card-action").css("font-size", "0.5rem");
-		
-		var saved_locations = "<div id=\"saved_locations\">";
-		// for (var i=0; i < ;i++)
-		if (localStorage.getItem("saved_location1") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location1\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location1") + "</span></button></div>";
-		}
-		
-		if (localStorage.getItem("saved_location2") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location2\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location2") + "</span></button></div>";
-		}
-		
-		if (localStorage.getItem("saved_location3") !== null) {
-			saved_locations += "<div class=\"card-action\"><button type=\"button\" class=\"close\" >&times;</button> <button type=\"button\" name=\"saved_location3\" class=\"btn btn-flat btn-brand saved-location\"><img src=\"images/savedlocation.png\" /> <span>" + localStorage.getItem("saved_location3") + "</span></button></div>";
-		}
-		
-		saved_locations += "</div>";
-		
-		$("#location_buttons").css("display", "none");
-		$("#location_card .card-action").append(saved_locations);
-		$("#location_card").css("display", "block");
-	}*/
-// }
 
 /* Set markers on the map based on type. */
 function setMarkers() {
@@ -1300,28 +1233,6 @@ function unsaveLocation(latLong) {
 	
 	return (numberSaved+1);
 }
-
-/*function unsaveLocation(locationInput) {
-	localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
-	savedLocationTotal = localStorage.getItem("saved_locations_count");
-	
-	for (var i=0; i < savedLocationTotal;i++) {
-		if (locationStorage.getItem(["saved_location" + Number(localStorage.saved_locations_count)]) == locationInput)
-			localStorage.removeItem("saved_location"+i);
-	}
-		
-		if (localStorage.saved_location1 == locationInput) {
-			localStorage.removeItem("saved_location1");
-		}
-		else if (localStorage.saved_location2 == locationInput) {
-			localStorage.removeItem("saved_location2");
-		}
-		else if (localStorage.saved_location3 == locationInput) {
-			localStorage.removeItem("saved_location3");
-		}
-	
-}*/
-
 
 
 /* Capialize the first character in each word.
@@ -1476,7 +1387,7 @@ $(document).ready(function() {
 
 	// gives directions to a resource location when get dircetions is clicked
 	$("#resource_card #card_directions").on("click", function() {
-		resource_directions = resourceMarker.getPosition();
+		var resource_directions = resourceMarker.getPosition();
         window.open('http://maps.google.com/?q='+resource_directions, '_blank');
 	});
 
@@ -1487,8 +1398,6 @@ $(document).ready(function() {
 		var unsavedIcon = resourceMarker.getIcon().url;
 		var savedLocationNum
 		var isSaved = checkIfSaved(latLong);
-		
-		console.log("streetAddress = " + streetAddress);
 		
 		// resource has already been saved
 		if (isSaved) {
@@ -1589,6 +1498,7 @@ $(document).ready(function() {
 		var unsavedIcon = locationIcon.url;
 		var savedLocationNum;
 		
+		// an address was searched for
 		if (locationMarker.getPosition()) {
 			latLong = locationMarker.getPosition();
 			isSaved = checkIfSaved(latLong);
@@ -1639,26 +1549,16 @@ $(document).ready(function() {
 				}
 			}
 		}
+		// a marker was clicked
 		else {
-			var fusionPosQuery = "SELECT 'latitude', 'longitude' FROM " + fusionTableId + " WHERE Address='" 
-			+ streetAddress + "'";
-
-			queryFusionTable(fusionPosQuery, function(result) {
-				if (result.rows != undefined)
-					latLong = "(" + result.rows[0][0] + ", " + result.rows[0][1] + ")";
-				
-				if (latLong)
-					isSaved = checkIfSaved(latLong);
-				else {
-					for (var i = 1; i <= numberSaved; i++) {
-						if (localStorage.getItem("savedLocationAddress"+i).indexOf(streetAddress) != -1) {
-							console.log(localStorage.getItem("savedLocationPosition"+i));
-							latLong = localStorage.getItem("savedLocationPosition"+i);
-							isSaved = true;
-						}
-					}
-				}
-				
+			var geocoder = new google.maps.Geocoder();
+			geocoder.geocode({
+				address: streetAddress,
+				bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
+			}, function(results, status) {
+				latLong = results[0].geometry.location.toString();
+				isSaved = checkIfSaved(latLong);
+			
 				// location has already been saved
 				if (isSaved) {
 					var temp = locationMarker;

@@ -244,12 +244,6 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	display:block;
 }
 
-/*#index_page .card {
-	margin-top:0!important;
-	margin-bottom:0!important;
-	z-index:2000!important;
-}*/
-
 #location_card, #resource_card {
 	margin:0;
 	position:absolute;
@@ -260,16 +254,27 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	z-index:200!important;
 }
 
+#location_card .close, #resource_card .close {
+	margin-top:3px;
+	margin-right:5px;
+}
+
+#location_card h5, #resource_card h5 {
+	font-weight:bold;
+}
+
 #location_card .card-inner {
-	margin-top:10px!important;
-	margin-bottom:10px!important;
+	margin:10px 10px 10px 10px!important;
+}
+
+#location_card .card-inner #warning, #location_card .card-inner #address + #results {
+	margin-bottom:12px;
 }
 
 #location_card #risk_img {
 	width:auto;
-	height:20px;
+	height:22px;
 	margin-right:10px;
-	vertical-align:middle;
 }
 
 #location_card #more_info_button {
@@ -311,19 +316,10 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	width: 100%;
 }
 
-#resource_card {
-	/*padding:5px;*/
-}
-
 #resource_card #card_report_menu {
 	margin-top:0;
 	list-style-type:none;
 	display:none!important;
-}
-
-.close {
-	margin-top:3px;
-	margin-right:5px;
 }
 
 #provider_resources .marker_popup_icons {

@@ -4,11 +4,15 @@
 		bottom:initial;
 		right:initial;
 	}
+	
+	#map {
+		position:relative;
+	}
 		
 	#resource_card {
 		width:25em;
-		top:3.5em;
-		bottom:auto;
+		/*top:3.5em;
+		bottom:auto;*/
 	}
 	
 	#resource_card #card_report_menu {

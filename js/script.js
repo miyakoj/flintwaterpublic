@@ -8,11 +8,12 @@ var $activeNode;
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
 //<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>
 var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
-var form_validation_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
+var jquery_form_api = "http://malsup.github.com/min/jquery.form.min.js";
+var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
 //var google_js_api = "https://www.google.com/jsapi";
 
-if ($pageId.indexOf("index") != -1) {
+if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1) || ($pageId.indexOf("test") != -1)) {
 	$.ajax({
 		type: "GET",
 		url: map_api,
@@ -27,6 +28,16 @@ if ($pageId.indexOf("index") != -1) {
 		cache: true
 	});
 }
+
+if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1)) {	
+	$.ajax({
+		type: "GET",
+		url: jquery_form_api,
+		dataType: "script",
+		cache: true
+	});
+}
+
 
 $(document).ready(function() {
 	/* Position alert in the middle of the page. */
@@ -324,6 +335,7 @@ $(document).ready(function() {
 		/* Move the map and help video into the sidebar. */
 		$("#topbar").addClass("hide");
 		$("#map").prependTo($("#sidebar"));
+		$("#resource_card").appendTo($("#sidebar"));
 		
 		if ($pageId.indexOf("filter") != -1) {
 			$(".help_video").each(function() {
@@ -642,7 +654,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "GET",
-			url: form_validation_js,
+			url: form_validation_api,
 			dataType: "script",
 			cache: true,
 			success: function() {
@@ -812,7 +824,7 @@ $(document).ready(function() {
 		
 		$.ajax({
 			type: "GET",
-			url: form_validation_js,
+			url: form_validation_api,
 			dataType: "script",
 			cache: true,
 			success: function() {
