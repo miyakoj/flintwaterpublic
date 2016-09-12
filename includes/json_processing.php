@@ -92,16 +92,21 @@ function query_json_output($result, $array_name, $filename) {
 
 	$output .= "]}";
 	
-	print_r($output);
+	/*$filename = tempnam(sys_get_temp_dir(), $array_name) . ".gz";
+	$zp = gzopen($filename, "w9");
+	gzwrite($zp, $output);
+	gzclose($zp);*/
+	
+	//print_r($output);
 
+	//write_file($output, $zp);
 	write_file($output, $filename);
 }
 
 /* Save the JSON file to the bucket in Google Cloud. */
 function write_file($output, $filename) {
-	$fp = fopen("gs://h2o-flint.appspot.com/".$filename, 'w');
-	
-	fwrite($fp, $output);
-	fclose($fp);
+	$options = $options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
+	$context = stream_context_create($options);
+	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
 }
 

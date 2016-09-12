@@ -24,7 +24,9 @@ class webpageTemplate {
 			$template_name = '{' . $key . '}';
 			$this->html = str_replace($template_name, $value, $this->html);
 		}
-		echo header("Content-type: text/html;");
+		
+		echo header("Content-type: text/html");
+		echo header("Accept-Encoding: gzip");
 		echo $this->html;
 	}
 }
