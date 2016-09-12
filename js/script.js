@@ -873,6 +873,17 @@ $(document).ready(function() {
 			}	
 		});
 	}
+	//closes the nav drawer when you click outside of it
+	$('body').click(function(){
+		console.log('clicked');
+		$('#slide-nav').removeClass('slide-active');
+		$('#main_menu li').removeClass('active');
+		$('.navbar-header, #page_content').css("left", "0px");
+		$('#main_menu').css("left", "-100%");
+	}).on("click", "#main_menu, .navbar-toggle .icon-lg", function(event) {
+		event.stopPropagation();
+	});
+		
 	
 	/*if ($pageId.indexOf("news") != -1) {
 		$.ajax({

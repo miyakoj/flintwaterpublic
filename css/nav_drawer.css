@@ -45,8 +45,9 @@ body.slide-active {
 	    z-index: 1000;
 	}
 	#slide-nav #main_menu {
-	    left: -100%;
-	    width: 80%;
+	    /*left: -100%;*/
+		left: -60%;
+	    width: 60%;
 	    min-width: 0;
 	    position: absolute;
 	    padding-left: 0;
