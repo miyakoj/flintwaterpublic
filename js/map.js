@@ -578,7 +578,7 @@ function attachLegendCard() {
 		placeholderDetails += "</div>";
 		placeholderDetails += "</div>";
 
-		$("#legend_card .card-inner").empty().html(placeholderDetails);
+		$("#legend_card .card-inner").empty().html(placeholderDetails);		
 		$("#legend_card").show();
 }
 	

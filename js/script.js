@@ -29,14 +29,14 @@ if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1) || ($p
 	});
 }
 
-if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1)) {	
+/*if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1)) {	
 	$.ajax({
 		type: "GET",
 		url: jquery_form_api,
 		dataType: "script",
 		cache: true
 	});
-}
+}*/
 
 
 $(document).ready(function() {
