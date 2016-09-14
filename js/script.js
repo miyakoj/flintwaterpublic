@@ -125,8 +125,8 @@ $(document).ready(function() {
 	}
 	
 	/* General layout/CSS differences between the mobile and desktop versions. */
-	/* Phones only. */
-	if (windowWidth < 600) {
+	/* Phones and small tablets. */
+	if (windowWidth < 768) {
 		$("#location_card, #resource_card").appendTo($("body"));
 		$("#legend_card").appendTo($("map-container"));
 		
@@ -134,8 +134,19 @@ $(document).ready(function() {
 			$(this).find("li:first-child").addClass("dropup open");
 			$(this).find("#report_button").attr("aria-expanded", "true");
 		});
+		
+		//closes the nav drawer when you click outside of it
+		$("body").click(function(){
+			console.log('clicked');
+			$("#slide-nav").removeClass("slide-active");
+			$("#main_menu li").removeClass("active");
+			$(".navbar-header, #page_content").css("left", "0px");
+			$("#main_menu").css("left", "-100%");
+		}).on("click", "#main_menu, .navbar-toggle", function(event) {
+			event.stopPropagation();
+		});
 	}
-	/* Tablets and computers. */
+	/* Large tablets and computers. */
 	else {
 		$("#location_card").css({
 			"width": function() {
@@ -185,8 +196,8 @@ $(document).ready(function() {
 	
 	
 	/* Make sure all the footer cards are the same height. */
-	$("footer div[id!='app_card'] .card-inner").css("height", $("#report_card .card-inner").css("height"));
-	//$()
+	$("footer div[id!='app_card'] .card-main .card-inner").css("height", $("footer #report_card .card-inner").css("height"));
+	$("footer #app_card").css("height", $("footer #report_card").css("height"));
 	
 	
 	/* Phones and small tablets. */
@@ -383,8 +394,6 @@ $(document).ready(function() {
 			$("#" + filter_type + "_" + $nodeSubstring + "1_content").addClass("hide");
 			$("#" + filter_type + "_" + $nodeSubstring + "2").removeClass("hide").addClass("active");
 			$("#" + filter_type + "_" + $nodeSubstring + "2_content").removeClass("hide");
-			
-			
 			
 			if ($pageId.indexOf("test") != -1) {
 				$("#map").addClass("hide");
@@ -878,16 +887,6 @@ $(document).ready(function() {
 			}	
 		});
 	}
-	//closes the nav drawer when you click outside of it
-	$('body').click(function(){
-		console.log('clicked');
-		$('#slide-nav').removeClass('slide-active');
-		$('#main_menu li').removeClass('active');
-		$('.navbar-header, #page_content').css("left", "0px");
-		$('#main_menu').css("left", "-100%");
-	}).on("click", "#main_menu, .navbar-toggle .icon-lg", function(event) {
-		event.stopPropagation();
-	});
 		
 	
 	/*if ($pageId.indexOf("news") != -1) {
