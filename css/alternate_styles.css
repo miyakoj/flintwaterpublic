@@ -1,5 +1,16 @@
 /* Tablet only. */
 @media only screen and (min-width:600px) {
+	header #google_play_link {
+		top:0;
+		right:0;
+		position:absolute;
+	}
+	
+	#google_play_badge {
+		width:auto;
+		height:4em;
+	}
+
 	#location_card, #resource_card, #legend_card {
 		bottom:initial;
 		right:initial;

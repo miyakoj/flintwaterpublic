@@ -362,7 +362,7 @@ function initMap() {
 					+ streetAddress + "' ORDER BY 'testDate' DESC LIMIT 1";
 					
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
-		window.jsonpCallbacks["searchQueryCallback"] = function(data) {			
+		window.jsonpCallbacks["searchQueryCallback"] = function(data) {
 			if (data.rows != undefined)
 				locationMarker.setPosition({lat: data.rows[0][0], lng: data.rows[0][1]});
 			else
@@ -497,7 +497,8 @@ function setUpFusionTable() {
 	leadAndPredictiveLayer = new google.maps.FusionTablesLayer({
 	    query: {
 	      	select: "'latitude'",
-	      	from: fusionTableId
+	      	from: fusionTableId/*,
+			where: */
 	    }, 
 	    options: {
 			suppressInfoWindows: "true"
@@ -932,8 +933,9 @@ function createLocationContent(streetAddress, dataObj) {
 	var tempAddr;
 	
 	/* Data is either from a fusion table query or from a fusion layer callback. */
-	if (dataObj.rows) {
-		leadLevel = dataObj.rows[0][2];
+	if (dataObj.rows) {		
+		!isNaN(dataObj.rows[0][2]) ? leadLevel = dataObj.rows[0][2] : leadLevel = "";
+		
 		testDate = dataObj.rows[0][3].slice(0, dataObj.rows[0][3].indexOf(" "));
 		prediction = dataObj.rows[0][4];
 	}
@@ -948,8 +950,8 @@ function createLocationContent(streetAddress, dataObj) {
 	var warningMsg;
 	var warningImg;
 	
-	if (!isNaN(leadLevel)) {
-		if (leadLevel != "") {			
+	if (leadLevel != "" || prediction !== undefined) {
+		if (leadLevel != "") {
 			if (leadLevel < 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
@@ -971,17 +973,18 @@ function createLocationContent(streetAddress, dataObj) {
 		
 			if (prediction >= 0.20) {
 				warningMsg = "High risk of elevated lead levels. Testing is recommended.";
-				warningImg = highRiskCircle;
+				//warningImg = highRiskCircle;
 			}
 			else if ((prediction > 0.10) && (prediction < .20)) {
 				warningMsg = "Moderate risk of elevated lead levels. Testing is recommended.";
-				warningImg = medRiskCircle;
+				//warningImg = medRiskCircle;
 			}
 			else if (prediction <= .10) {
 				warningMsg = "At risk for elevated lead levels. Testing is recommended.";
-				warningImg = lowRiskCircle;
+				//warningImg = lowRiskCircle;
 			}
 			
+			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
 		}
 		

@@ -60,6 +60,11 @@ header {
 	display:inline;
 }
 
+#google_play_badge {
+	width:9em;
+	height:auto;
+}
+
 #language_menu {
 	padding-right:0!important;
 	position:absolute!important;

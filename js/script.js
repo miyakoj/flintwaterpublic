@@ -185,17 +185,22 @@ $(document).ready(function() {
 	
 	
 	/* Make sure all the footer cards are the same height. */
-	$("footer .card .card-inner").css("height", $("#report_card .card-inner").css("height"));	
+	$("footer div[id!='app_card'] .card-inner").css("height", $("#report_card .card-inner").css("height"));
+	//$()
 	
 	
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
-		$("#made_in_Flint").appendTo($("#main_menu"));
+		$("#made_in_Flint, #google_play_link").appendTo($("#main_menu"));
 		$("#made_in_Flint img").css({
 			"margin-left": "auto",
 			"margin-right": "auto",
 			"margin-top": "20px"			
 		});
+		
+		$("#google_play_link img").css({
+			"margin-top": "20px"
+		}).addClass("center-block");
 		
 		$("#main_menu .nav").removeClass("nav-justified");
 		$("#show_me_menu").removeClass("dropdown");
