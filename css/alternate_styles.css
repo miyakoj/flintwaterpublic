@@ -12,8 +12,8 @@
 	}
 
 	#location_card, #resource_card, #legend_card {
-		bottom:initial;
-		right:initial;
+		bottom:auto;
+		right:auto;
 	}
 	
 	#map {

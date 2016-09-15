@@ -5,7 +5,7 @@ function onStartup() {
 	mLive();
     michiganRadio();
 	
-	if ($("body").attr("id").includes("news_page")) {
+	if ($("body").attr("id").indexOf("news_page") != -1) {
 		if ($("#news .card").length == 0)
 			$("#news .card").prepend("<p class='text-center'>There are no news articles available.</p>");
 	}

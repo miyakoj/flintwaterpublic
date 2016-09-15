@@ -1,3 +1,12 @@
+/* Encourage a user of IE < Edge to download a better browser. */
+Modernizr.on("userdata", function(result) {
+	console.log(result);
+	/*if (result) {
+		console.log(result);
+	}*/
+});
+
+
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
