@@ -138,10 +138,12 @@ $(document).ready(function() {
 		//closes the nav drawer when you click outside of it
 		$("body").click(function(){
 			console.log('clicked');
-			$("#slide-nav").removeClass("slide-active");
-			$("#main_menu li").removeClass("active");
-			$(".navbar-header, #page_content").css("left", "0px");
-			$("#main_menu").css("left", "-100%");
+			if($('.navbar').hasClass('slide-active')){
+				$('#page_content, .navbar, body, .navbar-header, .navbar-toggle').toggleClass('slide-active');
+				$("#main_menu li").removeClass("active");
+				$(".navbar-header, #page_content").css("left", "0px");
+				$("#main_menu").css("left", "-100%");
+			}
 		}).on("click", "#main_menu, .navbar-toggle", function(event) {
 			event.stopPropagation();
 		});
