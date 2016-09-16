@@ -247,6 +247,10 @@ html, body {
 
 
 /* Non-Map Pages */
+#news_page h2, #test_page h2, #filter_page h2, #aerator_page h2, #report_page h2 {
+	font-size:1.5em;
+}
+	
 .page-header {
 	text-align:center;
 }
@@ -307,6 +311,10 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 	font-weight:bold!important;
 }
 
+.form-control:focus {
+	border-color:#5266B0;
+}
+
 #location_card #address {
 	font-size:120%;
 }
@@ -315,9 +323,20 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 	font-weight:bold;
 }
 
-#location_card .card-inner p {
+#location_card #211_info {
 	font-style:italic;
+}
+
+#location_card .card-inner p {
 	color:rgba(0, 0, 0, 0.65);
+}
+
+#location_card .card-inner #location_questions h5 {
+	font-size:95%;
+}
+
+#location_card .card-inner #location_questions p {
+	font-size:90%;
 }
 
 #location_card .card-action {
@@ -360,6 +379,12 @@ footer .card-action btn {
 
 footer #copyright {
 	text-align:center;
+}
+
+.alert-info {
+	background-color:#FFF ;
+	border-color:#242E56;
+	color:#000;
 }
 
 .tooltip.top .tooltip-arrow {

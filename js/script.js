@@ -1,11 +1,9 @@
-/* Encourage a user of IE < Edge to download a better browser. */
-Modernizr.on("userdata", function(result) {
-	console.log(result);
-	/*if (result) {
-		console.log(result);
-	}*/
-});
-
+/* Encourage a user of IE and Safari to download an alternate browser.
+   (IE/Safari don't support the color input type but Firefox/Chrome do.) */
+if (!Modernizr.inputtypes.color) {
+	$("#page_alert button").after("You are using Internet Explorer or Safari. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
+	$("#page_alert").addClass("alert-info").show();
+}
 
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
@@ -328,7 +326,7 @@ $(document).ready(function() {
 				$("#stepper_content").removeClass("brief").addClass("expanded");
 				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], #stepper_content h2, #stepper_content ul, #stepper_content ul li, .stepper-vert-content, #stepper_content .btn_group, #stepper_content .next_button").removeAttr("style");
 				$("div[id*='step1'], div[id*='step2'], div[id*='step3']").removeClass("cancel_stepper_border");
-				$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({"padding-left": "inherit"});
+				//$("div[id$='step1'], div[id$='step2'], div[id$='step3']").css({"padding-left": "inherit"});
 				$("div[id$='step1'], div[id$='step2'], div[id$='step3'], .cancel_button").removeClass("hide");
 				$("div[id*='step'] .btn_group").remove("img");
 				
@@ -376,10 +374,14 @@ $(document).ready(function() {
 		$("div[id$='step1_content'] .cancel_button, div[id$='step2'], div[id$='step3']").removeClass("hide");
 	}
 	
-	/* Cancel button for all "show me" pages and the third step next button. */
-	$(".cancel_button, div[id$='step3_content'] .next_button").on("click", function() {
+	/* Cancel button for all "show me" pages and the "report a water issue" page. */
+	$("div[id$='step3_content'] .next_button").on("click", function() {
 		if ($pageId.indexOf("report") == -1)
 			$(window).attr("location", "index.php");
+	});
+	
+	$(".cancel_button").on("click", function() {
+		$(window).attr("location", "index.php");
 	});
 	
 	/* Mobile "expanded" stepper code. */
@@ -557,7 +559,8 @@ $(document).ready(function() {
 					$("div[id$='" + filter_type + "_step3_content'] .btn_group").prepend("&nbsp;").append("<img class='progress_img center-block' src='images/stepper3.png' />");
 				}
 				
-				$("div[id$='step3_content'] .next_button").css("display", "none");
+				if ($pageId.indexOf("report") == -1)
+					$("div[id$='step3_content'] .next_button").css("display", "none");
 				
 				if ($pageId.indexOf("test") != -1) {
 					$(".help_video").addClass("hide");
@@ -764,12 +767,27 @@ $(document).ready(function() {
 		});
 		
 		/* Fill in location after clicking favorite location marker. */
+		var geocoder = new google.maps.Geocoder();
+		
 		$("#report_problem #location").on("focus", function() {
-			var autocomplete = initAutocomplete($(this).attr("id"));
+			var autocomplete = initAutocomplete("location");
 			
 			autocomplete.addListener('place_changed', function() {
-				if (report_validator.element("#report_problem #location"))
+				console.log(document.getElementById("location").value);
+				
+				if (report_validator.element("#report_problem #location")) {
 					$("#report_step1_content .next_button").removeClass("disabled");
+					
+					/* Get the lat/long for the location using geocoding. */
+					geocoder.geocode({
+						address: $("#location").val(),
+						bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
+					}, function(results, status) {
+						latLng = results[0].geometry.location.toString();
+						console.log(latLng);
+						//location_latlng
+					});
+				}
 				else
 					$("#report_step1_content .next_button").addClass("disabled");
 			});
@@ -779,8 +797,19 @@ $(document).ready(function() {
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		}).on("focusout", function() {
-			if (report_validator.element("#report_problem #location"))
+			if (report_validator.element("#report_problem #location")) {
 				$("#report_step1_content .next_button").removeClass("disabled");
+				
+				/* Get the lat/long for the location using geocoding. */
+				geocoder.geocode({
+					address: $("#location").val(),
+					bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
+				}, function(results, status) {
+					latLng = results[0].geometry.location.toString();
+					console.log(latLng);
+					//location_latlng
+				});
+			}
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		});

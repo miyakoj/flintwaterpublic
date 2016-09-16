@@ -269,7 +269,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 }
 
 #location_card .card-inner {
-	margin:10px 10px 10px 10px!important;
+	margin:10px!important;
+}
+
+#location_card .card-inner hr {
+	margin:8px 0;
 }
 
 #location_card .card-inner #warning, #location_card .card-inner #address + #results {
@@ -393,10 +397,16 @@ body[id="index_page"] main {
 .card-main h3/*, .card-inner p, .card-action a*/{
 	margin-left:16px;
 }
+
 .card-action {
 	min-height:35px!important;
 	max-height:35px;
 }
+
+.stepper {
+	padding-left:0;
+}
+
 .stepper-vert-inner li {
 	padding-bottom:8px;
 }
@@ -611,12 +621,13 @@ footer span, footer #about_link, footer #disclaimer_link {
 }
 	
 
-/* Dismissable Alert Box */
+/* Dismissable Alert Box */	
 .alert-dismissible {
 	width:45rem;
 	position:absolute;
 	top:0;
 	z-index:1000;
+	font-size:110%;
 	display:none;
 }
 

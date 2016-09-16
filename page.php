@@ -13,7 +13,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "news":
 			$pagetitle = "News";
-			$content = "<section class='container'><nav class='tab-nav'>
+			$content = "<section class='container'><h2>News</h2>
+				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
 					<li id='news_tab' role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
 					<li id='alerts_tab' role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
@@ -34,12 +35,12 @@ if (@isset($_GET["pid"])) {
 		case "test":
 			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
+				<h2>Test your water</h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
 					<div id='stepper_content' class='col-xs-12'>
 						<div id='steppers' class='stepper-vert'>
-									<h2>Test your water</h2>
 									<div class='stepper-vert-inner'>
 										<div id='water_step1' class='stepper active'>
 											<div class='stepper-step'>
@@ -147,12 +148,12 @@ if (@isset($_GET["pid"])) {
 		case "filter":
 			$pagetitle = "Install a Water Filter";
 			$content = "<div id='install_filter' class='container-fluid'>
+				<h2>Install a Water Filter</h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
 					<div id='stepper_content' class='col-xs-12'>
 						<div id='steppers' class='stepper-vert'>
-								<h2>Install a Water Filter</h2>
 								<div class='stepper-vert-inner'>
 									<div id='filter_step1' class='stepper active'>
 										<div class='stepper-step'>
@@ -293,12 +294,12 @@ if (@isset($_GET["pid"])) {
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='clean_aerator' class='container-fluid'>
+				<h2>Clean My Aerator</h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
 					<div id='stepper_content' class='col-xs-12'>
 						<div id='steppers' class='stepper-vert'>
-									<h2>Clean My Aerator</h2>
 									<div class='stepper-vert-inner'>
 										<div id='aerator_step1' class='stepper active'>
 											<div class='stepper-step'>
@@ -370,7 +371,7 @@ if (@isset($_GET["pid"])) {
 					</div>";
 		break;
 		
-		case "submit":
+		/*case "submit":
 			$pagetitle = "Submit Location Information";
 			$content ="<div id='submit_info' class='stepper-vert'><h2>Submit Location Information</h2>
 							<div class='stepper-vert-inner'>
@@ -410,16 +411,16 @@ if (@isset($_GET["pid"])) {
 								</div>
 							</div>
 						</div>";
-		break;
+		break;*/
+		
 		case "report":
-			$pagetitle = "Report a Problem";
+			$pagetitle = "Report a Water Issue";
 			$content = "<div id='report_problem' class='container-fluid'>
+				<h2>Report a Water Issue</h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
-					<div id='stepper_content' class='col-xs-12'>
-						<h2>Report a Problem</h2>
-						
+					<div id='stepper_content' class='col-xs-12'>						
 						<div id='steppers' class='stepper-vert'>
 						<form>
 									<div class='stepper-vert-inner'>
@@ -434,6 +435,7 @@ if (@isset($_GET["pid"])) {
 											<div class='form-group'>
 											<label for='location' class='sr-only'>Enter the Location:</label>
 											<input id='location' class='form-control' type='text' name='location' placeholder='Enter a location or click a favorite location on the map' tabindex='20' required />
+											<input id='location_latlng' type='hidden' class='form-control' />
 											</div>
 											
 											<div class='btn_group'>
@@ -500,7 +502,7 @@ if (@isset($_GET["pid"])) {
 											
 											<div class='btn_group'>
 											<button type='submit' class='next_button btn btn-flat btn-primary disabled' tabindex='31'>Submit</button>
-											<button class='cancel_button btn btn-flat' tabindex='32'>Cancel</button>
+											<button type='button' class='cancel_button btn btn-flat' tabindex='32'>Cancel</button>
 											</div>
 										</div>
 									</div>

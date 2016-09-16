@@ -227,7 +227,7 @@ function initMap() {
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		for (var i = 1; i <= numberSaved; i++) {
 			var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-				+ localStorage.getItem("savedLocationAddress"+i) + "' ORDER BY 'testDate' DESC LIMIT 1";
+				+ localStorage.getItem("savedLocationAddress"+i) + "' ORDER BY 'testDate' DESC";
 			
 			/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 			(function(index){
@@ -359,14 +359,16 @@ function initMap() {
 		var streetAddress = inputAddress[0].toUpperCase();
 		
 		var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-					+ streetAddress + "' ORDER BY 'testDate' DESC LIMIT 1";
+					+ streetAddress + "' ORDER BY 'testDate' DESC";
 					
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 		window.jsonpCallbacks["searchQueryCallback"] = function(data) {
 			if (data.rows != undefined)
 				locationMarker.setPosition({lat: data.rows[0][0], lng: data.rows[0][1]});
 			else
-				locationMarker.setPosition(place.geometry.location);
+				locationMarker.setPosition({lat: place.geometry.location.lat().toPrecision(7), lng: place.geometry.location.lng().toPrecision(7)});
+			
+			//console.log(place.geometry.location.lat().toPrecision(7) + " - " + place.geometry.location.lng().toPrecision(7));
 			
 			var content = fusionQueryCallback(data, streetAddress);
 			createLocationCardContent("location", content);
@@ -530,27 +532,21 @@ function setUpFusionTable() {
 
 function addFusionListener(object) {
 	google.maps.event.addListener(object, "click", function(event) {
-		var content = createLocationContent(event.row["Address"].value, event);
-		
-		$("#location_card .card-inner").empty().html(content).append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
-		
-		var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
-		
-		if (checkIfSaved(latLng)) {
-			var tempLocationMarker = new google.maps.Marker({
-				position: {
-					lat: event.row["latitude"].value,
-					lng: event.row["longitude"].value
-				},
-				map: map,
-				icon: savedLocationIcon
-			});
+		var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+					+ event.row["Address"].value + "' ORDER BY 'testDate' DESC";
+
+		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
+		window.jsonpCallbacks["fusionLayerQueryCallback"] = function(data) {			
+			var content = fusionQueryCallback(data, event.row["Address"].value);
+			createLocationCardContent("location", content);
 			
-			savedMarkers.push(tempLocationMarker);
-			savedLocationMarkers.push(tempLocationMarker);
-		}
+			var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
+			checkIfSaved(latLng);
+			
+			$("#location_card, #location_card .card-action").show();
+		};
 		
-		$("#location_card, #location_card .card-action").show();
+		queryFusionTable(query, "jsonpCallbacks.fusionLayerQueryCallback");
 	});
 }
 
@@ -932,19 +928,21 @@ function createLocationContent(streetAddress, dataObj) {
 	var prediction;
 	var tempAddr;
 	
-	/* Data is either from a fusion table query or from a fusion layer callback. */
-	if (dataObj.rows) {		
+	/* Data is either from a fusion table query. */
+	if (dataObj.rows) {
+		console.log(dataObj);
 		!isNaN(dataObj.rows[0][2]) ? leadLevel = dataObj.rows[0][2] : leadLevel = "";
 		
 		testDate = dataObj.rows[0][3].slice(0, dataObj.rows[0][3].indexOf(" "));
 		prediction = dataObj.rows[0][4];
 	}
-	else if (dataObj.row) {
+	/* Data is from a fusion layer callback. */
+	/*else if (dataObj.row) {		
 		leadLevel = dataObj.row["leadlevel"].value;
 		testDate = dataObj.row["testDate"].value;
 		testDate = testDate.slice(0, testDate.indexOf(" "));
 		prediction = dataObj.row["Prediction"].value;
-	}
+	}*/
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	var warningMsg;
@@ -1004,7 +1002,7 @@ function createLocationCardContent(type, content) {
 	$("#location_card .card-inner").empty().html(content);
 		
 	if (type.search(/location/i) != -1) {
-		$("#location_card .card-inner").append("<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>");
+		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr /> <div id='location_questions'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report'>Report a water issue</a></div>");
 	}
 	
 	/*if (type.search(/location/i) != -1)
@@ -1176,11 +1174,11 @@ function setMarkers() {
 	}
 }
 
-function checkIfSaved(latLong) {	
+function checkIfSaved(latLng) {
 	var numberSaved = parseInt(localStorage["numberSaved"]);
 	var returnVal = false;
 	for (var i=1; i <= numberSaved; i++) {
-		if (localStorage.getItem("savedLocationPosition"+i) == latLong) {
+		if (localStorage.getItem("savedLocationPosition"+i) == latLng) {
 			returnVal = true;
 			break;
 		}
@@ -1194,7 +1192,7 @@ function checkIfSaved(latLong) {
 	return returnVal;
 }
 
-function saveLocation(latLong, address, icon, type) {
+function saveLocation(latLng, address, icon, type) {
 	var numberSaved = localStorage.getItem("numberSaved");
 	
 	if (numberSaved == null)
@@ -1205,7 +1203,7 @@ function saveLocation(latLong, address, icon, type) {
 	}
 	
 	localStorage.setItem("numberSaved", numberSaved);
-	localStorage.setItem("savedLocationPosition"+numberSaved, latLong);
+	localStorage.setItem("savedLocationPosition"+numberSaved, latLng);
 	localStorage.setItem("savedLocationAddress"+numberSaved, address);
 	localStorage.setItem("savedLocationType"+numberSaved, type);
 	localStorage.setItem("savedLocationIcon"+numberSaved, icon);
@@ -1215,10 +1213,10 @@ function saveLocation(latLong, address, icon, type) {
 	console.log(localStorage); 
 }
 
-function unsaveLocation(latLong) {
+function unsaveLocation(latLng) {
 	var numberSaved = parseInt(localStorage.getItem("numberSaved"));
 	for (var i=1; i <= numberSaved; i++) {
-		if (localStorage.getItem("savedLocationPosition"+i) == latLong) {
+		if (localStorage.getItem("savedLocationPosition"+i) == latLng) {
 			localStorage.removeItem("savedLocationPosition"+i);
 			localStorage.removeItem("savedLocationAddress"+i);
 			localStorage.removeItem("savedLocationType"+i);
@@ -1248,7 +1246,7 @@ function capitalizeEachWord(str) {
 }
 
 $(document).ready(function() {
-	//localStorage.clear();
+	localStorage.clear();
 	console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {
@@ -1396,11 +1394,11 @@ $(document).ready(function() {
 
 	// saves/unsaves resource location when save button is clicked on the resource card
 	$("#resource_card #card_save").on("click", function() {
-		var latLong = resourceMarker.getPosition();
 		var streetAddress = $("#resource_card #provider_address").html();
 		var unsavedIcon = resourceMarker.getIcon().url;
 		var savedLocationNum
-		var isSaved = checkIfSaved(latLong);
+		var latLng = "(" + resourceMarker.getPosition().lat().toPrecision(6) + ", " + resourceMarker.getPosition().lng().toPrecision(6) + ")";
+		var isSaved = checkIfSaved(latLng);
 		
 		// resource has already been saved
 		if (isSaved) {
@@ -1409,7 +1407,7 @@ $(document).ready(function() {
 			var oldIcon;
 			
 			// remove from local storage
-			savedLocationNum = unsaveLocation(latLong);
+			savedLocationNum = unsaveLocation(latLng);
 			savedIcon = localStorage.getItem("savedLocationIcon"+savedLocationNum);
 			localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
 			
@@ -1418,7 +1416,7 @@ $(document).ready(function() {
 			
 			// remove from savedMarkers 
 			for (var i = 0; i < savedMarkers.length; i++) {
-				if (savedMarkers[i].getPosition() == latLong)
+				if (savedMarkers[i].getPosition() == latLng)
 					savedMarkers.splice(i, 1);
 			}
 			
@@ -1445,14 +1443,14 @@ $(document).ready(function() {
 			var temp;
 			
 			// add to local storage
-			saveLocation(latLong, streetAddress, unsavedIcon, "Resource");
+			saveLocation(latLng, streetAddress, unsavedIcon, "Resource");
 			
 			// change image on card to filled star
 			$("#resource_card #card_save .icon").html("star");
 			
 			// remove from allMarkers 
 			for (var i = 0; i < allMarkers.length; i++) {
-				if (allMarkers[i].getPosition() == latLong)
+				if (allMarkers[i].getPosition() == latLng)
 					allMarkers.splice(i,1);
 				
 				temp = resourceMarker;
@@ -1495,7 +1493,7 @@ $(document).ready(function() {
 	// saves/unsaves a non-resource location when save button is clicked on the location card
 	$("#location_card #card_save").on("click", function() {
 		var streetAddress = $("#location_card #address").text();
-		var latLong;
+		var latLng;
 		var numberSaved = parseInt(localStorage.getItem("numberSaved"));
 		var isSaved = false;
 		var unsavedIcon = locationIcon.url;
@@ -1503,15 +1501,15 @@ $(document).ready(function() {
 		
 		// an address was searched for
 		if (locationMarker.getPosition()) {
-			latLong = locationMarker.getPosition();
-			isSaved = checkIfSaved(latLong);
+			latLng = "(" + locationMarker.getPosition().lat().toPrecision(6) + ", " + locationMarker.getPosition().lng().toPrecision(6) + ")";
+			isSaved = checkIfSaved(latLng);
 			
 			// location has already been saved
 			if (isSaved) {
 				var temp = locationMarker;
 				
 				// remove from local storage
-				savedLocationNum = unsaveLocation(latLong);
+				savedLocationNum = unsaveLocation(latLng);
 				localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
 				temp.setIcon(locationIcon);
 				
@@ -1520,7 +1518,7 @@ $(document).ready(function() {
 				
 				// remove from savedMarkers 
 				for (var i = 0; i < savedMarkers.length; i++) {
-					if (savedMarkers[i].getPosition() == latLong)
+					if (savedMarkers[i].getPosition() == latLng)
 						savedMarkers.splice(i, 1);
 				}
 				
@@ -1533,14 +1531,14 @@ $(document).ready(function() {
 				var temp;
 				
 				// add to local storage
-				saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
+				saveLocation(latLng, streetAddress, unsavedIcon, "Non-Resource");
 				
 				// change image on card to filled star
 				$("#location_card #card_save .icon").html("star");
 				
 				// remove from allMarkers 
 				for (var i = 0; i < allMarkers.length; i++) {
-					if (allMarkers[i].getPosition() == latLong)
+					if (allMarkers[i].getPosition() == latLng)
 						allMarkers.splice(i,1);
 					
 					temp = locationMarker;
@@ -1559,21 +1557,22 @@ $(document).ready(function() {
 				address: streetAddress,
 				bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
 			}, function(results, status) {
-				latLong = results[0].geometry.location.toString();
-				isSaved = checkIfSaved(latLong);
+				latLng = results[0].geometry.location.toString();
+				//latLng = "(" + resourceMarker.getPosition().lat().toPrecision(6) + ", " + resourceMarker.getPosition().lng().toPrecision(6) + ")";
+				isSaved = checkIfSaved(latLng);
 			
 				// location has already been saved
 				if (isSaved) {
 					var temp = locationMarker;
 					
 					// remove from local storage
-					savedLocationNum = unsaveLocation(latLong);
+					savedLocationNum = unsaveLocation(latLng);
 					localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
 					temp.setIcon(locationIcon);
 					
 					// remove from savedMarkers 
 					for (var i = 0; i < savedMarkers.length; i++) {
-						if (savedMarkers[i].getPosition() == latLong)
+						if (savedMarkers[i].getPosition() == latLng)
 							savedMarkers.splice(i, 1);
 					}
 					
@@ -1585,11 +1584,11 @@ $(document).ready(function() {
 					var temp;
 					
 					// add to local storage
-					saveLocation(latLong, streetAddress, unsavedIcon, "Non-Resource");
+					saveLocation(latLng, streetAddress, unsavedIcon, "Non-Resource");
 					
 					// remove from allMarkers 
 					for (var i = 0; i < allMarkers.length; i++) {
-						if (allMarkers[i].getPosition() == latLong)
+						if (allMarkers[i].getPosition() == latLng)
 							allMarkers.splice(i,1);
 						
 						temp = locationMarker;

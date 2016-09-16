@@ -111,6 +111,10 @@
 		padding:5px!important;
 	}
 	
+	#news_page h2, #test_page h2, #filter_page h2, #aerator_page h2, #report_page h2 {
+		display:none;
+	}
+	
 	#sidebar {
 		height:35em;
 	}
