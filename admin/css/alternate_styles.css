@@ -1,0 +1,15 @@
+/* Tablet only. */
+@media only screen and (min-width:600px) {
+	
+	
+}
+
+/* Tablet and desktop/laptop only. */
+@media only screen and (min-width:768px) {
+	
+}
+
+/* Desktop/Laptop only. */
+@media only screen and (min-width:992px) {
+	
+}
