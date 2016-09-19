@@ -47,6 +47,9 @@
 		margin: 14px 4px!important;
 	}
 	
+	.row .alert-success {
+		margin:10px 25% 0 25%!important;
+	}
 }
 
 /* Tablet and desktop/laptop only. */

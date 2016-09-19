@@ -657,8 +657,12 @@ footer span, footer #about_link, footer #disclaimer_link {
 	top:-10px!important;
 }
 
-form .alert, .modal .alert {
-	margin-bottom:0!important;
+form .alert, .row .alert, .modal .alert {
+	margin:10px 0 0 0!important;
+}
+
+.row .alert-success {
+	margin-top:10px!important;
 }
 
 /* Modals */

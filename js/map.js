@@ -10,6 +10,7 @@ var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 
 var map;
+var geocoder;
 var autocomplete;
 var infoWindow;
 var heatmap;
@@ -119,6 +120,8 @@ function initMap() {
 	  zoom: 13,
 	  mapTypeControl: false
 	});
+	
+	geocoder = new google.maps.Geocoder();
 	
 	/* Centering and resizing */
 	google.maps.event.addDomListener(window, "resize", function() {
@@ -948,7 +951,9 @@ function createLocationContent(streetAddress, dataObj) {
 	var warningMsg;
 	var warningImg;
 	
-	if (leadLevel != "" || prediction !== undefined) {
+	console.log(typeof leadLevel);
+	
+	if (((leadLevel != "") && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		if (leadLevel != "") {
 			if (leadLevel < 15) {
 				warningMsg = "Low Lead Level";
@@ -1003,6 +1008,7 @@ function createLocationCardContent(type, content) {
 		
 	if (type.search(/location/i) != -1) {
 		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr /> <div id='location_questions'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report'>Report a water issue</a></div>");
+		//&address=" + $("#address").text() + "
 	}
 	
 	/*if (type.search(/location/i) != -1)
@@ -1246,7 +1252,7 @@ function capitalizeEachWord(str) {
 }
 
 $(document).ready(function() {
-	localStorage.clear();
+	//localStorage.clear();
 	console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {
@@ -1552,7 +1558,6 @@ $(document).ready(function() {
 		}
 		// a marker was clicked
 		else {
-			var geocoder = new google.maps.Geocoder();
 			geocoder.geocode({
 				address: streetAddress,
 				bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})

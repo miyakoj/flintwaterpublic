@@ -499,11 +499,8 @@ $(document).ready(function() {
 					if ($pageId.indexOf("filter") != -1) {
 						var $temp = $(this).attr("id");
 						filter_type = $temp.slice(0, $temp.indexOf("_"));
-					}
-					
-					console.log("filter_type = " + filter_type);
-					
-					
+						console.log("filter_type = " + filter_type);
+					}					
 					
 					if ($("#stepper_content").hasClass("brief"))
 						$("#" + $nodeSubstring + "1, div[id$='step1_content']").addClass("hide");
@@ -707,6 +704,8 @@ $(document).ready(function() {
 							data: {
 								type: "problem_report",
 								location: location,
+								lat: $("#location_lat").val(),
+								lng: $("#location_lng").val(),
 								problemType: $("#problem_type").val(),
 								description: $("#problem_text").val(),
 								email: $("#email").val()
@@ -715,7 +714,8 @@ $(document).ready(function() {
 							complete: function(resp) {
 								if (resp.responseText.indexOf("1") != -1) {
 									$("#report_problem form, #report_problem div[class*='alert-danger']").remove();
-									$("#report_problem #stepper_content").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
+									$("#topbar, #sidebar").addClass("hide");
+									$("#report_problem .row").append("<div class='alert alert-success' role='alert'>Your report has been successfully submitted.</div>");
 									$("#report_problem form").resetForm();
 								}
 								else {
@@ -767,26 +767,23 @@ $(document).ready(function() {
 		});
 		
 		/* Fill in location after clicking favorite location marker. */
-		var geocoder = new google.maps.Geocoder();
+		//var geocoder = new google.maps.Geocoder();
 		
 		$("#report_problem #location").on("focus", function() {
 			var autocomplete = initAutocomplete("location");
 			
 			autocomplete.addListener('place_changed', function() {
-				console.log(document.getElementById("location").value);
-				
 				if (report_validator.element("#report_problem #location")) {
-					$("#report_step1_content .next_button").removeClass("disabled");
-					
 					/* Get the lat/long for the location using geocoding. */
 					geocoder.geocode({
 						address: $("#location").val(),
 						bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
 					}, function(results, status) {
-						latLng = results[0].geometry.location.toString();
-						console.log(latLng);
-						//location_latlng
+						$("#location_lat").val(results[0].geometry.location.lat());
+						$("#location_lng").val(results[0].geometry.location.lng());
 					});
+					
+					$("#report_step1_content .next_button").removeClass("disabled");
 				}
 				else
 					$("#report_step1_content .next_button").addClass("disabled");
@@ -797,18 +794,36 @@ $(document).ready(function() {
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		}).on("focusout", function() {
-			if (report_validator.element("#report_problem #location")) {
-				$("#report_step1_content .next_button").removeClass("disabled");
-				
+			if (report_validator.element("#report_problem #location")) {				
 				/* Get the lat/long for the location using geocoding. */
 				geocoder.geocode({
 					address: $("#location").val(),
 					bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
 				}, function(results, status) {
-					latLng = results[0].geometry.location.toString();
-					console.log(latLng);
-					//location_latlng
+					$("#location_lat").val(results[0].geometry.location.lat());
+					$("#location_lng").val(results[0].geometry.location.lng());
+					
+					console.log($("#location_lat").val() + ", " + $("#location_lng").val());
 				});
+				
+				$("#report_step1_content .next_button").removeClass("disabled");
+			}
+			else
+				$("#report_step1_content .next_button").addClass("disabled");
+		}).on("change", function() {
+			if (report_validator.element("#report_problem #location")) {				
+				/* Get the lat/long for the location using geocoding. */
+				geocoder.geocode({
+					address: $("#location").val(),
+					bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
+				}, function(results, status) {
+					$("#location_lat").val(results[0].geometry.location.lat());
+					$("#location_lng").val(results[0].geometry.location.lng());
+					
+					console.log($("#location_lat").val() + ", " + $("#location_lng").val());
+				});
+				
+				$("#report_step1_content .next_button").removeClass("disabled");
 			}
 			else
 				$("#report_step1_content .next_button").addClass("disabled");

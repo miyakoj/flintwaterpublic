@@ -400,6 +400,10 @@ footer #copyright {
 	text-align:center;
 }
 
+.alert {
+	text-align:center;
+}
+
 .alert-info {
 	background-color:#FFF ;
 	border-color:#242E56;
