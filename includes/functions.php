@@ -41,7 +41,7 @@ else {
 function email_user() {
 	if (($_POST["type"] == "problem_report") || ($obj->{"type"} == "problem_report")) {
 		$from = "umflintH2O@gmail.com";
-		$subject = "A Message from Unite Flint";
+		$subject = "A Message from MyWater-Flint";
 		
 		if ($obj) {
 			$to = sprintf("%s", $obj->{"email"});
@@ -63,7 +63,7 @@ function email_user() {
 	else if ($_POST["type"] == "site_report") {
 		$to = "umflintH2O@gmail.com";
 		$from = "umflintH2O@gmail.com";
-		$subject = "A Comment About Unite Flint";
+		$subject = "A Comment About MyWater-Flint";
 		
 		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>
 						<p><strong>Comments:</strong><br /> %s</p>", htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["comments"]));

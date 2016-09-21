@@ -1007,8 +1007,7 @@ function createLocationCardContent(type, content) {
 	$("#location_card .card-inner").empty().html(content);
 		
 	if (type.search(/location/i) != -1) {
-		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr /> <div id='location_questions'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report'>Report a water issue</a></div>");
-		//&address=" + $("#address").text() + "
+		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr /> <div id='location_questions'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div>");
 	}
 	
 	/*if (type.search(/location/i) != -1)

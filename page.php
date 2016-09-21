@@ -414,8 +414,11 @@ if (@isset($_GET["pid"])) {
 		break;*/
 		
 		case "report":
-			//$address = $_GET["address"] + ", Flint, MI";
-			// value='" . $address . "'
+			if (@isset($_GET["address"]))
+				$address = mb_convert_case($_GET["address"], MB_CASE_TITLE, "UTF-8") . ", Flint, MI";
+			else
+				$placeholder = "placeholder='Enter a location or click a favorite location on the map'";
+			
 			$pagetitle = "Report a Water Issue";
 			$content = "<div id='report_problem' class='container-fluid'>
 				<h2>Report a Water Issue</h2>
@@ -436,7 +439,7 @@ if (@isset($_GET["pid"])) {
 										<div id='report_step1_content' class='stepper-vert-content'>
 											<div class='form-group'>
 											<label for='location' class='sr-only'>Enter the Location:</label>
-											<input id='location' class='form-control' type='text' name='location' placeholder='Enter a location or click a favorite location on the map' tabindex='20' required />
+											<input id='location' class='form-control' type='text' name='location' " . $placeholder . " tabindex='20' value='" . $address . "'required />
 											<input id='location_lat' type='hidden' class='form-control' />
 											<input id='location_lng' type='hidden' class='form-control' />
 											</div>

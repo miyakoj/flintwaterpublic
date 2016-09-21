@@ -10,6 +10,7 @@ var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 console.log("$pageId = " + $pageId);
 var $activeNode;
+var autocomplete;
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
@@ -484,8 +485,9 @@ $(document).ready(function() {
 						"position": "static",
 						"top": "initial",
 						"right": "initial"
-			});
+			});			
 			$("#allFilters_step1_content .glyphicon").remove();
+			
 			/* Use a loop to take the filter page into account, which has three clickables in step 1. */
 			$("div[id$='step1_content'] .next_button").each(function() {
 				$(this).on("click", function() {
@@ -500,7 +502,7 @@ $(document).ready(function() {
 						var $temp = $(this).attr("id");
 						filter_type = $temp.slice(0, $temp.indexOf("_"));
 						console.log("filter_type = " + filter_type);
-					}					
+					}
 					
 					if ($("#stepper_content").hasClass("brief"))
 						$("#" + $nodeSubstring + "1, div[id$='step1_content']").addClass("hide");
@@ -522,7 +524,26 @@ $(document).ready(function() {
 					else if ($pageId.indexOf("filter") != -1) {
 						$(".help_video").addClass("hide");
 						$("#" + filter_type + "_video").removeClass("hide");
-					} 
+					}
+					
+					if ($pageId.indexOf("report") != -1) {
+						autocomplete = initAutocomplete("location");
+						
+						if ($("#location_lat").val().length == 0) {
+							console.log(autocomplete.getPlace());
+							
+							/* Get the lat/long for the location using geocoding. */
+							geocoder.geocode({
+								address: $("#location").val(),
+								bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
+							}, function(results, status) {
+								$("#location_lat").val(results[0].geometry.location.lat());
+								$("#location_lng").val(results[0].geometry.location.lng());
+								
+								console.log($("#location_lat").val() + ", " + $("#location_lng").val());
+							});
+						}
+					}
 				});
 			});
 			
@@ -635,6 +656,21 @@ $(document).ready(function() {
 						$(".help_video").addClass("hide");
 						$("#" + filter_type + "_video").removeClass("hide");
 					}
+					
+					if ($pageId.indexOf("report") != -1) {
+						if ($("#location_lat").val().length == 0) {
+							/* Get the lat/long for the location using geocoding. */
+							geocoder.geocode({
+								address: $("#location").val(),
+								bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
+							}, function(results, status) {
+								$("#location_lat").val(results[0].geometry.location.lat());
+								$("#location_lng").val(results[0].geometry.location.lng());
+								
+								console.log($("#location_lat").val() + ", " + $("#location_lng").val());
+							});
+						}
+					}
 				});
 			});
 			
@@ -668,12 +704,18 @@ $(document).ready(function() {
 	/* Report a Problem page */	
 	if ($pageId.indexOf("report") != -1) {
 		/* Make sure each form field is reset to default. */
-		$("#report_problem #location").val("");
+		//$("#report_problem #location").val("")
+		$("#report_problem #location_lat").val("");
+		$("#report_problem #location_lng").val("");
 		$("#report_problem #problem_type").val(0);
 		$("#report_problem #problem_text").val("");
 		$("#report_problem #email_choice, #report_problem #phone_choice").prop("checked", false);
 		$("#report_problem #email").val("");
 		//$("#report_problem #phone").val("");
+		
+		/* If the link was clicked on the location card, the address will be automatically filled in. */
+		if ($("#report_problem #location").val().length > 0)
+			$("#report_step1_content .next_button").removeClass("disabled");
 		
 		var report_validator;
 		
@@ -770,18 +812,10 @@ $(document).ready(function() {
 		//var geocoder = new google.maps.Geocoder();
 		
 		$("#report_problem #location").on("focus", function() {
-			var autocomplete = initAutocomplete("location");
-			
 			autocomplete.addListener('place_changed', function() {
-				if (report_validator.element("#report_problem #location")) {
-					/* Get the lat/long for the location using geocoding. */
-					geocoder.geocode({
-						address: $("#location").val(),
-						bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
-					}, function(results, status) {
-						$("#location_lat").val(results[0].geometry.location.lat());
-						$("#location_lng").val(results[0].geometry.location.lng());
-					});
+				if (report_validator.element("#report_problem #location")) {					
+					$("#location_lat").val(autocomplete.getPlace().geometry.location.lat());
+					$("#location_lng").val(autocomplete.getPlace().geometry.location.lng());
 					
 					$("#report_step1_content .next_button").removeClass("disabled");
 				}
@@ -794,37 +828,13 @@ $(document).ready(function() {
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		}).on("focusout", function() {
-			if (report_validator.element("#report_problem #location")) {				
-				/* Get the lat/long for the location using geocoding. */
-				geocoder.geocode({
-					address: $("#location").val(),
-					bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
-				}, function(results, status) {
-					$("#location_lat").val(results[0].geometry.location.lat());
-					$("#location_lng").val(results[0].geometry.location.lng());
-					
-					console.log($("#location_lat").val() + ", " + $("#location_lng").val());
-				});
-				
+			if (report_validator.element("#report_problem #location"))			
 				$("#report_step1_content .next_button").removeClass("disabled");
-			}
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		}).on("change", function() {
-			if (report_validator.element("#report_problem #location")) {				
-				/* Get the lat/long for the location using geocoding. */
-				geocoder.geocode({
-					address: $("#location").val(),
-					bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
-				}, function(results, status) {
-					$("#location_lat").val(results[0].geometry.location.lat());
-					$("#location_lng").val(results[0].geometry.location.lng());
-					
-					console.log($("#location_lat").val() + ", " + $("#location_lng").val());
-				});
-				
+			if (report_validator.element("#report_problem #location"))				
 				$("#report_step1_content .next_button").removeClass("disabled");
-			}
 			else
 				$("#report_step1_content .next_button").addClass("disabled");
 		});
