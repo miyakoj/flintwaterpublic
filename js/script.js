@@ -12,6 +12,7 @@ console.log("$pageId = " + $pageId);
 var $activeNode;
 var autocomplete;
 
+
 /* Dynamically load remote scripts only on pages where they're relevant. */
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
 //<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>
@@ -103,6 +104,13 @@ $(document).ready(function() {
 			}*/
 		}
 	});
+	
+	//set toggles width based on number of toggles
+	var numItems = 6;
+	var average;
+	average = windowWidth/numItems;
+	$('#toggles label').css("width", average);
+
 	
 	$("footer .card-action a").each(function(i) {
 		if ($(this).attr("href").indexOf("#") == 0) {
@@ -273,6 +281,7 @@ $(document).ready(function() {
 			"padding-top": "10px",
 			"padding-bottom": "10px"
 		});
+		
 		
 		/*if ($pageId.indexOf("filter") == -1) {
 			$(".back_button").css({

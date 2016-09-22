@@ -80,7 +80,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 										   </ul>
 										   <div class='btn_group'>
-										   <button class='back_button btn btn-flat btn-primary' href='#'>Back</button>
+										   <button class='back_button btn btn-flat btn-primary hide' href='#'>Back</button>
 										   <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
 										   <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 										  </div>
@@ -99,7 +99,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <button class='back_button btn btn-flat btn-primary' href='#'>Back</button>
+										  <button class='back_button btn btn-flat btn-primary hide' href='#'>Back</button>
 										  <button class='next_button btn btn-flat btn-primary' href='#'>Return to map</button>
 										 </div>
 										</div>
