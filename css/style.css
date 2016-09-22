@@ -1,5 +1,6 @@
 html, body {
   	height:100%;
+	padding-bottom:0!important;
 }
 
 .container-fluid {
@@ -40,7 +41,7 @@ header {
 }
 
 #made_in_Flint {
-	margin-top:25px;
+	margin-top:10px;
 }
 
 #made_in_Flint img {
@@ -110,12 +111,15 @@ header {
 	padding-top:25px;
 }
 
-.nav span{
+#main_menu li a {
+	min-height:35px;
+}
+
+.nav span {
 	text-transform: uppercase;
 	font-weight: 500;
 	font-size: 13px;
 }
-
 
 .navbar {
 	margin-bottom:0!important;
@@ -150,7 +154,7 @@ header {
 }
 
 #show_me_menu ul {
-	min-height:35px!important;
+	min-height:20px!important;
 	padding:5px 5px 5px 25px!important;
 	position:static;
 }
@@ -158,6 +162,7 @@ header {
 #show_me_menu li:nth-child(4) {
 	display:none;
 }
+
 
 /* Map-Related Styles. */
 #toggles {
@@ -588,11 +593,7 @@ body[id="index_page"] main {
 
 
 footer {
-	display:none;
-}
-
-body[id="index_page"] footer {
-	display:initial;
+	padding:10px;
 }
 
 footer #site_desc .col-md-12 {
@@ -606,14 +607,6 @@ footer #card_row h4 {
 
 footer #card_row #apple_store_link {
 	display:none;
-}
-
-footer #copyright_row {
-	margin-top:12px;
-}
-
-footer p {
-	margin-top:10px!important;
 }
 
 footer.card .card-inner h3 {
@@ -634,12 +627,16 @@ footer .card .btn-group {
 	padding:0 8px;
 }
 
-body[id="index_page"] footer p {
-	margin-top:0!important;
+footer #site_desc {
+	margin:10px 0;
 }
 
-footer span, footer #about_link, footer #disclaimer_link {
-	padding-right:10px;
+footer #copyright span {
+	margin-bottom:10px;
+}
+
+#copyright span, #copyright a {
+	display:block;
 }
 	
 

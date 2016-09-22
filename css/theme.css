@@ -372,20 +372,17 @@ div[id$='step3'][class*='stepper']::after, div[id*='stepper_content'][class*='br
 }
 
 
-footer #site_desc p:first-child {
+/*footer #site_desc p:first-child {
 	font-size:120%;
-}
+}*/
 
 footer h5 {
 	text-align:justify;
 }
 
-footer p {
-	text-align:center;
-}
-
-footer #site_desc p {
-	text-align:justify;
+footer #site_desc {
+	font-size:90%;
+	text-align:left;
 }
 
 footer .card-inner p {
@@ -394,10 +391,6 @@ footer .card-inner p {
 
 footer .card-action btn {
 	font-size:1.3rem!important;
-}
-
-footer #copyright {
-	text-align:center;
 }
 
 .alert {
@@ -459,6 +452,11 @@ footer #copyright {
 
 	footer h3 {
 		text-align:center;
+	}
+	
+	footer #site_desc {
+		font-size:100%;
+		text-align:left;
 	}
 }
 

@@ -204,7 +204,6 @@ $(document).ready(function() {
 	//else for the index, news, and about pages
 	
 	
-	
 	/* Make sure all the footer cards are the same height. */
 	$("footer div[id!='app_card'] .card-main .card-inner").css("height", $("footer #report_card .card-inner").css("height"));
 	$("footer #app_card").css("height", $("footer #report_card").css("height"));
@@ -212,16 +211,13 @@ $(document).ready(function() {
 	
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
-		$("#made_in_Flint, #google_play_link").appendTo($("#main_menu"));
+		$("footer, #made_in_Flint, #google_play_link").appendTo($("#main_menu"));
 		$("#made_in_Flint img").css({
 			"margin-left": "auto",
-			"margin-right": "auto",
-			"margin-top": "20px"			
+			"margin-right": "auto"		
 		});
 		
-		$("#google_play_link img").css({
-			"margin-top": "20px"
-		}).addClass("center-block");
+		$("#google_play_link img").addClass("center-block");
 		
 		$("#main_menu .nav").removeClass("nav-justified");
 		$("#show_me_menu").removeClass("dropdown");

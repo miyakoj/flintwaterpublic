@@ -6,10 +6,10 @@ $(document).ready(function () {
 	var toggler = '.navbar-toggle';
 	var pagewrapper = '#page_content';
 	var navigationwrapper = '.navbar-header';
-	var menuwidth = '60%'; // the menu inside the slide menu itself
-	var slidewidth = '60%';
+	var menuwidth = '85%'; // the menu inside the slide menu itself
+	var slidewidth = '85%';
 	var menuneg = '-100%';
-	var slideneg = '-80%';
+	var slideneg = '-85%';
 
 
 	$("#slide-nav").on("click", toggler, function (e) {
