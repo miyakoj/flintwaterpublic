@@ -112,13 +112,13 @@ header {
 }
 
 #main_menu li a {
-	min-height:35px;
+	min-height:30px;
 }
 
-.nav span {
-	text-transform: uppercase;
-	font-weight: 500;
-	font-size: 13px;
+#main_menu span {
+	text-transform:uppercase;
+	font-weight:500;
+	font-size:13px;
 }
 
 .navbar {
@@ -582,7 +582,7 @@ body[id="index_page"] main {
 	float:right;
 }
 
-#about_page img {
+#about_page #umf_logo, #about_page #um_logo {
 	width:auto;
 	height:75px;
 }
@@ -594,10 +594,6 @@ body[id="index_page"] main {
 
 footer {
 	padding:10px;
-}
-
-footer #site_desc .col-md-12 {
-	padding:15px 10px 0 10px!important;
 }
 
 footer #card_row h4 {
@@ -663,8 +659,8 @@ form .alert, .row .alert, .modal .alert {
 }
 
 /* Modals */
-#comments_form {
-	z-index:1000;
+.modal {
+	z-index:2000;
 }
 
 .modal h4 {
@@ -677,5 +673,3 @@ form .alert, .row .alert, .modal .alert {
   left:50%;
   margin-left:-5px;
 }
-
-

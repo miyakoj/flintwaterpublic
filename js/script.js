@@ -12,6 +12,7 @@ console.log("$pageId = " + $pageId);
 var $activeNode;
 var autocomplete;
 
+
 /* Dynamically load remote scripts only on pages where they're relevant. */
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
 //<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>
@@ -104,6 +105,13 @@ $(document).ready(function() {
 		}
 	});
 	
+	//set toggles width based on number of toggles
+	var numItems = 6;
+	var average;
+	average = windowWidth/numItems;
+	$('#toggles label').css("width", average);
+
+	
 	$("footer .card-action a").each(function(i) {
 		if ($(this).attr("href").indexOf("#") == 0) {
 			id = $(this).attr("id");
@@ -113,11 +121,16 @@ $(document).ready(function() {
 	});
 	
 	$("footer #copyright a").each(function(i) {		
-		if ($(this).attr("href").length == 1) {
+		if ($(this).attr("id").indexOf("contact_us") == -1) { //($(this).attr("href").length == 1)
 			id = $(this).attr("id");
 			page = id.slice(0, id.indexOf("_"));
 			$(this).attr("href", "page.php?pid=" + page);
 		}
+	});
+	
+	/* Launch the contact form in a modal. */
+	$("footer #contact_us").on("click", function() {
+		$('#comments_form').modal("toggle")
 	});
 	
 	
@@ -145,14 +158,13 @@ $(document).ready(function() {
 		
 		//closes the nav drawer when you click outside of it
 		$("body").click(function(){
-			console.log('clicked');
 			if($('.navbar').hasClass('slide-active')){
 				$('#page_content, .navbar, body, .navbar-header, .navbar-toggle').toggleClass('slide-active');
 				$("#main_menu li").removeClass("active");
 				$(".navbar-header, #page_content").css("left", "0px");
 				$("#main_menu").css("left", "-100%");
 			}
-		}).on("click", "#main_menu, .navbar-toggle", function(event) {
+		}).on("click", "#main_menu, .navbar-toggle, .modal", function(event) {
 			event.stopPropagation();
 		});
 	}
@@ -211,7 +223,9 @@ $(document).ready(function() {
 	
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
-		$("footer, #made_in_Flint, #google_play_link").appendTo($("#main_menu"));
+		$("#main_menu").append($("#made_in_Flint"), $("#google_play_link"), $("footer"));
+		//$("#header").append($("#comments_form"));
+		
 		$("#made_in_Flint img").css({
 			"margin-left": "auto",
 			"margin-right": "auto"		
@@ -269,6 +283,7 @@ $(document).ready(function() {
 			"padding-top": "10px",
 			"padding-bottom": "10px"
 		});
+		
 		
 		/*if ($pageId.indexOf("filter") == -1) {
 			$(".back_button").css({

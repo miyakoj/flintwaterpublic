@@ -1,6 +1,6 @@
 /* adjust body when menu is open */
 body.slide-active {
-    overflow-x: hidden;
+    overflow: hidden!important;
 }
 /*first child of #page-content so it doesn't shift around*/
 .no-margin-top {

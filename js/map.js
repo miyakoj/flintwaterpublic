@@ -1140,7 +1140,7 @@ function setMarkers() {
 	for (var i = 0; i < allMarkers.length; i++) {
 		allMarkers[i].setMap(null);
 		
-		// console.log("allMarkersString[i] = " + allMarkersString[i]);
+		console.log("allMarkersString[i] = " + allMarkersString[i]);
 		
 		if ((resourceActiveArray[1] == 1) && (allMarkersString[i].indexOf("Water Pickup") != -1)) {
 			allMarkers[i].setIcon(waterPickupIcon);
@@ -1251,7 +1251,7 @@ function capitalizeEachWord(str) {
 }
 
 $(document).ready(function() {
-	//localStorage.clear();
+	localStorage.clear();
 	console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {

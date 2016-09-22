@@ -80,7 +80,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
 										   </ul>
 										   <div class='btn_group'>
-										   <button class='back_button btn btn-flat btn-primary' href='#'>Back</button>
+										   <button class='back_button btn btn-flat btn-primary hide' href='#'>Back</button>
 										   <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
 										   <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
 										  </div>
@@ -99,7 +99,7 @@ if (@isset($_GET["pid"])) {
 											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <button class='back_button btn btn-flat btn-primary' href='#'>Back</button>
+										  <button class='back_button btn btn-flat btn-primary hide' href='#'>Back</button>
 										  <button class='next_button btn btn-flat btn-primary' href='#'>Return to map</button>
 										 </div>
 										</div>
@@ -522,9 +522,9 @@ if (@isset($_GET["pid"])) {
 		break;
 		
 		case "about":
-			$pagetitle = "About This Site";
-			//$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-			$content = "<section class='container'><div id='university_images' class='container-fluid'><div class='row'>
+			$pagetitle = "About this Site";
+			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			$content .= "<section class='container'><div id='university_images' class='container-fluid'><div class='row'>
 			<div class='col-md-6'><img id='umf_logo' src='images/umf_logo.png' /></div>
 			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
 			</div></div>
@@ -534,7 +534,8 @@ if (@isset($_GET["pid"])) {
 		
 		case "disclaimer":
 			$pagetitle = "Site Disclaimer";
-			$content = "<section class='container'><p class='text-justify'><strong>Any user of the Unite Flint data portal application (\"Unite Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of Unite Flint.</strong></p>
+			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			$content .= "<section class='container'><p class='text-justify'><strong>Any user of the Unite Flint data portal application (\"Unite Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of Unite Flint.</strong></p>
 			
 						<p class='text-justify'>The data displayed on Unite Flint are provided as a public service, on an \"AS-IS\" basis, and for informational purposes only. University does not create these data, vouch for their accuracy, or guarantee that these are the most recent data available from the data provider. For many or all of the data, the data are by their nature approximate and will contain some inaccuracies. The data may contain errors introduced by the data provider(s) and/or by University. The names of counties and other locations shown in Unite Flint may differ from those in the original data.</p>
 						

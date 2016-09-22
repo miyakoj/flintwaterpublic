@@ -147,6 +147,7 @@
 	}
 	
 	footer #site_desc {
+		margin:0;
 		padding-right:20px;
 		padding-bottom:0;
 	}
