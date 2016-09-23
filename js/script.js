@@ -1,7 +1,7 @@
 /* Encourage a user of IE and Safari to download an alternate browser.
    (IE/Safari don't support the color input type but Firefox/Chrome do.) */
 if (!Modernizr.inputtypes.color) {
-	$("#page_alert button").after("You are using Internet Explorer or Safari. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
+	$("#page_alert button").after("You are using an unsupported browser. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
 	$("#page_alert").addClass("alert-info").show();
 }
 
@@ -21,6 +21,7 @@ var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
 //var google_js_api = "https://www.google.com/jsapi";
+var feed_api = "https://cdn.rawgit.com/sekando/feednami-client/master/releases/1.0.2.min.js";
 
 if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1) || ($pageId.indexOf("test") != -1)) {
 	$.ajax({
@@ -966,16 +967,12 @@ $(document).ready(function() {
 	}
 		
 	
-	/*if ($pageId.indexOf("news") != -1) {
+	if ($pageId.indexOf("news") != -1) {		
 		$.ajax({
 			type: "GET",
-			url: google_js_api,
+			url: feed_api,
 			dataType: "script",
-			cache: true,
-			success: function() {
-				google.load("feeds", "1");
-				google.setOnLoadCallback(onStartup);
-			}
+			cache: true
 		});
-	}*/
+	}
 });

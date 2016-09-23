@@ -4,18 +4,19 @@ google.setOnLoadCallback(onStartup);
 function onStartup() {
 	//mLive();
     //michiganRadio();
-    googleRssFeed();
 	
 	if ($("body").attr("id").indexOf("news_page") != -1) {
+		googleRssFeed();
+		
 		if ($("#news .card").length == 0)
-			$("#news .card").prepend("<p class='text-center'>There are no news articles available.</p>");
+			$("#news").prepend("<p class='text-center'>There are no news articles available.</p>");
 	}
 }
 
 function googleRssFeed() {
-	var url = 'https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=Flint+Water+Crisis&cf=all&ncl=&output=rss';
+	var url = "https://news.google.com/news?cf=all&hl=en&pz=1&ned=us&q=Flint+Water+Crisis&cf=all&ncl=&output=rss";
 	console.log("in googleRssFeed");
-	var html = '';
+	var html = "";
 	feednami.load(url,function(result){
     	if(result.error){
       		console.log(result.error)

@@ -1,5 +1,5 @@
 /* adjust body when menu is open */
-body.slide-active {
+body.slide-active #main {
     overflow: hidden!important;
 }
 /*first child of #page-content so it doesn't shift around*/

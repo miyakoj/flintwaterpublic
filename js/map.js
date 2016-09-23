@@ -1142,8 +1142,6 @@ function setMarkers() {
 	for (var i = 0; i < allMarkers.length; i++) {
 		allMarkers[i].setMap(null);
 		
-		console.log("allMarkersString[i] = " + allMarkersString[i]);
-		
 		if ((resourceActiveArray[1] == 1) && (allMarkersString[i].indexOf("Water Pickup") != -1)) {
 			allMarkers[i].setIcon(waterPickupIcon);
 			allMarkers[i].setMap(map);
@@ -1254,7 +1252,7 @@ function capitalizeEachWord(str) {
 
 $(document).ready(function() {
 	localStorage.clear();
-	console.log(localStorage);
+	//console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {
 		$("#heatmap_btn").on("click", function() {
@@ -1390,6 +1388,8 @@ $(document).ready(function() {
 	}
 	else {
 		console.log("No local storage support.");
+		$("#page_alert button").after("You are using an unsupported browser. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
+		$("#page_alert").addClass("alert-info").show();
 		window.stop(); // stop loading the page
 	}
 
@@ -1441,11 +1441,9 @@ $(document).ready(function() {
 				oldIcon = filterIcon;
 			
 			temp.setIcon(oldIcon);
-			console.log(temp.getIcon());
 			
 			// add to all markers and reset map
 			allMarkers.push(temp);
-			setMarkers();
 		}
 		// resource has not been saved
 		else {
