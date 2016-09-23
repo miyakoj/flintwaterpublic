@@ -447,7 +447,7 @@ body[id="index_page"] main {
 	display:none;
 }
 
-#water_step3_content {
+#water_step3_content, #aerator_step3_content, #ZeroWater_step3_content {
 	border-left: 0!important;
 }
 

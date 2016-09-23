@@ -490,7 +490,7 @@ $(document).ready(function() {
 			$(".cancel_button").addClass("hide");
 			
 			$("div[id*='" + $nodeSubstring + "']").addClass("cancel_stepper_border");
-			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before").addClass("cancel_stepper_border");
+			$(".stepper-vert .stepper::after, .stepper-vert .stepper::before, #allFilters_step1_content, div[id$='step2_content'], div[id$='step3_content'] ").addClass("cancel_stepper_border");
 			$("#allFilters_step1_content .next_button").css({
 						"padding": "0",
 						"position": "static",
@@ -578,7 +578,7 @@ $(document).ready(function() {
 					$("div[id*='" + filter_type + "_step2_content']").addClass("hide");
 				}
 				
-				$("#" + $nodeSubstring + "3, div[id*='" + filter_type + "_step3_content']").removeClass("hide");
+				$("#" + $nodeSubstring + "3, div[id*='" + filter_type + "_step3_content']").removeClass("hide").addClass("cancel_stepper_border");
 				$("#" + $nodeSubstring + "3").addClass("active");
 				//$("div[id*='step3_content'] .cancel_button").removeClass("hide");
 				$("div[id$='step3_content'] .next_button span").addClass("hide");
@@ -708,6 +708,7 @@ $(document).ready(function() {
 					$("#map").removeClass("hide");
 				}
 			});
+
 		}
 	}
 	
