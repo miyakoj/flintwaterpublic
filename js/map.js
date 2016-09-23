@@ -19,7 +19,7 @@ var leadLayer; // fusion table layer to set up lead levels
 var leadLayerBirdView_markers = [];
 var leadLayerBirdView_info;
 var predictiveLayer; // fusion table layer to show predicted lead levels
-var leadAndPredictiveLayer; // fusion table layer to show both lead and predicted layer
+var leadAndPredictiveLayer; // fusion table layer to show both lead and prediction layer
 var heatmapData;
 
 var $locationButtons;
@@ -345,6 +345,7 @@ function initMap() {
 		var bounds = new google.maps.LatLngBounds();
 	  
 		// Update the location marker for the address searched.
+		locationMarker = new google.maps.Marker({map: map});
 		locationMarker.setTitle(place.name);
 		locationMarker.setIcon(locationIcon);
 
@@ -369,7 +370,8 @@ function initMap() {
 			if (data.rows != undefined)
 				locationMarker.setPosition({lat: data.rows[0][0], lng: data.rows[0][1]});
 			else
-				locationMarker.setPosition({lat: place.geometry.location.lat().toPrecision(7), lng: place.geometry.location.lng().toPrecision(7)});
+				//locationMarker.setPosition({lat: place.geometry.location.lat().toPrecision(7), lng: place.geometry.location.lng().toPrecision(7)});
+				locationMarker.setPosition({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
 			
 			//console.log(place.geometry.location.lat().toPrecision(7) + " - " + place.geometry.location.lng().toPrecision(7));
 			
@@ -1393,8 +1395,8 @@ $(document).ready(function() {
 
 	// gives directions to a resource location when get dircetions is clicked
 	$("#resource_card #card_directions").on("click", function() {
-		var resource_directions = resourceMarker.getPosition();
-        window.open('http://maps.google.com/?q='+resource_directions, '_blank');
+		//var resource_directions = resourceMarker.getPosition();
+        window.open('http://maps.google.com/?q='+resourceMarker.getPosition(), '_blank');
 	});
 
 	// saves/unsaves resource location when save button is clicked on the resource card
@@ -1402,7 +1404,8 @@ $(document).ready(function() {
 		var streetAddress = $("#resource_card #provider_address").html();
 		var unsavedIcon = resourceMarker.getIcon().url;
 		var savedLocationNum
-		var latLng = "(" + resourceMarker.getPosition().lat().toPrecision(6) + ", " + resourceMarker.getPosition().lng().toPrecision(6) + ")";
+		//var latLng = "(" + resourceMarker.getPosition().lat().toPrecision(6) + ", " + resourceMarker.getPosition().lng().toPrecision(6) + ")";
+		var latLng = "(" + resourceMarker.getPosition().lat() + ", " + resourceMarker.getPosition().lng() + ")";
 		var isSaved = checkIfSaved(latLng);
 		
 		// resource has already been saved
@@ -1438,6 +1441,7 @@ $(document).ready(function() {
 				oldIcon = filterIcon;
 			
 			temp.setIcon(oldIcon);
+			console.log(temp.getIcon());
 			
 			// add to all markers and reset map
 			allMarkers.push(temp);
@@ -1506,7 +1510,8 @@ $(document).ready(function() {
 		
 		// an address was searched for
 		if (locationMarker.getPosition()) {
-			latLng = "(" + locationMarker.getPosition().lat().toPrecision(6) + ", " + locationMarker.getPosition().lng().toPrecision(6) + ")";
+			//latLng = "(" + locationMarker.getPosition().lat().toPrecision(6) + ", " + locationMarker.getPosition().lng().toPrecision(6) + ")";
+			latLng = "(" + locationMarker.getPosition().lat() + ", " + locationMarker.getPosition().lng() + ")";
 			isSaved = checkIfSaved(latLng);
 			
 			// location has already been saved
@@ -1545,13 +1550,6 @@ $(document).ready(function() {
 				for (var i = 0; i < allMarkers.length; i++) {
 					if (allMarkers[i].getPosition() == latLng)
 						allMarkers.splice(i,1);
-					
-					temp = locationMarker;
-					
-					// change the location icon to the saved icon
-					temp.setIcon(savedLocationIcon);
-					
-					savedMarkers.push(temp);
 				}
 			}
 		}
@@ -1594,17 +1592,22 @@ $(document).ready(function() {
 					for (var i = 0; i < allMarkers.length; i++) {
 						if (allMarkers[i].getPosition() == latLng)
 							allMarkers.splice(i,1);
-						
-						temp = locationMarker;
-						
-						// change the location icon to the saved icon
-						temp.setIcon(savedLocationIcon);
-						
-						savedMarkers.push(temp);
 					}
+					
+					/*temp = locationMarker;
+						
+					// change the location icon to the saved icon
+					temp.setIcon(savedLocationIcon);
+					
+					savedMarkers.push(temp);*/
 				}
 			});
 		}
+		
+		// change the location icon to the saved icon
+		temp = locationMarker;
+		temp.setIcon(savedLocationIcon);		
+		savedMarkers.push(temp);
 	});
 	
 
