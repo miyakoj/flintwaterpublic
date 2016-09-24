@@ -31,6 +31,7 @@ var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  // lead levels, water picku
 var oldResourceActiveArray; // the saved resource array that's stored when the user visits the "test my water" or "report" pages
 var savedLocationMarkers = [];
 var locationMarker;
+var clickedMarker;
 var markerImg;
 var savedLocationTotal;
 
@@ -546,6 +547,10 @@ function addFusionListener(object) {
 			createLocationCardContent("location", content);
 			
 			var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
+			// add hidden lat/long fields after the address
+			$("#location_card #address").after("<div id='lat' class='hide'></div> <div id='lng' class='hide'></div>");
+			$("#location_card #lat").html(event.row["latitude"].value);
+			$("#location_card #lng").html(event.row["longitude"].value);
 			checkIfSaved(latLng);
 			
 			$("#location_card, #location_card .card-action").show();
@@ -953,8 +958,6 @@ function createLocationContent(streetAddress, dataObj) {
 	var warningMsg;
 	var warningImg;
 	
-	console.log(typeof leadLevel);
-	
 	if (((leadLevel != "") && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		if (leadLevel != "") {
 			if (leadLevel < 15) {
@@ -1027,6 +1030,8 @@ function attachLocationCard(type, marker, address, content) {
 	marker.addListener("click", function() {
 		$("#resource_card, #legend_card").hide();
 		
+		clickedMarker = marker;
+		
 		/* Insert the saved location address in the location bar on the report page when clicked. */
 		var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 		if (($pageId.indexOf("report") != -1) && (type == "savedLocation")) {
@@ -1039,6 +1044,11 @@ function attachLocationCard(type, marker, address, content) {
 		
 		if (type.indexOf("leadArea") == -1)
 			checkIfSaved(marker.getPosition());
+		
+		// add hidden lat/long fields after the address
+		$("#location_card #address").after("<div id='lat' class='hide'></div> <div id='lng' class='hide'></div>");
+		$("#location_card #lat").html(marker.getPosition().lat());
+		$("#location_card #lng").html(marker.getPosition().lng());
 		
 		$("#location_card").show();
 	});
@@ -1100,10 +1110,12 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 				$("#resource_card #card_report_menu a:contains('Water Pickup')").attr("href", "#");
 			}
 			
-			$("#resource_card").css({
-				left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
-				bottom: (($("#map").height() / 2) + 10) + "px"
-			});
+			if (windowWidth >= 768) {
+				$("#resource_card").css({
+					left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
+					bottom: (($("#map").height() / 2) + 10) + "px"
+				});
+			}
 			
 			$("#resource_card").show();
 			
@@ -1215,7 +1227,7 @@ function saveLocation(latLng, address, icon, type) {
 	
 	$("#location_card #card_save .icon, #resource_card #card_save .icon").html("star");
 	
-	console.log(localStorage); 
+	console.log(localStorage);
 }
 
 function unsaveLocation(latLng) {
@@ -1251,7 +1263,7 @@ function capitalizeEachWord(str) {
 }
 
 $(document).ready(function() {
-	localStorage.clear();
+	//localStorage.clear();
 	//console.log(localStorage);
 
 	if (typeof(Storage) !== "undefined") {
@@ -1498,7 +1510,7 @@ $(document).ready(function() {
 	});
 	
 	// saves/unsaves a non-resource location when save button is clicked on the location card
-	$("#location_card #card_save").on("click", function() {
+	$("#location_card #card_save").on("click", function(event) {
 		var streetAddress = $("#location_card #address").text();
 		var latLng;
 		var numberSaved = parseInt(localStorage.getItem("numberSaved"));
@@ -1514,15 +1526,14 @@ $(document).ready(function() {
 			
 			// location has already been saved
 			if (isSaved) {
-				var temp = locationMarker;
-				
 				// remove from local storage
 				savedLocationNum = unsaveLocation(latLng);
-				localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
-				temp.setIcon(locationIcon);
-				
-				// change image on card to star outline
-				$("#location_card #card_save .icon").html("star_border");
+				localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
+
+				// change the marker to the generic location marker
+				var tempLocationMarker = locationMarker;
+				tempLocationMarker.setIcon(locationIcon);
+				tempLocationMarker.setMap(map);
 				
 				// remove from savedMarkers 
 				for (var i = 0; i < savedMarkers.length; i++) {
@@ -1531,44 +1542,50 @@ $(document).ready(function() {
 				}
 				
 				// add to all markers and reset map
-				allMarkers.push(temp);
-				setMarkers();
+				allMarkers.push(tempLocationMarker);
 			}
 			// location has not been saved
-			else {
-				var temp;
-				
+			else {				
 				// add to local storage
 				saveLocation(latLng, streetAddress, unsavedIcon, "Non-Resource");
-				
-				// change image on card to filled star
-				$("#location_card #card_save .icon").html("star");
 				
 				// remove from allMarkers 
 				for (var i = 0; i < allMarkers.length; i++) {
 					if (allMarkers[i].getPosition() == latLng)
 						allMarkers.splice(i,1);
 				}
+				
+				// change the location icon to the saved icon
+				var tempLocationMarker = locationMarker;
+				tempLocationMarker.setIcon(savedLocationIcon);
+				tempLocationMarker.setMap(map);
+				savedMarkers.push(tempLocationMarker);
 			}
 		}
-		// a marker was clicked
+		// a saved location maker or fusion layer marker were clicked
 		else {
 			geocoder.geocode({
 				address: streetAddress,
 				bounds: new google.maps.LatLngBounds({lat: 43.021, lng: -83.681})
-			}, function(results, status) {
-				latLng = results[0].geometry.location.toString();
-				//latLng = "(" + resourceMarker.getPosition().lat().toPrecision(6) + ", " + resourceMarker.getPosition().lng().toPrecision(6) + ")";
+			}, function(results, status) {				
+				if ($("#location_card #lat").length > 0)
+					latLng = "(" + $("#location_card #lat").html() + ", " + $("#location_card #lng").html() + ")";
+				else
+					latLng = results[0].geometry.location.toString();
+				
+				//latLng = "(" + $("#location_card #lat").html().toPrecision(6) + ", " + $("#location_card #lng").html().toPrecision(6) + ")";
 				isSaved = checkIfSaved(latLng);
 			
 				// location has already been saved
-				if (isSaved) {
-					var temp = locationMarker;
-					
+				if (checkIfSaved(latLng)) {
 					// remove from local storage
 					savedLocationNum = unsaveLocation(latLng);
-					localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);			
-					temp.setIcon(locationIcon);
+					localStorage.removeItem(["savedLocationIcon"+savedLocationNum]);
+					
+					// change the marker to the generic location marker					
+					var tempLocationMarker = clickedMarker;
+					tempLocationMarker.setIcon(locationIcon);
+					tempLocationMarker.setMap(map);
 					
 					// remove from savedMarkers 
 					for (var i = 0; i < savedMarkers.length; i++) {
@@ -1577,12 +1594,10 @@ $(document).ready(function() {
 					}
 					
 					// add to all markers
-					allMarkers.push(temp);
+					allMarkers.push(tempLocationMarker);
 				}
 				// location has not been saved
-				else {
-					var temp;
-					
+				else {					
 					// add to local storage
 					saveLocation(latLng, streetAddress, unsavedIcon, "Non-Resource");
 					
@@ -1592,20 +1607,30 @@ $(document).ready(function() {
 							allMarkers.splice(i,1);
 					}
 					
-					/*temp = locationMarker;
-						
-					// change the location icon to the saved icon
-					temp.setIcon(savedLocationIcon);
+					var tempLocationMarker = clickedMarker;
+					tempLocationMarker.setIcon(savedLocationIcon);
 					
-					savedMarkers.push(temp);*/
+					var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+					+ streetAddress + "' ORDER BY 'testDate' DESC";
+					
+					/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
+					window.jsonpCallbacks["fusionMarkerQueryCallback"] = function(data) {
+						tempLocationMarker.setPosition({lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()});
+						
+						//console.log(place.geometry.location.lat().toPrecision(7) + " - " + place.geometry.location.lng().toPrecision(7));
+						
+						var content = fusionQueryCallback(data, streetAddress);
+						createLocationCardContent("location", content);
+						attachLocationCard("location", tempLocationMarker, streetAddress, content);
+						
+						savedMarkers.push(tempLocationMarker);
+						savedLocationMarkers.push(tempLocationMarker);
+					};
+					
+					queryFusionTable(query, "jsonpCallbacks.fusionMarkerQueryCallback");
 				}
 			});
 		}
-		
-		// change the location icon to the saved icon
-		temp = locationMarker;
-		temp.setIcon(savedLocationIcon);		
-		savedMarkers.push(temp);
 	});
 	
 

@@ -1,10 +1,3 @@
-/* Encourage a user of IE and Safari to download an alternate browser.
-   (IE/Safari don't support the color input type but Firefox/Chrome do.) */
-if (!Modernizr.inputtypes.color) {
-	$("#page_alert button").after("You are using an unsupported browser. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
-	$("#page_alert").addClass("alert-info").show();
-}
-
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
@@ -12,6 +5,18 @@ console.log("$pageId = " + $pageId);
 var $activeNode;
 var autocomplete;
 
+console.log(localStorage.getItem("browserMsg"));
+
+/* Encourage a user of IE and Safari to download an alternate browser.
+   (IE/Safari don't support the color input type but Firefox/Chrome do.) */
+if (!Modernizr.inputtypes.color && !localStorage.getItem("browserMsg")) {
+	$("#page_alert button").after("You are using an unsupported browser. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
+	$("#page_alert").addClass("alert-info").show();
+	
+	$("#page_alert").on("close.bs.alert", function () {
+		localStorage.setItem("browserMsg", "1")
+	});
+}
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
@@ -195,13 +200,6 @@ $(document).ready(function() {
 			"left": function() {
 				return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
 			}
-		});
-		
-		var leftPos = (windowWidth - $("#resource_card").width()) / 2;
-		
-		$("#resource_card").css({
-			"margin-right": "-" + leftPos + "px",
-			"left": leftPos + "px"	
 		});
 	}
 	
