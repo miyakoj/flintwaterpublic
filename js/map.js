@@ -688,6 +688,8 @@ function callStorageAPI(object) {
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
 					
+					console.log($("#location_card").css("display"));
+					
 					$("#location_card .card-action").hide();
 				}
 			}
@@ -1047,8 +1049,11 @@ function attachLocationCard(type, marker, address, content) {
 		
 		// add hidden lat/long fields after the address
 		$("#location_card #address").after("<div id='lat' class='hide'></div> <div id='lng' class='hide'></div>");
-		$("#location_card #lat").html(marker.getPosition().lat());
-		$("#location_card #lng").html(marker.getPosition().lng());
+		
+		if (type.indexOf("leadArea") == -1) {
+			$("#location_card #lat").html(clickedMarker.getPosition().lat());
+			$("#location_card #lng").html(clickedMarker.getPosition().lng());
+		}
 		
 		$("#location_card").show();
 	});
