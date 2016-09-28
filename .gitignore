@@ -15,3 +15,7 @@ test.html
 js/map_Miyako.js
 .DS_Store
 /admin/Minimal_Admin_Panel/
+lead_test_results.csv
+lead_predictions.csv
+geo_locations.csv
+fusion_table_full.xlsx

@@ -112,7 +112,7 @@ $(document).ready(function() {
 	});
 	
 	//set toggles width based on number of toggles
-	var numItems = 6;
+	var numItems = 7;
 	var average;
 	average = windowWidth/numItems;
 	$('#toggles label').css("width", average);

@@ -105,7 +105,7 @@ function query_json_output($result, $array_name, $filename) {
 
 /* Save the JSON file to the bucket in Google Cloud. */
 function write_file($output, $filename) {
-	$options = $options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
+	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
 	$context = stream_context_create($options);
 	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
 }
