@@ -1,0 +1,1018 @@
+{"construction_sites":[ 
+  {
+    "ADDRESS": "1527 ARIZONA",
+    "lng": -83.671578,
+    "lat": 43.04631
+  },
+  {
+    "ADDRESS": "1701 ARIZONA",
+    "lng": -83.668162,
+    "lat": 43.046369
+  },
+  {
+    "ADDRESS": "1702 ARIZONA",
+    "lng": -83.6681538,
+    "lat": 43.0459649
+  },
+  {
+    "ADDRESS": "1710 ARIZONA",
+    "lng": -83.667857,
+    "lat": 43.045906
+  },
+  {
+    "ADDRESS": "1714 ARIZONA",
+    "lng": -83.6676859,
+    "lat": 43.0459786
+  },
+  {
+    "ADDRESS": "1717 ARIZONA",
+    "lng": -83.66757,
+    "lat": 43.0463809
+  },
+  {
+    "ADDRESS": "1721 ARIZONA",
+    "lng": -83.667426,
+    "lat": 43.046383
+  },
+  {
+    "ADDRESS": "1726 ARIZONA",
+    "lng": -83.667256,
+    "lat": 43.045915
+  },
+  {
+    "ADDRESS": "1729 ARIZONA",
+    "lng": -83.667114,
+    "lat": 43.046389
+  },
+  {
+    "ADDRESS": "1801 ARIZONA",
+    "lng": -83.666674,
+    "lat": 43.046399
+  },
+  {
+    "ADDRESS": "1802 ARIZONA",
+    "lng": -83.6666531,
+    "lat": 43.045992
+  },
+  {
+    "ADDRESS": "1805 ARIZONA",
+    "lng": -83.666524,
+    "lat": 43.046401
+  },
+  {
+    "ADDRESS": "1806 ARIZONA",
+    "lng": -83.666506,
+    "lat": 43.045927
+  },
+  {
+    "ADDRESS": "1809 ARIZONA",
+    "lng": -83.6663384,
+    "lat": 43.0463336
+  },
+  {
+    "ADDRESS": "1810 ARIZONA",
+    "lng": -83.6667499,
+    "lat": 43.0461576
+  },
+  {
+    "ADDRESS": "1814 ARIZONA",
+    "lng": -83.666199,
+    "lat": 43.045931
+  },
+  {
+    "ADDRESS": "1414 COLORADO AVE",
+    "lng": -83.673174,
+    "lat": 43.044275
+  },
+  {
+    "ADDRESS": "1525 COLORADO AVE",
+    "lng": -83.671966,
+    "lat": 43.044764
+  },
+  {
+    "ADDRESS": "1530 COLORADO AVE",
+    "lng": -83.6717903,
+    "lat": 43.0443623
+  },
+  {
+    "ADDRESS": "1546 COLORADO AVE",
+    "lng": -83.671205,
+    "lat": 43.044316
+  },
+  {
+    "ADDRESS": "1602 COLORADO AVE",
+    "lng": -83.6704971,
+    "lat": 43.0444035
+  },
+  {
+    "ADDRESS": "1620 COLORADO AVE",
+    "lng": -83.669807,
+    "lat": 43.044342
+  },
+  {
+    "ADDRESS": "1623 COLORADO AVE",
+    "lng": -83.669669,
+    "lat": 43.044804
+  },
+  {
+    "ADDRESS": "1645 COLORADO AVE",
+    "lng": -83.668938,
+    "lat": 43.044816
+  },
+  {
+    "ADDRESS": "1701 COLORADO AVE",
+    "lng": -83.668103,
+    "lat": 43.044831
+  },
+  {
+    "ADDRESS": "1730 COLORADO AVE",
+    "lng": -83.66704,
+    "lat": 43.0444548
+  },
+  {
+    "ADDRESS": "1733 COLORADO AVE",
+    "lng": -83.6668399,
+    "lat": 43.044854
+  },
+  {
+    "ADDRESS": "1734 COLORADO AVE",
+    "lng": -83.6668877,
+    "lat": 43.0444578
+  },
+  {
+    "ADDRESS": "1805 COLORADO AVE",
+    "lng": -83.666462,
+    "lat": 43.044861
+  },
+  {
+    "ADDRESS": "1809 COLORADO AVE",
+    "lng": -83.6662974,
+    "lat": 43.0448327
+  },
+  {
+    "ADDRESS": "1510 UTAH",
+    "lng": -83.6720349,
+    "lat": 43.0466
+  },
+  {
+    "ADDRESS": "1514 UTAH",
+    "lng": -83.6718654,
+    "lat": 43.0466573
+  },
+  {
+    "ADDRESS": "1538 UTAH",
+    "lng": -83.67099,
+    "lat": 43.046618
+  },
+  {
+    "ADDRESS": "1710 UTAH",
+    "lng": -83.667885,
+    "lat": 43.04667
+  },
+  {
+    "ADDRESS": "1718 UTAH",
+    "lng": -83.66758,
+    "lat": 43.046676
+  },
+  {
+    "ADDRESS": "1730 UTAH",
+    "lng": -83.667124,
+    "lat": 43.0466849
+  },
+  {
+    "ADDRESS": "1518 WYOMING AVE",
+    "lng": -83.6722538,
+    "lat": 43.045111
+  },
+  {
+    "ADDRESS": "1531 WYOMING AVE",
+    "lng": -83.6716856,
+    "lat": 43.0454848
+  },
+  {
+    "ADDRESS": "1614 WYOMING AVE",
+    "lng": -83.670155,
+    "lat": 43.045094
+  },
+  {
+    "ADDRESS": "1650 WYOMING AVE",
+    "lng": -83.668798,
+    "lat": 43.045119
+  },
+  {
+    "ADDRESS": "1802 WYOMING AVE",
+    "lng": -83.666625,
+    "lat": 43.045157
+  },
+  {
+    "ADDRESS": "1818 WYOMING ST",
+    "lng": -83.66603,
+    "lat": 43.0451679
+  },
+  {
+    "ADDRESS": "1908 W DAYTON AVE",
+    "lng": -83.726894,
+    "lat": 43.038935
+  },
+  {
+    "ADDRESS": "2015 W DAYTON AVE",
+    "lng": -83.728073,
+    "lat": 43.038237
+  },
+  {
+    "ADDRESS": "1906 BECKER ST",
+    "lng": -83.7109564,
+    "lat": 43.0052883
+  },
+  {
+    "ADDRESS": "1910 BECKER ST",
+    "lng": -83.711107,
+    "lat": 43.0053089
+  },
+  {
+    "ADDRESS": "1916 BECKER ST",
+    "lng": -83.711302,
+    "lat": 43.0053177
+  },
+  {
+    "ADDRESS": "1921 BECKER ST",
+    "lng": -83.711499,
+    "lat": 43.004893
+  },
+  {
+    "ADDRESS": "1933 BECKER ST",
+    "lng": -83.711893,
+    "lat": 43.004892
+  },
+  {
+    "ADDRESS": "1936 BECKER ST",
+    "lng": -83.711954,
+    "lat": 43.005332
+  },
+  {
+    "ADDRESS": "2522 LANDON ST",
+    "lng": -83.725243,
+    "lat": 43.0397279
+  },
+  {
+    "ADDRESS": "2528 LANDON ST",
+    "lng": -83.7252479,
+    "lat": 43.039861
+  },
+  {
+    "ADDRESS": "2529 LANDON ST",
+    "lng": -83.725809,
+    "lat": 43.039858
+  },
+  {
+    "ADDRESS": "2601 LANDON ST",
+    "lng": -83.725813,
+    "lat": 43.039996
+  },
+  {
+    "ADDRESS": "2613 LANDON ST",
+    "lng": -83.725818,
+    "lat": 43.040269
+  },
+  {
+    "ADDRESS": "2614 LANDON ST",
+    "lng": -83.7253263,
+    "lat": 43.0403071
+  },
+  {
+    "ADDRESS": "2619 LANDON ST",
+    "lng": -83.72582,
+    "lat": 43.040404
+  },
+  {
+    "ADDRESS": "2620 LANDON ST",
+    "lng": -83.725263,
+    "lat": 43.040412
+  },
+  {
+    "ADDRESS": "2701 LANDON ST",
+    "lng": -83.725828,
+    "lat": 43.040821
+  },
+  {
+    "ADDRESS": "2702 LANDON ST",
+    "lng": -83.725275,
+    "lat": 43.040826
+  },
+  {
+    "ADDRESS": "2707 LANDON ST",
+    "lng": -83.72583,
+    "lat": 43.040956
+  },
+  {
+    "ADDRESS": "2708 LANDON ST",
+    "lng": -83.725277,
+    "lat": 43.040963
+  },
+  {
+    "ADDRESS": "2521 TRUMBULL AVE",
+    "lng": -83.724877,
+    "lat": 43.039866
+  },
+  {
+    "ADDRESS": "2527 TRUMBULL AVE",
+    "lng": -83.7248819,
+    "lat": 43.040003
+  },
+  {
+    "ADDRESS": "2601 TRUMBULL AVE",
+    "lng": -83.724887,
+    "lat": 43.040142
+  },
+  {
+    "ADDRESS": "2614 TRUMBULL AVE",
+    "lng": -83.724301,
+    "lat": 43.040475
+  },
+  {
+    "ADDRESS": "2615 TRUMBULL AVE",
+    "lng": -83.724895,
+    "lat": 43.040416
+  },
+  {
+    "ADDRESS": "2620 TRUMBULL AVE",
+    "lng": -83.724305,
+    "lat": 43.040609
+  },
+  {
+    "ADDRESS": "2621 TRUMBULL AVE",
+    "lng": -83.724898,
+    "lat": 43.040552
+  },
+  {
+    "ADDRESS": "2626 Landon",
+    "lng": -83.725266,
+    "lat": 43.04055
+  },
+  {
+    "ADDRESS": "2721 TRUMBULL AVE",
+    "lng": -83.72492,
+    "lat": 43.041263
+  },
+  {
+    "ADDRESS": "2511 WALTER ST",
+    "lng": -83.726729,
+    "lat": 43.039171
+  },
+  {
+    "ADDRESS": "2517 WALTER ST",
+    "lng": -83.726733,
+    "lat": 43.039307
+  },
+  {
+    "ADDRESS": "2518 WALTER ST",
+    "lng": -83.726163,
+    "lat": 43.039448
+  },
+  {
+    "ADDRESS": "2523 WALTER ST",
+    "lng": -83.726733,
+    "lat": 43.0394409
+  },
+  {
+    "ADDRESS": "2524 WALTER ST",
+    "lng": -83.726165,
+    "lat": 43.03958
+  },
+  {
+    "ADDRESS": "2529 WALTER ST",
+    "lng": -83.7267442,
+    "lat": 43.0396069
+  },
+  {
+    "ADDRESS": "2530 WALTER ST",
+    "lng": -83.726167,
+    "lat": 43.039715
+  },
+  {
+    "ADDRESS": "2535 WALTER ST",
+    "lng": -83.72674,
+    "lat": 43.0397109
+  },
+  {
+    "ADDRESS": "2607 WALTER ST",
+    "lng": -83.7267189,
+    "lat": 43.040007
+  },
+  {
+    "ADDRESS": "2608 WALTER ST",
+    "lng": -83.726175,
+    "lat": 43.039991
+  },
+  {
+    "ADDRESS": "2614 WALTER ST",
+    "lng": -83.726178,
+    "lat": 43.040131
+  },
+  {
+    "ADDRESS": "2619 WALTER ST",
+    "lng": -83.7267739,
+    "lat": 43.0402981
+  },
+  {
+    "ADDRESS": "2625 WALTER ST",
+    "lng": -83.7267473,
+    "lat": 43.0403882
+  },
+  {
+    "ADDRESS": "2626 WALTER ST",
+    "lng": -83.726182,
+    "lat": 43.040399
+  },
+  {
+    "ADDRESS": "2631 WALTER ST",
+    "lng": -83.7267337,
+    "lat": 43.040562
+  },
+  {
+    "ADDRESS": "2632 WALTER ST",
+    "lng": -83.726186,
+    "lat": 43.040537
+  },
+  {
+    "ADDRESS": "2701 WALTER ST",
+    "lng": -83.7267598,
+    "lat": 43.0406958
+  },
+  {
+    "ADDRESS": "1523 ARIZONA",
+    "lng": -83.671725,
+    "lat": 43.046306
+  },
+  {
+    "ADDRESS": "1725 ARIZONA",
+    "lng": -83.6672605,
+    "lat": 43.0463462
+  },
+  {
+    "ADDRESS": "1821 ARIZONA",
+    "lng": -83.6659179,
+    "lat": 43.0463686
+  },
+  {
+    "ADDRESS": "1510 COLORADO AVE",
+    "lng": -83.672558,
+    "lat": 43.044292
+  },
+  {
+    "ADDRESS": "1518 COLORADO AVE",
+    "lng": -83.672253,
+    "lat": 43.044297
+  },
+  {
+    "ADDRESS": "1611 COLORADO AVE",
+    "lng": -83.670154,
+    "lat": 43.044793
+  },
+  {
+    "ADDRESS": "1802 COLORADO AVE",
+    "lng": -83.666524,
+    "lat": 43.044407
+  },
+  {
+    "ADDRESS": "1833 COLORADO AVE",
+    "lng": -83.665432,
+    "lat": 43.04488
+  },
+  {
+    "ADDRESS": "1518 UTAH",
+    "lng": -83.6717369,
+    "lat": 43.046605
+  },
+  {
+    "ADDRESS": "1526 UTAH",
+    "lng": -83.671436,
+    "lat": 43.04661
+  },
+  {
+    "ADDRESS": "1822 UTAH",
+    "lng": -83.6659283,
+    "lat": 43.0467894
+  },
+  {
+    "ADDRESS": "1514 WYOMING AVE",
+    "lng": -83.672438,
+    "lat": 43.045057
+  },
+  {
+    "ADDRESS": "1626 WYOMING AVE",
+    "lng": -83.669681,
+    "lat": 43.045104
+  },
+  {
+    "ADDRESS": "1630 WYOMING AVE",
+    "lng": -83.669533,
+    "lat": 43.0451059
+  },
+  {
+    "ADDRESS": "2707 WALTER AVE",
+    "lng": -83.7268033,
+    "lat": 43.0408369
+  },
+  {
+    "ADDRESS": "2714 WALTER AVE",
+    "lng": -83.726193,
+    "lat": 43.040951
+  },
+  {
+    "ADDRESS": "2720 WALTER AVE",
+    "lng": -83.7262261,
+    "lat": 43.0411136
+  },
+  {
+    "ADDRESS": "2726 WALTER AVE",
+    "lng": -83.7262,
+    "lat": 43.041251
+  },
+  {
+    "ADDRESS": "1902 W DAYTON AVE",
+    "lng": -83.72666,
+    "lat": 43.038957
+  },
+  {
+    "ADDRESS": "1908 W JACKSON AVE",
+    "lng": -83.7269414,
+    "lat": 43.0416204
+  },
+  {
+    "ADDRESS": "1902 W JACKSON AVE",
+    "lng": -83.72675,
+    "lat": 43.0416285
+  },
+  {
+    "ADDRESS": "1826 W JACKSON AVE",
+    "lng": -83.7265563,
+    "lat": 43.0416347
+  },
+  {
+    "ADDRESS": "1808 W JACKSON AVE",
+    "lng": -83.725995,
+    "lat": 43.041643
+  },
+  {
+    "ADDRESS": "1726 W JACKSON AVE",
+    "lng": -83.725611,
+    "lat": 43.041646
+  },
+  {
+    "ADDRESS": "1720 W JACKSON AVE",
+    "lng": -83.725427,
+    "lat": 43.041649
+  },
+  {
+    "ADDRESS": "1714 W JACKSON AVE",
+    "lng": -83.725242,
+    "lat": 43.041651
+  },
+  {
+    "ADDRESS": "1701 W DARTMOUTH",
+    "lng": -83.724863,
+    "lat": 43.0419259
+  },
+  {
+    "ADDRESS": "1707 W DARTMOUTH",
+    "lng": -83.7250714,
+    "lat": 43.0419918
+  },
+  {
+    "ADDRESS": "1713 W DARTMOUTH",
+    "lng": -83.7252589,
+    "lat": 43.0419505
+  },
+  {
+    "ADDRESS": "1714 W DARTMOUTH",
+    "lng": -83.725261,
+    "lat": 43.042374
+  },
+  {
+    "ADDRESS": "1725 W DARTMOUTH",
+    "lng": -83.7256378,
+    "lat": 43.0419838
+  },
+  {
+    "ADDRESS": "1726 W DARTMOUTH",
+    "lng": -83.7256549,
+    "lat": 43.0423933
+  },
+  {
+    "ADDRESS": "1802 W DARTMOUTH",
+    "lng": -83.725831,
+    "lat": 43.042367
+  },
+  {
+    "ADDRESS": "1813 W DARTMOUTH",
+    "lng": -83.726192,
+    "lat": 43.041913
+  },
+  {
+    "ADDRESS": "1814 W DARTMOUTH",
+    "lng": -83.726203,
+    "lat": 43.042364
+  },
+  {
+    "ADDRESS": "1819 W DARTMOUTH",
+    "lng": -83.7263877,
+    "lat": 43.0419732
+  },
+  {
+    "ADDRESS": "1825 W DARTMOUTH",
+    "lng": -83.7265701,
+    "lat": 43.0419635
+  },
+  {
+    "ADDRESS": "1902 W DARTMOUTH",
+    "lng": -83.726769,
+    "lat": 43.042363
+  },
+  {
+    "ADDRESS": "1907 W DARTMOUTH",
+    "lng": -83.7269428,
+    "lat": 43.0419248
+  },
+  {
+    "ADDRESS": "1908 W DARTMOUTH",
+    "lng": -83.726955,
+    "lat": 43.042361
+  },
+  {
+    "ADDRESS": "1209 IDA AVE",
+    "lng": -83.712092,
+    "lat": 43.0040059
+  },
+  {
+    "ADDRESS": "1315 IDA AVE",
+    "lng": -83.711923,
+    "lat": 43.003259
+  },
+  {
+    "ADDRESS": "1405 IDA AVE",
+    "lng": -83.711669,
+    "lat": 43.002756
+  },
+  {
+    "ADDRESS": "2515 BROWNELL BLVD",
+    "lng": -83.7277628,
+    "lat": 43.0391478
+  },
+  {
+    "ADDRESS": "2516 BROWNELL BLVD",
+    "lng": -83.727123,
+    "lat": 43.039302
+  },
+  {
+    "ADDRESS": "2527 BROWNELL BLVD",
+    "lng": -83.727824,
+    "lat": 43.039448
+  },
+  {
+    "ADDRESS": "2602 BROWNELL BLVD",
+    "lng": -83.7271389,
+    "lat": 43.039708
+  },
+  {
+    "ADDRESS": "2608 BROWNELL BLVD",
+    "lng": -83.727142,
+    "lat": 43.039843
+  },
+  {
+    "ADDRESS": "2613 BROWNELL BLVD",
+    "lng": -83.727835,
+    "lat": 43.040052
+  },
+  {
+    "ADDRESS": "2632 BROWNELL BLVD",
+    "lng": -83.7271559,
+    "lat": 43.040389
+  },
+  {
+    "ADDRESS": "2637 BROWNELL BLVD",
+    "lng": -83.727852,
+    "lat": 43.040625
+  },
+  {
+    "ADDRESS": "2638 BROWNELL BLVD",
+    "lng": -83.7271559,
+    "lat": 43.040528
+  },
+  {
+    "ADDRESS": "2643 BROWNELL BLVD",
+    "lng": -83.727855,
+    "lat": 43.040769
+  },
+  {
+    "ADDRESS": "2644 BROWNELL BLVD",
+    "lng": -83.727162,
+    "lat": 43.040665
+  },
+  {
+    "ADDRESS": "2701 BROWNELL BLVD",
+    "lng": -83.727857,
+    "lat": 43.040909
+  },
+  {
+    "ADDRESS": "2702 BROWNELL BLVD",
+    "lng": -83.727167,
+    "lat": 43.040938
+  },
+  {
+    "ADDRESS": "2707 BROWNELL BLVD",
+    "lng": -83.7278416,
+    "lat": 43.0410975
+  },
+  {
+    "ADDRESS": "2714 BROWNELL BLVD",
+    "lng": -83.7271729,
+    "lat": 43.041239
+  },
+  {
+    "ADDRESS": "2719 BROWNELL BLVD",
+    "lng": -83.72787,
+    "lat": 43.041347
+  },
+  {
+    "ADDRESS": "2737 BROWNELL BLVD",
+    "lng": -83.727878,
+    "lat": 43.041786
+  },
+  {
+    "ADDRESS": "2738 BROWNELL BLVD",
+    "lng": -83.7272179,
+    "lat": 43.041944
+  },
+  {
+    "ADDRESS": "1128 BOSTON AVE",
+    "lng": -83.711583,
+    "lat": 43.004168
+  },
+  {
+    "ADDRESS": "1221 BOSTON AVE",
+    "lng": -83.710622,
+    "lat": 43.0033839
+  },
+  {
+    "ADDRESS": "1224 BOSTON AVE",
+    "lng": -83.71128,
+    "lat": 43.003103
+  },
+  {
+    "ADDRESS": "1213 DURAND ST",
+    "lng": -83.7136967,
+    "lat": 43.0038563
+  },
+  {
+    "ADDRESS": "1101 BOSTON AVE",
+    "lng": -83.7109534,
+    "lat": 43.0048008
+  },
+  {
+    "ADDRESS": "1118 BOSTON AVE",
+    "lng": -83.7114058,
+    "lat": 43.0045802
+  },
+  {
+    "ADDRESS": "1119 BOSTON AVE",
+    "lng": -83.711008,
+    "lat": 43.00452
+  },
+  {
+    "ADDRESS": "1122 BOSTON AVE",
+    "lng": -83.7114314,
+    "lat": 43.0044554
+  },
+  {
+    "ADDRESS": "1124 BOSTON AVE",
+    "lng": -83.711552,
+    "lat": 43.004322
+  },
+  {
+    "ADDRESS": "1125 BOSTON AVE",
+    "lng": -83.711009,
+    "lat": 43.004354
+  },
+  {
+    "ADDRESS": "1202 BOSTON AVE",
+    "lng": -83.7115139,
+    "lat": 43.003831
+  },
+  {
+    "ADDRESS": "1205 BOSTON AVE",
+    "lng": -83.710865,
+    "lat": 43.00388
+  },
+  {
+    "ADDRESS": "1208 BOSTON AVE",
+    "lng": -83.711499,
+    "lat": 43.00366
+  },
+  {
+    "ADDRESS": "1212 BOSTON AVE",
+    "lng": -83.711449,
+    "lat": 43.0035079
+  },
+  {
+    "ADDRESS": "1213 BOSTON AVE",
+    "lng": -83.7107599,
+    "lat": 43.003634
+  },
+  {
+    "ADDRESS": "1216 BOSTON AVE",
+    "lng": -83.7112552,
+    "lat": 43.0033793
+  },
+  {
+    "ADDRESS": "1220 BOSTON AVE",
+    "lng": -83.711341,
+    "lat": 43.003234
+  },
+  {
+    "ADDRESS": "1225 BOSTON AVE",
+    "lng": -83.7105752,
+    "lat": 43.003213
+  },
+  {
+    "ADDRESS": "1228 BOSTON AVE",
+    "lng": -83.711213,
+    "lat": 43.002972
+  },
+  {
+    "ADDRESS": "1229 BOSTON AVE",
+    "lng": -83.7105292,
+    "lat": 43.0030706
+  },
+  {
+    "ADDRESS": "1232 BOSTON AVE",
+    "lng": -83.711166,
+    "lat": 43.002825
+  },
+  {
+    "ADDRESS": "1112 IDA AVE",
+    "lng": -83.712711,
+    "lat": 43.004761
+  },
+  {
+    "ADDRESS": "1116 IDA AVE",
+    "lng": -83.712714,
+    "lat": 43.004572
+  },
+  {
+    "ADDRESS": "1120 IDA AVE",
+    "lng": -83.712714,
+    "lat": 43.0044759
+  },
+  {
+    "ADDRESS": "1123 IDA AVE",
+    "lng": -83.7121143,
+    "lat": 43.0043759
+  },
+  {
+    "ADDRESS": "1124 IDA AVE",
+    "lng": -83.7123802,
+    "lat": 43.0044765
+  },
+  {
+    "ADDRESS": "1201 IDA AVE",
+    "lng": -83.712046,
+    "lat": 43.004202
+  },
+  {
+    "ADDRESS": "1302 IDA AVE",
+    "lng": -83.712752,
+    "lat": 43.003514
+  },
+  {
+    "ADDRESS": "1305 IDA AVE",
+    "lng": -83.7120236,
+    "lat": 43.0035406
+  },
+  {
+    "ADDRESS": "1312 IDA AVE",
+    "lng": -83.712761,
+    "lat": 43.003238
+  },
+  {
+    "ADDRESS": "1316 IDA AVE",
+    "lng": -83.7125246,
+    "lat": 43.0031207
+  },
+  {
+    "ADDRESS": "1317 IDA AVE",
+    "lng": -83.7118682,
+    "lat": 43.003096
+  },
+  {
+    "ADDRESS": "1320 IDA AVE",
+    "lng": -83.7124331,
+    "lat": 43.0030316
+  },
+  {
+    "ADDRESS": "1321 IDA AVE",
+    "lng": -83.711817,
+    "lat": 43.003018
+  },
+  {
+    "ADDRESS": "1401 IDA AVE",
+    "lng": -83.711746,
+    "lat": 43.002889
+  },
+  {
+    "ADDRESS": "1402 IDA AVE",
+    "lng": -83.712464,
+    "lat": 43.002722
+  },
+  {
+    "ADDRESS": "1416 IDA AVE",
+    "lng": -83.712254,
+    "lat": 43.002322
+  },
+  {
+    "ADDRESS": "1941 BECKER ST",
+    "lng": -83.712075,
+    "lat": 43.004892
+  },
+  {
+    "ADDRESS": "1945 BECKER ST",
+    "lng": -83.7121866,
+    "lat": 43.0049714
+  },
+  {
+    "ADDRESS": "2001 BECKER ST",
+    "lng": -83.71256,
+    "lat": 43.004941
+  },
+  {
+    "ADDRESS": "2004 BECKER ST",
+    "lng": -83.712555,
+    "lat": 43.005339
+  },
+  {
+    "ADDRESS": "2005 BECKER ST",
+    "lng": -83.7126831,
+    "lat": 43.0049369
+  },
+  {
+    "ADDRESS": "2006 BECKER ST",
+    "lng": -83.7126462,
+    "lat": 43.005266
+  },
+  {
+    "ADDRESS": "2010 BECKER ST",
+    "lng": -83.7128102,
+    "lat": 43.0052735
+  },
+  {
+    "ADDRESS": "2013 BECKER ST",
+    "lng": -83.7130059,
+    "lat": 43.004898
+  },
+  {
+    "ADDRESS": "2017 BECKER ST",
+    "lng": -83.713155,
+    "lat": 43.004896
+  },
+  {
+    "ADDRESS": "2021 BECKER ST",
+    "lng": -83.71329,
+    "lat": 43.004896
+  },
+  {
+    "ADDRESS": "1101 DURAND ST",
+    "lng": -83.713582,
+    "lat": 43.005013
+  },
+  {
+    "ADDRESS": "1113 DURAND  ST",
+    "lng": -83.713595,
+    "lat": 43.004657
+  },
+  {
+    "ADDRESS": "1114 DURAND ST",
+    "lng": -83.714179,
+    "lat": 43.004696
+  },
+  {
+    "ADDRESS": "1120 DURAND ST",
+    "lng": -83.7141379,
+    "lat": 43.004549
+  },
+  {
+    "ADDRESS": "1121 DURAND ST",
+    "lng": -83.713601,
+    "lat": 43.004441
+  },
+  {
+    "ADDRESS": "1214 DURAND ST",
+    "lng": -83.7140851,
+    "lat": 43.0039362
+  },
+  {
+    "ADDRESS": "1217 DURAND ST",
+    "lng": -83.713548,
+    "lat": 43.0037329
+  }
+]
+}

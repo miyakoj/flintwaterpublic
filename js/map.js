@@ -142,7 +142,8 @@ function initMap() {
 	callStorageAPI("leadlevels.json");
 	callStorageAPI("leadLevels_birdview.json");
 	callStorageAPI("providers.json");
-	//callStorageAPI("pipedata.json");
+	callStorageAPI("pipedata.json");
+	callStorageAPI("construction_sites.json");
 	
 	setUpFusionTable();
 
@@ -810,7 +811,28 @@ function callStorageAPI(object) {
 
 				setMarkers();
 			}
-			
+			else if (object == "construction_sites.json"){
+				js_obj = $.parseJSON(resp.body);
+				
+				//Adam Working Here
+				
+				for (i=0; i<js_obj.construction_sites.length; i++) {
+					var marker;
+					var address = js_obj.construction_sites[i].ADDRESS;
+					var lng = js_obj.construction_sites[i].lng;
+					var lat = js_obj.construction_sites[i].lat;
+					var latLng = new google.maps.LatLng(lat, lng);
+					marker = new google.maps.Marker({
+							position: latLng,
+							title: address,
+							map: map,
+							icon: constructionIcon
+						});
+				}
+					//var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
+					//var title = provider.locationName;
+				
+			}
 			// Uploading Pipe Data From JSON in bucket
 			else if (object == "pipedata.json") {
 				js_obj = $.parseJSON(resp.body);
