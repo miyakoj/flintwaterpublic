@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Unite Flint | Administrative Dashboard</title>
+<title>MyWater-Flint | Administrative Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="../css/base.min.css">
+<link rel="stylesheet" href="../css/project.min.css">
+
 <!-- Custom Theme files -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link href="css/template.css" rel="stylesheet" type="text/css" />
 <link href="css/font-awesome.css" rel="stylesheet" type="text/css" />
 <link href="css/custom_styles.css" rel="stylesheet" type="text/css" />
@@ -41,10 +45,9 @@ $(function () {
 <!--skycons-icons-->
 <script src="js/skycons.js"></script>
 <!--//skycons-icons-->
-<script src="js/custom_scripts.js"></script>
 </head>
 
-<body>
+<body id="dashboard_page">		
 <div id="wrapper">
 <!----->
 <nav class="navbar-default navbar-static-top" role="navigation">
@@ -89,75 +92,54 @@ $(function () {
 		
 <div id="page-wrapper" class="gray-bg dashbard-1">
 <div class="content-main">
-<!--content-->
-<div class="content-top">
-<div class="col-md-4">
-<div class="row">	
-	<div class="content-top-1">
-	<canvas id="water_tests_chart"></canvas>
-	</div>
-	
-	<div class="content-top-1">
-	<canvas id="repairs_chart"></canvas>
-	</div>
-	
-	<div class="clearfix"></div>
-</div>
-</div>
-
-<div class="col-md-8">
-<div class="row">
-	<div class="content-top-1">
-	<canvas id="levels_trend"></canvas>
-	</div>
-	
-	<div class="content-top-1">
-	<canvas id="water_tests_trend"></canvas>
-	</div>
-</div>
-</div>
-
-<!--<div class="col-md-8 map-1">
-<div id="map" class="large"></div>
-</div>-->
-<div class="clearfix"> </div>
-</div>
-
-<!----->
-
-<div class="content-mid">
-<div class="col-md-4">
-
-</div>
-
-<div class="col-md-8 mid-content-top">
-
-</div>
-<div class="clearfix"> </div>
-</div>
-
-<!----->
-
-<div class="content-bottom">
-<div class="col-md-6">
-
-</div>
-
-<div class="col-md-6">
-
-</div>
-<div class="clearfix"> </div>
-</div>
-<!--//content-->
-
-<!---->
-<footer class="copy">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-</footer>
+	<div class='content-top'>
+		<div class='col-md-4'>
+		<div class='row'>	
+			<div class='content-top-1'>
+			<canvas id='water_tests_chart'></canvas>
+			</div>
+			
+			<div class='content-top-1'>
+			<canvas id='repairs_chart'></canvas>
+			</div>
+			
+			<div class='clearfix'></div>
 		</div>
-		<div class="clearfix"> </div>
-       </div>
-     </div>
+		</div>
+
+		<div class='col-md-8'>
+		<div class='row'>
+			<div class='content-top-1'>
+				<div id='map'></div>
+				
+				<div id='map_layer_selection' class='btn-group' role='group' aria-label='Map Layer Buttons'>
+					<button id='area_layer' type='button' class='btn btn-default'>Area Lead Levels</button>
+					<button id='construction_layer' type='button' class='btn btn-default'>Construction Sites</button>
+				</div>
+				
+				<div id='location_card' class='card'>
+					<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
+					
+					<div class='card-main'>
+						<div class='card-inner'></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
+		<div class='clearfix'> </div>
+	</div>
+
+	<!---->
+	<footer class="copy">
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+	</footer>
+</div>
+<div class="clearfix"> </div>
+</div>
+</div>
+</div>
 <!---->
 
 <script src="js/Chart.bundle.min.js" type="text/javascript"></script>
@@ -165,6 +147,7 @@ $(function () {
 <!--scrolling js-->
 <script src="js/jquery.nicescroll.js"></script>
 <script src="js/scripts.js"></script>
+<script src="js/map.js"></script>
 <!--//scrolling js-->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type= "text/javascript" src="https://www.google.com/jsapi"></script>

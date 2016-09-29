@@ -70,7 +70,7 @@ var lowRiskSrc = "images/yellowbar.png";
 var moderateRiskSrc = "images/brownbar.png";
 var highRiskSrc = "images/redbar.png";
 
-/* Meters for actual lead data. */
+/* Circles for lead data. */
 var unknownRiskCircle = "images/unknownrisklevel.png";
 var lowRiskCircle = "images/lowrisklevel.png";
 var medRiskCircle = "images/medrisklevel.png";
@@ -138,13 +138,6 @@ function initMap() {
 	});
 	
 	infoWindow = new google.maps.InfoWindow();
-
-	callStorageAPI("leadlevels.json");
-	callStorageAPI("leadLevels_birdview.json");
-	callStorageAPI("providers.json");
-	//callStorageAPI("pipedata.json");
-	
-	setUpFusionTable();
 
 	allMarkers.forEach(function(marker) {
 		marker.setMap(null);
@@ -222,6 +215,14 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	
+	callStorageAPI("leadlevels.json");
+	callStorageAPI("leadLevels_birdview.json");
+	callStorageAPI("providers.json");
+	callStorageAPI("pipedata.json");
+	callStorageAPI("construction_sites.json");
+	
+	setUpFusionTable();
+	
 	// Create a marker for the place.
 	locationMarker = new google.maps.Marker({map: map});
 	
@@ -258,21 +259,6 @@ function initMap() {
 			queryFusionTable(query, "jsonpCallbacks.fusionQueryCallback"+i);
 		}
 	}
-
-	// Construction Stuff
-	var constructionLatLng = {lat:43.019368, lng:-83.668522};
-	var constructionTitle = "Construction Zone";
-	var constructionImage = "images/construction_icon.png";
-	constructionMarker  = new google.maps.Marker({
-		position: constructionLatLng,
-		map: map,
-		title: constructionTitle,
-		icon: constructionIcon
-	});
-	
-	var constructionContent = "<h1>Construction Zone</h1> <p>Replacing Pipes. Estimated to last 2 weeks</p>";
-	bindInfoWindow("construction", constructionMarker, map, infoWindow, constructionContent);
-	constructionMarker.setMap(null);
 	
 	// Water Plant Stuff
 	var waterplantLatLng = {lat:43.056269, lng:-83.669625};
@@ -810,7 +796,31 @@ function callStorageAPI(object) {
 
 				setMarkers();
 			}
-			
+			/* Construction Sites */
+			else if (object == "construction_sites.json") {
+				js_obj = $.parseJSON(resp.body);
+				
+				//Adam Working Here
+				
+				for (var i=0; i<js_obj.construction_sites.length; i++) {
+					var marker;
+					var address = js_obj.construction_sites[i].ADDRESS;
+					var lng = js_obj.construction_sites[i].lng;
+					var lat = js_obj.construction_sites[i].lat;
+					var latLng = new google.maps.LatLng(lat, lng);
+					constructionMarker = new google.maps.Marker({
+						position: latLng,
+						title: address,
+						map: map,
+						icon: constructionIcon
+					});
+					
+					//bindInfoWindow("construction", constructionMarker, map, infoWindow, constructionContent);
+				}
+					//var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
+					//var title = provider.locationName;
+				
+			}
 			// Uploading Pipe Data From JSON in bucket
 			else if (object == "pipedata.json") {
 				js_obj = $.parseJSON(resp.body);
@@ -846,17 +856,18 @@ function callStorageAPI(object) {
 				for (var i = 0; i <= masterPipeArray.length; i++) {
 					for (var k = 0; k < masterPipeArray[i].length; k++) {
 						pipeObject = {lat: masterPipeArray[i][k][0], lng: masterPipeArray[i][k][1]};
-						pipeLine.push(pipeObject);}
+						pipeLine.push(pipeObject);
+					}
 						
-						autoPolyLine = new google.maps.Polyline({
+					autoPolyLine = new google.maps.Polyline({
 						path: pipeLine,
-						strokeColor: '#511883',
-						strokeOpacity: .9,
+						strokeColor: "#5266B0",
+						strokeOpacity: 1,
 						strokeWeight: 2
-						});
-						
-						arrayOfLines.push(autoPolyLine);
-						pipeLine = [];
+					});
+					
+					arrayOfLines.push(autoPolyLine);
+					pipeLine = [];
 				}
 			}
 				
@@ -913,6 +924,8 @@ function setupResourceMarkers() {
 	if (resourceActiveArray[6] == 1) {
 		$("#pipes_btn").addClass("active");
 		$("#pipes_btn img").attr("src", "../images/pipes_icon.png");
+		
+		
 	}
 
 	setMarkers();
@@ -1182,15 +1195,14 @@ function setMarkers() {
 	}
 	
 	if (resourceActiveArray[6] == 1) {
-		constructionMarker.setMap(map);
+		//waterplantMarker.setMap(map);
+		
 		for (var i = 0; i < arrayOfLines.length; i++)
 			arrayOfLines[i].setMap(map);
-		
-		waterplantMarker.setMap(map);
 	}
 	else {
-		constructionMarker.setMap(null);
-		waterplantMarker.setMap(null);
+		//waterplantMarker.setMap(null);
+		
 		for (var i = 0; i < arrayOfLines.length; i++)
 			arrayOfLines[i].setMap(null);
 	}

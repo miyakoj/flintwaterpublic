@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MyWater-Flint | Administrative Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Custom Theme files -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="css/template.css" rel="stylesheet" type="text/css" />
+<link href="css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="css/custom_styles.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/alternate_styles.css" rel="stylesheet" type="text/css" />
+<link href="css/theme.css" rel="stylesheet" type="text/css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<!-- Mainly scripts -->
+<script src="js/jquery.metisMenu.js"></script>
+<script src="js/jquery.slimscroll.min.js"></script>
+<!-- Custom and plugin javascript -->
+<link href="css/custom.css" rel="stylesheet" rel="stylesheet" type="text/css" />
+<script src="js/custom.js"></script>
+<script src="js/screenfull.js"></script>
+<script>
+$(function () {
+	$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+
+	if (!screenfull.enabled) {
+		return false;
+	}
+
+	$('#toggle').click(function () {
+		screenfull.toggle($('#container')[0]);
+	});
+});
+</script>
+
+<!----->
+<!--skycons-icons-->
+<script src="js/skycons.js"></script>
+<!--//skycons-icons-->
+<script src="js/custom_scripts.js"></script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/3.3.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+	apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
+	authDomain: "uniteflint.firebaseapp.com",
+	databaseURL: "https://uniteflint.firebaseio.com",
+	storageBucket: "uniteflint.appspot.com",
+  };
+  firebase.initializeApp(config);
+</script>
+</head>
+
+<body>
+<div class='login'>
+		<div class='login-bottom'>
+			<h2>Login</h2>
+			<form>
+			<div>
+				<div class='login-mail'>
+					<input type='text' placeholder='Email' required=''>
+					<i class='fa fa-envelope'></i>
+				</div>
+				<div class='login-mail'>
+					<input type='password' placeholder='Password' required=''>
+					<i class='fa fa-lock'></i>
+				</div>
+				   <a class='news-letter ' href='#'>
+						 <label class='checkbox1'><input type='checkbox' name='checkbox'><i> </i>Forgot Password</label>
+					   </a>
+					   
+				<div class='login-do'>
+					<label class='hvr-shutter-in-horizontal login-sub'>
+						<input type='submit' value='login'>
+						</label>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+
+<!--scrolling js-->
+<script src="js/jquery.nicescroll.js"></script>
+<script src="js/scripts.js"></script>
+<!--//scrolling js-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type= "text/javascript" src="https://www.google.com/jsapi"></script>
+</body>
+</html>

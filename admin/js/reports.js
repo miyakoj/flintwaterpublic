@@ -1,5 +1,6 @@
 var apiKey = "AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM";
 var fusionTableId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
+var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 
 /* Stores fusion table query callbacks. */
 window.jsonpCallbacks = {};
@@ -19,133 +20,144 @@ $(document).ready(function () {
 	Chart.defaults.global.title.fontSize = 18;
 	
 	/* Dashboard doughnut status charts. */
-	var waterTestsChart = new Chart($("#water_tests_chart"), {
-		type: "doughnut",
-		data: {
-			labels: ["Total Households", "Total Locations Tested"],
-			datasets: [{
-				data: [40472, 10671],
-				backgroundColor: ["#CCC", "#5266B0"]
-			}]
-		},
-		options: {
-			title: {
-				display: true,
-				text: 'Water Tests'
+	if ($pageId.indexOf("dashboard") != -1) {
+		var waterTestsChart = new Chart($("#water_tests_chart"), {
+			type: "doughnut",
+			data: {
+				labels: ["Total Households", "Total Locations Tested"],
+				datasets: [{
+					data: [40472, 10671],
+					backgroundColor: ["#CCC", "#5266B0"]
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Water Tests'
+				}
 			}
-		}
-	});
+		});
 	
-	var repairsChart = new Chart($("#repairs_chart"), {
-		type: "doughnut",
-		data: {
-			labels: ["Pending Repairs", "Completed Repairs"],
-			datasets: [{
-				data: [12, 38],
-				backgroundColor: ["#CCC", "#5266B0"]
-			}]
-		},
-		options: {
-			title: {
-				display: true,
-				text: 'Water Infrastructure Repairs'
+		var repairsChart = new Chart($("#repairs_chart"), {
+			type: "doughnut",
+			data: {
+				labels: ["Pending Repairs", "Completed Repairs"],
+				datasets: [{
+					data: [12, 38],
+					backgroundColor: ["#CCC", "#5266B0"]
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Water Infrastructure Repairs'
+				}
 			}
-		}
-	});
+		});
+	}
 	
 	
 	/* Line charts for lead level/copper level/lead test data. */
-	var timePeriod = ["September 2015", "October 2015", "November 2015", "December 2015", "January 2016", "February 2016", "March 2016", "April 2016", "May 2016", "June 2016"];
-	
-	var levelsChart = new Chart($("#levels_trend"), {
-		type: "line",
-		data: {
-			labels: timePeriod,
-			datasets: [/*{
-				label: "Copper Action Level",
-				data: [1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300],
-				borderColor: "#FFFF00",
-				fill: false
-			}},
-			{
-				label: "Average Copper Level",
-				data: [112.2500, 138.2727, 64.3651, 115.1136, 94.2229, 81.7133, 105.6507, 116.6392, 154.4194, 93.1486],
-				borderColor: "#5266B0",
-				fill: false
-			},*/
-			{
-				label: "Average Lead Level",
-				data: [14.8750, 6.3242, 3.9286, 19.4489, 11.9873, 13.5472, 17.4510, 34.4786, 30.2372, 10.0025],
-				backgroundColor: "#5266B0",
-				borderColor: "#5266B0",
-				fill: false
-			},
-			{
-				label: "Lead Action Level",
-				data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
-				backgroundColor: "#FF0000",
-				borderColor: "#FF0000",
-				fill: false
-			}]
-		},
-		options: {
-			title: {
-				display: true,
-				text: 'Lead Levels by Month'
-			},
-			scales: {
-				xAxes: [{
-					display: true,
-					scaleLabel: {
-						display: true,
-						labelString: 'Month'
-					}
-				}],
-				yAxes: [{
-					display: true,
-					scaleLabel: {
-						display: true,
-						labelString: 'ppb'
-					}
+	if ($pageId.indexOf("reports") != -1) {
+		var timePeriod = ["September 2015", "October 2015", "November 2015", "December 2015", "January 2016", "February 2016", "March 2016", "April 2016", "May 2016", "June 2016"];
+		
+		var levelsChart = new Chart($("#levels_trend"), {
+			type: "line",
+			data: {
+				labels: timePeriod,
+				datasets: [/*{
+					label: "Copper Action Level",
+					data: [1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300],
+					borderColor: "#FFFF00",
+					fill: false
+				}},
+				{
+					label: "Average Copper Level",
+					data: [112.2500, 138.2727, 64.3651, 115.1136, 94.2229, 81.7133, 105.6507, 116.6392, 154.4194, 93.1486],
+					borderColor: "#5266B0",
+					fill: false
+				},*/
+				{
+					label: "Average Lead Level",
+					data: [14.8750, 6.3242, 3.9286, 19.4489, 11.9873, 13.5472, 17.4510, 34.4786, 30.2372, 10.0025],
+					backgroundColor: "#5266B0",
+					borderColor: "#5266B0",
+					fill: false
+				},
+				{
+					label: "Lead Action Level",
+					data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
+					backgroundColor: "#FF0000",
+					borderColor: "#FF0000",
+					fill: false
 				}]
-			}
-		}
-	});
-	
-	var waterTests = new Chart($("#water_tests_trend"), {
-		type: "line",
-		data: {
-			labels: timePeriod,
-			datasets: [{
-				label: "Total Water Tests",
-				data: [595, 2087, 495, 3423, 59697, 107023, 85789, 85438, 42967, 3971],
-				backgroundColor: "#5266B0",
-				borderColor: "#5266B0",
-				fill: false
-			}]
-		},
-		options: {
-			title: {
-				display: true,
-				text: 'Water Tests by Month'
 			},
-			scales: {
-				xAxes: [{
+			options: {
+				title: {
 					display: true,
-					scaleLabel: {
+					text: 'Lead Levels by Month'
+				},
+				scales: {
+					xAxes: [{
 						display: true,
-						labelString: 'Month'
-					}
-				}],
-				yAxes: [{
-					display: true,
-					scaleLabel: {
-						display: false
-					}
-				}]
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'ppb'
+						}
+					}]
+				}
 			}
-		}
-	});
+		});
+		
+		var waterTests = new Chart($("#water_tests_trend"), {
+			type: "line",
+			data: {
+				labels: timePeriod,
+				datasets: [{
+					label: "Total Water Tests",
+					data: [595, 2682, 3177, 6600, 66297, 173320, 259109, 344547, 387514, 391485],
+					backgroundColor: "#FF0000",
+					borderColor: "#FF0000",
+					fill: false
+				},
+				{
+					label: "Monthly Water Tests",
+					data: [595, 2087, 495, 3423, 59697, 107023, 85789, 85438, 42967, 3971],
+					backgroundColor: "#5266B0",
+					borderColor: "#5266B0",
+					fill: false
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Water Tests by Month'
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: false
+						}
+					}]
+				}
+			}
+		});
+	}
 
 /*year	month	avgLeadLevel	avgCopperLevel	totalTests	
 2015	9		14.8750		112.2500	595	
