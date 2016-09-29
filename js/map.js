@@ -115,12 +115,72 @@ function initMap() {
 	$("#map_container").css("height", mapHeight + "px");
 	
 	$("#search_input").val(""); // clear the search input upon refresh
-	
+
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: {lat: 43.021, lng: -83.681},
 	  zoom: 13,
 	  mapTypeControl: false
 	});
+    
+	//This hides all POIs on map
+	var noPoi = [
+	{
+    featureType: "poi.attraction",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.business",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.government",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.medical",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.park",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.place_of_worship",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.school",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "poi.sports_complex",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	},
+	{
+    featureType: "transit.station",
+    stylers: [
+      { visibility: "off" }
+    ]   
+	}
+	];
+
+	map.setOptions({styles: noPoi});
 	
 	geocoder = new google.maps.Geocoder();
 	
@@ -460,6 +520,7 @@ function initMap() {
 		else
 			console.log("The search input is empty.");
 	});*/
+	
 
 
 	$("#more_info_button").on("click", function() {	
