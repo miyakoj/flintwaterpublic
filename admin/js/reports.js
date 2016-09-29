@@ -26,7 +26,7 @@ $(document).ready(function () {
 			data: {
 				labels: ["Total Households", "Total Locations Tested"],
 				datasets: [{
-					data: [40472, 10671],
+					data: [40472, 23972],
 					backgroundColor: ["#CCC", "#5266B0"]
 				}]
 			},
@@ -43,7 +43,7 @@ $(document).ready(function () {
 			data: {
 				labels: ["Pending Repairs", "Completed Repairs"],
 				datasets: [{
-					data: [12, 38],
+					data: [203, 38],
 					backgroundColor: ["#CCC", "#5266B0"]
 				}]
 			},
@@ -59,7 +59,7 @@ $(document).ready(function () {
 	
 	/* Line charts for lead level/copper level/lead test data. */
 	if ($pageId.indexOf("reports") != -1) {
-		var timePeriod = ["September 2015", "October 2015", "November 2015", "December 2015", "January 2016", "February 2016", "March 2016", "April 2016", "May 2016", "June 2016"];
+		var timePeriod = ["September 2015", "October 2015", "November 2015", "December 2015", "January 2016", "February 2016", "March 2016", "April 2016", "May 2016", "June 2016", "July 2016", "August 2016", "September 2016"];
 		
 		var levelsChart = new Chart($("#levels_trend"), {
 			type: "line",
@@ -79,14 +79,14 @@ $(document).ready(function () {
 				},*/
 				{
 					label: "Average Lead Level",
-					data: [14.8750, 6.3242, 3.9286, 19.4489, 11.9873, 13.5472, 17.4510, 34.4786, 30.2372, 10.0025],
+					data: [15.1892, 6.4149, 3.7951, 20.2424, 12.4007, 13.5444, 17.5068, 34.8227, 30.9329, 10.8779, 14.5364, 14.1623, 9.3133],
 					backgroundColor: "#5266B0",
 					borderColor: "#5266B0",
 					fill: false
 				},
 				{
 					label: "Lead Action Level",
-					data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
+					data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
 					backgroundColor: "#FF0000",
 					borderColor: "#FF0000",
 					fill: false
@@ -122,14 +122,14 @@ $(document).ready(function () {
 				labels: timePeriod,
 				datasets: [{
 					label: "Total Water Tests",
-					data: [595, 2682, 3177, 6600, 66297, 173320, 259109, 344547, 387514, 391485],
+					data: [562, 2634, 3097, 6437, 65266, 169531, 253511, 338339, 381181, 389731, 399514, 407629, 409799],
 					backgroundColor: "#FF0000",
 					borderColor: "#FF0000",
 					fill: false
 				},
 				{
 					label: "Monthly Water Tests",
-					data: [595, 2087, 495, 3423, 59697, 107023, 85789, 85438, 42967, 3971],
+					data: [562, 2072, 463, 3340, 58829, 104265, 83980, 84828, 42842, 8550, 9783, 8115, 2170],
 					backgroundColor: "#5266B0",
 					borderColor: "#5266B0",
 					fill: false
@@ -159,17 +159,22 @@ $(document).ready(function () {
 		});
 	}
 
-/*year	month	avgLeadLevel	avgCopperLevel	totalTests	
-2015	9		14.8750		112.2500	595	
-2015	10		6.3242		138.2727	2087	
-2015	11		3.9286		64.3651		495	
-2015	12		19.4489		115.1136	3423	
-2016	1		11.9873		94.2229		59697	
-2016	2		13.5472		81.7133		107023	
-2016	3		17.4510		105.6507	85789	
-2016	4		34.4786		116.6392	85438	
-2016	5		30.2372		154.4194	42967	
-2016	6		10.0025		93.1486		3971*/
+/*
+year 	month 	avgLeadLevel 	avgCopperLevel 	totalTests 	
+2015 	9 		15.1892 		84.3243 		562
+2015 	10 		6.4149 			139.7523 		2072
+2015 	11 		3.7951 			63.5246 		463
+2015 	12 		20.2424 		104.7273 		3340
+2016 	1 		12.4007 		92.4557 		58829
+2016 	2 		13.5444 		79.0562 		104265
+2016 	3 		17.5068 		103.9917 		83980
+2016 	4 		34.8227 		116.5484 		84828
+2016 	5 		30.9329 		156.4397 		42842
+2016 	6 		10.8779 		81.5776 		8550
+2016 	7 		14.5364 		70.2080 		9783
+2016 	8 		14.1623 		59.2670 		8115
+2016 	9 		9.3133 			61.9313 		2170
+*/
 	
 	/*var years = ["2015", "2016"];
 	var months = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
