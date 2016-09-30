@@ -23,6 +23,14 @@
 	margin-top:10px;
 }
 
+.btn-toolbar > .btn-group {
+	margin-left:10px;
+}
+
+.btn-toolbar > .btn-group:first-child {
+	margin-left:5px;
+}
+
 #location_card {
 	width:20em;
 	margin:0;

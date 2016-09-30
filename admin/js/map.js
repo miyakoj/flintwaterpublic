@@ -11,9 +11,10 @@ var height = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 
 var map;
-var adminResourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  // lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
+var adminResourceActiveArray = [0, 0, 0, 0, 0, 0, 0, 0];  // lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
 var clickedMarker;
-var construction_markers = [];
+var leadLayerBirdViewMarkers = [];
+var constructionMarkers = [];
 
 // icons
 var constructionIcon;
@@ -61,6 +62,18 @@ function initMap() {
 	
 	callStorageAPI("leadLevels_birdview.json");
 	callStorageAPI("construction_sites.json");
+	
+	map.addListener('zoom_changed', function() {
+	 	var zoomLvl = map.getZoom();
+	 	if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
+			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+				leadLayerBirdViewMarkers[i].setMap(map);
+		}
+		else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
+			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+				leadLayerBirdViewMarkers[i].setMap(null);
+		}
+	});
 };
 
 function weirdnessEquation(N, K) {
@@ -83,7 +96,7 @@ function callStorageAPI(object) {
 			if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);
 				
-				leadLayerBirdView_markers = [];
+				leadLayerBirdViewMarkers = [];
 				
 				var latDist = 0.00366980384615384615384615384615;
 				var lngDist = 0.00409039615384615384615384615385;
@@ -128,11 +141,10 @@ function callStorageAPI(object) {
 						strokeColor: color,
 						strokeOpacity: 0,
 						fillColor: color,
-						fillOpacity: opacity,
-						map: map
+						fillOpacity: opacity
 					});
 
-					leadLayerBirdView_markers.push(leadLevelAreaSquare);
+					leadLayerBirdViewMarkers.push(leadLevelAreaSquare);
 
 					content = "<h5>About this area</h5>";
 					content += "<div class='row'><div class='col-xs-2'><img id='risk_img' src='" + warningImg + "' /></div> <div class='col-xs-10'><strong>" + numOfDangerous + "</strong> out of <strong>" + numOfTests + "</strong> total tests in this area had dangerous lead levels.</div></div>";
@@ -161,7 +173,7 @@ function callStorageAPI(object) {
 						icon: constructionIcon
 					});
 					
-					construction_markers.push(constructionMarker);
+					constructionMarkers.push(constructionMarker);
 				}
 				
 			}
@@ -225,8 +237,8 @@ $(document).ready(function() {
 				adminResourceActiveArray[0] = 0;
 				$("#area_layer").removeClass("active");
 				
-				for (var i = 0; i < leadLayerBirdView_markers.length; i++)
-					leadLayerBirdView_markers[i].setMap(null);
+				for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+					leadLayerBirdViewMarkers[i].setMap(null);
 				
 				$("#location_card").hide();
 			}
@@ -234,8 +246,8 @@ $(document).ready(function() {
 				adminResourceActiveArray[0] = 1;
 				$("#area_layer").addClass("active");
 				
-				for (var i = 0; i < leadLayerBirdView_markers.length; i++)
-					leadLayerBirdView_markers[i].setMap(map);
+				for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+					leadLayerBirdViewMarkers[i].setMap(map);
 			}
 			
 			localStorage.setItem("admin_resource_array", JSON.stringify(adminResourceActiveArray));
@@ -247,15 +259,15 @@ $(document).ready(function() {
 				adminResourceActiveArray[6] = 0;
 				$("#construction_layer").removeClass("active");
 				
-				for (var i=0; i<construction_markers.length; i++)
-					construction_markers[i].setMap(null);
+				for (var i=0; i<constructionMarkers.length; i++)
+					constructionMarkers[i].setMap(null);
 			}
 			else {
 				adminResourceActiveArray[6] = 1;
 				$("#construction_layer").addClass("active");
 				
-				for (var i=0; i<construction_markers.length; i++)
-					construction_markers[i].setMap(map);
+				for (var i=0; i<constructionMarkers.length; i++)
+					constructionMarkers[i].setMap(map);
 			}
 			
 			if (map.getZoom() > 15)

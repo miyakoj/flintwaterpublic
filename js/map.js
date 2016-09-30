@@ -16,7 +16,7 @@ var infoWindow;
 var heatmap;
 var fusionTableId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 var leadLayer; // fusion table layer to set up lead levels
-var leadLayerBirdView_markers = [];
+var leadLayerBirdViewMarkers = [];
 var leadLayerBirdView_info;
 var predictiveLayer; // fusion table layer to show predicted lead levels
 var leadAndPredictiveLayer; // fusion table layer to show both lead and prediction layer
@@ -30,6 +30,7 @@ var allMarkersString = [];
 var resourceActiveArray = [1, 0, 0, 0, 0, 0, 0, 0];  // lead levels, water pickup, recycle, filter, lead, blood, construction, prediction
 var oldResourceActiveArray; // the saved resource array that's stored when the user visits the "test my water" or "report" pages
 var savedLocationMarkers = [];
+var constructionMarkers = [];
 var locationMarker;
 var clickedMarker;
 var markerImg;
@@ -308,14 +309,14 @@ function initMap() {
 	 	var zoomLvl = map.getZoom();
 	 	if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
 			leadAndPredictiveLayer.setMap(null);
-			for (var i = 0; i < leadLayerBirdView_markers.length; i++) {
-				leadLayerBirdView_markers[i].setMap(map);
+			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
+				leadLayerBirdViewMarkers[i].setMap(map);
 			}
 		}
 		else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
 			leadAndPredictiveLayer.setMap(map);
-			for (var i = 0; i < leadLayerBirdView_markers.length; i++) {
-				leadLayerBirdView_markers[i].setMap(null);
+			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
+				leadLayerBirdViewMarkers[i].setMap(null);
 			}
 		}
 	 });
@@ -601,7 +602,7 @@ function callStorageAPI(object) {
 			else if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);
 				
-				leadLayerBirdView_markers = [];
+				leadLayerBirdViewMarkers = [];
 				
 				var latDist = 0.00366980384615384615384615384615;
 				var lngDist = 0.00409039615384615384615384615385;
@@ -662,11 +663,10 @@ function callStorageAPI(object) {
 						strokeColor: color,
 						strokeOpacity: 0,
 						fillColor: color,
-						fillOpacity: opacity,
-						map: map
+						fillOpacity: opacity
 					});
 
-					leadLayerBirdView_markers.push(leadLevelAreaSquare);
+					leadLayerBirdViewMarkers.push(leadLevelAreaSquare);
 
 					content = "<h5>About this area</h5>";
 					content += "<div class='row'><div class='col-xs-2'><img id='risk_img' src='" + warningImg + "' /></div> <div class='col-xs-10'><strong>" + numOfDangerous + "</strong> out of <strong>" + numOfTests + "</strong> total tests in this area had dangerous lead levels.</div></div>";
@@ -811,9 +811,10 @@ function callStorageAPI(object) {
 					constructionMarker = new google.maps.Marker({
 						position: latLng,
 						title: address,
-						map: map,
 						icon: constructionIcon
 					});
+					
+					constructionMarkers.push(constructionMarker);
 					
 					//bindInfoWindow("construction", constructionMarker, map, infoWindow, constructionContent);
 				}
@@ -901,31 +902,35 @@ function setupResourceMarkers() {
 		$("#heatmap_btn").addClass("active");
 		$("#heatmap_btn img").attr("src", "../images/lead_info_icon.png");
 	}
+	
 	if (resourceActiveArray[1] == 1) {
 		$("#water_pickup_btn").addClass("active");
 		$("#water_pickup_btn img").attr("src", "../images/water_pickup_icon.png");
 	}
+	
 	if (resourceActiveArray[2] == 1) {
 		$("#recycling_btn").addClass("active");
 		$("#recycling_btn img").attr("src", "../images/recycle_icon.png");
 	}
+	
 	if (resourceActiveArray[3] == 1) {
 		$("#water_filters_btn").addClass("active");
 		$("#water_filters_btn img").attr("src", "../images/water_filter_icon.png");
 	}
+	
 	if (resourceActiveArray[4] == 1) {
 		$("#water_testing_btn").addClass("active");
 		$("#water_testing_btn img").attr("src", "../images/lead_test_icon.png");
 	}
+	
 	if (resourceActiveArray[5] == 1) {
 		$("#blood_testing_btn").addClass("active");
 		$("#blood_testing_btn img").attr("src", "../images/bloodtest_icon.png");
 	}
+	
 	if (resourceActiveArray[6] == 1) {
 		$("#pipes_btn").addClass("active");
 		$("#pipes_btn img").attr("src", "../images/pipes_icon.png");
-		
-		
 	}
 
 	setMarkers();
@@ -1155,18 +1160,18 @@ function setMarkers() {
 	// fusion table data
 	if ((resourceActiveArray[0] == 1) && (zoomLvl < 16)) {
 		leadAndPredictiveLayer.setMap(null);
-		for (var i = 0; i < leadLayerBirdView_markers.length; i++)
-			leadLayerBirdView_markers[i].setMap(map);
+		for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+			leadLayerBirdViewMarkers[i].setMap(map);
 	}
 	else if ((resourceActiveArray[0] == 1) && (zoomLvl >= 16)) {
 		leadAndPredictiveLayer.setMap(map);
-		for (var i = 0; i < leadLayerBirdView_markers.length; i++)
-			leadLayerBirdView_markers[i].setMap(null);
+		for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+			leadLayerBirdViewMarkers[i].setMap(null);
 	}
 	else if (resourceActiveArray[0] == 0) {
 		leadAndPredictiveLayer.setMap(null);
-		for (var i = 0; i < leadLayerBirdView_markers.length; i++)
-			leadLayerBirdView_markers[i].setMap(null);
+		for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
+			leadLayerBirdViewMarkers[i].setMap(null);
 	}
 	
 	for (var i = 0; i < allMarkers.length; i++) {
@@ -1402,10 +1407,16 @@ $(document).ready(function() {
 			if (resourceActiveArray[6] == 1) {
 				resourceActiveArray[6] = 0;
 				$("#pipes_btn img").attr("src", "../images/pipes_icon_white.png");
+				
+				for (var i=0; i<constructionMarkers.length; i++)
+					constructionMarkers[i].setMap(null);
 			}
 			else {
 				resourceActiveArray[6] = 1;
 				$("#pipes_btn img").attr("src", "../images/pipes_icon.png");
+				
+				for (var i=0; i<constructionMarkers.length; i++)
+					constructionMarkers[i].setMap(map);
 			}
 			
 			if (map.getZoom() > 15)
