@@ -1042,7 +1042,7 @@ function createLocationContent(streetAddress, dataObj) {
 	if (((leadLevel != "") && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		if (leadLevel != "") {
 			if (leadLevel < 15) {
-				warningMsg = "Elevated Lead Level";
+				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
 			}
 			else if (leadLevel < 50) {
