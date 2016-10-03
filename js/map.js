@@ -1038,24 +1038,29 @@ function createLocationContent(streetAddress, dataObj) {
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	var warningMsg;
 	var warningImg;
+	var suggestedAction;
 	
 	if (((leadLevel != "") && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		if (leadLevel != "") {
 			if (leadLevel < 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
+				suggestedAction = "<br>" + "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			else if (leadLevel < 50) {
 				warningMsg = "Moderate Lead Level";
 				warningImg = medRiskCircle;
+				suggestedAction = "<br>" + "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			else {
 				warningMsg = "High Lead Level";
 				warningImg = highRiskCircle;
+				suggestedAction = "<br>" + "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
 			content += "<div id='results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
+			content += "<div id='suggestedAction'>" + suggestedAction + "</div>";
 		}
 		else {
 			content += "<div id='results' class='emphasis'>No Test Results</div>";
@@ -1075,6 +1080,8 @@ function createLocationContent(streetAddress, dataObj) {
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
+			suggestedAction = "<br>" + "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+			content += "<div id='suggestedAction'>" + suggestedAction + "</div>";
 		}
 		
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
@@ -1083,6 +1090,8 @@ function createLocationContent(streetAddress, dataObj) {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
 		content += "<div>No test results available.<br />";
 		content += "No lead prediction available.</div>";
+		suggestedAction = "<br>" + "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+		content += "<div id='suggestedAction'>" + suggestedAction + "</div>";
 	}
 	
 	return content;
