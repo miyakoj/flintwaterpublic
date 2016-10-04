@@ -5,9 +5,9 @@ cron.yaml
 navbar_test.html
 *.bak
 color_scheme.png
-includes/new db files/database_config.php
-includes/new db files/json_processing.php
-includes/new db files/queries.php
+includes/new db files/
+includes/fusion_table_csv.php
+includes/uma_db_processing.php
 providers.json
 js/Paul_map.js
 oath_client_id.json
@@ -17,5 +17,10 @@ js/map_Miyako.js
 /admin/Minimal_Admin_Panel/
 lead_test_results.csv
 lead_predictions.csv
+fusion_table_all.csv
+fusion_table_recent.csv
 geo_locations.csv
 fusion_table_full.xlsx
+oath_client_id.json
+/vendor
+includes/uma_db_processing.php

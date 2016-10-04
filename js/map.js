@@ -464,65 +464,6 @@ function initMap() {
 			map.setZoom(20);
 
 	}
-	
-	/*if (localStorage.getItem("saved_location2") !== null) {
-		localStorage.removeItem("saved_location2");
-		localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
-	}*/
-	
-	// Save a location to HTML5 local storage when the save button is clicked	
-    /*$("#saved_location_button").on("click", function() {
-		if ($("#search_input").val() != "") {
-			if (typeof(Storage) !== "undefined") {
-				if ($("#location_card #saved_location_button span").text() == save_location_msg) {
-					if (localStorage.getItem("saved_locations_count") !== null) {
-						// if (localStorage.saved_locations_count < 100)
-							localStorage.saved_locations_count = Number(localStorage.saved_locations_count) + 1;
-							// TODO - also save the current icon img url
-						// else
-							// console.log("There are no free saved locations.");
-					}
-					else
-						localStorage.saved_locations_count = 1;
-					
-					localStorage.setItem("saved_location" + Number(localStorage.saved_locations_count), $("#search_input").val());
-					markerImg = "images/savedlocation.png";
-					card_markerImg = "images/locationicon.png";
-					$("#location_card #saved_location_button span").text(saved_location_msg);
-					
-					var temp = locationMarker;
-					savedMarkers.push(temp)
-					console.log(savedMarkers);
-					
-				}
-				else { // remove location
-					var searched_location = $("#search_input").val();
-					savedLocationTotal = localStorage.getItem("saved_locations_count");
-					localStorage.setItem("saved_locations_count", Number(localStorage.saved_locations_count) - 1);
-				
-					$("#saved_location_button span").text(save_location_msg);
-				    for (var i=0; i < savedLocationTotal; i++) {
-						if (localStorage.getItem(["saved_location" + Number(localStorage.saved_locations_count)]) == searched_location) {
-							localStorage.removeItem("saved_location" + Number(localStorage.saved_locations_count));
-						    savedMarkers.splice(i,1);
-						}
-					}
-					markerImg = "images/locationicon.png";
-					card_markerImg = "images/savedlocation.png";
-				}
-				
-				locationMarker[0].setIcon(markerImg);
-				console.log(localStorage);
-			}
-			else {
-				console.log("There is no local storage support.");
-			}
-		}
-		else
-			console.log("The search input is empty.");
-	});*/
-	
-
 
 	$("#more_info_button").on("click", function() {	
 		if ($("#more_info_button span").text() === "More Info") {
@@ -1021,7 +962,6 @@ function createLocationContent(streetAddress, dataObj) {
 	
 	/* Data is either from a fusion table query. */
 	if (dataObj.rows) {
-		console.log(dataObj);
 		!isNaN(dataObj.rows[0][2]) ? leadLevel = dataObj.rows[0][2] : leadLevel = "";
 		
 		testDate = dataObj.rows[0][3].slice(0, dataObj.rows[0][3].indexOf(" "));
@@ -1045,22 +985,41 @@ function createLocationContent(streetAddress, dataObj) {
 			if (leadLevel < 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
-				suggestedAction = "<br>" + "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "<p>Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 			}
 			else if (leadLevel < 50) {
 				warningMsg = "Moderate Lead Level";
 				warningImg = medRiskCircle;
-				suggestedAction = "<br>" + "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "<p>Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 			}
 			else {
 				warningMsg = "High Lead Level";
 				warningImg = highRiskCircle;
-				suggestedAction = "<br>" + "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "<p>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 			}
 			
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
-			content += "<div id='results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
-			content += "<div id='suggestedAction'>" + suggestedAction + "</div>";
+			content += "<div id='results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate;
+			
+			/* Show other test results if they exist. */
+			if (dataObj.rows.length > 1) {
+				content += "<div id='previous_results'><span ></span> <button type='button' class='btn btn-flat' data-toggle='collapse' data-target='#previous_results_details' aria-expanded='false' aria-controls='previous_results_details'><span>Previous results</span> <i class='material-icons'>expand_more</i></button></div>";
+				content += "<div class='collapse' id='previous_results_details'>";
+				
+				for (var i=1; i<dataObj.rows.length; i++) {
+					leadLevel = dataObj.rows[i][2];
+					testDate = dataObj.rows[i][3].slice(0, dataObj.rows[i][3].indexOf(" "));
+					
+					content += "<strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Test Date:</strong> " + testDate;
+					
+					i < dataObj.rows.length-1 ? content += "<hr/ >" : content += "";
+				}
+				
+				content += "</div>";
+			}
+			
+			content += "</div>";
+			content += "<div id='suggested_action'>" + suggestedAction + "</div>";
 		}
 		else {
 			content += "<div id='results' class='emphasis'>No Test Results</div>";
@@ -1080,8 +1039,7 @@ function createLocationContent(streetAddress, dataObj) {
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
-			suggestedAction = "<br>" + "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
-			content += "<div id='suggestedAction'>" + suggestedAction + "</div>";
+			content += "<p>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 		}
 		
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;

@@ -5,8 +5,6 @@ console.log("$pageId = " + $pageId);
 var $activeNode;
 var autocomplete;
 
-console.log(localStorage.getItem("browserMsg"));
-
 /* Encourage a user of IE and Safari to download an alternate browser.
    (IE/Safari don't support the color input type but Firefox/Chrome do.) */
 if (!Modernizr.inputtypes.color && !localStorage.getItem("browserMsg")) {
