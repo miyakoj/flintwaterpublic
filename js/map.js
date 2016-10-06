@@ -465,11 +465,15 @@ function initMap() {
 
 	}
 
-	$("#location_card #more_info_button").on("click", function() {	
-		if ($("#more_info_button span+span").text() === "More Info")
-			$("#more_info_button span+span").text("Less Info");
-		else
-			$("#more_info_button span+span").text("More Info");
+	$("#more_info_button").on("click", function() {	
+		if ($("#more_info_button span").text() === "More Info") {
+			$("#more_info_button span").text("Less Info");
+			$("#location_card .card-inner").empty().append("<p class=\"more-info\">More Info About " + leadLevelOfInput + "</p>");
+		}
+		else {
+			$("#more_info_button span").text("More Info");
+			$(".more-info").remove();
+		}
 	});
 	
 	setupResourceMarkers();
@@ -671,6 +675,8 @@ function callStorageAPI(object) {
 					content += "<p>Zoom in for specific lead test results.</p>";
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
+					
+					console.log($("#location_card").css("display"));
 					
 					$("#location_card .card-action").hide();
 				}
@@ -979,26 +985,25 @@ function createLocationContent(streetAddress, dataObj) {
 			if (leadLevel < 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
-				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "<p>Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 			}
 			else if (leadLevel < 50) {
 				warningMsg = "Moderate Lead Level";
 				warningImg = medRiskCircle;
-				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "<p>Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 			}
 			else {
 				warningMsg = "High Lead Level";
 				warningImg = highRiskCircle;
-				suggestedAction = "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "<p>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 			}
 			
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
-			content += "<div id='current_results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
-			content += "<div id='more_info_details' class='collapse'>";
+			content += "<div id='results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate;
 			
 			/* Show other test results if they exist. */
 			if (dataObj.rows.length > 1) {
-				content += "<div id='previous_results'><button type='button' class='btn btn-flat' data-toggle='collapse' data-target='#previous_results_details' aria-expanded='false' aria-controls='previous_results_details'><span>Previous results</span> <i class='material-icons'>expand_more</i></button></div>";
+				content += "<div id='previous_results'><span ></span> <button type='button' class='btn btn-flat' data-toggle='collapse' data-target='#previous_results_details' aria-expanded='false' aria-controls='previous_results_details'><span>Previous results</span> <i class='material-icons'>expand_more</i></button></div>";
 				content += "<div class='collapse' id='previous_results_details'>";
 				
 				for (var i=1; i<dataObj.rows.length; i++) {
@@ -1013,32 +1018,39 @@ function createLocationContent(streetAddress, dataObj) {
 				content += "</div>";
 			}
 			
-			content += "<p id='suggested_action'>" + suggestedAction + "</p>";
+			content += "</div>";
+			content += "<div id='suggested_action'>" + suggestedAction + "</div>";
 		}
 		else {
 			content += "<div id='results' class='emphasis'>No Test Results</div>";
 		
-			if (prediction >= 0.20)
+			if (prediction >= 0.20) {
 				warningMsg = "High risk of elevated lead levels. Testing is recommended.";
-			else if ((prediction > 0.10) && (prediction < 0.20))
+				//warningImg = highRiskCircle;
+			}
+			else if ((prediction > 0.10) && (prediction < .20)) {
 				warningMsg = "Moderate risk of elevated lead levels. Testing is recommended.";
-			else if (prediction <= 0.10)
+				//warningImg = medRiskCircle;
+			}
+			else if (prediction <= .10) {
 				warningMsg = "At risk for elevated lead levels. Testing is recommended.";
+				//warningImg = lowRiskCircle;
+			}
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
-			content += "<p id='suggested_action'>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
+			content += "<p>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 		}
+		
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
 	}	
 	else {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
 		content += "<div>No test results available.<br />";
 		content += "No lead prediction available.</div>";
-		//content += "<div id='suggested_action' class='hide'>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</div>";
+		suggestedAction = "<br>" + "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+		content += "<div id='suggestedAction'>" + suggestedAction + "</div>";
 	}
-	
-	content += "<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr class='hide' /> <div id='location_questions' class='hide'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div></div>"
 	
 	return content;
 }
@@ -1047,18 +1059,17 @@ function createLocationContent(streetAddress, dataObj) {
 function createLocationCardContent(type, content) {
 	$("#location_card .card-inner").empty().html(content);
 		
-	/*if (type.search(/location/i) != -1) {
-		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr class='hide' /> <div id='location_questions' class='hide'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div>");
-	}*/
+	if (type.search(/location/i) != -1) {
+		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr /> <div id='location_questions'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div>");
+	}
 	
-	if (windowWidth >= 600)
-		$("#location_card #more_info_details").removeClass("collapse");
+	/*if (type.search(/location/i) != -1)
+		$("#location_card #card_save .icon").html("star");*/
 	
 	if (type.indexOf("leadArea") != -1)
 		$("#location_card .card-action").hide();
-	else {
+	else
 		$("#location_card .card-action").show();
-	}
 }
 
 
@@ -1150,7 +1161,7 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 				$("#resource_card #card_report_menu a:contains('Water Pickup')").attr("href", "#");
 			}
 			
-			if (windowWidth >= 600) {
+			if (windowWidth >= 768) {
 				$("#resource_card").css({
 					left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
 					bottom: (($("#map").height() / 2) + 10) + "px"

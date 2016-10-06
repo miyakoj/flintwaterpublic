@@ -5,12 +5,15 @@ console.log("$pageId = " + $pageId);
 var $activeNode;
 var autocomplete;
 
-/* Encourage a user of IE to download an alternate browser.
-   (IE doesn't support the Web Audio API but Firefox/Chrome/Safari (desktop & mobile versions) all do.) */
-if (!Modernizr.webaudio && !localStorage.getItem("browserMsg")) {
+/* Encourage a user of IE and Safari to download an alternate browser.
+   (IE/Safari don't support the color input type but Firefox/Chrome do.) */
+if (!Modernizr.inputtypes.color && !localStorage.getItem("browserMsg")) {
 	$("#page_alert button").after("You are using an unsupported browser. We recommend using Firefox 45.3+ or Chrome 53+ for the best experience.");
 	$("#page_alert").addClass("alert-info").show();
-	localStorage.setItem("browserMsg", "1");
+	
+	$("#page_alert").on("close.bs.alert", function () {
+		localStorage.setItem("browserMsg", "1")
+	});
 }
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
@@ -148,7 +151,7 @@ $(document).ready(function() {
 	
 	/* General layout/CSS differences between the mobile and desktop versions. */
 	/* Phones and small tablets. */
-	if (windowWidth < 600) {
+	if (windowWidth < 768) {
 		$("#location_card, #resource_card").appendTo($("body"));
 		$("#legend_card").appendTo($("map-container"));
 		
@@ -156,9 +159,21 @@ $(document).ready(function() {
 			$(this).find("li:first-child").addClass("dropup open");
 			$(this).find("#report_button").attr("aria-expanded", "true");
 		});
+		
+		//closes the nav drawer when you click outside of it
+		$("body").click(function(){
+			if($('.navbar').hasClass('slide-active')){
+				$('#page_content, .navbar, body, .navbar-header, .navbar-toggle').toggleClass('slide-active');
+				$("#main_menu li").removeClass("active");
+				$(".navbar-header, #page_content").css("left", "0px");
+				$("#main_menu").css("left", "-100%");
+			}
+		}).on("click", "#main_menu, .navbar-toggle, .modal", function(event) {
+			event.stopPropagation();
+		});
 	}
 	/* Large tablets and computers. */
-	else if (windowWidth >= 600) {
+	else {
 		$("#location_card").css({
 			"width": function() {
 				return $("#search_input").outerWidth();
@@ -177,24 +192,12 @@ $(document).ready(function() {
 			},
 			"top": function() {
 				return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
+				/*console.log($("#location_card").css("top") + ", " + $("#location_card").outerHeight(true));
+				return parseInt($("#location_card").css("top")) + $("#location_card").outerHeight(true) + 10 + "px";*/
 			},
 			"left": function() {
 				return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
 			}
-		});
-	}
-	
-	if (windowWidth < 768) {
-		//closes the nav drawer when you click outside of it
-		$("body").click(function(){
-			if($('.navbar').hasClass('slide-active')){
-				$('#page_content, .navbar, body, .navbar-header, .navbar-toggle').toggleClass('slide-active');
-				$("#main_menu li").removeClass("active");
-				$(".navbar-header, #page_content").css("left", "0px");
-				$("#main_menu").css("left", "-100%");
-			}
-		}).on("click", "#main_menu, .navbar-toggle, .modal", function(event) {
-			event.stopPropagation();
 		});
 	}
 	
