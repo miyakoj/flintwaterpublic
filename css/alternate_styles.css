@@ -1,12 +1,16 @@
 /* Tablet only. */
-@media only screen and (min-width:600px) {
+@media only screen and (min-width:600px) {	
+	#map {
+		position:relative;
+	}
+	
 	#location_card, #resource_card, #legend_card {
 		bottom:auto;
 		right:auto;
 	}
 	
-	#map {
-		position:relative;
+	#location_card #more_info_button {
+		display:none;
 	}
 		
 	#resource_card {

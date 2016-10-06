@@ -277,7 +277,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	margin:8px 0;
 }
 
-#location_card .card-inner #warning, #location_card .card-inner #address + #results {
+#location_card .card-inner #warning {
+	margin:12px 0;
+}
+
+#location_card .card-inner #address + #results {
 	margin-bottom:12px;
 }
 
@@ -287,8 +291,23 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	margin-right:10px;
 }
 
+#location_card #previous_results button {
+	padding:4px 0;
+	padding-top:6px;
+	line-height:30px;
+}
+
+#location_card #previous_results button span {
+	display:inline-block;
+	line-height:30px;
+}
+
+#location_card #previous_results .material-icons {
+	vertical-align:text-bottom;
+}
+
 #location_card #more_info_button {
-	display:none;
+	
 }
 
 #location_card .card-action img {
