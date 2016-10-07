@@ -36,8 +36,7 @@ $content = "<div id='map_container'>
 					<button type='button' id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'>
 					<span class='icon icon-lg'>star_border</span> <span>Save</span></button>
 					
-					<button type='button' id='more_info_button' class='btn btn-flat pull-right' data-toggle='collapse' data-target='#more_info_details' aria-expanded='false' aria-controls='more_info_details'>
-					<span class='material-icons icon-lg'>info_outline</span> <span>More Info</span></button>
+					<button type='button' id='more_info_button' class='btn btn-flat pull-right' data-toggle='collapse' data-target='#more_info_details' aria-expanded='false' aria-controls='more_info_details'><span>More Info</span></button>
 				</div>
 			</div>
 		</div>

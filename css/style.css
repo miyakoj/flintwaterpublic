@@ -3,6 +3,10 @@ html, body {
 	padding-bottom:0!important;
 }
 
+body#404_page {
+	background-image:url('images/404.png');
+}
+
 .container-fluid {
 	padding:0!important;
 }
@@ -306,8 +310,9 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	vertical-align:text-bottom;
 }
 
-#location_card #more_info_button {
-	
+#location_card #more_info_button span {
+	display:inline-block;
+	line-height:22px;
 }
 
 #location_card .card-action img {

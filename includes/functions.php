@@ -10,6 +10,7 @@ $paddedId = sprintf("%010d", $reportId);	// Pad the number with zeros.
 $json = file_get_contents("php://input");
 $obj = json_decode($json);
 
+/* The data came from the Android app. */
 if ($obj) {
 	if ($obj->{"type"} == "problem_report") {
 		$result = queries("problem_report", "" , $paddedId, $obj);
@@ -20,6 +21,7 @@ if ($obj) {
 	else if (stripos($obj->{"type"}, "survey") !== false)
 		$result = queries("survey", "" , "", $obj);
 }
+/* The data came from the website. */
 else {
 	if ($_POST["type"] == "resource_report") {	
 		$result = queries("resource_report", "" , $paddedId);

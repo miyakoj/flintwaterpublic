@@ -14,7 +14,7 @@ var geocoder;
 var autocomplete;
 var infoWindow;
 var heatmap;
-var fusionTableId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
+var fusionTableAllId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 var leadLayer; // fusion table layer to set up lead levels
 var leadLayerBirdViewMarkers = [];
 var leadLayerBirdView_info;
@@ -66,10 +66,10 @@ var savedLocationIcon;
 var iconSize = 30;
 
 /* Meters for predicted risk. */
-var unknownRiskSrc = "images/graybar.png";
-var lowRiskSrc = "images/yellowbar.png";
-var moderateRiskSrc = "images/brownbar.png";
-var highRiskSrc = "images/redbar.png";
+var unknownRiskSrc = "images/unknownbar.png";
+var lowRiskSrc = "images/lowbar.png";
+var moderateRiskSrc = "images/moderatebar.png";
+var highRiskSrc = "images/highbar.png";
 
 /* Circles for lead data. */
 var unknownRiskCircle = "images/unknownrisklevel.png";
@@ -277,7 +277,7 @@ function initMap() {
 	};
 	
 	callStorageAPI("leadlevels.json");
-	callStorageAPI("leadLevels_birdview.json");
+	//callStorageAPI("leadLevels_birdview.json");
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
 	callStorageAPI("construction_sites.json");
@@ -292,7 +292,7 @@ function initMap() {
 	
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		for (var i = 1; i <= numberSaved; i++) {
-			var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+			var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" 
 				+ localStorage.getItem("savedLocationAddress"+i) + "' ORDER BY 'testDate' DESC";
 			
 			/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
@@ -365,7 +365,7 @@ function initMap() {
 		$("#legend_card").show();
   	});
 
-	 map.addListener('zoom_changed', function() {
+	 /*map.addListener('zoom_changed', function() {
 	 	var zoomLvl = map.getZoom();
 	 	if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
 			leadAndPredictiveLayer.setMap(null);
@@ -379,7 +379,7 @@ function initMap() {
 				leadLayerBirdViewMarkers[i].setMap(null);
 			}
 		}
-	 });
+	 });*/
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
 	// more details for that place.
@@ -408,20 +408,19 @@ function initMap() {
 
 		/* Display appropriate lead rating and message. */
 		var inputAddress = place.formatted_address.split(',');
-		var streetAddress = inputAddress[0].toUpperCase();
+		var streetAddress = inputAddress[0];
 		
-		var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
+		var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" 
 					+ streetAddress + "' ORDER BY 'testDate' DESC";
+					
+		console.log(query);
 					
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 		window.jsonpCallbacks["searchQueryCallback"] = function(data) {
 			if (data.rows != undefined)
 				locationMarker.setPosition({lat: data.rows[0][0], lng: data.rows[0][1]});
 			else
-				//locationMarker.setPosition({lat: place.geometry.location.lat().toPrecision(7), lng: place.geometry.location.lng().toPrecision(7)});
 				locationMarker.setPosition({lat: place.geometry.location.lat(), lng: place.geometry.location.lng()});
-			
-			//console.log(place.geometry.location.lat().toPrecision(7) + " - " + place.geometry.location.lng().toPrecision(7));
 			
 			var content = fusionQueryCallback(data, streetAddress);
 			createLocationCardContent("location", content);
@@ -466,10 +465,10 @@ function initMap() {
 	}
 
 	$("#location_card #more_info_button").on("click", function() {	
-		if ($("#more_info_button span+span").text() === "More Info")
-			$("#more_info_button span+span").text("Less Info");
+		if ($("#more_info_button span").text() === "More Info")
+			$("#more_info_button span").text("Less Info");
 		else
-			$("#more_info_button span+span").text("More Info");
+			$("#more_info_button span").text("More Info");
 	});
 	
 	setupResourceMarkers();
@@ -489,46 +488,63 @@ function initAutocomplete(inputId) {
 function setUpFusionTable() {
 	leadAndPredictiveLayer = new google.maps.FusionTablesLayer({
 	    query: {
-	      	select: "'latitude'",
-	      	from: fusionTableId/*,
-			where: */
+	      	select: "geometry",
+	      	from: "1Kxo2QvMVHbNFPJQ9c9L3wbKrWQJPkbr_Gy90E2MZ"
 	    }, 
 	    options: {
 			suppressInfoWindows: "true"
 	    },
-	    styles: [{
-			markerOptions: {
-				iconName: "measle_grey"
+		styles: [{
+			where: "leadLevel == -1",
+			polygonOptions: {
+			  fillColor: "#999999",
+			  fillOpacity: 0.5,
+			  strokeColor: "#999999",
+			  strokeWeight: 1
 			}
-		}, {
-			where: '\'leadlevel\' >= 15  AND \'leadlevel\' < 50',
-			markerOptions: {
-				iconName: "measle_brown"
+		  },
+		  {
+			where: "leadLevel >= 0 AND leadLevel < 15",
+			polygonOptions: {
+			  fillColor: "#F9D17A",
+			  fillOpacity: 1,
+			  strokeColor: "#F9D17A",
+			  strokeWeight: 2
 			}
-		}, {
-			where: '\'leadlevel\' >= 50 ',
-			markerOptions: {
-				iconName: "small_red"
+		  },
+		  {
+			where: "leadLevel >= 15 AND leadLevel < 150",
+			polygonOptions: {
+			  fillColor: "#E49C49",
+			  fillOpacity: 1,
+			  strokeColor: "#E49C49",
+			  strokeWeight: 2
 			}
-		}, {
-			where: '\'leadlevel\' >= 0 AND \'leadlevel\' < 15',
-			markerOptions: {
-				iconName: "small_yellow"
+		  },
+		  {
+			where: "leadLevel >= 150",
+			polygonOptions: {
+			  fillColor: "#E2692B",
+			  fillOpacity: 1,
+			  strokeColor: "#E2692B",
+			  strokeWeight: 2
 			}
-		}]
+		  }]
 	});
 
 	addFusionListener(leadAndPredictiveLayer);
 }
 
 function addFusionListener(object) {
-	google.maps.event.addListener(object, "click", function(event) {
-		var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-					+ event.row["Address"].value + "' ORDER BY 'testDate' DESC";
+	google.maps.event.addListener(object, "click", function(event) {		
+		var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" 
+					+ event.row["address"].value + "' ORDER BY 'testDate' DESC";
+					
+		console.log(query);
 
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 		window.jsonpCallbacks["fusionLayerQueryCallback"] = function(data) {			
-			var content = fusionQueryCallback(data, event.row["Address"].value);
+			var content = fusionQueryCallback(data, event.row["address"].value);
 			createLocationCardContent("location", content);
 			
 			var latLng = "(" + event.row["latitude"].value + ", " + event.row["longitude"].value + ")";
@@ -597,7 +613,7 @@ function callStorageAPI(object) {
 				}
 			}
 			/* Lead level area data. */
-			else if (object == "leadLevels_birdview.json") {
+			/*else if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);
 				
 				leadLayerBirdViewMarkers = [];
@@ -639,22 +655,6 @@ function callStorageAPI(object) {
 					}
 
 					var opacity = 0.3;
-					
-					/*if (numOfTests < 25) {
-						opacity = .2;
-					}
-					else if (numOfTests < 50) {
-						opacity = .2;
-					}
-					else if (numOfTests < 100) {
-						opacity = .2;
-					}
-					else if (numOfTests < 150) {
-						opacity = .2;
-					}
-					else {
-						opacity = .2;
-					}*/
 
 					var leadLevelAreaSquare = new google.maps.Polygon({
 						paths: squareCoordinates,
@@ -674,7 +674,7 @@ function callStorageAPI(object) {
 					
 					$("#location_card .card-action").hide();
 				}
-			}
+			}*/
 			/* Provider Data */
 			else if (object == "providers.json") {
 				js_obj = $.parseJSON(resp.body);
@@ -956,10 +956,9 @@ function createLocationContent(streetAddress, dataObj) {
 	
 	/* Data is either from a fusion table query. */
 	if (dataObj.rows) {
-		!isNaN(dataObj.rows[0][2]) ? leadLevel = dataObj.rows[0][2] : leadLevel = "";
-		
-		testDate = dataObj.rows[0][3].slice(0, dataObj.rows[0][3].indexOf(" "));
-		prediction = dataObj.rows[0][4];
+		leadLevel = dataObj.rows[0][3];
+		testDate = dataObj.rows[0][4].slice(0, dataObj.rows[0][4].indexOf(" "));
+		prediction = dataObj.rows[0][5];
 	}
 	/* Data is from a fusion layer callback. */
 	/*else if (dataObj.row) {		
@@ -974,8 +973,8 @@ function createLocationContent(streetAddress, dataObj) {
 	var warningImg;
 	var suggestedAction;
 	
-	if (((leadLevel != "") && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
-		if (leadLevel != "") {
+	if (((leadLevel != -1) && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
+		if (leadLevel != -1) {
 			if (leadLevel < 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
@@ -997,17 +996,20 @@ function createLocationContent(streetAddress, dataObj) {
 			content += "<div id='more_info_details' class='collapse'>";
 			
 			/* Show other test results if they exist. */
-			if (dataObj.rows.length > 1) {
+			if (dataObj.rows.length > 2) {
 				content += "<div id='previous_results'><button type='button' class='btn btn-flat' data-toggle='collapse' data-target='#previous_results_details' aria-expanded='false' aria-controls='previous_results_details'><span>Previous results</span> <i class='material-icons'>expand_more</i></button></div>";
 				content += "<div class='collapse' id='previous_results_details'>";
 				
 				for (var i=1; i<dataObj.rows.length; i++) {
-					leadLevel = dataObj.rows[i][2];
-					testDate = dataObj.rows[i][3].slice(0, dataObj.rows[i][3].indexOf(" "));
+					leadLevel = dataObj.rows[i][3];
 					
-					content += "<strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Test Date:</strong> " + testDate;
-					
-					i < dataObj.rows.length-1 ? content += "<hr/ >" : content += "";
+					if (leadLevel != -1) {
+						testDate = dataObj.rows[i][4].slice(0, dataObj.rows[i][4].indexOf(" "));
+						
+						content += "<strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Test Date:</strong> " + testDate;
+						
+						i < dataObj.rows.length-2 ? content += "<hr/ >" : content += "";
+					}
 				}
 				
 				content += "</div>";
@@ -1171,25 +1173,12 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 
 
 /* Set markers on the map based on type. */
-function setMarkers() {
-	var zoomLvl = map.getZoom();
-	
+function setMarkers() {	
 	// fusion table data
-	if ((resourceActiveArray[0] == 1) && (zoomLvl < 16)) {
-		leadAndPredictiveLayer.setMap(null);
-		for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
-			leadLayerBirdViewMarkers[i].setMap(map);
-	}
-	else if ((resourceActiveArray[0] == 1) && (zoomLvl >= 16)) {
+	if (resourceActiveArray[0] == 1)
 		leadAndPredictiveLayer.setMap(map);
-		for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
-			leadLayerBirdViewMarkers[i].setMap(null);
-	}
-	else if (resourceActiveArray[0] == 0) {
+	else if (resourceActiveArray[0] == 0)
 		leadAndPredictiveLayer.setMap(null);
-		for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
-			leadLayerBirdViewMarkers[i].setMap(null);
-	}
 	
 	for (var i = 0; i < allMarkers.length; i++) {
 		allMarkers[i].setMap(null);
@@ -1655,8 +1644,7 @@ $(document).ready(function() {
 					var tempLocationMarker = clickedMarker;
 					tempLocationMarker.setIcon(savedLocationIcon);
 					
-					var query = "SELECT 'latitude', 'longitude', 'leadlevel', 'testDate', 'Prediction' FROM " + fusionTableId + " WHERE Address LIKE '" 
-					+ streetAddress + "' ORDER BY 'testDate' DESC";
+					var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" + streetAddress + "' ORDER BY 'testDate' DESC";
 					
 					/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 					window.jsonpCallbacks["fusionMarkerQueryCallback"] = function(data) {
