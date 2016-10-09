@@ -3,10 +3,6 @@ html, body {
 	padding-bottom:0!important;
 }
 
-body#404_page {
-	background-image:url('images/404.png');
-}
-
 .container-fluid {
 	padding:0!important;
 }

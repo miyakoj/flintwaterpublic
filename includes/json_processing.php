@@ -3,13 +3,15 @@
 require_once "queries.php";
 
 /* Process lead level data. */
-query_json_output(queries("lead"), "leadLevels", "leadlevels.json");
+//query_json_output(queries("leadLevels"), "leadLevels", "leadlevels.json");
 
 /* Process provider data. */
-provider_processing();
+//provider_processing();
 
 /* Array processing for providers. */
 function provider_processing() {
+	global $mysqli;
+	
 	$result = queries("providers");
 
 	$providers = array();
@@ -35,6 +37,8 @@ function provider_processing() {
 		
 		$providers[$key]["resType"] = $resources;
 	}
+	
+	$mysqli->close();
 
 	json_output($providers, "providers", "providers.json");
 }
@@ -78,6 +82,8 @@ function json_output($array, $array_name, $filename) {
 
 /* Output JSON for data that was retrieved directly from the database. */
 function query_json_output($result, $array_name, $filename) {
+	global $mysqli;
+	
 	$output = "{ \"" . $array_name . "\": [\n";
 
 	for ($i=0; $i<$result->num_rows; $i++) {
@@ -91,6 +97,8 @@ function query_json_output($result, $array_name, $filename) {
 	}
 
 	$output .= "]}";
+	
+	$mysqli->close();
 	
 	/*$filename = tempnam(sys_get_temp_dir(), $array_name) . ".gz";
 	$zp = gzopen($filename, "w9");

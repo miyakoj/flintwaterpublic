@@ -504,7 +504,7 @@ function setUpFusionTable() {
 			}
 		  },
 		  {
-			where: "leadLevel >= 0 AND leadLevel < 15",
+			where: "leadLevel >= 0 AND leadLevel <= 15",
 			polygonOptions: {
 			  fillColor: "#F9D17A",
 			  fillOpacity: 1,
@@ -513,7 +513,7 @@ function setUpFusionTable() {
 			}
 		  },
 		  {
-			where: "leadLevel >= 15 AND leadLevel < 150",
+			where: "leadLevel > 15 AND leadLevel <= 150",
 			polygonOptions: {
 			  fillColor: "#E49C49",
 			  fillOpacity: 1,
@@ -522,7 +522,7 @@ function setUpFusionTable() {
 			}
 		  },
 		  {
-			where: "leadLevel >= 150",
+			where: "leadLevel > 150",
 			polygonOptions: {
 			  fillColor: "#E2692B",
 			  fillOpacity: 1,
@@ -975,7 +975,7 @@ function createLocationContent(streetAddress, dataObj) {
 	
 	if (((leadLevel != -1) && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		if (leadLevel != -1) {
-			if (leadLevel < 15) {
+			if (leadLevel <= 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
 				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";

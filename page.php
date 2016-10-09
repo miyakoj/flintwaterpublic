@@ -533,7 +533,7 @@ if (@isset($_GET["pid"])) {
 		break;
 		
 		case "disclaimer":
-			$pagetitle = "Site Disclaimer";
+			$pagetitle = "Disclaimer";
 			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
 			$content .= "<section class='container'><p class='text-justify'><strong>Any user of the MyWater-Flint data portal application (\"MyWater-Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of MyWater-Flint.</strong></p>
 			
