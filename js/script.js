@@ -17,7 +17,7 @@ if (!Modernizr.webaudio && !localStorage.getItem("browserMsg")) {
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
 //<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>
 var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
-//var jquery_form_api = "http://malsup.github.com/min/jquery.form.min.js";
+//var jquery_form_api = "http://malsup.github.io/min/jquery.form.min.js";
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
 //var google_js_api = "https://www.google.com/jsapi";

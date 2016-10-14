@@ -7,7 +7,7 @@ body {
 }
 
 body[id='404_page'] {
-	background:#8482BE url("../images/404.png") no-repeat fixed top center;
+	background:#8482BE url("http://www.mywater-flint.com/images/404.png") no-repeat fixed top center;
 }
 
 a, .card-action a {

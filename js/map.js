@@ -18,7 +18,6 @@ var fusionTableAllId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 var leadLayer; // fusion table layer to set up lead levels
 var leadLayerBirdViewMarkers = [];
 var leadLayerBirdView_info;
-var predictiveLayer; // fusion table layer to show predicted lead levels
 var leadAndPredictiveLayer; // fusion table layer to show both lead and prediction layer
 var heatmapData;
 
@@ -276,7 +275,7 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	
-	callStorageAPI("leadlevels.json");
+	//callStorageAPI("leadlevels.json");
 	//callStorageAPI("leadLevels_birdview.json");
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
@@ -539,8 +538,6 @@ function addFusionListener(object) {
 	google.maps.event.addListener(object, "click", function(event) {		
 		var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" 
 					+ event.row["address"].value + "' ORDER BY 'testDate' DESC";
-					
-		console.log(query);
 
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 		window.jsonpCallbacks["fusionLayerQueryCallback"] = function(data) {			
@@ -602,7 +599,7 @@ function callStorageAPI(object) {
 		
 		request.then(function(resp) {
 			/* Heatmap Data */
-			if (object == "leadlevels.json") {
+			/*if (object == "leadlevels.json") {
 				heatmapData = [];
 				js_obj = $.parseJSON(resp.body);
 				
@@ -611,9 +608,9 @@ function callStorageAPI(object) {
 					// var weightValue = assignWeight(info.lead_ppb);
 					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
 				}
-			}
+			}*/
 			/* Lead level area data. */
-			/*else if (object == "leadLevels_birdview.json") {
+			if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);
 				
 				leadLayerBirdViewMarkers = [];
@@ -674,7 +671,7 @@ function callStorageAPI(object) {
 					
 					$("#location_card .card-action").hide();
 				}
-			}*/
+			}
 			/* Provider Data */
 			else if (object == "providers.json") {
 				js_obj = $.parseJSON(resp.body);
@@ -980,7 +977,7 @@ function createLocationContent(streetAddress, dataObj) {
 				warningImg = lowRiskCircle;
 				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
-			else if (leadLevel < 50) {
+			else if (leadLevel <= 150) {
 				warningMsg = "Moderate Lead Level";
 				warningImg = medRiskCircle;
 				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
