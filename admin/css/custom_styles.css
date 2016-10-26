@@ -1,0 +1,66 @@
+#top-menu li a {
+	border:none!important;
+}
+
+#top-menu i {
+	margin-right:0;
+	font-size:150%;
+}
+
+#top-menu .fa-log-in {
+	vertical-align:middle!important;
+}
+
+nav h1 a {
+	padding-left:4px!important;
+	padding-right:4px!important;
+}
+
+nav .drop-men {
+	margin-right:5px;
+}
+
+/* Medium and large devices */
+@media only screen and (min-width: 992px) {
+	nav .drop-men {
+		margin-right:50px;
+	}
+}
+
+nav .drop-men .dropdown a span {
+	display:inline;
+}
+
+#page-wrapper {
+	margin-left:0!important;
+}
+
+.content-top {
+	padding-top:0;
+}
+
+.content-top .row {
+	margin:0;
+}
+
+.pie-chart h4 {
+	font-size:160%;
+}
+
+.pie-chart label {
+	font-size:130%;
+}
+
+.cal1 {
+	margin:13px 0!important;
+}
+
+.map-1 {
+	padding:0;
+}
+
+#map h1 {
+	font-size:1.25em;
+}
+
+footer {padding:0 2px;}

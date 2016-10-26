@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MyWater-Flint | Administrative Site</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- Custom Theme files -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="css/template.css" rel="stylesheet" type="text/css" />
+<link href="css/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="css/custom_styles.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/alternate_styles.css" rel="stylesheet" type="text/css" />
+<link href="css/theme.css" rel="stylesheet" type="text/css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<!-- Mainly scripts -->
+<script src="js/jquery.metisMenu.js"></script>
+<script src="js/jquery.slimscroll.min.js"></script>
+<!-- Custom and plugin javascript -->
+<link href="css/custom.css" rel="stylesheet" rel="stylesheet" type="text/css" />
+<script src="js/custom.js"></script>
+<script src="js/screenfull.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/3.3.2/firebase.js"></script>
+<script>
+// Initialize Firebase
+var config = {
+	apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
+    authDomain: "uniteflint.firebaseapp.com",
+    databaseURL: "https://uniteflint.firebaseio.com",
+    storageBucket: "uniteflint.appspot.com",
+    messagingSenderId: "402781339047"
+};
+firebase.initializeApp(config);
+	
+$(function () {
+	$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
+
+	if (!screenfull.enabled) {
+		return false;
+	}
+
+	$('#toggle').click(function () {
+		screenfull.toggle($('#container')[0]);
+	});
+	
+	console.log();
+	
+	var genericError = "<div class='alert alert-danger' role='alert'>There was an error. Please try again later.</div>";
+	
+	$("form").on("submit", function(event) {
+		var auth = firebase.auth();
+		var email = $("#login_email input").val();
+		var password = $("#login_password input").val();
+	
+		// if reset password is unchecked, do normal sign in
+		if ($("#forgot_password input:checked").length == 0) {
+			firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+				if (error) {
+					// Handle Errors here.
+					var errorCode = error.code;
+					var errorMessage = error.message;
+
+					if (errorCode === "auth/wrong-password") {
+						$("form").append("<div class='alert alert-danger' role='alert'>Your password is incorrect. Please try again.</div>");			
+					}
+					else if (errorCode  === "auth/too-many-requests") {
+						$("#login_email input").addClass("disable");
+						$("#login_password input").addClass("disable");
+						$("#forgot_password input").addClass("disable");
+						$(".login-do input").addClass("disable");
+						
+						$("form").append("<div class='alert alert-danger' role='alert'>You have run out of login attempts. Please try again later.</div>");
+					}
+					else
+						console.log(errorMessage);
+
+					console.log(error);
+				}
+				else {
+					// load the dashboard page
+				}
+			});
+		}
+		else {
+			auth.sendPasswordResetEmail(email).then(function() {
+				$("form").append("<div class='alert alert-success' role='alert'>A password reset email has been sent.</div>");
+			}, function(error) {
+				$("form").append(genericError);
+			});
+		}
+		
+		event.preventDefault();
+	});
+});
+</script>
+
+<!----->
+<!--skycons-icons-->
+<script src="js/skycons.js"></script>
+<!--//skycons-icons-->
+</head>
+
+<body id="login_page">
+<div class="login">
+		<div class="login-bottom">
+			<h2>Login</h2>
+			
+			<form>
+			<div>
+				<div id="login_email" class="login-mail">
+					<input type="text" placeholder="Email" required="required" />
+					<i class="fa fa-envelope"></i>
+				</div>
+				<div id="login_password" class="login-mail">
+					<input type="password" placeholder="Password" required="required" />
+					<i class="fa fa-lock"></i>
+				</div>
+					<a id="forgot_password" class="news-letter" href="#">
+					<label class="checkbox1"><input type="checkbox" name="checkbox" /><i> </i> Forgot Password</label>
+					</a>
+					   
+				<div class="login-do">
+					<label class="hvr-shutter-in-horizontal login-sub">
+					<input type="submit" value="login" />
+					</label>
+				</div>
+			</div>
+			</form>
+		</div>
+	</div>
+
+<!--scrolling js-->
+<script src="js/jquery.nicescroll.js"></script>
+<script src="js/scripts.js"></script>
+<script src="js/custom_scripts.js"></script>
+<!--//scrolling js-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type= "text/javascript" src="https://www.google.com/jsapi"></script>
+</body>
+</html>

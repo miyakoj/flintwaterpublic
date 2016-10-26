@@ -1,5 +1,9 @@
 <?php
 
+/* Check for the existence of the config file for the local test db. */
+if (filesize("local_db_config.php") !== FALSE)
+	require_once("local_db_config.php");
+
 $mysqli = new mysqli(
 	null, // host
 	getenv('MYSQL_USER'), // username

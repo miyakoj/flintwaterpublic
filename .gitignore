@@ -1,20 +1,54 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
 *.log
-app.yaml
-cron.yaml
+*.sql
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Custom files #
 *.yaml
-navbar_test.html
 *.bak
+navbar_test.html
 color_scheme.png
 includes/new db files/
 includes/fusion_table_csv.php
 includes/fusion_table_updates.php
 includes/uma_db_processing.php
+includes/local_db_config.php
 providers.json
 js/Paul_map.js
 oath_client_id.json
 test.html
 js/map_Miyako.js
-.DS_Store
 lead_test_results.csv
 lead_predictions.csv
 fusion_table_all.csv
@@ -23,4 +57,9 @@ geo_locations.csv
 fusion_table_full.xlsx
 oath_client_id.json
 /vendor
-/admin
+js/map_old.js
+admin/firebase_rules.json
+admin/temp.txt
+admin/sql_data_queries.txt
+admin/h2o-flint-default-acct.json
+admin/Firebase_login_example.html
