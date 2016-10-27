@@ -59,6 +59,7 @@ oath_client_id.json
 /vendor
 js/map_old.js
 admin/firebase_rules.json
+admin/user_data.json
 admin/temp.txt
 admin/sql_data_queries.txt
 admin/h2o-flint-default-acct.json

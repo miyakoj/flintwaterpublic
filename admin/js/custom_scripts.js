@@ -2,6 +2,8 @@ var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 
+var userObj;
+
 var genericError = "<div class='alert alert-danger' role='alert'>There was an error. Please try again later.</div>";
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
@@ -190,9 +192,28 @@ function decodeIDToken(uid) {
 			url: "includes/verify_ID_token.php",
 			data: {"uid": uid, "token": token},
 			cache: true
-		}).then(function() {
-			// store the token in browser local storage if it's valid
-			//location.href = "page.php?pid=dashboard";
+		}).then(function(data) {
+			// store the token in a global user object if it's valid
+			if (data == "1") {
+				//get user data from Firebase
+				var db = firebase.database();
+				/*var user = firebase.database().ref('/users/' + userId).once('value').then(function(snapshot) {
+					var username = snapshot.val().username;
+				});*/
+				
+				/*var newUser = {
+					uid = ,
+					email: ,
+					firstName: ,
+					lastName: 
+				};
+				
+				//userObj = newUser;
+				//location.href = "page.php?pid=dashboard";
+			}
+			// ask the user to sign in again if invalid
+			else {
+			}*/
 		});
 	}).catch(function(error) {
 		// sign the user out and ask them to try again
