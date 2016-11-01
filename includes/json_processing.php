@@ -6,7 +6,7 @@ require_once "queries.php";
 //query_json_output(queries("leadLevels"), "leadLevels", "leadlevels.json");
 
 /* Process provider data. */
-//provider_processing();
+provider_processing();
 
 /* Array processing for providers. */
 function provider_processing() {
@@ -115,6 +115,7 @@ function query_json_output($result, $array_name, $filename) {
 function write_file($output, $filename) {
 	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
 	$context = stream_context_create($options);
-	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
+	file_put_contents($filename, $output);
+	//file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
 }
 

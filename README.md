@@ -8,6 +8,8 @@ This source enables you to create user and administration websites to aid in nav
 * [MySQL 5.6 or higher](http://dev.mysql.com/)
 * [Google API Client Library for PHP](https://github.com/google/google-api-php-client/) (if using Google Fusion Tables for website data)
 * [Firebase Authentication](https://firebase.google.com/) (if the admin login is used "out of the box")
+* [PHP-JWT](https://github.com/firebase/php-jwt/) (to verify Firebase Authentication login tokens)
+* [Composer](https://getcomposer.org/) (used to manage the Google API Client Library, PHP-JWT, and all dependencies)
 
 ### Libraries/Frameworks Used ###
 * [jQuery](http://jquery.com/)

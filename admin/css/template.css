@@ -24,6 +24,21 @@ a {
 	font-family:"Glyphicons Halflings"!important;
 }
 
+.page_title {
+	text-align:center;
+}
+
+.div_title {
+	background-color:#242E56;
+	margin-bottom:15px;
+}
+
+.div_title h2 {
+	padding:8px 0;
+	text-align:center;
+	color:#FFF;
+}
+
 
 /* Navigation */
 .navbar-header {
@@ -47,6 +62,10 @@ a {
 
 .login .login-sub {
 	background-color:#5266B0!important;
+}
+
+#login_page footer.copy {
+	background-color:transparent!important;
 }
 
 

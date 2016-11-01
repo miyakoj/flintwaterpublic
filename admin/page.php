@@ -1,179 +1,183 @@
 <?php
 
-include "includes/template.php";
-include "includes/globals.php";
-include "includes/functions.php";
+@define("__ROOT__", dirname(dirname(__FILE__)));
 
-if (@isset($_GET["pid"])) {
-	$pid = $_GET["pid"];
+require __ROOT__ . "/admin/includes/template.php";
+require __ROOT__ . "/admin/includes/globals.php";
+require __ROOT__ . "/admin/includes/verify_ID_token.php";
+require __ROOT__ . "/admin/includes/functions.php";
+
+if (@isset($_POST["pid"])) {	
+	$pid = $_POST["pid"];
 	
+	$navigation = array();
 	$script = "";
 	
 	switch($pid) {
 		case "reports":
-		$pagetitle = "Reports";
-		
-		$content = "<div class='content-top'>
-			<div id='report_list' class='col-md-3'>
-			<div class='row'>	
-				<div class='content-top-1'>
-					<h3>Reports</h3>
-					
-					<ul class='nav'>
-						<li><button id='water_tests' type='button' class='btn btn-default'>Water Tests</button></li>
-						<li><button id='problem_reports' type='button' class='btn btn-default' disabled='disabled'>Problem Reports</button></li>
-						<li><button id='survey_results' type='button' class='btn btn-default' disabled='disabled'>Survey Results</button></li>
-					</ul>
+			$pagetitle = "Reports";
+			
+			$content = "<div class='content-top'>
+				<div id='report_list' class='col-md-3'>
+				<div class='row'>	
+					<div class='content-top-1'>
+						<h3>Reports</h3>
+						
+						<ul class='nav'>
+							<li><button id='water_tests' type='button' class='btn btn-default'>Water Tests</button></li>
+							<li><button id='problem_reports' type='button' class='btn btn-default' disabled='disabled'>Problem Reports</button></li>
+							<li><button id='survey_results' type='button' class='btn btn-default' disabled='disabled'>Survey Results</button></li>
+						</ul>
+					</div>
 				</div>
-			</div>
-			</div>
+				</div>
 
-			<div id='report_area' class='col-md-9'>
-			<div class='row'>
-				<div class='content-top-1'>
-					<form class='form-inline hide'>
-						<div id='report_type'>
-							<h5>Report Type</h5>
-							
-							<select class='form-control'>
-							<option selected=\"selected\"></option>
-							</select>
-						</div>
-					
-						<div id='time_period' class='hide'>						
-							<div class='form-group'>
-							<label for='years'>Years</label>
-							<select id='years' class='form-control'></select>
-							</div>
-							
-							<div class='form-group'>
-							<label for='months'>Months</label>
-							<select id='months' class='form-control'></select>
-							</div>
-						</div>
-					</form>
-					
-					<div id='display_area' class='hide'></div>
-				</div>
-			</div>
-			</div>
-			
-			<div class='clearfix'> </div>
-		</div>";
-		
-		/* Retrieve the water test data from the database and process it. */
-		$timePeriod = getTimePeriod();
-		$year = array();
-		
-		foreach ($timePeriod as $value) {
-			$array = explode(" ", $value);
-			$years[] = $array[1];
-		}
-		
-		$timePeriod = implode("', '", $timePeriod);
-		$timePeriod = "['" . $timePeriod . "']";
-		
-		$years = array_unique($years);
-		$years = implode("', '", $years);
-		$years = "['" . $years . "']";
-		
-		$script = "<script>
-		\$(document).ready(function() {
-			//\$('#display_area form').resetForm();
-			/*Pace.options = {
-				ajax: true,
-				document: false,
-				eventLag: false
-			};*/
-			
-			var timePeriods = $timePeriod;
-			var months = $MONTHS;
-			var years = $years;
-			
-			var yearOpts = '<option selected=\"selected\"></option>';
-			var monthsOpts = '<option selected=\"selected\"></option>';
-			
-			for (var i=0; i<years.length; i++)
-				yearOpts += '<option>' + years[i] + '</option>';
-			
-			for (var i=0; i<months.length; i++)
-				monthsOpts += '<option>' + months[i] + '</option>';
-			
-			\$('#time_period #years').html(yearOpts);
-			\$('#time_period #months').html(monthsOpts);
-			
-			/* Deactivate invalid year-month options. */
-			\$('#time_period #years').on('change', function() {
-				console.log(\$(this).val());
-				console.log(timePeriods);
-			});
-			
-			\$('#water_tests, #problem_reports, #survey_results').on('click', function() {
-				if ($(this).attr('id').indexOf('water') != -1) {
-					content = '<option id=\"all_water_tests1\">All Water Tests (Ungrouped)</option> \
-							<option id=\"all_water_tests2\" disabled=\"disabled\">All Water Tests (Grouped by Address)</option> \
-							<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Ungrouped)</option> \
-							<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Grouped by Address)</option>';
-				}							
-					
-				$('#report_type select').append(content);
-				\$('#report_area form').removeClass('hide');
-			});
-			
-			\$('#report_area #display_area #table_body').css({
-				height: (window.innerHeight * 0.80) + 'px'
-			});
-			
-			\$('#report_type select').on('change', function() {
-				var id = \$('#report_type option:selected').attr('id');
-				
-				if (typeof(id) !== 'undefined') {					
-					//Pace.track(function(){
-						$.ajax({
-							type: 'POST',
-							data: {
-								report_type: id
-							},
-							dataType: 'json',
-							url: 'includes/functions.php',
-							beforeSend: function() {
-								//Pace.start();
-							}
-						}).done(function(data) {
-							var content = '<div class=\"table-responsive\"> \
-								<table id=\"table_header\" class=\"table\"> \
-									<tr> \
-										<th class=\"address\">Address</th> \
-										<th class=\"lead_level\">Lead Level (ppb)</th> \
-										<th class=\"copper_level\">Copper Level (ppb)</th> \
-										<th class=\"date\">Date Submtted</th> \
-									</tr> \
-								</table> \
-								\
-								<table id=\"table_body\" class=\"table\">';
-							
-							for (var i=0; i<data.all_water_tests1.length; i++) {
-								var temp = data.all_water_tests1[i];
+				<div id='report_area' class='col-md-9'>
+				<div class='row'>
+					<div class='content-top-1'>
+						<form class='form-inline hide'>
+							<div id='report_type'>
+								<h5>Report Type</h5>
 								
-								content += '<tr> \
-									<td class=\"address\">' + temp.address + '</td> \
-									<td class=\"lead_level\">' + temp.leadLevel + '</td> \
-									<td class=\"copper_level\">' + temp.copperLevel + '</td> \
-									<td class=\"date\">' + temp.dateUpdated + '</td> \
-								</tr>';
-							}
+								<select class='form-control'>
+								<option selected=\"selected\"></option>
+								</select>
+							</div>
+						
+							<div id='time_period' class='hide'>						
+								<div class='form-group'>
+								<label for='years'>Years</label>
+								<select id='years' class='form-control'></select>
+								</div>
+								
+								<div class='form-group'>
+								<label for='months'>Months</label>
+								<select id='months' class='form-control'></select>
+								</div>
+							</div>
+						</form>
+						
+						<div id='display_area' class='hide'></div>
+					</div>
+				</div>
+				</div>
+				
+				<div class='clearfix'> </div>
+			</div>";
+			
+			/* Retrieve the water test data from the database and process it. */
+			$timePeriod = getTimePeriod();
+			$year = array();
+			
+			foreach ($timePeriod as $value) {
+				$array = explode(" ", $value);
+				$years[] = $array[1];
+			}
+			
+			$timePeriod = implode("', '", $timePeriod);
+			$timePeriod = "['" . $timePeriod . "']";
+			
+			$years = array_unique($years);
+			$years = implode("', '", $years);
+			$years = "['" . $years . "']";
+			
+			$script = "<script>
+			\$(document).ready(function() {
+				//\$('#display_area form').resetForm();
+				/*Pace.options = {
+					ajax: true,
+					document: false,
+					eventLag: false
+				};*/
+				
+				var timePeriods = $timePeriod;
+				var months = $MONTHS;
+				var years = $years;
+				
+				var yearOpts = '<option selected=\"selected\"></option>';
+				var monthsOpts = '<option selected=\"selected\"></option>';
+				
+				for (var i=0; i<years.length; i++)
+					yearOpts += '<option>' + years[i] + '</option>';
+				
+				for (var i=0; i<months.length; i++)
+					monthsOpts += '<option>' + months[i] + '</option>';
+				
+				\$('#time_period #years').html(yearOpts);
+				\$('#time_period #months').html(monthsOpts);
+				
+				/* Deactivate invalid year-month options. */
+				\$('#time_period #years').on('change', function() {
+					console.log(\$(this).val());
+					console.log(timePeriods);
+				});
+				
+				\$('#water_tests, #problem_reports, #survey_results').on('click', function() {
+					if ($(this).attr('id').indexOf('water') != -1) {
+						content = '<option id=\"all_water_tests1\">All Water Tests (Ungrouped)</option> \
+								<option id=\"all_water_tests2\" disabled=\"disabled\">All Water Tests (Grouped by Address)</option> \
+								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Ungrouped)</option> \
+								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Grouped by Address)</option>';
+					}							
+						
+					$('#report_type select').append(content);
+					\$('#report_area form').removeClass('hide');
+				});
+				
+				\$('#report_area #display_area #table_body').css({
+					height: (window.innerHeight * 0.80) + 'px'
+				});
+				
+				\$('#report_type select').on('change', function() {
+					var id = \$('#report_type option:selected').attr('id');
+					
+					if (typeof(id) !== 'undefined') {					
+						//Pace.track(function(){
+							$.ajax({
+								type: 'POST',
+								data: {
+									report_type: id
+								},
+								dataType: 'json',
+								url: 'includes/functions.php',
+								beforeSend: function() {
+									//Pace.start();
+								}
+							}).done(function(data) {
+								var content = '<div class=\"table-responsive\"> \
+									<table id=\"table_header\" class=\"table\"> \
+										<tr> \
+											<th class=\"address\">Address</th> \
+											<th class=\"lead_level\">Lead Level (ppb)</th> \
+											<th class=\"copper_level\">Copper Level (ppb)</th> \
+											<th class=\"date\">Date Submtted</th> \
+										</tr> \
+									</table> \
+									\
+									<table id=\"table_body\" class=\"table\">';
+								
+								for (var i=0; i<data.all_water_tests1.length; i++) {
+									var temp = data.all_water_tests1[i];
 									
-							content += '</table></div>';
-							
-							\$('#display_area').html(content);
-							\$('#display_area').removeClass('hide');
-							//Pace.stop();
-						});
-					//});
-				}
+									content += '<tr> \
+										<td class=\"address\">' + temp.address + '</td> \
+										<td class=\"lead_level\">' + temp.leadLevel + '</td> \
+										<td class=\"copper_level\">' + temp.copperLevel + '</td> \
+										<td class=\"date\">' + temp.dateUpdated + '</td> \
+									</tr>';
+								}
+										
+								content += '</table></div>';
+								
+								\$('#display_area').html(content);
+								\$('#display_area').removeClass('hide');
+								//Pace.stop();
+							});
+						//});
+					}
+				});
 			});
-		});
-		</script>";
+			</script>";
 		
 		break;
 		
@@ -302,9 +306,9 @@ if (@isset($_GET["pid"])) {
 		<div class='clearfix'> </div>
 		
 		<div class='content-mid'>
-			<div id='graph_area'>
-				<div class='content-top-1'><canvas id='levels_trend'></canvas></div>
-				<div class='content-top-1'><canvas id='water_tests_trend' ></canvas></div>
+			<div id='graph_area' class='row'>
+				<div class='content-top-1 col-xs-12 col-lg-6'><canvas id='levels_trend'></canvas></div>
+				<div class='content-top-1 col-xs-12 col-lg-6'><canvas id='water_tests_trend' ></canvas></div>
 			</div>
 		</div>";
 		
@@ -312,16 +316,33 @@ if (@isset($_GET["pid"])) {
 		if (!isset($TIME_PERIOD))
 			$TIME_PERIOD = getTimePeriod();
 		
+		$totalTimePeriods = sizeof($TIME_PERIOD);
+		
 		$TIME_PERIOD = implode("', '", $TIME_PERIOD);
 		$TIME_PERIOD = "['" . $TIME_PERIOD . "']";
 		
 		$totalLocationsTested = generateChartData("total_locations");
 		//$repairsChart = ;
 		
-		//var_dump();
+		$testLevelsData = generateChartData("test_data");
 		
-		$leadLevelsData = generateChartData("test_data");
-		$numTestsData = arrayAccumulation($leadLevelsData[2]);
+		$leadActionLvlData = "[";
+		$copperActionLvlData = "[";
+		
+		for ($i=0; $i<$totalTimePeriods; $i++) {
+			$leadActionLvlData .= "15";
+			$copperActionLvlData .= "1300";
+			
+			if ($i < ($totalTimePeriods-1)) {
+				$leadActionLvlData .= ", ";
+				$copperActionLvlData .= ", ";
+			}
+		}
+		
+		$leadActionLvlData .= "]";
+		$copperActionLvlData .= "]";
+		
+		$numTestsData = arrayAccumulation($testLevelsData[2]);
 		
 		$script = "<script>
 		\$(document).ready(function() {		
@@ -366,33 +387,33 @@ if (@isset($_GET["pid"])) {
 				var levelsChart = new Chart(\$('#levels_trend'), {
 					type: 'line',
 					data: {
-						labels: $timePeriod,
+						labels: $TIME_PERIOD,
 						datasets: [{
 							label: 'Average Lead Level',
-							data: $leadLevelsData[0],
+							data: $testLevelsData[0],
 							backgroundColor: '#5266B0',
 							borderColor: '#5266B0',
 							fill: false
 						},
 						{
 							label: 'Lead Action Level',
-							data: [15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15],
+							data: $leadActionLvlData,
 							backgroundColor: '#FF0000',
 							borderColor: '#FF0000',
-							fill: false
-						}
-						/*, {
-							label: 'Copper Action Level',
-							data: [1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300, 1300],
-							borderColor: '#FFFF00',
 							fill: false
 						},
 						{
 							label: 'Average Copper Level',
-							data: $leadLevelsData[1],
-							borderColor: '#5266B0',
+							data: $testLevelsData[1],
+							borderColor: '#252E56',
 							fill: false
-						}*/]
+						},
+						{
+							label: 'Copper Action Level',
+							data: $copperActionLvlData,
+							borderColor: '#FF6600',
+							fill: false
+						}]
 					},
 					options: {
 						title: {
@@ -422,7 +443,7 @@ if (@isset($_GET["pid"])) {
 				var waterTests = new Chart(\$('#water_tests_trend'), {
 					type: 'line',
 					data: {
-						labels: $timePeriod,
+						labels: $TIME_PERIOD,
 						datasets: [{
 							label: 'Total Water Tests',
 							data: $numTestsData[1],
@@ -474,6 +495,17 @@ if (@isset($_GET["pid"])) {
 	$page->create();
 }
 else {
-	header("Location: admin/login.php");
-	exit();
+	/* 
+	 * Redirect the user to the login page if they aren't logged in. 
+	 * http://php.net/manual/en/function.headers-sent.php#60450
+	 */
+	$page = "login.php";
+	
+	if (!headers_sent())
+        header("Location: " . $page);
+    else {
+        echo '<script type="text/javascript">';
+        echo 'window.location.href="'.$page.'";';
+        echo '</script>';
+    }
 }

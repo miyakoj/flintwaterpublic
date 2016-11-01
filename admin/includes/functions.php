@@ -1,8 +1,7 @@
 <?php
 
-$folder = explode("/", $_SERVER["PHP_SELF"]);
-
-include $folder[1] . "/includes/queries.php";
+@define("__ROOT__", dirname(dirname(__FILE__)));
+include __ROOT__ . "/admin/includes/queries.php";
 
 /* Handles report page queries. */
 if (@isset($_POST["report_type"])) {

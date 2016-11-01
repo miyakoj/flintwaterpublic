@@ -1,13 +1,16 @@
 <?php
 
-$folder = explode("/", $_SERVER["PHP_SELF"]);
+/*$folder = explode("/", $_SERVER["PHP_SELF"]);
 
 if (strcmp($folder[2], "includes") === 0)
 	$prefix = "../../";
 else
 	$prefix = "../";
 
-require_once $prefix . "/includes/database_config.php";
+require_once $prefix . "/includes/database_config.php";*/
+
+@define("__ROOT__", dirname(dirname(__FILE__)));
+require_once __ROOT__ . "/includes/database_config.php";
 
 function queries($choice, $var = "", $var2 = "") {
 	global $mysqli;

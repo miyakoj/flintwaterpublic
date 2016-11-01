@@ -39,9 +39,11 @@ echo "<!DOCTYPE html>
 
 <body id='login_page'>
 <div class='login'>
-	<div class='login-bottom'>
-		<h2>Login</h2>
+	<h2 class='page_title'>MyWater-Flint Administration Site</h2>
 		
+	<div class='login-bottom'>
+		<h3>Login</h3>
+	
 		<form>
 		<div>
 			<div id='login_email' class='login-mail'>

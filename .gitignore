@@ -64,3 +64,6 @@ admin/temp.txt
 admin/sql_data_queries.txt
 admin/h2o-flint-default-acct.json
 admin/Firebase_login_example.html
+*.lock
+*.csv
+includes/uma_db_processing.php
