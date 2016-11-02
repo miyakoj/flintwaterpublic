@@ -18,27 +18,10 @@ function provider_processing() {
 
 	while ($row = $result->fetch_assoc())
 		$providers[] = $row;
-
-	// remove duplicate providers
-	$providers = unique_multidim_array($providers, "aidAddress");
 	
-	// reindex the array to fix the missing indices problem
-	$providers = array_values($providers);
-
-	/* Get all available resources for each provider address. */
-	foreach ($providers as $key => $value) {
-		$result = queries("providers", $value["aidAddress"]);
-		
-		$resources = array();
-		
-		while ($row = $result->fetch_assoc()) {
-			$resources[] = $row["resType"];
-		}
-		
-		$providers[$key]["resType"] = $resources;
-	}
-	
-	$mysqli->close();
+	/* Generate an array out of the resource type. */
+	foreach ($providers as $key => $value)
+		$providers[$key]["resType"] = explode(",", $providers[$key]["resType"]);
 
 	json_output($providers, "providers", "providers.json");
 }
@@ -115,7 +98,6 @@ function query_json_output($result, $array_name, $filename) {
 function write_file($output, $filename) {
 	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
 	$context = stream_context_create($options);
-	file_put_contents($filename, $output);
-	//file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
+	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
 }
 

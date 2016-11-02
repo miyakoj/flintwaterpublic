@@ -529,7 +529,9 @@ if (@isset($_GET["pid"])) {
 			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
 			</div></div>
 			
-			<p class='text-justify'>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and the <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p></section>";
+			<p class='text-justify'>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and the <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>
+			
+			<p class='text-justify'>Resource site information is courtesy of the <a href='http://www.flintcares.com'>Flint Cares website</a>.</p></section>";
 		break;
 		
 		case "disclaimer":

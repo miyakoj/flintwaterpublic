@@ -18,11 +18,7 @@ function queries($choice, $var = "", $var2 = "", $obj = null) {
 		//SELECT Geo.latitude, Geo.longitude, Geo.StAddress, leadLevel FROM watercondition, (SELECT * FROM geolocation) Geo WHERE StAddress = address ORDER BY leadLevel ASC;
 	}
 	else if (strcmp($choice, "providers") === 0) {
-		if (strcmp($var, "") === 0)
-			$query = "SELECT locationName, REPLACE(AidLocation.aidAddress,'\r','') AS aidAddress, hours, REPLACE(phone,'\r','') AS phone, city, zipcode, resType, notes, latitude, longitude FROM AidLocation, ResourcesQuantity JOIN GeoLocation ON aidAddress = REPLACE(StAddress,'\r','') WHERE AidLocation.aidAddress = ResourcesQuantity.aidAddress;";
-		else {
-			$query = "SELECT resType FROM `ResourcesQuantity` WHERE REPLACE(aidAddress,'\\r','') = '" . $var . "';";
-		}
+		$query = "SELECT latitude, longitude, locationName, AidLocation.aidAddress, city, zipcode, hours, phone, notes, GROUP_CONCAT(resType) AS resType FROM AidLocation INNER JOIN ResourcesQuantity ON AidLocation.aidAddress = ResourcesQuantity.aidAddress GROUP BY AidLocation.aidAddress ORDER BY locationName ASC;";
 	}
 	else if (strcmp($choice, "leadAreas") === 0) {
 		$query = "SELECT latitude, longitude, leadLevel, MAX(dateUpdated) FROM watercondition GROUP BY (address) ORDER BY latitude ASC;";

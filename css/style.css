@@ -540,18 +540,26 @@ body[id="index_page"] main {
 	display:none;
 }
 
-/*#news_page .card-inner{
-	padding-bottom:10px;
-}*/
+#news_page .card span {
+	display:block;
+}
+
+#news_page .card-header {
+	min-height:0;
+}
+
+#news_page .card-header p {
+	margin:0;
+}
+
+#news_page .card-header .card-inner, .card-main .card-inner {
+	margin:10px!important;
+}
 
 #news_page .card-inner img {
 	width:auto;
 	height:3em;
 	margin-right:5px;
-}
-
-#news_page .card-inner span {
-	line-height:3em;
 }
 
 #news_page .card-inner h5 {

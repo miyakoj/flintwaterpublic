@@ -358,15 +358,14 @@ function initMap() {
 	var searchBox = new google.maps.places.SearchBox(input);
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	
-	// Changes CSS to make search bar visible, making sure it doesn't load before the map does
+	// Changes CSS to make search bar visible, making sure it isn't displayed before the map
 	map.addListener('idle', function() {
 		$("#search_input").css("display", "block");
 	});
 	
 	$("#search_input").keyup(function() {
-		if ($("#search_input").val()) {
+		if ($("#search_input").val())
 			activeSearch = 1;
-		}
 		else 
 			activeSearch = 0;
 	});
@@ -382,6 +381,7 @@ function initMap() {
 		$("#legend_card").show();
   	});
 
+	if ($pageId.indexOf("dashboard") != -1) {
 	 map.addListener('zoom_changed', function() {
 	 	zoomLvl = map.getZoom();
 	 	if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
@@ -397,6 +397,7 @@ function initMap() {
 			}
 		}
 	 });
+	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
 	// more details for that place.
@@ -526,7 +527,7 @@ function setUpFusionTable() {
 			  fillColor: "#F9D17A",
 			  fillOpacity: 1,
 			  strokeColor: "#F9D17A",
-			  strokeWeight: 2
+			  strokeWeight: 3
 			}
 		  },
 		  {
@@ -535,7 +536,7 @@ function setUpFusionTable() {
 			  fillColor: "#E49C49",
 			  fillOpacity: 1,
 			  strokeColor: "#E49C49",
-			  strokeWeight: 2
+			  strokeWeight: 3
 			}
 		  },
 		  {
@@ -544,7 +545,7 @@ function setUpFusionTable() {
 			  fillColor: "#E2692B",
 			  fillOpacity: 1,
 			  strokeColor: "#E2692B",
-			  strokeWeight: 2
+			  strokeWeight: 3
 			}
 		  }]
 	});
@@ -568,6 +569,9 @@ function addFusionListener(object) {
 			$("#location_card #lat").html(event.row["latitude"].value);
 			$("#location_card #lng").html(event.row["longitude"].value);
 			checkIfSaved(latLng);
+			
+			// collapse expanded areas
+			$("#previous_results button").addClass("collapsed").attr("aria-expanded", "false");			
 			
 			$("#location_card, #location_card .card-action").show();
 		};
@@ -830,7 +834,7 @@ function callStorageAPI(object) {
 					images = "<img src='" + markerImg + "' class='marker_popup_icons' title='Construction' />";
 
 					// Set the content of the info card.
-					var constructStr = "There is construction work on the pipes near this location."
+					var constructStr = "The city council has approved service line replacement for water service pipes near this location."
 					var constructionContent = "<p id='provider_resources'>" + images + "</p>" + "<h5 id='address'>" + address + "</h5>" +  "<p id=constructString>" + constructStr + "</p>";
 					
 					// Call the info window.
@@ -873,7 +877,7 @@ function callStorageAPI(object) {
 				
 				var pipeObject = new Object();
 				var pipeLine = new Array();
-				for (var i = 0; i <= masterPipeArray.length; i++) {
+				for (var i = 0; i < masterPipeArray.length; i++) {
 					for (var k = 0; k < masterPipeArray[i].length; k++) {
 						pipeObject = {lat: masterPipeArray[i][k][0], lng: masterPipeArray[i][k][1]};
 						pipeLine.push(pipeObject);
@@ -1501,7 +1505,16 @@ $(document).ready(function() {
 	// gives directions to a resource location when get dircetions is clicked
 	$("#resource_card #card_directions").on("click", function() {
 		//var resource_directions = resourceMarker.getPosition();
-        window.open('http://maps.google.com/?q='+resourceMarker.getPosition(), '_blank');
+        //window.open('http://maps.google.com/?q='+resourceMarker.getPosition(), '_blank');
+		var end = $("#resource_card #provider_address").text().indexOf(",");
+		var address;
+		
+		if (end != -1)
+			address = $("#resource_card #provider_address").text().slice(0, end);
+		else
+			address = $("#resource_card #provider_address").text();
+		
+		window.open('http://maps.google.com/?q='+address, '_blank');
 	});
 
 	// saves/unsaves resource location when save button is clicked on the resource card
