@@ -67,3 +67,4 @@ admin/Firebase_login_example.html
 *.lock
 *.csv
 includes/uma_db_processing.php
+leadLevels_birdview.json

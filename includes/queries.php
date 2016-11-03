@@ -20,8 +20,8 @@ function queries($choice, $var = "", $var2 = "", $obj = null) {
 	else if (strcmp($choice, "providers") === 0) {
 		$query = "SELECT latitude, longitude, locationName, AidLocation.aidAddress, city, zipcode, hours, phone, notes, GROUP_CONCAT(resType) AS resType FROM AidLocation INNER JOIN ResourcesQuantity ON AidLocation.aidAddress = ResourcesQuantity.aidAddress GROUP BY AidLocation.aidAddress ORDER BY locationName ASC;";
 	}
-	else if (strcmp($choice, "leadAreas") === 0) {
-		$query = "SELECT latitude, longitude, leadLevel, MAX(dateUpdated) FROM watercondition GROUP BY (address) ORDER BY latitude ASC;";
+	else if (strcmp($choice, "leadArea") === 0) {
+		$query = "SELECT latitude, longitude, leadLevel, MAX(dateUpdated) FROM watercondition GROUP BY (address) ORDER BY latitude ASC, longitude ASC;";
 	}
 	/* Updates from Ann Arbor's DB queries. */
 	else if(strcmp($choice, "max_date") === 0) {

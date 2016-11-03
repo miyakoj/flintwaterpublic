@@ -11,6 +11,7 @@ var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 
 var map;
+var mapCenter = {lat: 43.021, lng: -83.681};
 var zoomLvl;
 var geocoder;
 var autocomplete;
@@ -19,7 +20,7 @@ var heatmap;
 var fusionTableAllId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 var leadLayer; // fusion table layer to set up lead levels
 var leadLayerBirdViewMarkers = [];
-var leadLayerBirdView_info;
+//var leadLayerBirdView_info;
 var leadAndPredictiveLayer; // fusion table layer to show both lead and prediction layer
 var heatmapData;
 
@@ -126,7 +127,7 @@ function initMap() {
 	$("#search_input").val(""); // clear the search input upon refresh
 
 	map = new google.maps.Map(document.getElementById('map'), {
-	  center: {lat: 43.021, lng: -83.681},
+	  center: mapCenter,
 	  zoom: 13,
 	  mapTypeControl: false
 	});
@@ -195,9 +196,8 @@ function initMap() {
 	
 	/* Centering and resizing */
 	google.maps.event.addDomListener(window, "resize", function() {
-		var center = map.getCenter();
 		google.maps.event.trigger(map, "resize");
-		map.setCenter(center);
+		map.setCenter(mapCenter);
 		
 		$("#map").css({
 			"height": function() {
@@ -291,9 +291,10 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	
-	/*if ($pageId.indexOf("dashboard") != -1)
-		callStorageAPI("leadlevels.json");
-		callStorageAPI("leadLevels_birdview.json");*/
+	if ($pageId.indexOf("dashboard") != -1)
+		callStorageAPI("leadLevels_birdview.json");
+	
+	//callStorageAPI("leadlevels.json");
 	
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
@@ -380,24 +381,24 @@ function initMap() {
     	$("#resource_card, #location_card").hide();
 		$("#legend_card").show();
   	});
-
-	if ($pageId.indexOf("dashboard") != -1) {
-	 map.addListener('zoom_changed', function() {
-	 	zoomLvl = map.getZoom();
-	 	if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
-			leadAndPredictiveLayer.setMap(null);
-			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
-				leadLayerBirdViewMarkers[i].setMap(map);
+	
+	/*if ($pageId.indexOf("dashboard") != -1) {
+		map.addListener('zoom_changed', function() {
+			var zoomLvl = map.getZoom();
+			if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
+				leadAndPredictiveLayer.setMap(null);
+				for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
+					leadLayerBirdViewMarkers[i].setMap(map);
+				}
 			}
-		}
-		else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
-			leadAndPredictiveLayer.setMap(map);
-			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
-				leadLayerBirdViewMarkers[i].setMap(null);
+			else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
+				leadAndPredictiveLayer.setMap(map);
+				for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
+					leadLayerBirdViewMarkers[i].setMap(null);
+				}
 			}
-		}
-	 });
-	}
+		 });
+	}*/
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
 	// more details for that place.
@@ -808,8 +809,6 @@ function callStorageAPI(object) {
 
 					bindInfoWindow("resource", marker, map, resourcesAvailable, content);
 				}
-
-				setMarkers();
 			}
 			/* Construction Sites */
 			else if (object == "construction_sites.json") {
@@ -895,8 +894,10 @@ function callStorageAPI(object) {
 				}
 			}
 				
-		}, function(reason) {
-			console.log('Error: ' + reason.result.error.message);
+		}, function(error) {
+			console.log('Error: ' + error.body);
+		}).then(function() {
+			setMarkers();
 		});
 	});
 }

@@ -4,10 +4,10 @@
  * This script divides Flint into areas and counts the number of dangerous tests per area.
  * Original code created in Java by Patrick Bodell (https://github.com/PatB93).
  */
+ 
+@define("__ROOT__", dirname(dirname(__FILE__)));
 
-require_once "queries.php";
-
-$mysqli->set_charset("utf8");
+require_once __ROOT__ . "/includes/queries.php";
 
 /* A single test location. */
 class Location {
@@ -125,23 +125,23 @@ class TestsList {
 		$temp->next = new testsList($location, $countIn); //add a location to the end of the list
 		
 		//set the lower bound for latitude in visualization
-		//if (($location->getLat() < $this->minLatitude) && ($location->getLat() > 42.9811436))
-		if ($location->getLat() < $this->minLatitude)
+		if (($location->getLat() < $this->minLatitude) && ($location->getLat() > 42.9811436))
+		//if ($location->getLat() < $this->minLatitude)
 			$this->minLatitude = $location->getLat();
 		
 		//set the lower bound for longitude in visualization
-		//if (($location->getLng() < $this->minLongitude) && ($location->getLng() > -83.7412662))
-		if ($location->getLng() < $this->minLongitude)
+		if (($location->getLng() < $this->minLongitude) && ($location->getLng() > -83.7412662))
+		//if ($location->getLng() < $this->minLongitude)
 			$this->minLongitude = $location->getLng();
 		
 		//set the upper bound for latitude in the visualization
-		//if (($location->getLat() > $this->maxLatitude) && ($location->getLat() < 43.0765585))
-		if ($location->getLat() > $this->maxLatitude)
+		if (($location->getLat() > $this->maxLatitude) && ($location->getLat() < 43.0765585))
+		//if ($location->getLat() > $this->maxLatitude)
 			$this->maxLatitude = $location->getLat();
 		
 		//set the upper bound for longitude in the visualization
-		//if (($location->getLng() > $this->maxLongitude) && ($location->getLng() < -83.6349159))
-		if ($location->getLng() > $this->maxLongitude)
+		if (($location->getLng() > $this->maxLongitude) && ($location->getLng() < -83.6349159))
+		//if ($location->getLng() > $this->maxLongitude)
 			$this->maxLongitude = $location->getLng();
 		
 		//count dangerous lead levels
@@ -358,9 +358,9 @@ function lead_area_processing() {
 	
 	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
 	$context = stream_context_create($options);
-	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
+	//file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
 	
-	//file_put_contents($filename, $output);
+	file_put_contents($filename, $output);
 }
 
 ?>

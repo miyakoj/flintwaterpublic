@@ -9,8 +9,31 @@ require __ROOT__ . "/admin/includes/functions.php";
 
 if (@isset($_POST["pid"])) {	
 	$pid = $_POST["pid"];
+	$role = $_POST["role"];
 	
-	$navigation = array();
+	$navigation = '<ul class="nav navbar-nav" id="top-menu">';
+	$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
+	$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
+	$users_link = '<li class="disabled"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">View Users</span></a></li>';
+	
+	switch($role) {
+		// admin users and those with edit only privileges
+		case 1:
+		case 2:
+			$edit_link = '<li class="disabled"><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
+			$alerts_link = '<li class="disabled"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
+		break;
+		
+		// users with view only privileges
+		case 3:
+			$edit_link = "";
+			$alerts_link = "";
+	}
+	
+	$navigation .= $dashboard_link . $reports_link . $edit_link . $alerts_link . $users_link . "</ul>";
+	
+	$access_denied = "You are not authorized to access this page.";
+	
 	$script = "";
 	
 	switch($pid) {
@@ -66,16 +89,18 @@ if (@isset($_POST["pid"])) {
 			</div>";
 			
 			/* Retrieve the water test data from the database and process it. */
-			$timePeriod = getTimePeriod();
+			if (!isset($TIME_PERIOD))
+				$TIME_PERIOD = getTimePeriod();			
+			
 			$year = array();
 			
-			foreach ($timePeriod as $value) {
+			foreach ($TIME_PERIOD as $value) {
 				$array = explode(" ", $value);
 				$years[] = $array[1];
 			}
 			
-			$timePeriod = implode("', '", $timePeriod);
-			$timePeriod = "['" . $timePeriod . "']";
+			$TIME_PERIOD = implode("', '", $TIME_PERIOD);
+			$TIME_PERIOD = "['" . $TIME_PERIOD . "']";
 			
 			$years = array_unique($years);
 			$years = implode("', '", $years);
@@ -90,7 +115,7 @@ if (@isset($_POST["pid"])) {
 					eventLag: false
 				};*/
 				
-				var timePeriods = $timePeriod;
+				var timePeriods = $TIME_PERIOD;
 				var months = $MONTHS;
 				var years = $years;
 				
@@ -182,41 +207,66 @@ if (@isset($_POST["pid"])) {
 		break;
 		
 		case "edit":
-			$pagetitle = "Edit Data";
+			if ($role == 2) {
+				$pagetitle = "";
+				$inner_content = $access_denied;
+				$script = "";
+			}
+			else {
+				$pagetitle = "Edit Data";
+				$inner_content = "INSERT FORM HERE";
+				$script = "";
+			}
+			
 			$content = "<div class='content-top'>
-				<div id='report_area' class='col-md-12'>
+				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
-						INSERT FORM HERE
+					<section>
+					$inner_content
+					</section>
 					</div>
 				</div>
 				</div>
 			</div>";
-			$script = "";
 		break;
 		
 		case "alerts":
-			$pagetitle = "Manage Alerts";
+			if ($role == 2) {
+				$pagetitle = "";
+				$inner_content = $access_denied;
+				$script = "";
+			}
+			else {
+				$pagetitle = "Manage Alerts";
+				$inner_content = "INSERT FORM HERE";
+				$script = "";
+			}
+			
 			$content = "<div class='content-top'>
-				<div id='report_area' class='col-md-12'>
+				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
-						INSERT FORM HERE
+					<section>
+					$inner_content
+					</section>
 					</div>
 				</div>
 				</div>
 			</div>";
-			$script = "";
 		break;
 		
 		case "about":
 			$pagetitle = "About this Site";
 			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
 			$content .= "<div class='content-top'>
-				<div id='report_area' class='col-md-12'>
+				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
-					<div class='content-top-1'>		
+					<div class='content-top-1'>
+					<section>
 					<p class='text-justify'>[insert text]</p>
+					<p class='text-justify'>Resource site information is courtesy of the <a href='http://www.flintcares.com'>Flint Cares website</a>.</p>
+					</section>
 					</div>
 				</div>
 				</div>
@@ -227,9 +277,10 @@ if (@isset($_POST["pid"])) {
 			$pagetitle = "Disclaimer";
 			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
 			$content .= "<div class='content-top'>
-				<div id='report_area' class='col-md-12'>
+				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
+						<section>
 						<p class='text-justify'><strong>Any user of the MyWater-Flint data portal application (\"MyWater-Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of MyWater-Flint.</strong></p>
 			
 						<p class='text-justify'>The data displayed on MyWater-Flint are provided as a public service, on an \"AS-IS\" basis, and for informational purposes only. University does not create these data, vouch for their accuracy, or guarantee that these are the most recent data available from the data provider. For many or all of the data, the data are by their nature approximate and will contain some inaccuracies. The data may contain errors introduced by the data provider(s) and/or by University. The names of counties and other locations shown in MyWater-Flint may differ from those in the original data.</p>
@@ -237,6 +288,7 @@ if (@isset($_POST["pid"])) {
 						<p class='text-justify'>University makes no warranty, representation or guaranty of any type as to any errors and omissions, or as to the content, accuracy, timeliness, completeness or fitness for any particular purpose or use of any data provided on MyWater-Flint; nor is it intended that any such warranty be implied, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.  Furthermore, University (a) expressly disclaims the accuracy, adequacy, or completeness of any data and (b) shall not be liable for any errors, omissions or other defects in, delays or interruptions in such data, or for any actions taken or not taken in reliance upon such data. Neither University nor any of its data providers will be liable for any damages relating to your use of the data provided in MyWater-Flint.</p>
 						
 						<p class='text-justify'>University shall reserve the right to discontinue the availability of any content on MyWater-Flint at any time and for any reason or no reason at all. The user assumes the entire risk related to its use of the data on MyWater-Flint. In no event will University be liable to you or to any third party for any direct, indirect, incidental, consequential, special or exemplary damages or lost profit resulting from any use or misuse of these data.</p>
+						</section>
 					</div>
 				</div>
 				</div>
@@ -270,10 +322,10 @@ if (@isset($_POST["pid"])) {
 					
 					<div id='map_layer_selection' class='btn-toolbar' role='group' aria-label='Map Layer Buttons'>
 						<div class='btn-group' role='group'><button id='heatmap_btn' type='button' class='btn btn-default'>Lead Levels</button></div>
-						<div class='btn-group' role='group'><button id='pipes_btn' type='button' class='btn btn-default'>Construction Sites</button></div>
+						<div class='btn-group' role='group'><button id='pipes_btn' type='button' class='btn btn-default'>Pipes &amp; Construction Sites</button></div>
 					</div>
 					
-					<div id='resource_layer_selection' class='btn-toolbar hide' role='group' aria-label='Resource Layer Buttons'>
+					<div id='resource_layer_selection' class='btn-toolbar' role='group' aria-label='Resource Layer Buttons'>
 						<div class='btn-group' role='group'><button id='water_pickup_btn' type='button' class='btn btn-default'>Water Pickup</button></div>
 						<div class='btn-group' role='group'><button id='recycling_btn' type='button' class='btn btn-default'>Recycling</button></div>
 						<div class='btn-group' role='group'><button id='water_testing_btn' type='button' class='btn btn-default'>Water Testing</button></div>
@@ -312,6 +364,7 @@ if (@isset($_POST["pid"])) {
 			</div>
 		</div>";
 		
+		/* CHART VARIABLES */
 		/* Retrieve the water test data from the database and process it. */
 		if (!isset($TIME_PERIOD))
 			$TIME_PERIOD = getTimePeriod();
@@ -406,13 +459,15 @@ if (@isset($_POST["pid"])) {
 							label: 'Average Copper Level',
 							data: $testLevelsData[1],
 							borderColor: '#252E56',
-							fill: false
+							fill: false,
+							hidden: true
 						},
 						{
 							label: 'Copper Action Level',
 							data: $copperActionLvlData,
 							borderColor: '#FF6600',
-							fill: false
+							fill: false,
+							hidden: true
 						}]
 					},
 					options: {
@@ -491,6 +546,7 @@ if (@isset($_POST["pid"])) {
 	$page->set("PAGE_TITLE", " | " . $pagetitle);
 	$page->set("PAGE_ID", $pid . "_page");
 	$page->set("SCRIPT", $script);
+	$page->set("NAVIGATION", $navigation);
 	$page->set("CONTENT", $content);
 	$page->create();
 }
@@ -499,7 +555,7 @@ else {
 	 * Redirect the user to the login page if they aren't logged in. 
 	 * http://php.net/manual/en/function.headers-sent.php#60450
 	 */
-	$page = "login.php";
+	$page = __ROOT__ . "login.php";
 	
 	if (!headers_sent())
         header("Location: " . $page);

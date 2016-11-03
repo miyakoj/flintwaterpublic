@@ -43,9 +43,6 @@ $(function () {
 	Chart.defaults.global.responsive = true;
 	Chart.defaults.global.maintainAspectRatio = true;
 	
-	/* Redirect the user to the dashboard page if already logged in. */
-	// TO DO
-	
 	/* Idle Logout 
 	 * From: http://stackoverflow.com/a/955704
 	*/	
@@ -101,7 +98,7 @@ $(function () {
 </head>
 
 <body id="{PAGE_ID}">
-<div id="wrapper">
+<div id="wrapper" class="hide">
 <!----->
 <nav id="main_menu" class="navbar-default navbar-static-top" role="navigation">
 <div class="navbar-header">
@@ -117,12 +114,12 @@ $(function () {
 <!-- Brand and toggle get grouped for better mobile display -->
 
 <!-- Collect the nav links, forms, and other content for toggling -->
-<div class="drop-men hide">
+<div class="drop-men">
 <ul class="nav_1">
 <li class="dropdown">
-<a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class="name-caret">Hello, User <i class="caret"></i></span></a>
+<a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class="name-caret"> <i class="caret"></i></span></a>
 <ul class="dropdown-menu" role="menu">
-<li><a id="profile_link" href="#"><span class="material-icons nav_icon">edit</span> Edit Profile</a></li>
+<li class="hide"><a id="profile_link" href="#"><span class="material-icons nav_icon">edit</span> Edit Profile</a></li>
 <li class="hide"><a id="messages_link" href="#"><span class="material-icons nav_icon">mail</span> Messages</a></li>
 <li><a id="logout_link" href="#"><span class="material-icons nav_icon">exit_to_app</span> Logout</a></li>
 </ul>
@@ -132,12 +129,7 @@ $(function () {
 
 <div class="navbar-default" role="navigation">
 <div class="collapse navbar-collapse">
-<ul class="nav navbar-nav" id="top-menu">
-<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>
-<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>
-<li class="disabled"><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>
-<li class="disabled"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>
-</ul>
+{NAVIGATION}
 </div>
 </div>
 

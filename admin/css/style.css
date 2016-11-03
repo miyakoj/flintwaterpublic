@@ -33,14 +33,22 @@ body {
 	margin-left:5px;
 }
 
+#location_card, #resource_card {
+	position:absolute;
+}
+
+#location_card .close, #resource_card .close {
+	position:absolute;
+	right:0;
+}
+
+#location_card .close span, #resource_card .close span {
+	margin-right:10px;
+}
+
 #location_card {
 	width:20em;
 	margin:0;
-	position:absolute;
-	bottom:0;
-	left:0;
-	right:0;
-	display:none;
 	z-index:200!important;
 }
 
@@ -130,7 +138,7 @@ section p {
 	margin-bottom:15px;
 }
 
-#edit_link, #alerts_link {
+li.disabled a {
 	pointer-events:none;
 }
 
