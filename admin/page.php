@@ -20,7 +20,7 @@ if (@isset($_POST["pid"])) {
 		// admin users and those with edit only privileges
 		case 1:
 		case 2:
-			$edit_link = '<li class="disabled"><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
+			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="disabled"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
 		break;
 		
@@ -209,16 +209,166 @@ if (@isset($_POST["pid"])) {
 		case "edit":
 			if ($role == 2) {
 				$pagetitle = "";
+				$content = "";
 				$inner_content = $access_denied;
 				$script = "";
 			}
 			else {
 				$pagetitle = "Edit Data";
-				$inner_content = "INSERT FORM HERE";
+				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+				
+				$resource_locations = getResourceLocations();
+				
+				$inner_content .= "<div class='panel-group' id='resources_accordion' role='tablist' aria-multiselectable='true'>
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='edit_resource_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#edit_resources' aria-expanded='true' aria-controls='edit_resources'>Edit Resource Location</a></h4>
+				</div>
+
+				<div id='edit_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_resource_heading'>
+				<div class='panel-body'>
+				<form id='location_form'>
+					<div id='location_list' class='row'>
+					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
+					<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default'>Load</button></div>
+					</div>
+					
+					<div class='form-group'>
+					<label for='site'>Name of site<span class='required'>*</span>:</label>
+					<input id='site' class='form-control' type='text' name='site' size='55' required />
+					</div>
+					
+					<div class='form-group'>
+						<label for='category'>Resource Types<span class='required'>*</span></label>:
+						<div id='category_options'>
+						<input id='water_pickup' type='checkbox' name='category' value='Water Pickup' /> <label for='water_pickup'>Water Pickup</label><br />
+						<input id='water_filters' type='checkbox' name='category' value='Water Filters' /> <label for='water_filters'>Water Filters</label><br />
+						<input id='recycling' type='checkbox' name='category' value='Recycle' /> <label for='recycling'>Recycling</label><br />
+						<input id='test_kits' type='checkbox' name='category' value='Test Kits' /> <label for='test_kits'>Test Kits</label><br />
+						<input id='blood_testing' type='checkbox' name='category' value='Blood Testing' /> <label for='blood_testing'>Blood Testing</label>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-6'>
+						<label for='address'>Street address<span class='required'>*</span>:</label>
+						<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
+						<span class='help-block hide'>Example: 125 E. Union St.</span>
+						</div>
+						<div class='col-xs-12 col-md-3'>
+						<label for='city'>City<span class='required'>*</span>:</label>
+						<input id='city' class='form-control' type='text' name='city' size='5' required />
+						</div>
+						<div class='col-xs-12 col-md-3'>
+						<label for='zipcode'>Zipcode<span class='required'>*</span>:</label>
+						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required />
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-3'>
+						<label for='latitude'>Latitude<span class='required'>*</span>:</label>
+						<input id='latitude' class='form-control' type='text' name='latitude' size='10' required />
+						<span class='help-block'>Example: 43.0186</span>
+						</div>
+						<div class='col-xs-12 col-md-3'>
+						<label for='longitude'>Longitude<span class='required'>*</span>:</label>
+						<input id='longitude' class='form-control' type='text' name='longitude' size='10' required />
+						<span class='help-block'>Example: -83.6916</span>
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-3'>
+						<label for='phone'>Phone number:</label>
+						<input id='phone' class='form-control' type='tel' name='phone' size='15' />
+						<span class='help-block'>Example: (810) 555-5555</span>
+						</div>
+						<div class='col-xs-12 col-md-6'>
+						<label for='hours'>Hours<span class='required'>*</span>:</label>
+						<input id='hours' class='form-control' type='text' name='hours' size='20' required />
+						<span class='help-block'>Example: MWRF 8-11a, 1-4p; T 1-4p</span>
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+					<label for='notes'>Notes:</label>
+					<textarea id='notes' class='form-control' rows='3' name='notes' cols='50' placeholder='600 character limit'></textarea>
+					<p class='char_count'></p>
+					</div>
+					
+					<button type='submit' class='btn btn-default'>Submit</button>
+				</form>
+				</div>
+				</div>
+				</div>
+
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='new_resource_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#new_resources' aria-expanded='true' aria-controls='new_resources'>New Resource Location</a></h4>
+				</div>
+
+				<div id='new_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_resource_heading'>
+				<div class='panel-body'></div>
+				</div>
+				</div>
+
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='delete_resource_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#delete_resources' aria-expanded='true' aria-controls='delete_resources'>Delete Resource Location</a></h4>
+				</div>
+
+				<div id='delete_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_resource_heading'>
+				<div class='panel-body'>
+				<form id='delete_form'>
+					<div class='row'>
+					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
+					<div class='col-xs-12 col-md-3'><button type='submit' class='btn btn-default'>Delete</button></div>
+					</div>
+				</form>
+				</div>
+				</div>
+				</div>
+				</div>
+				
+				<hr class='hide' />
+				
+				<div class='panel-group hide' id='construction_accordion' role='tablist' aria-multiselectable='true'>
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='new_construction_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#construction_accordion' href='#new_construction' aria-expanded='true' aria-controls='new_construction'>New Construction Location</a></h4>
+				</div>
+
+				<div id='new_construction' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_construction_heading'>
+				<div class='panel-body'>
+				NEW CONSTRUCTION LOCATION FORM
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='edit_construction_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#construction_accordion' href='#edit_construction' aria-expanded='true' aria-controls='edit_construction'>Edit Construction Location</a></h4>
+				</div>
+
+				<div id='edit_construction' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_construction_heading'>
+				<div class='panel-body'>
+				NEW CONSTRUCTION LOCATION FORM
+				</div>
+				</div>
+				</div>
+				</div>";
+				
 				$script = "";
 			}
 			
-			$content = "<div class='content-top'>
+			$content = $content . "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
@@ -234,16 +384,18 @@ if (@isset($_POST["pid"])) {
 		case "alerts":
 			if ($role == 2) {
 				$pagetitle = "";
+				$content = "";
 				$inner_content = $access_denied;
 				$script = "";
 			}
 			else {
 				$pagetitle = "Manage Alerts";
-				$inner_content = "INSERT FORM HERE";
+				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+				$inner_content .= "INSERT FORM HERE";
 				$script = "";
 			}
 			
-			$content = "<div class='content-top'>
+			$content = $content . "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>

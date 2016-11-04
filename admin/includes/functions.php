@@ -1,6 +1,10 @@
 <?php
 
-@define("__ROOT__", dirname(dirname(__FILE__)));
+if (strstr($_SERVER["PHP_SELF"], "/admin/") !== FALSE)
+	@define("__ROOT__", dirname(dirname(dirname(__FILE__))));
+else
+	@define("__ROOT__", dirname(dirname(__FILE__)));
+
 include __ROOT__ . "/admin/includes/queries.php";
 
 /* Handles report page queries. */
@@ -26,34 +30,34 @@ if (@isset($_POST["report_type"])) {
 	print_r($output);
 }
 
-/* Start a secure PHP session.
- *  From: http://www.wikihow.com/Create-a-Secure-Login-Script-in-PHP-and-MySQL
- */
-function sec_session_start() {
-    $session_name = 'sec_session_id';   // Set a custom session name
-    /*Sets the session name. 
-     *This must come before session_set_cookie_params due to an undocumented bug/feature in PHP. 
-     */
-    session_name($session_name);
- 
-    $secure = true;
-    // This stops JavaScript being able to access the session id.
-    $httponly = true;
-    // Forces sessions to only use cookies.
-    if (ini_set('session.use_only_cookies', 1) === FALSE)
-        exit();
-	
-    // Gets current cookies params.
-    $cookieParams = session_get_cookie_params();
-    session_set_cookie_params($cookieParams["lifetime"],
-        $cookieParams["path"], 
-        $cookieParams["domain"], 
-        $secure,
-        $httponly
-	);
- 
-    session_start();            // Start the PHP session 
-    session_regenerate_id(true);    // regenerated the session, delete the old one. 
+/* Handles edit page queries. */
+if (@isset($_POST["resource_form_type"])) {
+	// get resource location info
+	if (strcmp($_POST["resource_form_type"], "edit_resource_load") === 0) {
+		$result = queries("edit_resource_load", $_POST["location"]);
+		$row = $result->fetch_assoc();
+			
+		/* Generate an array out of the resource type. */
+		$row["resType"] = explode(",", $row["resType"]);
+			
+		$output = "{ \"location\": [";
+		$output .= json_encode($row, JSON_NUMERIC_CHECK);		
+		$output .= "]}";
+		
+		echo $output;
+	}
+	// submit resource info updates
+	else if (strcmp($_POST["resource_form_type"], "edit_resource_submit") === 0) {		
+		$result = queries("edit_resource_submit", $_POST["address"], $_POST);
+		echo $result;
+	}
+	else if (strcmp($_POST["resource_form_type"], "new") === 0) {
+		//$result = queries("new_resource");
+	}
+	else if (strcmp($_POST["resource_form_type"], "delete") === 0) {
+		$result = queries("delete_resource", $_POST["location"]);		
+		echo $result;
+	}
 }
 
 /* Returns a JavaScript array as a string used to generate a chart. */
@@ -149,4 +153,16 @@ function getTimePeriod() {
 	}
 	
 	return $timePeriod;
+}
+
+/* Returns a list of all available resource locations. */
+function getResourceLocations() {
+	$result = queries("resource_locations");
+	
+	$resourceList = "<option value=''></option>\n";
+	
+	while ($row = $result->fetch_assoc())
+		$resourceList .= "<option value='" . $row["aidAddress"] . "'>" . $row["aidAddress"] . "</option>\n";
+	
+	return $resourceList;
 }

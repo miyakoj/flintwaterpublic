@@ -782,7 +782,7 @@ $(document).ready(function() {
 				
 				jQuery.validator.addMethod("location", function(value, element, params) {
 					return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
-				}, jQuery.validator.format("Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization."));
+				}, "Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization.");
 				
 				$("#report_problem #problem_type").rules("add", {required: true});
 				$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});

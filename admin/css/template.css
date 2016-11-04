@@ -8,8 +8,12 @@ body {
 	-webkit-font-smoothing:antialiased;
 }
 
-a {
+a, a:link, a:visited, a:hover, a:active {
 	color:#5266B0;
+}
+
+.panel-title a, .panel-title a:link, .panel-title a:visited, .panel-title a:hover, .panel-title a:active {
+	color:#252E56;
 }
 
 .icon, .material-icons {
@@ -22,6 +26,10 @@ a {
 
 .glyphicon {
 	font-family:"Glyphicons Halflings"!important;
+}
+
+.required {
+	color:#FF0000;
 }
 
 .page_title {
@@ -39,13 +47,17 @@ a {
 	color:#FFF;
 }
 
+.panel-title {
+	font-weight:normal;
+}
+
 
 /* Navigation */
 .navbar-header {
 	background-color:#242E56;
 }
 
-.navbar-brand {
+h1 a.navbar-brand, .navbar-brand:hover {
 	background-color:#242E56!important;
 }
 
@@ -1394,7 +1406,7 @@ input#disabledTextInput,select#disabledSelect {
     background-color: #fde0dc;
     border-color: #f69988 !important;
 }
-.checkbox-inline label,.checkbox-inline1 label,.form-group label{
+.checkbox-inline label,.checkbox-inline1 label{
 	font-weight:400;
 }
 /*--validation--*/

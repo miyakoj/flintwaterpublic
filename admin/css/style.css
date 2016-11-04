@@ -110,6 +110,29 @@ body {
 }
 
 
+/* Edit Page */
+#edit_page .panel-title {
+	font-weight:bold;
+}
+
+#edit_page .panel-body {
+	padding-top:0;
+}
+
+#edit_page #location_form #location_list {
+	margin-top:15px;
+}
+
+#edit_page #category_options {
+	padding-left:15px;
+}
+
+#edit_page #category_options label {
+	padding-left:8px;
+	font-weight:normal;
+}
+
+
 /* Login Page */
 .login {
 	padding-top:1em;
@@ -142,6 +165,16 @@ li.disabled a {
 	pointer-events:none;
 }
 
+.alert {
+	margin:15px 0 0 0;
+}
+
+form .col-xs-12, form form .col-md-3, form .col-md-5, form .col-md-6 {
+	padding-left:0;
+}
+
+
+/* Footer */
 
 footer {
 	margin-top:15px;

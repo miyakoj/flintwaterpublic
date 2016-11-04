@@ -14,6 +14,8 @@ var genericError = "<div class='alert alert-danger' role='alert'>There was an er
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
 var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
 var form_api = "http://malsup.github.io/min/jquery.form.min.js";
+var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
+var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
 
 /*if ($pageId.indexOf("dashboard") != -1) {
 	$.ajax({
@@ -34,15 +36,23 @@ var form_api = "http://malsup.github.io/min/jquery.form.min.js";
 (function() {
     "use strict";
 	
-	if (($pageId.indexOf("login") != -1) || ($pageId.indexOf("reports") != -1)) {
+	/* Dynamically load external scripts. */
+	if ($pageId.indexOf("dashboard") == -1) {
 		$.ajax({
 			type: "GET",
 			url: form_api,
 			dataType: "script",
 			cache: true
-		}).then(function() {	
-			
 		});
+	}
+	
+	if (($pageId.indexOf("edit") != -1) || ($pageId.indexOf("alerts") != -1) || ($pageId.indexOf("users") != -1) || ($pageId.indexOf("profile") != -1)) {		
+		/*$.ajax({
+			type: "GET",
+			url: form_validation_addl_js,
+			dataType: "script",
+			cache: true
+		});*/
 	}
 	
 	$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
@@ -94,7 +104,7 @@ var form_api = "http://malsup.github.io/min/jquery.form.min.js";
 				};					
 				userObj = authUser;
 				
-				$(".name-caret").prepend("Hello, " + authUser.firstName);
+				$(".name-caret").text("Hello, " + authUser.firstName);
 				$("#wrapper").removeClass("hide");
 			}).then(function() {
 				if ($pageId.indexOf("dashboard") != -1) {					
@@ -190,6 +200,203 @@ var form_api = "http://malsup.github.io/min/jquery.form.min.js";
 		$(".marker_popup_icons").css({"width": "30px", "height": "auto"});
 		$("#211_info").addClass("hide");
 	}
+	else if ($pageId.indexOf("edit") != -1) {		
+		/*var edit_instructions = "Click \"Load Locations\" to retrieve a list of all locations in the database then select the item you want to update.";
+		var delete_instructions = "Click \"Load Locations\" to retrieve a list of all locations in the database then select the item you want to delete.";
+		$("#edit_form").prepend("<div class='alert alert-info' role='alert'>" + edit_instructions + "</div>");
+		$("#delete_form").prepend("<div class='alert alert-info' role='alert'>" + delete_instructions + "</div>");*/
+		
+		$.ajax({
+			type: "GET",
+			url: form_validation_api,
+			dataType: "script",
+			cache: true
+		}).done(function() {
+			if ($("#new_resources").hasClass("in")) {
+				// move the form into the new section when opened
+				$("#new_resources .panel-body").append($("#location_form"));
+				// display the location list for the edit form
+				$("#location_form #location_list").addClass("hide");
+				$("#location_form #address").removeAttr("disabled");
+				$("#location_form #address").next().removeClass("hide")
+			}
+			
+			if ($("#location_form #location_list select").children().length == 0)
+				$("#location_form #location_list button").addClass("disabled");
+			else
+				$("#location_form #location_list button").removeClass("disabled");
+			
+			//2804 N. Franklin Ave.
+			
+			$("#location_form #location_list button").on("click", function() {
+				$.ajax({
+					type: "POST",
+					url: "includes/functions.php",
+					data: {"resource_form_type": "edit_resource_load", "location": $("#location_form #location_list select").val()}
+				}).done(function(data) {
+					//reset the form
+					$("#location_form").resetForm();
+					
+					var js_obj = $.parseJSON(data);
+					$("#location_form #location_list select").val(js_obj.location[0].aidAddress);
+					
+					$("#location_form #site").val(js_obj.location[0].locationName);
+					$("#location_form #category_options input").val(js_obj.location[0].resType);
+					$("#location_form #address").val(js_obj.location[0].aidAddress);
+					$("#location_form #city").val(js_obj.location[0].city);
+					$("#location_form #zipcode").val(js_obj.location[0].zipcode);
+					$("#location_form #latitude").val(js_obj.location[0].latitude);
+					$("#location_form #longitude").val(js_obj.location[0].longitude);
+					$("#location_form #phone").val(js_obj.location[0].phone);
+					$("#location_form #hours").val(js_obj.location[0].hours);
+					$("#location_form #notes").val(js_obj.location[0].notes);
+				});
+			});
+			
+			$.validator.addMethod("address", function(value, element) {
+				return this.optional(element) || /^[G-]*[0-9]+ [A-Z.]* [A-Za-z]+ [A-Za-z.]+/.test(value);
+			}, "Please enter a street address.");
+			
+			$.validator.addMethod("geocode", function(value, element) {
+				return this.optional(element) || /[-]*[0-9]{2}.[0-9]{4}/.test(value);
+			}, "Please enter a geocode in the format ##.####.");
+			
+			$.validator.methods.phone = function(value, element) {
+				return this.optional(element) || /\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}/.test(value);
+			};
+			
+			$("#location_form .char_count").html("<span>Characters remaining:</span> 600");
+			$("#location_form #notes").on("keyup", function(event) {
+				$(".char_count").html("<span>Characters remaining:</span> " + (600 - $(this).val().length));
+			});
+			
+			jQuery.validator.addClassRules({
+				site: "required",
+				address: {
+					required: true,
+					address: true
+				},
+				category: {
+					required: true,
+					minlength: 1
+				},
+				zipcode: {
+					required: true,
+					digits: true,
+					minlength: 5,
+					maxlength: 5
+				},
+				latitude: {
+					required: true,
+					geocode: true
+				},
+				longitude: {
+					required: true,
+					geocode: true
+				},
+				phone: {
+					required: false,
+					phone: true
+				},
+				notes: {
+					required: false,
+					maxlength: 600
+				}
+			});
+			
+			$("#edit_resources #location_form").validate({
+				debug: true,
+				errorPlacement: function(error, element) {
+					error.appendTo(element.parent());
+				},
+				messages: {
+					site: "Please enter the name of the location.",
+					category: "Please choose at least one category.",
+					zipcode: {
+						required: "Zipcode is required.",
+						digits: true,
+						minlength: "The zipcode must be exactly five digits.",
+						maxlength: "The zipcode must be exactly five digits."
+					},
+					latitude: "Latitude is required.",
+					longitude: "Longitude is required.",
+					phone: {
+						phone: "Please enter a valid phone number."
+					},
+					notes: {
+						maxlength: "Only 600 characters are allowed."
+					}
+				},
+				submitHandler: function(form) {
+					var categories = [];
+					
+					for (var i=0; i<form.category.length; i++) {
+						if (form.category[i].checked)
+							categories.push(form.category[i].value);
+					}
+						
+					$.ajax({
+						type: "POST",
+						url: "includes/functions.php",
+						data: {
+							"resource_form_type": "edit_resource_submit",
+							"site": form.site.value,
+							"categories": categories,
+							"address": form.address.value,
+							"city": form.city.value,
+							"zipcode": form.zipcode.value,
+							"latitude": form.latitude.value,
+							"longitude": form.longitude.value,
+							"phone": form.phone.value,
+							"hours": form.hours.value,
+							"notes": form.notes.value
+						}						
+					}).done(function(resp) {
+						if (resp.indexOf("1") != -1) {
+							$("#location_form alert").remove();
+							$("#location_form").append("<div class='alert alert-success' role='alert'>\"" + form.address.value + "\" was successfully updated.</div>");
+							
+							if ($("#new_resources").hasClass("in"))
+								$("#location_form").resetForm();
+						}
+						else {
+							$("#delete_form").append(genericError);
+						}
+					});
+				}
+			});
+			
+			$("#delete_form").validate({
+				debug: true,
+				submitHandler: function(form) {
+					var location = form.location_menu.value;						
+					var delete_confirm = confirm("Are you sure you want to delete \"" + location + "\"? This action cannot be undone.");
+					
+					//2320 Pierson St.
+					
+					if (delete_confirm == true) {						
+						$.ajax({
+							type: "POST",
+							url: "includes/functions.php",
+							data: {"resource_form_type": "delete", "location": location}
+						}).done(function(resp) {
+							if (resp.indexOf("1") != -1) {
+								$("#delete_form select[name='location_menu'] option[value='" + location + "']").remove();
+								$("#delete_form select").val("");
+								$("#delete_form .alert-info, #delete_form .alert-danger").hide();
+								$("#delete_form").append("<div class='alert alert-success' role='alert'>\"" + location + "\" was successfully deleted.</div>");
+								$("#delete_form").resetForm();
+							}
+							else
+								$("#delete_form").append(genericError);
+						});
+					}
+					else
+						$("#delete_form").append("<div class='alert alert-info' role='alert'>\"Delete location\" was canceled.</div>");
+				}
+			});
+		});
+	}
 	
 	/* Navigation Links */
 	$("#dashboard_link").on("click", function() {
@@ -211,19 +418,39 @@ var form_api = "http://malsup.github.io/min/jquery.form.min.js";
 	});
 	
 	$("#edit_link").on("click", function() {
-		
+		var form = $("<form></form>");
+		$(form).attr("method", "post").attr("action", "page.php");
+		var pid_input = $("<input type='hidden' name='pid' />").val("edit");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
+		$(form).append(pid_input, role_input);
+		$(form).appendTo("body").submit();
 	});
 	
 	$("#alerts_link").on("click", function() {
-		
+		var form = $("<form></form>");
+		$(form).attr("method", "post").attr("action", "page.php");
+		var pid_input = $("<input type='hidden' name='pid' />").val("alerts");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
+		$(form).append(pid_input, role_input);
+		$(form).appendTo("body").submit();
 	});
 	
 	$("#users_link").on("click", function() {
-		
+		var form = $("<form></form>");
+		$(form).attr("method", "post").attr("action", "page.php");
+		var pid_input = $("<input type='hidden' name='pid' />").val("users");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
+		$(form).append(pid_input, role_input);
+		$(form).appendTo("body").submit();
 	});
 	
 	$("#profile_link").on("click", function() {
-		
+		var form = $("<form></form>");
+		$(form).attr("method", "post").attr("action", "page.php");
+		var pid_input = $("<input type='hidden' name='pid' />").val("profile");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
+		$(form).append(pid_input, role_input);
+		$(form).appendTo("body").submit();
 	});
 	
 	$("#logout_link").on("click", function() {
@@ -256,6 +483,10 @@ var form_api = "http://malsup.github.io/min/jquery.form.min.js";
 		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
 		$(form).append(pid_input, role_input);
 		$(form).appendTo("body").submit();
+	});
+	
+	$("#contact_link").on("click", function() {
+		$("#comments_form").modal("show");
 	});
 })(jQuery);
 
