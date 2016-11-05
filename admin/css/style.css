@@ -111,15 +111,11 @@ body {
 
 
 /* Edit Page */
-#edit_page .panel-title {
-	font-weight:bold;
-}
-
-#edit_page .panel-body {
+#edit_resources .panel-body {
 	padding-top:0;
 }
 
-#edit_page #location_form #location_list {
+#edit_resources .panel-body #instructions, #edit_page #location_form #location_list {
 	margin-top:15px;
 }
 
@@ -129,7 +125,6 @@ body {
 
 #edit_page #category_options label {
 	padding-left:8px;
-	font-weight:normal;
 }
 
 
@@ -169,8 +164,28 @@ li.disabled a {
 	margin:15px 0 0 0;
 }
 
+form label.error {
+	display:block;
+}
+
 form .col-xs-12, form form .col-md-3, form .col-md-5, form .col-md-6 {
 	padding-left:0;
+}
+
+#page_alert {
+	position:absolute;
+}
+
+#comments_form .icon {
+	margin-top:0;
+}
+
+#comments_form .alert {
+	margin-top:0;
+}
+
+#comments_form .modal-body .alert {
+	margin-top:15px;
 }
 
 

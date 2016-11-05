@@ -48,15 +48,15 @@ echo '<!DOCTYPE html>
 		<form>
 		<div>
 			<div id="login_email" class="login-mail">
-				<input type="text" placeholder="Email" required="required" />
+				<input type="text" placeholder="Email" name="email" required />
 				<i class="fa fa-envelope"></i>
 			</div>
 			<div id="login_password" class="login-mail">
-				<input type="password" placeholder="Password" required="required" />
+				<input type="password" placeholder="Password" name="password" required />
 				<i class="fa fa-lock"></i>
 			</div>
 				<a id="forgot_password" class="news-letter" href="#">
-				<label class="checkbox1"><input type="checkbox" name="checkbox" /><i> </i> Forgot Password</label>
+				<label class="checkbox1"><input type="checkbox" name="forgot_password" /><i> </i> Forgot Password</label>
 				</a>
 				   
 			<div class="login-do">

@@ -5,7 +5,9 @@ if (strstr($_SERVER["PHP_SELF"], "/admin/") !== FALSE)
 else
 	@define("__ROOT__", dirname(dirname(__FILE__)));
 
-include __ROOT__ . "/admin/includes/queries.php";
+require_once __ROOT__ . "/admin/includes/queries.php";
+require_once __ROOT__ . "/vendor/autoload.php";
+use google\appengine\api\mail\Message;
 
 /* Handles report page queries. */
 if (@isset($_POST["report_type"])) {
@@ -30,10 +32,14 @@ if (@isset($_POST["report_type"])) {
 	print_r($output);
 }
 
-/* Handles edit page queries. */
-if (@isset($_POST["resource_form_type"])) {
+/* Handles edit page queries. */	
+if (@isset($_POST["type"])) {
+	// load all resource locations
+	if (strcmp($_POST["type"], "load_resource_locations") === 0)
+		echo getResourceLocations();
+	
 	// get resource location info
-	if (strcmp($_POST["resource_form_type"], "edit_resource_load") === 0) {
+	if (strcmp($_POST["type"], "edit_resource_load") === 0) {
 		$result = queries("edit_resource_load", $_POST["location"]);
 		$row = $result->fetch_assoc();
 			
@@ -47,16 +53,23 @@ if (@isset($_POST["resource_form_type"])) {
 		echo $output;
 	}
 	// submit resource info updates
-	else if (strcmp($_POST["resource_form_type"], "edit_resource_submit") === 0) {		
-		$result = queries("edit_resource_submit", $_POST["address"], $_POST);
+	else if (strcmp($_POST["type"], "edit_resource_submit") === 0) {
+		$result = queries("edit_resource_submit", "", $_POST);
+
 		echo $result;
 	}
-	else if (strcmp($_POST["resource_form_type"], "new") === 0) {
-		//$result = queries("new_resource");
-	}
-	else if (strcmp($_POST["resource_form_type"], "delete") === 0) {
-		$result = queries("delete_resource", $_POST["location"]);		
+	else if (strcmp($_POST["type"], "new_resource") === 0) {
+		$result = queries("new_resource", "", $_POST);
+		
 		echo $result;
+	}
+	else if (strcmp($_POST["type"], "delete_resource") === 0) {
+		$result = queries("delete_resource", $_POST["location"]);
+
+		echo $result;
+	}
+	else if ($_POST["type"] == "contact_form") {	
+		email_user();
 	}
 }
 
@@ -165,4 +178,29 @@ function getResourceLocations() {
 		$resourceList .= "<option value='" . $row["aidAddress"] . "'>" . $row["aidAddress"] . "</option>\n";
 	
 	return $resourceList;
+}
+
+/* Email some info to a user. */
+function email_user() {
+	if ($_POST["type"] == "contact_form") {
+		$to = "umflinth2o@gmail.com";
+		$from = "umflinth2o@gmail.com";
+		$subject = "A Comment About MyWater-Flint (Admin Site)";
+		
+		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>
+						<p><strong>Comments:</strong><br /> %s</p>", htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["comments"]));
+	}
+	
+	try {
+		$message = new Message();
+		$message->setSender($from);
+		$message->addTo($to);
+		$message->setSubject($subject);
+		$message->setHtmlBody($msg);
+		$message->send();
+		
+		echo 1;
+	} catch (InvalidArgumentException $e) {
+		echo $e;
+	}
 }

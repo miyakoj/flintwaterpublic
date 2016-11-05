@@ -28,8 +28,20 @@ a, a:link, a:visited, a:hover, a:active {
 	font-family:"Glyphicons Halflings"!important;
 }
 
-.required {
+form .required {
 	color:#FF0000;
+}
+
+form input.error {
+	color:#FF0000;
+}
+
+form label.error {
+	font-weight:bold!important;
+}
+
+form .help-block, form label.error, form .char_count {
+	font-size:0.9em;
 }
 
 .page_title {
@@ -66,6 +78,14 @@ h1 a.navbar-brand, .navbar-brand:hover {
 	border-color:#5266B0;
 }
 
+.nav_1 a.dropdown-toggle {
+	color:#777;
+}
+
+.nav_1 a.dropdown-toggle:hover {
+	color:#333;
+}
+
 
 /* Login Page */
 .login .login-sub::before {
@@ -97,6 +117,15 @@ h1 a.navbar-brand, .navbar-brand:hover {
 	padding:5px;
 	border:1px solid #CCC;
 }*/
+
+/* Edit Page */
+#edit_page .panel-title {
+	font-weight:bold;
+}
+
+#edit_page #category_options label {
+	font-weight:normal;
+}
 
 
 /* Misc */

@@ -32,7 +32,7 @@ if (@isset($_POST["pid"])) {
 	
 	$navigation .= $dashboard_link . $reports_link . $edit_link . $alerts_link . $users_link . "</ul>";
 	
-	$access_denied = "You are not authorized to access this page.";
+	$access_denied = "<p class='text-center'>You are not authorized to access this page.</p>";
 	
 	$script = "";
 	
@@ -207,19 +207,13 @@ if (@isset($_POST["pid"])) {
 		break;
 		
 		case "edit":
-			if ($role == 2) {
-				$pagetitle = "";
-				$content = "";
-				$inner_content = $access_denied;
-				$script = "";
-			}
-			else {
+			if (($role == 1) || ($role == 2)) {
 				$pagetitle = "Edit Data";
 				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
 				
 				$resource_locations = getResourceLocations();
 				
-				$inner_content .= "<div class='panel-group' id='resources_accordion' role='tablist' aria-multiselectable='true'>
+				$inner_content = "<div class='panel-group' id='resources_accordion' role='tablist' aria-multiselectable='true'>
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='edit_resource_heading'>
 				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#edit_resources' aria-expanded='true' aria-controls='edit_resources'>Edit Resource Location</a></h4>
@@ -228,9 +222,13 @@ if (@isset($_POST["pid"])) {
 				<div id='edit_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_resource_heading'>
 				<div class='panel-body'>
 				<form id='location_form'>
-					<div id='location_list' class='row'>
+					<div id='instructions'>Click \"Load\" to retrieve data for the selected resource location.</div>
+					
+					<div id='location_list' class='form-group'>
+					<div class='row'>
 					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
 					<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default'>Load</button></div>
+					</div>
 					</div>
 					
 					<div class='form-group'>
@@ -239,13 +237,13 @@ if (@isset($_POST["pid"])) {
 					</div>
 					
 					<div class='form-group'>
-						<label for='category'>Resource Types<span class='required'>*</span></label>:
+						<label for='categories'>Resource Types<span class='required'>*</span></label>:
 						<div id='category_options'>
-						<input id='water_pickup' type='checkbox' name='category' value='Water Pickup' /> <label for='water_pickup'>Water Pickup</label><br />
-						<input id='water_filters' type='checkbox' name='category' value='Water Filters' /> <label for='water_filters'>Water Filters</label><br />
-						<input id='recycling' type='checkbox' name='category' value='Recycle' /> <label for='recycling'>Recycling</label><br />
-						<input id='test_kits' type='checkbox' name='category' value='Test Kits' /> <label for='test_kits'>Test Kits</label><br />
-						<input id='blood_testing' type='checkbox' name='category' value='Blood Testing' /> <label for='blood_testing'>Blood Testing</label>
+						<input id='water_pickup' type='checkbox' name='categories[]' value='Water Pickup' /> <label for='water_pickup'>Water Pickup</label><br />
+						<input id='water_filters' type='checkbox' name='categories[]' value='Water Filters' /> <label for='water_filters'>Water Filters</label><br />
+						<input id='recycling' type='checkbox' name='categories[]' value='Recycle' /> <label for='recycling'>Recycling</label><br />
+						<input id='test_kits' type='checkbox' name='categories[]' value='Test Kits' /> <label for='test_kits'>Test Kits</label><br />
+						<input id='blood_testing' type='checkbox' name='categories[]' value='Blood Testing' /> <label for='blood_testing'>Blood Testing</label>
 						</div>
 					</div>
 					
@@ -329,7 +327,7 @@ if (@isset($_POST["pid"])) {
 				<form id='delete_form'>
 					<div class='row'>
 					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
-					<div class='col-xs-12 col-md-3'><button type='submit' class='btn btn-default'>Delete</button></div>
+					<div class='col-xs-12 col-md-3'><button type='submit' class='btn btn-default' disabled='disabled'>Delete</button></div>
 					</div>
 				</form>
 				</div>
@@ -367,6 +365,39 @@ if (@isset($_POST["pid"])) {
 				
 				$script = "";
 			}
+			else {
+				$pagetitle = "";
+				$content = "";
+				$inner_content = $access_denied;
+				$script = "";
+			}
+			
+			$content .= "<div class='content-top'>
+				<div class='col-xs-12 col-md-8 col-md-offset-2'>
+				<div class='row'>
+					<div class='content-top-1'>
+					<section>
+					$inner_content
+					</section>
+					</div>
+				</div>
+				</div>
+			</div>";
+		break;
+		
+		case "alerts":
+			if (($role == 1) || ($role == 2)) {
+				$pagetitle = "Manage Alerts";
+				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+				$inner_content = "INSERT FORM HERE";
+				$script = "";
+			}
+			else {
+				$pagetitle = "";
+				$content = "";
+				$inner_content = $access_denied;
+				$script = "";
+			}
 			
 			$content = $content . "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
@@ -381,31 +412,125 @@ if (@isset($_POST["pid"])) {
 			</div>";
 		break;
 		
-		case "alerts":
-			if ($role == 2) {
-				$pagetitle = "";
-				$content = "";
-				$inner_content = $access_denied;
-				$script = "";
-			}
-			else {
-				$pagetitle = "Manage Alerts";
-				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-				$inner_content .= "INSERT FORM HERE";
-				$script = "";
-			}
-			
-			$content = $content . "<div class='content-top'>
+		case "profile":
+			$pagetitle = "Manage Your Profile";
+			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
 					<section>
-					$inner_content
+					<form id='profile_form'>
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-3 col-md-offset-1'>
+						<label for='user_group'>User Group:</label>
+						<input id='user_group' class='form-control' type='text' name='user_group' size='5' disabled />
+						</div>					
+						</div>
+					</div>
+					
+					// change password fields
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1'>
+						<label for='first_name'>First Name<span class='required'>*</span>:</label>
+						<input id='first_name' class='form-control' type='text' name='first_name' size='5' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-5'>
+						<label for='last_name'>Last Name<span class='required'>*</span>:</label>
+						<input id='last_name' class='form-control' type='text' name='last_name' size='25' required disabled />
+						</div>						
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-8 col-md-offset-1'>
+						<label for='title'>Title<span class='required'>*</span>:</label>
+						<input id='title' class='form-control' type='text' name='title' size='5' required disabled />
+						</div>						
+						</div>						
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-5 col-md-offset-1'>
+						<label for='email'>Email<span class='required'>*</span>:</label>
+						<input id='email' class='form-control' type='text' name='email' size='5' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-4'>
+						<label for='phone'>Phone:</label>
+						<input id='phone' class='form-control' type='text' name='phone' size='25' disabled />
+						</div>						
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1'>
+						<label for='dept'>Department:</label>
+						<input id='dept' class='form-control' type='text' name='dept' size='5' disabled />
+						</div>
+						<div class='col-xs-12 col-md-4'>
+						<label for='bldg'>Building:</label>
+						<input id='bldg' class='form-control' type='text' name='bldg' size='5' disabled />
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1'>
+						<label for='address'>Street address<span class='required'>*</span>:</label>
+						<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
+						<span class='help-block hide'>Example: 303 E. Kearsley St.</span>
+						</div>
+						
+						<div class='col-xs-12 col-md-3'>
+						<label for='city'>City<span class='required'>*</span>:</label>
+						<input id='city' class='form-control' type='text' name='city' size='5' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-1'>
+						<label for='state'>State<span class='required'>*</span>:</label>
+						<input id='state' class='form-control' type='text' name='state' size='2' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-2'>
+						<label for='zipcode'>Zipcode<span class='required'>*</span>:</label>
+						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required disabled />
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-10 col-md-offset-1'>
+						<label for='show_info'>Show contact information to other users:<span class='required'>*</span>:</label>
+						<div id='show_info' class='radio'>
+						<label><input type='radio' name='show_info' id='show_info1' value='yes' required disabled /> Yes</label>
+						<label><input type='radio' name='show_info' id='show_info2' value='no' required checked disabled /> No</label>
+						</div>
+						</div>						
+						</div>						
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-3 col-md-offset-1'>
+						<button id='edit_button' type='button' class='btn btn-default'>Edit</button>
+						<button id='update_button' type='submit' class='btn btn-default hide'>Update</button>
+						</div>
+						</div>
+					</div>
+					</form>
 					</section>
 					</div>
 				</div>
 				</div>
 			</div>";
+			
+			$script = "";
 		break;
 		
 		case "about":

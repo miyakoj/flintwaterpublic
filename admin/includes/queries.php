@@ -1,7 +1,7 @@
 <?php
 
 @define("__ROOT__", dirname(dirname(__FILE__)));
-require_once __ROOT__ . "/includes/database_config.php";
+require __ROOT__ . "/includes/database_config.php";
 
 function queries($choice, $var = "", $var2 = array()) {
 	global $mysqli;
@@ -36,23 +36,25 @@ function queries($choice, $var = "", $var2 = array()) {
 	}
 	/* Edit Page Queries */
 	else if (strcmp($choice, "resource_locations") === 0) {
-		$query = "SELECT aidAddress FROM AidLocation ORDER BY aidAddress+0<>0 DESC, aidAddress+0, aidAddress;";
+		$query = "SELECT aidAddress FROM AidLocation WHERE aidAddress != '' ORDER BY aidAddress+0<>0 DESC, aidAddress+0, aidAddress;";
 	}
 	else if (strcmp($choice, "edit_resource_load") === 0) {
 		$query = sprintf("SELECT latitude, longitude, locationName, AidLocation.aidAddress, city, zipcode, hours, phone, notes, GROUP_CONCAT(resType) AS resType FROM AidLocation INNER JOIN ResourcesQuantity ON AidLocation.aidAddress = ResourcesQuantity.aidAddress WHERE AidLocation.aidAddress = '%s';", $var);
 	}
 	if (strcmp($choice, "edit_resource_submit") === 0) {
-		//$query = sprintf("", $var, );
-		$query = sprintf("UPDATE AidLocation SET latitude = '%s', longitude = '%s', locationName = '%s', aidAddress = '%s', city = '%s', state='MI', zipcode = '%s', hours = '%s', phone = '%s', notes = '%s' WHERE aidAddress = '%s';", $var2["latitude"], $var2["longitude"], $var2["site"], $var2["address"], $var2["city"], $var2["zipcode"], $var2["hours"], $var2["phone"], $var2["notes"], $var);
+		$query = sprintf("UPDATE AidLocation SET latitude = '%s', longitude = '%s', locationName = '%s', city = '%s', state='MI', zipcode = '%s', hours = '%s', phone = '%s', notes = '%s' WHERE aidAddress = '%s';", $var2["latitude"], $var2["longitude"], $var2["site"], $var2["city"], $var2["zipcode"], $mysqli->real_escape_string($var2["hours"]), $var2["phone"], $mysqli->real_escape_string($var2["notes"]), $var2["address"]);
 		
 		/* Deal with the resource types. */
-		$query .= sprintf("DELETE FROM ResourcesQuantity WHERE aidAddress = '%s';", $var);
+		$query .= sprintf("DELETE FROM ResourcesQuantity WHERE aidAddress = '%s';", $var2["address"]);
 		
 		foreach ($var2["categories"] as $value)
-			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $var);
+			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $var2["address"]);
 	}
 	else if (strcmp($choice, "new_resource") === 0) {
+		$query = sprintf("INSERT INTO AidLocation (latitude, longitude, locationName, aidAddress, city, state, zipcode, hours, phone, notes) VALUES ('%s', '%s', '%s', '%s', '%s', 'MI', '%s', '%s', '%s', '%s');", $var2["latitude"], $var2["longitude"], $var2["site"], $var2["address"], $var2["city"], $var2["zipcode"], $mysqli->real_escape_string($var2["hours"]), $var2["phone"], $mysqli->real_escape_string($var2["notes"]));
 		
+		foreach ($var2["categories"] as $value)
+			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $var2["address"]);
 	}
 	else if (strcmp($choice, "delete_resource") === 0) {
 		$query = sprintf("DELETE FROM AidLocation WHERE aidAddress = '%s';", $var);
