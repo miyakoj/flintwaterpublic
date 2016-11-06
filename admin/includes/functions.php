@@ -103,6 +103,11 @@ function generateChartData($type) {
 		$row = $result->fetch_assoc();
 		$array[] = $row["totalLocationsTested"];
 	}
+	else if (strcmp($type, "total_approved_repairs") === 0) {
+		$row = $result->fetch_assoc();
+		$array[] = $row["totalApprovedRepairs"];
+		$array[] = 38;
+	}
 	
 	return $array;
 }

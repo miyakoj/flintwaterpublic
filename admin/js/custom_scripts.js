@@ -57,12 +57,8 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 	auth = firebase.auth();
 	db = app.database();
 	
-	firebase.auth().onAuthStateChanged(function(user) {		
+	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
-			/* If the user is logged in and they load the login page, forward them to the dashboard page. */
-			/*if ($pageId.indexOf("login") != -1) {
-			}*/
-			
 			db.ref("users/" + user.uid).once("value").then(function(snapshot) {
 				var firstName = snapshot.val().firstName;
 				var lastName = snapshot.val().lastName;
@@ -88,7 +84,11 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 				};					
 				userObj = authUser;
 				
-				$(".name-caret").text("Hello, " + authUser.firstName);
+				if (authUser.firstName)
+					$(".name-caret").text("Hello, " + authUser.firstName);
+				else
+					$(".name-caret").text("Hello, User");
+				
 				$("#wrapper").removeClass("hide");
 			}).then(function() {
 				/* Position alert in the middle of the page. */
@@ -131,25 +131,25 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 					else
 						user_group = "View Only";
 					
-					$("#profile_form #user_group").val(user_group);
-					$("#profile_form #first_name").val(userObj.firstName);
-					$("#profile_form #last_name").val(userObj.lastName);
-					$("#profile_form #title").val(userObj.title);
-					$("#profile_form #email").val(userObj.email);
-					$("#profile_form #phone").val(userObj.phone);
-					$("#profile_form #dept").val(userObj.dept);
-					$("#profile_form #bldg").val(userObj.bldg);
-					$("#profile_form #address").val(userObj.address.streetAddr);
-					$("#profile_form #city").val(userObj.address.city);
-					$("#profile_form #zipcode").val(userObj.address.zipcode);
-					$("#profile_form #state").val(userObj.address.state);
+					$("#edit_profile_form #user_group").val(user_group);
+					$("#edit_profile_form #first_name").val(userObj.firstName);
+					$("#edit_profile_form #last_name").val(userObj.lastName);
+					$("#edit_profile_form #title").val(userObj.title);
+					$("#edit_profile_form #email").val(userObj.email);
+					$("#edit_profile_form #phone").val(userObj.phone);
+					$("#edit_profile_form #dept").val(userObj.dept);
+					$("#edit_profile_form #bldg").val(userObj.address.bldg);
+					$("#edit_profile_form #address").val(userObj.address.streetAddr);
+					$("#edit_profile_form #city").val(userObj.address.city);
+					$("#edit_profile_form #zipcode").val(userObj.address.zipcode);
+					$("#edit_profile_form #state").val(userObj.address.state);
 					
 					if (userObj.showInfo)
 						show_info = "yes";
 					else
 						show_info = "no";
 					
-					$("#profile_form #show_info input").val([show_info]);
+					$("#edit_profile_form #show_info input").val([show_info]);
 				}
 			});
 		}
@@ -165,63 +165,23 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 		});
 	}
 	
-	if ($pageId.indexOf("login") != -1) {
-		$("form").on("submit", function(event) {
-			var email = $("#login_email input").val();
-			var password = $("#login_password input").val();
+	if ($pageId.indexOf("dashboard") != -1) {
 		
-			// if reset password is unchecked, do normal sign in
-			if ($("#forgot_password input").prop("checked") == false) {
-				firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
-					$(".alert").addClass("hide");
-
-					decodeIDToken(firebase.auth().currentUser.uid, "login");
-				},
-				function(error) {
-					if (error) {
-						var errorCode = error.code;
-						var errorMsg;
-						
-						$(".alert-danger").addClass("hide");
-
-						if (errorCode === "auth/wrong-password")
-							errorMsg = "<div class='alert alert-danger' role='alert'>Your password is incorrect.</div>";			
-						else if (errorCode === "auth/invalid-email")
-							errorMsg = "<div class='alert alert-danger' role='alert'>Your email address is invalid.</div>";
-						else if (errorCode === "auth/user-not-found")
-							errorMsg = "<div class='alert alert-danger' role='alert'>There is no user account associated with this email address.</div>";
-						else if (errorCode  === "auth/too-many-requests") {
-							$("#login_email input").addClass("disable");
-							$("#login_password input").addClass("disable");
-							$("#forgot_password input").addClass("disable");
-							$(".login-do input").addClass("disable");
-							
-							errorMsg = "<div class='alert alert-danger' role='alert'>You have run out of login attempts. Please try again later.</div>";
-						}
-						else
-							errorMsg = genericError;
-						
-						$("form").append(errorMsg);
-
-						console.log(error);
-					}
-				});
-			}
-			else {
-				auth.sendPasswordResetEmail(email).then(function() {
-					$("form").append("<div class='alert alert-success' role='alert'>A password reset email has been sent.</div>");
-				}, function(error) {
-					$("form").append(genericError);
-				});
-			}
-			
-			event.preventDefault();
-		});
 	}
-	else if ($pageId.indexOf("dashboard") != -1) {
-		/* Scale the popup markers based on screen size. */
-		$(".marker_popup_icons").css({"width": "30px", "height": "auto"});
-		$("#211_info").addClass("hide");
+	else if ($pageId.indexOf("users") != -1) {
+		var content = "<table class='table table-striped'>";
+		
+		db.ref("users").once("value").then(function(snapshot) {
+			content += "<tr>";
+			content += "<tr><td></td>";
+			content += "</tr>";
+			console.log(snapshot.val());
+		}).then(function () {
+		});
+		
+		content = "</table>";
+		
+		//$("section").html(content);
 	}
 	
 	$.ajax({
@@ -236,6 +196,22 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 			dataType: "script",
 			cache: true
 		}).done(function() {
+			/* From: http://regexlib.com/REDetails.aspx?regexp_id=1111 */
+			$.validator.addMethod("password", function(value, element) {
+				return this.optional(element) || /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/.test(value);
+			}, "Your password is too simple.");
+			$.validator.classRuleSettings.password = {password: true};
+			
+			$.validator.addMethod("password_confirm", function(value, element) {
+				return this.optional(element) || value == $("#password").val();
+			}, "The passwords do not match.");
+			$.validator.classRuleSettings.password_confirm = {password_confirm: true};
+			
+			$.validator.addMethod("email_confirm", function(value, element) {
+				return this.optional(element) || value == $("#email").val();
+			}, "The emails do not match.");
+			$.validator.classRuleSettings.password_confirm = {password_confirm: true};
+			
 			$.validator.addMethod("address", function(value, element) {
 				return this.optional(element) || /^((G-)?[0-9]+)?\s([NSEW]\.\s)?[A-Za-z]+\s[A-Za-z]{2,4}\.$/.test(value);
 			}, "Please enter a valid street address.");
@@ -250,6 +226,32 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 				return this.optional(element) || /\([0-9]{3}\)\s[0-9]{3}-[0-9]{4}/.test(value);
 			};
 			$.validator.messages.phone = "Please enter a valid phone number.";
+			
+			var messages = {
+				site: "Please enter the name of the location.",
+				category: "Please choose at least one category.",
+				state: {
+					statesUS: "Please enter a valid two-letter state abbreviation."
+				},
+				zipcode: {
+					required: "Zipcode is required.",
+					digits: "Only numbers are allowed.",
+					minlength: "The zipcode must be exactly five digits.",
+					maxlength: "The zipcode must be exactly five digits."
+				},
+				latitude: {
+					required: "Latitude is required."
+				},
+				longitude: {
+					required: "Longitude is required."
+				},
+				phone: {
+					phone: "Please enter a valid phone number."
+				},
+				notes: {
+					maxlength: "Only 600 characters are allowed."
+				}
+			};
 			
 			/* EDIT PAGE FORMS */
 			if ($pageId.indexOf("edit") != -1) {
@@ -359,31 +361,7 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 							maxlength: 600
 						}
 					},
-					messages: {
-						site: "Please enter the name of the location.",
-						category: "Please choose at least one category.",
-						state: {
-							statesUS: "Please enter a valid two-letter state abbreviation."
-						},
-						zipcode: {
-							required: "Zipcode is required.",
-							digits: "Only numbers are allowed.",
-							minlength: "The zipcode must be exactly five digits.",
-							maxlength: "The zipcode must be exactly five digits."
-						},
-						latitude: {
-							required: "Latitude is required."
-						},
-						longitude: {
-							required: "Longitude is required."
-						},
-						phone: {
-							phone: "Please enter a valid phone number."
-						},
-						notes: {
-							maxlength: "Only 600 characters are allowed."
-						}
-					},
+					messages: messages,
 					submitHandler: function(form) {
 						var location_form_type;
 						
@@ -474,56 +452,153 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 			/* PROFILE PAGE */
 			else if ($pageId.indexOf("profile") != -1) {
 				/* Enable all disabled form fields except the user group field. */
-				$("#profile_form #edit_button").on("click", function() {				
-					for (var i=0; i<$("#profile_form")[0].elements.length; i++)
-						$("#profile_form")[0].elements[i].disabled = false;
+				$("#edit_profile form #edit_button").on("click", function() {
+					for (var i=0; i<$("#edit_profile form")[0].elements.length; i++)
+						$("#edit_profile form")[0].elements[i].disabled = false;
 					
 					// redisable the user group field
-					$("#profile_form #user_group").attr("disabled", "true");
-					$("#profile_form #edit_button").addClass("hide");
-					$("#profile_form #update_button").removeClass("hide");
+					$("#edit_profile form #user_group, #edit_profile_form #email").attr("disabled", "true");
+					$("#edit_profile form #edit_button").addClass("hide");
+					$(".help-block, #edit_profile_form #submit_button").removeClass("hide");
 				});
 			
-				$("#profile_form").validate({
+				$("#edit_profile form").validate({
 					debug: true,
 					errorPlacement: function(error, element) {
 						error.appendTo(element.parent());
 					},
+					rules: {
+						email: {
+							required: true,
+							email: true
+						},
+						phone: {
+							required: false,
+							phone: true
+						},
+						address: {
+							required: true,
+							address: true
+						},
+						state: {
+							required: true,
+							stateUS: true
+						},
+						zipcode: {
+							required: true,
+							digits: true,
+							minlength: 5,
+							maxlength: 5
+						}
+					},
 					messages: messages,
 					submitHandler: function(form) {
-						var categories = [];
+						$("#edit_profile form .alert").remove();
 						
-						for (var i=0; i<form.category.length; i++) {
-							if (form.category[i].checked)
-								categories.push(form.category[i].value);
-						}
-							
-						$.ajax({
-							type: "POST",
-							url: "includes/functions.php",
-							data: {
-								"type": "edit_resource_submit",
-								"site": form.site.value,
-								"categories": categories,
-								"address": form.address.value,
-								"city": form.city.value,
-								"zipcode": form.zipcode.value,
-								"latitude": form.latitude.value,
-								"longitude": form.longitude.value,
-								"phone": form.phone.value,
-								"hours": form.hours.value,
-								"notes": form.notes.value
-							}						
-						}).done(function(resp) {
-							if (resp.indexOf("1") != -1) {
-								$("#location_form alert").remove();
-								$("#location_form").append("<div class='alert alert-success' role='alert'>\"" + form.address.value + "\" was successfully updated.</div>");
+						var showInfo;
+						
+						if ($("#edit_profile #show_info input").val().indexOf("yes") != -1)
+							showInfo = true;
+						else
+							showInfo = false;
+						
+						var data = {
+							"firstName": $("#edit_profile #first_name").val(),
+							"lastName": $("#edit_profile #last_name").val(),
+							"phone": $("#edit_profile #phone").val(),
+							"title": $("#edit_profile #title").val(),
+							"dept": $("#edit_profile #dept").val(),
+							"address": {
+								"bldg": $("#edit_profile #bldg").val(),
+								"streetAddr": $("#edit_profile #address").val(),
+								"city": $("#edit_profile #city").val(), 
+								"state": $("#edit_profile #state").val(),
+								"zipcode": $("#edit_profile #zipcode").val()
+							},
+							"showInfo": showInfo
+						};
+					
+						var userRef = db.ref("users/" + firebase.auth().currentUser.uid);
+						var result = userRef.update(data)
+							.done(function() {
+								$("#edit_profile form").append("<div class='alert alert-success' role='alert'>\"Your information was successfully updated.</div>");
+							}).fail(function (error) {
 								
-								if ($("#new_resources").hasClass("in"))
-									$("#location_form").resetForm();
+							});
+					}
+				});
+				
+				$("#change_email form").validate({
+					debug: true,
+					errorPlacement: function(error, element) {
+						error.appendTo(element.parent());
+					},
+					rules: {
+						email: {
+							required: true,
+							email: true
+						},
+						email_confirm: {
+							required: true,
+							email_confirm: true
+						}
+					},
+					messages: messages,
+					submitHandler: function(form) {						
+						firebase.auth().currentUser.updateEmail($("#change_email #email").val()).then(function() {
+							$("#change_email .alert").addClass("hide");
+							$("#change_email form").append("<div class='alert alert-success' role='alert'>\"Your email address was successfully updated.</div>");
+							
+							firebase.auth().currentUser.sendEmailVerification();
+							var userRef = db.ref("users/" + firebase.auth().currentUser.uid);
+							userRef.update({"email": $("#change_email #email").val()});
+							
+							// clear fields
+							$("#change_email #email").val("");
+							$("#change_email #email_confirm").val("");
+						},
+						function(error) {
+							if (error) {								
+								if (error.code === "auth/email-already-in-use")
+									$("#change_email form").append("<div class='alert alert-danger' role='alert'>This email address is already in use by a different account.</div>");			
+								else if (error.code === "auth/requires-recent-login") {
+									$("#change_email form").append("<div class='alert alert-danger' role='alert'>Your login is not recent. As this is a security sensitive operation, you must sign out then log in again to change your email address.</div>");
+								}
 							}
-							else {
-								$("#delete_form").append(genericError);
+						});
+					}
+				});
+				
+				$("#change_password form").validate({
+					debug: true,
+					errorPlacement: function(error, element) {
+						error.appendTo(element.parent());
+					},
+					rules: {
+						password: {
+							required: true,
+							password: true
+						},
+						password_confirm: {
+							required: true,
+							password_confirm: true
+						}
+					},
+					messages: messages,
+					submitHandler: function(form) {
+						firebase.auth().currentUser.updatePassword($("#change_password #password").val()).then(function() {
+							$("#change_password .alert").addClass("hide");
+							$("#change_password form").append("<div class='alert alert-success' role='alert'>\"Your password was successfully updated.</div>");
+							
+							// clear fields
+							$("#change_password #password").val("");
+							$("#change_password #password_confirm").val("");
+						},
+						function(error) {
+							if (error) {		
+								if (error.code === "auth/requires-recent-login") {
+									$("#change_password form").append("<div class='alert alert-danger' role='alert'>Your login is not recent. As this is a security sensitive operation, sign out then log in again to change your password.</div>");
+								}
 							}
 						});
 					}
@@ -532,7 +607,7 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 			
 			/* CONTACT FORM */
 			$("#contact_form form").validate({
-				debug: true,
+				debug: false,
 				errorPlacement: function(error, element) {
 					element.parent().append(error);
 				},
@@ -568,7 +643,7 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 		});
 	});
 	
-	/* Navigation Links */
+	/* NAVIGATION LINKS */
 	$("#dashboard_link").on("click", function() {
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
@@ -655,51 +730,6 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 		$(form).appendTo("body").submit();
 	});
 })(jQuery);
-
-function decodeIDToken(uid, requestType) {
-	firebase.auth().currentUser.getToken(true).then(function(token) {
-		$.ajax({
-			type: "POST",
-			url: "includes/verify_ID_token.php",
-			data: {"uid": uid, "token": token}
-		}).done(function(data) {
-			// store the token in a global user object if it's valid
-			if (data.indexOf("1") != -1) {
-				// store the token in local storage along with the current time
-				//if (typeof(Storage) !== "undefined")
-					//localStorage.setItem("ID_token", token);
-				
-				db.ref("users/" + uid).once("value").then(function(snapshot) {
-					// load the dashboard page
-					if (requestType.indexOf("login") != -1) {
-						var form = $("<form></form>");
-						$(form).attr("method", "post").attr("action", "page.php");
-						var pid_input = $("<input type='hidden' name='pid' />").val("dashboard");
-						var role_input = $("<input type='hidden' name='role' />").val(snapshot.val().role);
-						$(form).append(pid_input, role_input);
-						$(form).appendTo("body").submit();
-					}
-				},
-				function(error) {
-					$(".alert-danger").addClass("hide");
-					$("form").append(genericError);
-				});
-			}
-			// the token is expired
-			else if (data.indexOf("2") != -1) {
-
-			}
-			// ask the user to sign in again if invalid
-			else {
-				$(".alert-danger").addClass("hide");
-				$("form").append(genericError);
-			}
-		});
-	}).catch(function(error) {
-		$(".alert-danger").addClass("hide");
-		$("form").append(genericError);
-	});
-}
 
 /* Logout the current user. */
 function userLogout() {

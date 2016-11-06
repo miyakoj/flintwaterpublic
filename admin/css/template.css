@@ -101,9 +101,15 @@ h1 a.navbar-brand, .navbar-brand:hover {
 }
 
 
+/* Account Management Page */
+#mgmt_page section {
+	font-size:0.9em;
+}
+
+
 /* Dashboard Page */
 #location_card, #resource_card {
-	font-size:0.8em;
+	font-size:0.9em;
 }
 
 #location_card h5 {

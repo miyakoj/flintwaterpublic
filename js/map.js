@@ -775,7 +775,8 @@ function callStorageAPI(object) {
 					
 					// content += "<p>" + images + "</p></div>";
 					
-					content += "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
+					if ($pageId.indexOf("dashboard") == -1)
+						content += "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
 
 					/*If the resource is saved, display on map always if not then do not display*/
 					if (isSaved)

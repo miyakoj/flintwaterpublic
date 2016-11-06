@@ -13,26 +13,29 @@ function queries($choice, $var = "", $var2 = array()) {
 
 	/* Dashboard Queries */
 	if (strcmp($choice, "test_data") === 0) {
-		$query = "SELECT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month, Avg(`leadLevel`) AS avgLeadLevel, Avg(`copperLevel`) AS avgCopperLevel, Sum(`leadLevel`) AS totalTests FROM `waterCondition` GROUP BY year ASC, month ASC;";
+		$query = "SELECT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month, Avg(`leadLevel`) AS avgLeadLevel, Avg(`copperLevel`) AS avgCopperLevel, Sum(`leadLevel`) AS totalTests FROM `WaterCondition` GROUP BY year ASC, month ASC;";
 	}
 	else if (strcmp($choice, "total_locations") === 0) {
-		$query = "SELECT DISTINCT `latitude`, `longitude`, COUNT(`latitude`) AS totalLocationsTested FROM waterCondition;";
+		$query = "SELECT DISTINCT `latitude`, `longitude`, COUNT(`latitude`) AS totalLocationsTested FROM WaterCondition;";
+	}
+	else if (strcmp($choice, "total_approved_repairs") === 0) {
+		$query = "SELECT COUNT(`address`) as totalApprovedRepairs FROM ConstructionInfo;";
 	}
 	else if (strcmp($choice, "time_period") === 0) {
-		$query = "SELECT DISTINCT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month FROM waterCondition ORDER BY year ASC, month ASC;";
+		$query = "SELECT DISTINCT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month FROM WaterCondition ORDER BY year ASC, month ASC;";
 	}
 	/* Report Queries */
 	else if (strcmp($choice, "all_water_tests1") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` ORDER BY `dateUpdated` DESC LIMIT 10;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` ORDER BY `dateUpdated` DESC LIMIT 10;";
 	}
 	else if (strcmp($choice, "all_water_tests2") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}
 	else if (strcmp($choice, "high_water_tests1") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE `leadLevel` > 15 ORDER BY `dateUpdated` DESC;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE `leadLevel` > 15 ORDER BY `dateUpdated` DESC;";
 	}
 	else if (strcmp($choice, "high_water_tests2") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE `leadLevel` > 15 GROUP BY `address` ORDER BY `dateUpdated` DESC;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE `leadLevel` > 15 GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}
 	/* Edit Page Queries */
 	else if (strcmp($choice, "resource_locations") === 0) {

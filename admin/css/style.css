@@ -75,6 +75,25 @@ body {
 	margin-right:10px;
 }
 
+#resource_card {
+	width:20em;
+	height:12em;
+}
+
+#resource_card #provider_resources, #resource_card #provider_title {
+	margin-bottom:10px;
+}
+
+#resource_card #provider_title {
+	font-weight:bold;
+}
+
+#resource_card .marker_popup_icons {
+	width:30px;
+	height:auto;
+}
+
+
 #graph_area {
 	margin:0 16px;
 }
@@ -128,6 +147,12 @@ body {
 }
 
 
+/* Profile Page */
+#show_info label {
+	padding-right:8px;
+}
+
+
 /* Login Page */
 .login {
 	padding-top:1em;
@@ -145,6 +170,12 @@ body {
 	margin-top:-20px;
 	margin-bottom:15px;
 	display:block;
+}
+
+
+/* Account Management Page */
+#mgmt_page .row {
+	margin-bottom:15px;
 }
 
 /* Misc */

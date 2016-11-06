@@ -7,14 +7,14 @@ require __ROOT__ . "/admin/includes/globals.php";
 require __ROOT__ . "/admin/includes/verify_ID_token.php";
 require __ROOT__ . "/admin/includes/functions.php";
 
-if (@isset($_POST["pid"])) {	
+if (@isset($_POST["pid"])) {
 	$pid = $_POST["pid"];
 	$role = $_POST["role"];
 	
 	$navigation = '<ul class="nav navbar-nav" id="top-menu">';
 	$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
 	$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
-	$users_link = '<li class="disabled"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">View Users</span></a></li>';
+	$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">View Users</span></a></li>';
 	
 	switch($role) {
 		// admin users and those with edit only privileges
@@ -221,7 +221,7 @@ if (@isset($_POST["pid"])) {
 
 				<div id='edit_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_resource_heading'>
 				<div class='panel-body'>
-				<form id='location_form'>
+				<form id='location_form' method='post'>
 					<div id='instructions'>Click \"Load\" to retrieve data for the selected resource location.</div>
 					
 					<div id='location_list' class='form-group'>
@@ -324,7 +324,7 @@ if (@isset($_POST["pid"])) {
 
 				<div id='delete_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_resource_heading'>
 				<div class='panel-body'>
-				<form id='delete_form'>
+				<form id='delete_form' method='post'>
 					<div class='row'>
 					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
 					<div class='col-xs-12 col-md-3'><button type='submit' class='btn btn-default' disabled='disabled'>Delete</button></div>
@@ -362,14 +362,11 @@ if (@isset($_POST["pid"])) {
 				</div>
 				</div>
 				</div>";
-				
-				$script = "";
 			}
 			else {
 				$pagetitle = "";
 				$content = "";
 				$inner_content = $access_denied;
-				$script = "";
 			}
 			
 			$content .= "<div class='content-top'>
@@ -390,16 +387,14 @@ if (@isset($_POST["pid"])) {
 				$pagetitle = "Manage Alerts";
 				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
 				$inner_content = "INSERT FORM HERE";
-				$script = "";
 			}
 			else {
 				$pagetitle = "";
 				$content = "";
 				$inner_content = $access_denied;
-				$script = "";
 			}
 			
-			$content = $content . "<div class='content-top'>
+			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
@@ -412,29 +407,47 @@ if (@isset($_POST["pid"])) {
 			</div>";
 		break;
 		
-		case "profile":
-			$pagetitle = "Manage Your Profile";
+		case "users":
+			$pagetitle = "View Users";
 			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
 					<section>
-					<form id='profile_form'>
+					</section>
+					</div>
+				</div>
+				</div>
+			</div>";
+		break;
+		
+		case "profile":
+			$pagetitle = "Manage Your Profile";
+			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			
+			$inner_content = "<div class='panel-group' id='profile_accordion' role='tablist' aria-multiselectable='true'>
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='edit_profile_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#profile_accordion' href='#edit_profile' aria-expanded='true' aria-controls='edit_profile'>Edit Profile Information</a></h4>
+				</div>
+
+				<div id='edit_profile' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_profile_heading'>
+				<div class='panel-body'>
+					<form id='edit_profile_form' method='post'>
 					<div class='form-group'>
 						<div class='row'>
-						<div class='col-xs-12 col-md-3 col-md-offset-1'>
+						<div class='col-xs-12 col-md-2 col-md-offset-1'>
 						<label for='user_group'>User Group:</label>
 						<input id='user_group' class='form-control' type='text' name='user_group' size='5' disabled />
-						</div>					
+						</div>				
 						</div>
 					</div>
 					
-					// change password fields
-					
 					<div class='form-group'>
 						<div class='row'>
-						<div class='col-xs-12 col-md-4 col-md-offset-1'>
+						<div class='col-xs-12 col-md-3 col-md-offset-1'>
 						<label for='first_name'>First Name<span class='required'>*</span>:</label>
 						<input id='first_name' class='form-control' type='text' name='first_name' size='5' required disabled />
 						</div>
@@ -456,13 +469,10 @@ if (@isset($_POST["pid"])) {
 					
 					<div class='form-group'>
 						<div class='row'>
-						<div class='col-xs-12 col-md-5 col-md-offset-1'>
-						<label for='email'>Email<span class='required'>*</span>:</label>
-						<input id='email' class='form-control' type='text' name='email' size='5' required disabled />
-						</div>
-						<div class='col-xs-12 col-md-4'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1'>
 						<label for='phone'>Phone:</label>
 						<input id='phone' class='form-control' type='text' name='phone' size='25' disabled />
+						<span class='help-block' hide>Example: (810) 555-5555</span>
 						</div>						
 						</div>
 					</div>
@@ -506,7 +516,7 @@ if (@isset($_POST["pid"])) {
 					<div class='form-group'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-10 col-md-offset-1'>
-						<label for='show_info'>Show contact information to other users:<span class='required'>*</span>:</label>
+						<label for='show_info'>Show contact information to other users<span class='required'>*</span>:</label>
 						<div id='show_info' class='radio'>
 						<label><input type='radio' name='show_info' id='show_info1' value='yes' required disabled /> Yes</label>
 						<label><input type='radio' name='show_info' id='show_info2' value='no' required checked disabled /> No</label>
@@ -517,20 +527,95 @@ if (@isset($_POST["pid"])) {
 					
 					<div class='form-group'>
 						<div class='row'>
-						<div class='col-xs-12 col-md-3 col-md-offset-1'>
-						<button id='edit_button' type='button' class='btn btn-default'>Edit</button>
-						<button id='update_button' type='submit' class='btn btn-default hide'>Update</button>
+						<div class='col-xs-12 col-md-10 col-md-offset-1'>
+						<button id='edit_button' type='button' class='btn btn-default pull-right'>Edit</button>
+						<button id='submit_button' type='submit' class='btn btn-default pull-right hide'>Submit</button>
 						</div>
 						</div>
 					</div>
 					</form>
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='change_email_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#profile_accordion' href='#change_email' aria-expanded='true' aria-controls='change_email'>Change Email</a></h4>
+				</div>
+
+				<div id='change_email' class='panel-collapse collapse' role='tabpanel' aria-labelledby='change_email_heading'>
+				<div class='panel-body'>
+					<form id='change_email_form' method='post'>
+					<div class='form-group'>					
+						<div class='row'>
+						<div class='col-xs-12 col-md-4'>
+						<label for='email'>New Email:</label>
+						<input id='email' class='form-control' type='text' name='email' size='5' />
+						</div>
+						<div class='col-xs-12 col-md-4'>
+						<label for='email_confirm'>Confirm Email:</label>
+						<input id='email_confirm' class='form-control' type='text' name='email_confirm' size='10' />
+						</div>					
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-8'>
+						<button type='submit' class='btn btn-default pull-right'>Submit</button>
+						</div>
+						</div>
+					</div>
+					</form>
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='change_password_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#profile_accordion' href='#change_password' aria-expanded='true' aria-controls='change_password'>Change Password</a></h4>
+				</div>
+
+				<div id='change_password' class='panel-collapse collapse' role='tabpanel' aria-labelledby='change_password_heading'>
+				<div class='panel-body'>
+					<form id='change_password_form' method='post'>
+					<div class='form-group'>					
+						<div class='row'>
+						<div class='col-xs-12 col-md-3'>
+						<label for='password'>New Password:</label>
+						<input id='password' class='form-control' type='password' name='password' size='10' />
+						</div>
+						<div class='col-xs-12 col-md-3'>
+						<label for='password_confirm'>Confirm Password:</label>
+						<input id='password_confirm' class='form-control' type='password' name='password_confirm' size='10' />
+						</div>						
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-6'>
+						<button type='submit' class='btn btn-default pull-right'>Submit</button>
+						</div>
+						</div>
+					</div>
+					</form>
+				</div>
+				</div>
+				</div>
+				</div>";			
+			
+			$content .= "<div class='content-top'>
+				<div class='col-xs-12 col-md-8 col-md-offset-2'>
+				<div class='row'>
+					<div class='content-top-1'>
+					<section>
+					$inner_content
 					</section>
 					</div>
 				</div>
 				</div>
 			</div>";
-			
-			$script = "";
 		break;
 		
 		case "about":
@@ -636,8 +721,8 @@ if (@isset($_POST["pid"])) {
 		
 		<div class='content-mid'>
 			<div id='graph_area' class='row'>
-				<div class='content-top-1 col-xs-12 col-lg-6'><canvas id='levels_trend'></canvas></div>
-				<div class='content-top-1 col-xs-12 col-lg-6'><canvas id='water_tests_trend' ></canvas></div>
+				<div class='content-top-1'><canvas id='levels_trend'></canvas></div>
+				<div class='content-top-1'><canvas id='water_tests_trend' ></canvas></div>
 			</div>
 		</div>";
 		
@@ -652,6 +737,7 @@ if (@isset($_POST["pid"])) {
 		$TIME_PERIOD = "['" . $TIME_PERIOD . "']";
 		
 		$totalLocationsTested = generateChartData("total_locations");
+		$totalApprovedRepairs = generateChartData("total_approved_repairs");
 		//$repairsChart = ;
 		
 		$testLevelsData = generateChartData("test_data");
@@ -675,146 +761,150 @@ if (@isset($_POST["pid"])) {
 		$numTestsData = arrayAccumulation($testLevelsData[2]);
 		
 		$script = "<script>
-		\$(document).ready(function() {		
+		\$(document).ready(function() {
 			/* Dashboard doughnut status charts. */
-			if (\$('body').attr('id').indexOf('dashboard') != -1) {
-				var waterTestsChart = new Chart(\$('#water_tests_chart'), {
-					type: 'doughnut',
-					data: {
-						labels: ['Total Households', 'Total Locations Tested'],
-						datasets: [{
-							data: [$TOTAL_HOUSEHOLDS, $totalLocationsTested[0]],
-							backgroundColor: ['#CCC', '#5266B0']
-						}]
-					},
-					options: {
-						title: {
-							display: true,
-							fontSize: 15,
-							text: 'Water Tests'
-						}
+			var waterTestsChart = new Chart(\$('#water_tests_chart'), {
+				type: 'doughnut',
+				data: {
+					labels: ['Total Households', 'Total Locations Tested'],
+					datasets: [{
+						data: [$TOTAL_HOUSEHOLDS, $totalLocationsTested[0]],
+						backgroundColor: ['#CCC', '#5266B0']
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						fontSize: 15,
+						text: 'Water Tests'
 					}
-				});
+				}
+			});
+		
+			var repairsChart = new Chart(\$('#repairs_chart'), {
+				type: 'doughnut',
+				data: {
+					labels: ['Approved Repairs', 'Completed Repairs'],
+					datasets: [{
+						data: [$totalApprovedRepairs[0], $totalApprovedRepairs[1]],
+						backgroundColor: ['#CCC', '#5266B0']
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						fontSize: 15,
+						text: 'Water Infrastructure Repairs'
+					}
+				}
+			});
 			
-				var repairsChart = new Chart(\$('#repairs_chart'), {
-					type: 'doughnut',
-					data: {
-						labels: ['Pending Repairs', 'Completed Repairs'],
-						datasets: [{
-							data: [203, 38],
-							backgroundColor: ['#CCC', '#5266B0']
-						}]
+			// change how much area the line graphs take up depending on display size
+			if (windowWidth >= 1920)
+				\$('#graph_area div').addClass('col-lg-6');
+			else
+				\$('#graph_area div').addClass('col-lg-10 col-lg-offset-1');
+			
+			var levelsChart = new Chart(\$('#levels_trend'), {
+				type: 'line',
+				data: {
+					labels: $TIME_PERIOD,
+					datasets: [{
+						label: 'Average Lead Level',
+						data: $testLevelsData[0],
+						backgroundColor: '#5266B0',
+						borderColor: '#5266B0',
+						fill: false
 					},
-					options: {
-						title: {
-							display: true,
-							fontSize: 15,
-							text: 'Water Infrastructure Repairs'
-						}
-					}
-				});
-				
-				var levelsChart = new Chart(\$('#levels_trend'), {
-					type: 'line',
-					data: {
-						labels: $TIME_PERIOD,
-						datasets: [{
-							label: 'Average Lead Level',
-							data: $testLevelsData[0],
-							backgroundColor: '#5266B0',
-							borderColor: '#5266B0',
-							fill: false
-						},
-						{
-							label: 'Lead Action Level',
-							data: $leadActionLvlData,
-							backgroundColor: '#FF0000',
-							borderColor: '#FF0000',
-							fill: false
-						},
-						{
-							label: 'Average Copper Level',
-							data: $testLevelsData[1],
-							borderColor: '#252E56',
-							fill: false,
-							hidden: true
-						},
-						{
-							label: 'Copper Action Level',
-							data: $copperActionLvlData,
-							borderColor: '#FF6600',
-							fill: false,
-							hidden: true
-						}]
+					{
+						label: 'Lead Action Level',
+						data: $leadActionLvlData,
+						backgroundColor: '#FF0000',
+						borderColor: '#FF0000',
+						fill: false
 					},
-					options: {
-						title: {
-							display: true,
-							fontSize: 15,
-							text: 'Lead Levels by Month'
-						},
-						scales: {
-							xAxes: [{
-								display: true,
-								scaleLabel: {
-									display: true,
-									labelString: 'Month'
-								}
-							}],
-							yAxes: [{
-								display: true,
-								scaleLabel: {
-									display: true,
-									labelString: 'ppb'
-								}
-							}]
-						}
-					}
-				});
-				
-				var waterTests = new Chart(\$('#water_tests_trend'), {
-					type: 'line',
-					data: {
-						labels: $TIME_PERIOD,
-						datasets: [{
-							label: 'Total Water Tests',
-							data: $numTestsData[1],
-							backgroundColor: '#FF0000',
-							borderColor: '#FF0000',
-							fill: false
-						},
-						{
-							label: 'Monthly Water Tests',
-							data: $numTestsData[0],
-							backgroundColor: '#5266B0',
-							borderColor: '#5266B0',
-							fill: false
-						}]
+					{
+						label: 'Average Copper Level',
+						data: $testLevelsData[1],
+						borderColor: '#252E56',
+						fill: false,
+						hidden: true
 					},
-					options: {
-						title: {
+					{
+						label: 'Copper Action Level',
+						data: $copperActionLvlData,
+						borderColor: '#FF6600',
+						fill: false,
+						hidden: true
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						fontSize: 15,
+						text: 'Lead Levels by Month'
+					},
+					scales: {
+						xAxes: [{
 							display: true,
-							fontSize: 15,
-							text: 'Water Tests by Month'
-						},
-						scales: {
-							xAxes: [{
+							scaleLabel: {
 								display: true,
-								scaleLabel: {
-									display: true,
-									labelString: 'Month'
-								}
-							}],
-							yAxes: [{
+								labelString: 'Month'
+							}
+						}],
+						yAxes: [{
+							display: true,
+							scaleLabel: {
 								display: true,
-								scaleLabel: {
-									display: false
-								}
-							}]
-						}
+								labelString: 'ppb'
+							}
+						}]
 					}
-				});
-			}
+				}
+			});
+			
+			var waterTests = new Chart(\$('#water_tests_trend'), {
+				type: 'line',
+				data: {
+					labels: $TIME_PERIOD,
+					datasets: [{
+						label: 'Total Water Tests',
+						data: $numTestsData[1],
+						backgroundColor: '#FF0000',
+						borderColor: '#FF0000',
+						fill: false
+					},
+					{
+						label: 'Monthly Water Tests',
+						data: $numTestsData[0],
+						backgroundColor: '#5266B0',
+						borderColor: '#5266B0',
+						fill: false
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						fontSize: 15,
+						text: 'Water Tests by Month'
+					},
+					scales: {
+						xAxes: [{
+							display: true,
+							scaleLabel: {
+								display: true,
+								labelString: 'Month'
+							}
+						}],
+						yAxes: [{
+							display: true,
+							scaleLabel: {
+								display: false
+							}
+						}]
+					}
+				}
+			});
 		});
 		</script>";
 	}
@@ -829,7 +919,7 @@ if (@isset($_POST["pid"])) {
 }
 else {
 	/* 
-	 * Redirect the user to the login page if they aren't logged in. 
+	 * Redirect the user to the login page if the page ID isn't set. 
 	 * http://php.net/manual/en/function.headers-sent.php#60450
 	 */
 	$page = __ROOT__ . "login.php";
