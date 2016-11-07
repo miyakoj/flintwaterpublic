@@ -11,8 +11,23 @@ use google\appengine\api\mail\Message;
 
 /* Handles report page queries. */
 if (@isset($_POST["report_type"])) {
+	$options = array(
+		"months" => $_POST["months"],
+		"years" => $_POST["years"],
+		//"aggregation" => $_POST["aggregation"],
+		//"group_by" => $_POST["group_by"],
+		"order_by" => $_POST["order_by"],
+		"limit" => array(
+			"lead_less" => $_POST["lead_less"],
+			"lead_greater" => $_POST["lead_greater"],
+			"copper_less" => $_POST["copper_less"],
+			"copper_greater" => $_POST["copper_greater"]
+		)
+	);
+	
 	$i = 0;
-	$result = queries($_POST["report_type"]);
+	
+	$result = queries($_POST["report_type"], "", $options);
 	
 	$output = "{ \"" . $_POST["report_type"] . "\": [\n";
 	

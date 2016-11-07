@@ -104,16 +104,71 @@ body {
 	margin-bottom:15px;
 }
 
+#report_area #time_period h5 {
+	margin-bottom:5px;
+}
+
 #report_list .nav button {
 	width:100%;
 	margin-bottom:10px;
 }
 
+#report_list .help-block {
+	margin-bottom:0;
+}
+
+#report_area #report_type {
+	margin-bottom:15px;
+}
+
+#report_area #time_period .form-group {
+	margin-top:0;
+}
+
+#report_area #options .form-group {
+	margin-top:15px;
+}
+
+#report_area #time_period label, #report_area #limit label {
+	padding-right:5px;
+}
+
+#report_area select {
+	width:100%;
+}
+
+#report_area #limit input {
+	margin-right:12px;
+}
+
+#report_area #clear_button {
+	margin-right:12px;
+}
+
+#report_area #display_area {
+	margin-top:15px;
+}
+
+#report_area #display_area .table-responsive {
+	position:relative;
+}
+
 #report_area #display_area #table_header {
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+#report_area #display_area #scrollbox .table {
+	margin-top:0;
 }
 
 #report_area #display_area table {
 	width:100%;
+}
+
+#report_area #display_area table .record_number {
+	width:2%;
 }
 
 #report_area #display_area table .address, #report_area #display_area table .date {
@@ -121,10 +176,10 @@ body {
 }
 
 #report_area #display_area table .lead_level, #report_area #display_area table .copper_level {
-	width:20%;
+	width:19%;
 }
 
-#report_area #display_area #table_body {
+#report_area #display_area #scrollbox {
 	overflow-y:scroll;
 }
 
@@ -178,6 +233,7 @@ body {
 	margin-bottom:15px;
 }
 
+
 /* Misc */
 h3 {
 	margin-bottom:20px;
@@ -199,7 +255,7 @@ form label.error {
 	display:block;
 }
 
-form .col-xs-12, form form .col-md-3, form .col-md-5, form .col-md-6 {
+form .col-xs-12, form .col-md-3, form .col-md-5, form .col-md-6 {
 	padding-left:0;
 }
 

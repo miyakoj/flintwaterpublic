@@ -1,6 +1,7 @@
 {
     "require": {
         "google/apiclient": "2.0.*",
-        "firebase/php-jwt": "3.*"
+        "firebase/php-jwt": "3.*",
+        "phpoffice/phpexcel": "^1.8"
     }
 }

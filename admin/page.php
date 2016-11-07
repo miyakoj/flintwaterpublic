@@ -14,20 +14,26 @@ if (@isset($_POST["pid"])) {
 	$navigation = '<ul class="nav navbar-nav" id="top-menu">';
 	$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
 	$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
-	$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">View Users</span></a></li>';
 	
 	switch($role) {
 		// admin users and those with edit only privileges
 		case 1:
+			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
+			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
+			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
+		break;
+		
 		case 2:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="disabled"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
+			$users_link = "";
 		break;
 		
 		// users with view only privileges
 		case 3:
 			$edit_link = "";
 			$alerts_link = "";
+			$users_link = "";
 	}
 	
 	$navigation .= $dashboard_link . $reports_link . $edit_link . $alerts_link . $users_link . "</ul>";
@@ -35,6 +41,113 @@ if (@isset($_POST["pid"])) {
 	$access_denied = "<p class='text-center'>You are not authorized to access this page.</p>";
 	
 	$script = "";
+	
+	$user_form = "<div id='user_form' class=\"collapse\">
+					<form method='post'>
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-2 col-md-offset-1'>
+						<label for='user_group'>User Group:</label>
+						<input id='user_group' class='form-control' type='text' name='user_group' size='5' disabled />
+						</div>				
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-3 col-md-offset-1'>
+						<label for='first_name'>First Name:<span class='required'>*</span></label>
+						<input id='first_name' class='form-control' type='text' name='first_name' size='5' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-5'>
+						<label for='last_name'>Last Name:<span class='required'>*</span></label>
+						<input id='last_name' class='form-control' type='text' name='last_name' size='25' required disabled />
+						</div>						
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-8 col-md-offset-1'>
+						<label for='title'>Title:<span class='required'>*</span></label>
+						<input id='title' class='form-control' type='text' name='title' size='5' required disabled />
+						</div>						
+						</div>						
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1 hide'>
+						<label for='email'>Email:</label>
+						<input id='email' class='form-control' type='text' name='email' size='25' required />
+						</div>
+						
+						<div class='col-xs-12 col-md-4'>
+						<label for='phone'>Phone:</label>
+						<input id='phone' class='form-control' type='text' name='phone' size='25' disabled />
+						<span class='help-block' hide>Example: (810) 555-5555</span>
+						</div>						
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1'>
+						<label for='dept'>Department:</label>
+						<input id='dept' class='form-control' type='text' name='dept' size='5' disabled />
+						</div>
+						<div class='col-xs-12 col-md-4'>
+						<label for='bldg'>Building:</label>
+						<input id='bldg' class='form-control' type='text' name='bldg' size='5' disabled />
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-4 col-md-offset-1'>
+						<label for='address'>Street address:<span class='required'>*</span></label>
+						<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
+						<span class='help-block hide'>Example: 303 E. Kearsley St.</span>
+						</div>
+						
+						<div class='col-xs-12 col-md-3'>
+						<label for='city'>City:<span class='required'>*</span></label>
+						<input id='city' class='form-control' type='text' name='city' size='5' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-1'>
+						<label for='state'>State:<span class='required'>*</span></label>
+						<input id='state' class='form-control' type='text' name='state' size='2' required disabled />
+						</div>
+						<div class='col-xs-12 col-md-2'>
+						<label for='zipcode'>Zipcode:<span class='required'>*</span></label>
+						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required disabled />
+						</div>
+						</div>
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-10 col-md-offset-1'>
+						<label for='show_info'>Show contact information to other users<span class='required'>*</span>:</label>
+						<div id='show_info' class='radio'>
+						<label><input type='radio' name='show_info' id='show_info1' value='yes' required disabled /> Yes</label>
+						<label><input type='radio' name='show_info' id='show_info2' value='no' required checked disabled /> No</label>
+						</div>
+						</div>						
+						</div>						
+					</div>
+					
+					<div class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-10 col-md-offset-1'>
+						<button id='edit_button' type='button' class='btn btn-default pull-right'>Edit</button>
+						<button id='submit_button' type='submit' class='btn btn-default pull-right hide'>Submit</button>
+						</div>
+						</div>
+					</div>
+					</form>
+				</div>";
 	
 	switch($pid) {
 		case "reports":
@@ -48,8 +161,8 @@ if (@isset($_POST["pid"])) {
 						
 						<ul class='nav'>
 							<li><button id='water_tests' type='button' class='btn btn-default'>Water Tests</button></li>
-							<li><button id='problem_reports' type='button' class='btn btn-default' disabled='disabled'>Problem Reports</button></li>
-							<li><button id='survey_results' type='button' class='btn btn-default' disabled='disabled'>Survey Results</button></li>
+							<li class='hide'><button id='problem_reports' type='button' class='btn btn-default' disabled='disabled'>Problem Reports</button></li>
+							<li class='hide'><button id='survey_results' type='button' class='btn btn-default' disabled='disabled'>Survey Results</button></li>
 						</ul>
 					</div>
 				</div>
@@ -58,26 +171,100 @@ if (@isset($_POST["pid"])) {
 				<div id='report_area' class='col-md-9'>
 				<div class='row'>
 					<div class='content-top-1'>
-						<form class='form-inline hide'>
-							<div id='report_type'>
-								<h5>Report Type</h5>
-								
-								<select class='form-control'>
-								<option selected=\"selected\"></option>
-								</select>
+						<p id='instructions'>Select a report type from the menu to the left.</p>
+					
+						<form class='form-inline hide' method='post'>
+							<div id='report_type' class='row'>
+								<div class='form-group col-xs-12 col-md-6'>
+									<h5 style='font-weight:500;'>Report Type</h5>
+									
+									<select class='form-control'>
+									<option selected='selected'></option>
+									</select>
+								</div>
 							</div>
 						
-							<div id='time_period' class='hide'>						
-								<div class='form-group'>
-								<label for='years'>Years</label>
-								<select id='years' class='form-control'></select>
-								</div>
+							<div id='time_period' class='row'>								
+								<div class='form-group col-xs-12'>
+								<h5 style='font-weight:500;'>Time Period</h5>
 								
-								<div class='form-group'>
-								<label for='months'>Months</label>
-								<select id='months' class='form-control'></select>
+								<div class='row'>						
+									<div class='form-group col-xs-12 col-md-3'>
+									<label for='years'>Years</label>
+									<select id='years' class='form-control' name='years[]' multiple='multiple' required></select>
+									</div>
+								
+									<div class='form-group col-xs-12 col-md-3'>
+									<label for='months'>Months</label>
+									<select id='months' class='form-control' name='months[]' multiple='multiple' required></select>
+									</div>
+								</div>
+								</div>							
+								<div class='col-xs-12'><span class='help-block'>Hold down ctrl to multiselect.</span></div>
+							</div>
+							
+							<div id='options' class='row'>
+							<div class='form-group col-xs-12 col-md-4 hide'>
+								<h5 style='font-weight:500;'>Aggregation</h5>
+								
+								<select id='aggregation' class='form-control' name='aggregation'>
+								<option value='' selected='selected'></option>
+								<option value='sum'>Sum</option>
+								<option value='average'>Average</option>
+								</select>
+							</div>
+							
+							<div class='form-group col-xs-12 col-md-4 hide'>
+								<h5 style='font-weight:500;'>Group By</h5>
+								
+								<select id='group_by' class='form-control' name='group_by'>
+								<option value='' selected='selected'></option>
+								<option value='date'>Date Added</option>
+								<option value='address'>Address</option>
+								</select>
+							</div>
+							
+							<div class='form-group col-xs-12 col-md-3'>
+								<h5 style='font-weight:500;'>Order By</h5>
+								
+								<select id='order_by' class='form-control' name='order_by'>
+								<option value='' selected='selected'></option>
+								<option value='date_asc'>Date Added (Ascending)</option>
+								<option value='date_desc'>Date Added (Descending)</option>
+								<option value='lead_asc'>Lead Level (Ascending)</option>
+								<option value='lead_desc'>Lead Level (Descending)</option>
+								<option value='copper_asc'>Copper Level (Ascending)</option>
+								<option value='copper_desc'>Copper Level (Descending)</option>
+								<option value='address_asc'>Address (Ascending)</option>
+								<option value='address_desc'>Address (Descending)</option>
+								</select>
+							</div>
+							</div>
+							
+							<div id='limit' class='row'>								
+								<div class='form-group col-xs-12'>
+								<h5 style='font-weight:500;'>Limit</h5>
+								
+								<div class='row'>
+									<div class='col-xs-12 col-md-6'>
+									<label for='lead'>Lead Level: </label>
+									<span>less than</span> <input id='lead_less' class='form-control' type='text' name='lead_less' size='4' />, 
+									<span>greater than</span> <input id='lead_greater' class='form-control' type='text' name='lead_greater' size='4' />
+									</div>
+									
+									<div class='col-xs-12 col-md-6'>
+									<label for='copper'>Copper Level: </label>
+									<span>less than</span> <input id='copper_less' class='form-control' type='text' name='copper_less' size='4' />, 
+									<span>greater than</span> <input id='copper_greater' class='form-control' type='text' name='copper_greater' size='4' />
+									</div>
+								</div>
 								</div>
 							</div>
+							
+							<div class='row'><div class='form-group col-xs-12'>
+							<button id='submit_button' type='submit' class='btn btn-default pull-right'>Submit</button>
+							<button id='clear_button' type='button' class='btn btn-default pull-right'>Clear</button>
+							</div></div>
 						</form>
 						
 						<div id='display_area' class='hide'></div>
@@ -119,87 +306,41 @@ if (@isset($_POST["pid"])) {
 				var months = $MONTHS;
 				var years = $years;
 				
-				var yearOpts = '<option selected=\"selected\"></option>';
-				var monthsOpts = '<option selected=\"selected\"></option>';
+				var yearOpts = '';
+				var monthsOpts = '';
 				
 				for (var i=0; i<years.length; i++)
-					yearOpts += '<option>' + years[i] + '</option>';
+					yearOpts += '<option value=\"' + years[i] + '\">' + years[i] + '</option>';
 				
 				for (var i=0; i<months.length; i++)
-					monthsOpts += '<option>' + months[i] + '</option>';
+					monthsOpts += '<option value=\"' + (i+1) + '\">' + months[i] + '</option>';
 				
 				\$('#time_period #years').html(yearOpts);
 				\$('#time_period #months').html(monthsOpts);
 				
-				/* Deactivate invalid year-month options. */
-				\$('#time_period #years').on('change', function() {
-					console.log(\$(this).val());
-					console.log(timePeriods);
-				});
+				/* Hide the form if the report type is blank. */
+				/*\$('#report_type').on('change', function() {
+					if (\$('#report_type').val() === '')
+						\$('#report_area form').addClass('hide');
+				});*/
 				
 				\$('#water_tests, #problem_reports, #survey_results').on('click', function() {
+					$('#instructions').addClass('hide');
+					//$(this).find('form').resetForm();
+					$(this).addClass('active');
+					var content = '';
+					
 					if ($(this).attr('id').indexOf('water') != -1) {
-						content = '<option id=\"all_water_tests1\">All Water Tests (Ungrouped)</option> \
+						$('#report_type').addClass('hide');
+						
+						/*content = '<option id=\"all_water_tests1\">All Water Tests (Ungrouped)</option> \
 								<option id=\"all_water_tests2\" disabled=\"disabled\">All Water Tests (Grouped by Address)</option> \
 								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Ungrouped)</option> \
-								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Grouped by Address)</option>';
-					}							
+								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Grouped by Address)</option>';*/
+					}					
 						
-					$('#report_type select').append(content);
+					\$('#report_type select').append(content);
 					\$('#report_area form').removeClass('hide');
-				});
-				
-				\$('#report_area #display_area #table_body').css({
-					height: (window.innerHeight * 0.80) + 'px'
-				});
-				
-				\$('#report_type select').on('change', function() {
-					var id = \$('#report_type option:selected').attr('id');
-					
-					if (typeof(id) !== 'undefined') {					
-						//Pace.track(function(){
-							$.ajax({
-								type: 'POST',
-								data: {
-									report_type: id
-								},
-								dataType: 'json',
-								url: 'includes/functions.php',
-								beforeSend: function() {
-									//Pace.start();
-								}
-							}).done(function(data) {
-								var content = '<div class=\"table-responsive\"> \
-									<table id=\"table_header\" class=\"table\"> \
-										<tr> \
-											<th class=\"address\">Address</th> \
-											<th class=\"lead_level\">Lead Level (ppb)</th> \
-											<th class=\"copper_level\">Copper Level (ppb)</th> \
-											<th class=\"date\">Date Submtted</th> \
-										</tr> \
-									</table> \
-									\
-									<table id=\"table_body\" class=\"table\">';
-								
-								for (var i=0; i<data.all_water_tests1.length; i++) {
-									var temp = data.all_water_tests1[i];
-									
-									content += '<tr> \
-										<td class=\"address\">' + temp.address + '</td> \
-										<td class=\"lead_level\">' + temp.leadLevel + '</td> \
-										<td class=\"copper_level\">' + temp.copperLevel + '</td> \
-										<td class=\"date\">' + temp.dateUpdated + '</td> \
-									</tr>';
-								}
-										
-								content += '</table></div>';
-								
-								\$('#display_area').html(content);
-								\$('#display_area').removeClass('hide');
-								//Pace.stop();
-							});
-						//});
-					}
 				});
 			});
 			</script>";
@@ -301,7 +442,7 @@ if (@isset($_POST["pid"])) {
 					<p class='char_count'></p>
 					</div>
 					
-					<button type='submit' class='btn btn-default'>Submit</button>
+					<button type='submit' class='btn btn-default pull-right'>Submit</button>
 				</form>
 				</div>
 				</div>
@@ -408,14 +549,78 @@ if (@isset($_POST["pid"])) {
 		break;
 		
 		case "users":
-			$pagetitle = "View Users";
-			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			if ($role == 1) {
+				$pagetitle = "Manage Users";
+				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+				$inner_content = "<div class=\"row\">
+									<div class=\"col-xs-6 col-md-2 col-md-offset-4\"><button id=\"new_user_button\" class=\"btn btn-default\" type=\"button\" data-toggle=\"collapse\" data-target=\"#user_form\" aria-expanded=\"false\" aria-controls=\"user_form\">New User</button></div>
+									
+									<div class=\"col-xs-6 col-md-2\"><button id=\"user_list_button\" class=\"btn btn-default\" type=\"button\" data-toggle=\"collapse\" data-target=\"#user_list\" aria-expanded=\"false\" aria-controls=\"user_list\">Edit User</button></div>
+								</div>
+				
+								<div id=\"user_list\" class=\"collapse\">
+								<div class=\"table-responsive\">
+								<table class=\"table table-striped\">
+									<thead>
+										<tr>
+										<th class=\"first_name\">First Name</th>
+										<th class=\"last_name\">Last Name</th>
+										<th class=\"email\">Email</th>
+										<th class=\"title\">Title</th>
+										</tr>
+									</thead>
+									
+									<tbody></tbody>
+								</table>
+								</div>
+								</div>";
+				
+				$script = "<script>
+					\$(document).ready(function() {
+						var field;
+						var content = '';
+						
+						var query = db.ref('users').orderByChild('firstName');
+						var uid;
+				
+						query.once(\"value\").then(function(snapshot) {
+							snapshot.forEach(function(childSnapshot) {
+								uid = childSnapshot.key;
+								
+								content += '<tr id=\"' + uid + '\">';
+								content += '<td id=\"first_name\">' + childSnapshot.child(\"firstName\").val() + '</td>';
+								content += '<td id=\"last_name\">' + childSnapshot.child(\"lastName\").val() + '</td>';
+								content += '<td id=\"email\">' + childSnapshot.child(\"email\").val() + '</td>';
+								content += '<td id=\"title\">' + childSnapshot.child(\"title\").val() + '</td>';
+								content += '</tr>';
+							});
+							
+							\$('table tbody').append(content);
+						});
+						
+						/* Hide the other collapsible if it's visible. */
+						$('#user_form, #user_list').on('show.bs.collapse', function() {
+							if ($(this).attr('id').indexOf('user_form') != -1)
+								$('#user_list').collapse('hide');
+							else
+								$('#user_form').collapse('hide');
+						});
+					});
+					</script>";
+			}
+			else {
+				$pagetitle = "";
+				$content = "";
+				$inner_content = $access_denied;
+			}
 			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
 					<div class='content-top-1'>
 					<section>
+					$inner_content
+					$user_form
 					</section>
 					</div>
 				</div>
@@ -435,105 +640,7 @@ if (@isset($_POST["pid"])) {
 
 				<div id='edit_profile' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_profile_heading'>
 				<div class='panel-body'>
-					<form id='edit_profile_form' method='post'>
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-2 col-md-offset-1'>
-						<label for='user_group'>User Group:</label>
-						<input id='user_group' class='form-control' type='text' name='user_group' size='5' disabled />
-						</div>				
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-3 col-md-offset-1'>
-						<label for='first_name'>First Name<span class='required'>*</span>:</label>
-						<input id='first_name' class='form-control' type='text' name='first_name' size='5' required disabled />
-						</div>
-						<div class='col-xs-12 col-md-5'>
-						<label for='last_name'>Last Name<span class='required'>*</span>:</label>
-						<input id='last_name' class='form-control' type='text' name='last_name' size='25' required disabled />
-						</div>						
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-8 col-md-offset-1'>
-						<label for='title'>Title<span class='required'>*</span>:</label>
-						<input id='title' class='form-control' type='text' name='title' size='5' required disabled />
-						</div>						
-						</div>						
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-4 col-md-offset-1'>
-						<label for='phone'>Phone:</label>
-						<input id='phone' class='form-control' type='text' name='phone' size='25' disabled />
-						<span class='help-block' hide>Example: (810) 555-5555</span>
-						</div>						
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-4 col-md-offset-1'>
-						<label for='dept'>Department:</label>
-						<input id='dept' class='form-control' type='text' name='dept' size='5' disabled />
-						</div>
-						<div class='col-xs-12 col-md-4'>
-						<label for='bldg'>Building:</label>
-						<input id='bldg' class='form-control' type='text' name='bldg' size='5' disabled />
-						</div>
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-4 col-md-offset-1'>
-						<label for='address'>Street address<span class='required'>*</span>:</label>
-						<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
-						<span class='help-block hide'>Example: 303 E. Kearsley St.</span>
-						</div>
-						
-						<div class='col-xs-12 col-md-3'>
-						<label for='city'>City<span class='required'>*</span>:</label>
-						<input id='city' class='form-control' type='text' name='city' size='5' required disabled />
-						</div>
-						<div class='col-xs-12 col-md-1'>
-						<label for='state'>State<span class='required'>*</span>:</label>
-						<input id='state' class='form-control' type='text' name='state' size='2' required disabled />
-						</div>
-						<div class='col-xs-12 col-md-2'>
-						<label for='zipcode'>Zipcode<span class='required'>*</span>:</label>
-						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required disabled />
-						</div>
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-10 col-md-offset-1'>
-						<label for='show_info'>Show contact information to other users<span class='required'>*</span>:</label>
-						<div id='show_info' class='radio'>
-						<label><input type='radio' name='show_info' id='show_info1' value='yes' required disabled /> Yes</label>
-						<label><input type='radio' name='show_info' id='show_info2' value='no' required checked disabled /> No</label>
-						</div>
-						</div>						
-						</div>						
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-10 col-md-offset-1'>
-						<button id='edit_button' type='button' class='btn btn-default pull-right'>Edit</button>
-						<button id='submit_button' type='submit' class='btn btn-default pull-right hide'>Submit</button>
-						</div>
-						</div>
-					</div>
-					</form>
+					$user_form
 				</div>
 				</div>
 				</div>
@@ -626,7 +733,7 @@ if (@isset($_POST["pid"])) {
 				<div class='row'>
 					<div class='content-top-1'>
 					<section>
-					<p class='text-justify'>[insert text]</p>
+					<p class='text-justify'>The MyWater-Flint Administration site was developed by <a href='http://www.umflint.edu'>University of Michigan-Flint</a> to assist with research and the prioritization of relief efforts.</p>
 					<p class='text-justify'>Resource site information is courtesy of the <a href='http://www.flintcares.com'>Flint Cares website</a>.</p>
 					</section>
 					</div>
@@ -665,7 +772,7 @@ if (@isset($_POST["pid"])) {
 			<div id='chart_area' class='col-md-4'>
 			<div class='row'>	
 				<div class='content-top-1'><canvas id='water_tests_chart'></canvas></div>
-				<div class='content-top-1'><canvas id='repairs_chart'></canvas></div>
+				<div class='content-top-1 hide'><canvas id='repairs_chart'></canvas></div>
 				
 				<div class='clearfix'> </div>
 			</div>
@@ -781,7 +888,7 @@ if (@isset($_POST["pid"])) {
 				}
 			});
 		
-			var repairsChart = new Chart(\$('#repairs_chart'), {
+			/*var repairsChart = new Chart(\$('#repairs_chart'), {
 				type: 'doughnut',
 				data: {
 					labels: ['Approved Repairs', 'Completed Repairs'],
@@ -797,7 +904,7 @@ if (@isset($_POST["pid"])) {
 						text: 'Water Infrastructure Repairs'
 					}
 				}
-			});
+			});*/
 			
 			// change how much area the line graphs take up depending on display size
 			if (windowWidth >= 1920)
@@ -922,7 +1029,7 @@ else {
 	 * Redirect the user to the login page if the page ID isn't set. 
 	 * http://php.net/manual/en/function.headers-sent.php#60450
 	 */
-	$page = __ROOT__ . "login.php";
+	$page = "login.php";
 	
 	if (!headers_sent())
         header("Location: " . $page);

@@ -11,26 +11,8 @@ var browserError = "<div class='alert alert-danger' role='alert'>You are using a
 var genericError = "<div class='alert alert-danger' role='alert'>There was an error. Please try again later.</div>";
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
-var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
-var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
-
-/*if ($pageId.indexOf("dashboard") != -1) {
-	$.ajax({
-		type: "GET",
-		url: client_api,
-		dataType: "script",
-		cache: true
-	});
-	
-	$.ajax({
-		type: "GET",
-		url: map_api,
-		dataType: "script",
-		cache: true
-	});
-}*/
 
 (function() {
     "use strict";
@@ -131,25 +113,25 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 					else
 						user_group = "View Only";
 					
-					$("#edit_profile_form #user_group").val(user_group);
-					$("#edit_profile_form #first_name").val(userObj.firstName);
-					$("#edit_profile_form #last_name").val(userObj.lastName);
-					$("#edit_profile_form #title").val(userObj.title);
-					$("#edit_profile_form #email").val(userObj.email);
-					$("#edit_profile_form #phone").val(userObj.phone);
-					$("#edit_profile_form #dept").val(userObj.dept);
-					$("#edit_profile_form #bldg").val(userObj.address.bldg);
-					$("#edit_profile_form #address").val(userObj.address.streetAddr);
-					$("#edit_profile_form #city").val(userObj.address.city);
-					$("#edit_profile_form #zipcode").val(userObj.address.zipcode);
-					$("#edit_profile_form #state").val(userObj.address.state);
+					$("#user_form form #user_group").val(user_group);
+					$("#user_form form #first_name").val(userObj.firstName);
+					$("#user_form form #last_name").val(userObj.lastName);
+					$("#user_form form #title").val(userObj.title);
+					$("#user_form form #email").val(userObj.email);
+					$("#user_form form #phone").val(userObj.phone);
+					$("#user_form form #dept").val(userObj.dept);
+					$("#user_form form #bldg").val(userObj.address.bldg);
+					$("#user_form form #address").val(userObj.address.streetAddr);
+					$("#user_form form #city").val(userObj.address.city);
+					$("#user_form form #zipcode").val(userObj.address.zipcode);
+					$("#user_form form #state").val(userObj.address.state);
 					
 					if (userObj.showInfo)
 						show_info = "yes";
 					else
 						show_info = "no";
 					
-					$("#edit_profile_form #show_info input").val([show_info]);
+					$("#user_form form #show_info input").val([show_info]);
 				}
 			});
 		}
@@ -165,24 +147,8 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 		});
 	}
 	
-	if ($pageId.indexOf("dashboard") != -1) {
-		
-	}
-	else if ($pageId.indexOf("users") != -1) {
-		var content = "<table class='table table-striped'>";
-		
-		db.ref("users").once("value").then(function(snapshot) {
-			content += "<tr>";
-			content += "<tr><td></td>";
-			content += "</tr>";
-			console.log(snapshot.val());
-		}).then(function () {
-		});
-		
-		content = "</table>";
-		
-		//$("section").html(content);
-	}
+	// mark the current page's navigation button as active
+	$("#" + $pageId + "_link").addClass('active');
 	
 	$.ajax({
 		type: "GET",
@@ -196,6 +162,8 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 			dataType: "script",
 			cache: true
 		}).done(function() {
+			var validator;
+			
 			/* From: http://regexlib.com/REDetails.aspx?regexp_id=1111 */
 			$.validator.addMethod("password", function(value, element) {
 				return this.optional(element) || /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/.test(value);
@@ -450,19 +418,27 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 				});
 			}
 			/* PROFILE PAGE */
-			else if ($pageId.indexOf("profile") != -1) {
+			else if (($pageId.indexOf("profile") != -1) || ($pageId.indexOf("users") != -1)) {
 				/* Enable all disabled form fields except the user group field. */
-				$("#edit_profile form #edit_button").on("click", function() {
-					for (var i=0; i<$("#edit_profile form")[0].elements.length; i++)
-						$("#edit_profile form")[0].elements[i].disabled = false;
+				$("#user_form form #edit_button, #new_user_button").on("click", function() {
+					for (var i=0; i<$("#user_form form")[0].elements.length; i++)
+						$("#user_form form")[0].elements[i].disabled = false;
 					
-					// redisable the user group field
-					$("#edit_profile form #user_group, #edit_profile_form #email").attr("disabled", "true");
-					$("#edit_profile form #edit_button").addClass("hide");
-					$(".help-block, #edit_profile_form #submit_button").removeClass("hide");
+					// redisable the user group and email fields if on the profile page
+					if ($pageId.indexOf("profile") != -1) {
+						$("#user_form form #user_group").attr("disabled", "true");
+						$("#user_form form #email").parent().after().addClass("col-md-offset-1");
+					}
+					else {
+						
+						$("#user_form form #email").parent().removeClass("hide");
+					}
+					
+					$("#user_form form #edit_button").addClass("hide");
+					$(".help-block, #user_form form #submit_button").removeClass("hide");
 				});
 			
-				$("#edit_profile form").validate({
+				$("#user_form form").validate({
 					debug: true,
 					errorPlacement: function(error, element) {
 						error.appendTo(element.parent());
@@ -493,7 +469,7 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 					},
 					messages: messages,
 					submitHandler: function(form) {
-						$("#edit_profile form .alert").remove();
+						$("#user_form form .alert").remove();
 						
 						var showInfo;
 						
@@ -519,11 +495,10 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 						};
 					
 						var userRef = db.ref("users/" + firebase.auth().currentUser.uid);
-						var result = userRef.update(data)
-							.done(function() {
-								$("#edit_profile form").append("<div class='alert alert-success' role='alert'>\"Your information was successfully updated.</div>");
-							}).fail(function (error) {
-								
+						var result = userRef.update(data).then(function() {
+								$("#user_form form").append("<div class='alert alert-success' role='alert'>\"Your information was successfully updated.</div>");
+							}, function() {
+								$("#user_form form").append(genericError);
 							});
 					}
 				});
@@ -604,6 +579,160 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 					}
 				});
 			}
+			/* REPORT PAGE */
+			else if ($pageId.indexOf("report") != -1) {
+				$.validator.addMethod("aggregation", function(value, element) {
+					return this.optional(element) || ($("#group_by").val() !== "" && $("#aggregation").val() !== "");
+				}, "A group by option must also be selected.");
+				$.validator.classRuleSettings.aggregation = {aggregation: true};
+				
+				$.validator.addMethod("group_by", function(value, element) {
+					return this.optional(element) || ($("#group_by").val() !== "" && $("#aggregation").val() !== "");
+				}, "An aggregation option must also be selected.");
+				$.validator.classRuleSettings.group_by = {group_by: true};
+				
+				$.validator.addMethod("lead_less", function(value, element) {
+					return this.optional(element) || value > $("#lead_greater").val();
+				}, "\"Less than\" value must be greater than the\"greater than\" value.");
+				$.validator.classRuleSettings.lead_less = {lead_less: true};
+
+				$.validator.addMethod("lead_greater", function(value, element) {
+					return this.optional(element) || value < $("#lead_less").val();
+				}, "\"Greater than\" value must be less than the \"less than\" value.");
+				$.validator.classRuleSettings.lead_greater = {lead_greater: true};
+
+				$.validator.addMethod("copper_less", function(value, element) {
+					return this.optional(element) || value > $("#copper_greater").val();
+				}, "\"Less than\" value must be greater than the\"greater than\" value.");
+				$.validator.classRuleSettings.copper_less = {copper_less: true};
+
+				$.validator.addMethod("copper_greater", function(value, element) {
+					return this.optional(element) || value < $("#copper_less").val();
+				}, "\"Greater than\" value must be less than the \"less than\" value.");
+				$.validator.classRuleSettings.copper_greater = {copper_greater: true};
+				
+				//Pace.track(function(){
+				validator = $("form").validate({
+					debug: true,
+					errorPlacement: function(error, element) {
+						element.parent().append(error);
+					},
+					rules: {
+						years: "required",
+						months: "required",
+						aggregation: {
+							required: false,
+							aggregation: true
+						},
+						group_by: {
+							required: false,
+							group_by: true
+						},
+						lead_less: {
+							required: false,
+							digits: true,
+							min: 1,
+							lead_less: true
+						},
+						lead_greater: {
+							required: false,
+							digits: true,
+							min: 0,
+							lead_greater: true
+						},
+						copper_less: {
+							required: false,
+							digits: true,
+							min: 1,
+							copper_less: true
+						},
+						copper_greater: {
+							required: false,
+							digits: true,
+							min: 0,
+							copper_greater: true
+						}
+					},
+					submitHandler: function(form) {
+						$(form).ajaxSubmit({
+							type: "POST",
+							data: {"report_type": $(".nav button[class*=active]").attr("id")},
+							dataType: "json",
+							url: "includes/functions.php",
+							success: function(data) {
+								var content;
+								var total_results = data.water_tests.length;
+								
+								if (total_results > 0) {
+									content = "<p>Result Set: " + total_results + " records</p>";
+									
+									content += "<div class=\"table-responsive\"> \
+										<table id=\"table_header\" class=\"table\"> \
+											<tr> \
+												<th class=\"record_number\">&nbsp;</th> \
+												<th class=\"address\">Address</th> \
+												<th class=\"lead_level\">Lead Level (ppb)</th> \
+												<th class=\"copper_level\">Copper Level (ppb)</th> \
+												<th class=\"date\">Date Submtted</th> \
+											</tr> \
+										</table> \
+										\
+										<div id='scrollbox'> \
+										<table id=\"table_body\" class=\"table\">";
+									
+									for (var i=0; i<total_results; i++) {
+										var temp = data.water_tests[i];
+										
+										content += "<tr> \
+											<td class=\"record_number\">" + (i+1) + "</td> \
+											<td class=\"address\">" + temp.address + "</td> \
+											<td class=\"lead_level\">" + temp.leadLevel + "</td> \
+											<td class=\"copper_level\">" + temp.copperLevel + "</td> \
+											<td class=\"date\">" + temp.dateUpdated + "</td> \
+										</tr>";
+									}
+											
+									content += "</table></div></div>";
+								}
+								else
+									content = "There is no data available.";
+								
+								
+								$("#display_area").html(content);
+								$("#display_area").removeClass("hide");
+								$("#report_area #display_area #scrollbox").css({
+									"margin-top": $("#report_area #display_area #table_header").css("height"),
+									"height": (windowHeight * 0.75) + "px"
+								});
+								//Pace.stop();
+							}
+						});
+						
+						return false;
+					}
+				});
+				
+				/* Revalidate the aggregation and group by dropdowns if either changes. */
+				$("#aggregation, #group_by").on("change", function() {
+					validator.element("#aggregation");
+					validator.element("#group_by");
+				});
+				
+				/* Revalidate all limit inputs if any of them changes. */
+				$("#lead_less, #lead_greater, #copper_less, #copper_greater").on("keyup", function() {
+					validator.element("#lead_less");
+					validator.element("#lead_greater");
+					validator.element("#copper_less");
+					validator.element("#copper_greater");
+				});
+				
+				$("#clear_button").on("click", function() {
+					$("form").resetForm();
+				});
+				
+				//});
+			}
+			
 			
 			/* CONTACT FORM */
 			$("#contact_form form").validate({

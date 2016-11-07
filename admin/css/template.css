@@ -29,11 +29,11 @@ a, a:link, a:visited, a:hover, a:active {
 }
 
 form .required {
-	color:#FF0000;
+	color:#F000;
 }
 
 form input.error {
-	color:#FF0000;
+	color:#F00;
 }
 
 form label.error {
@@ -86,6 +86,14 @@ h1 a.navbar-brand, .navbar-brand:hover {
 	color:#333;
 }
 
+/*.navbar-default .navbar-nav > li > a.active .nav-label {
+	color:#3A4EA2!important;
+}
+
+.drop-men a.active .nav-label {
+	color:#252E56!important;
+}*/
+
 
 /* Login Page */
 .login .login-sub::before {
@@ -117,6 +125,26 @@ h1 a.navbar-brand, .navbar-brand:hover {
 }
 
 /* Reports Page */
+#report_area label {
+	font-weight:400;
+}
+
+#report_area #time_period label {
+	vertical-align:top;
+}
+
+#report_area #limit input {
+	margin-right:12px;
+	text-align:center;
+}
+
+#report_area #display_area th, #report_area #display_area td {
+	text-align:center;
+}
+
+#report_area #display_area #table_body .address {
+	text-align:left;
+}
 
 /*#report_area #display_area {
 	margin-bottom:20px;
@@ -1883,7 +1911,7 @@ div#home {
 .table td, .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     padding: 15px !important;
     font-size: 0.85em;
-    color: #999;
+    color: #000;
     border-top: none !important;
 }
 
