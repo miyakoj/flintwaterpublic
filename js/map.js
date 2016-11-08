@@ -108,6 +108,12 @@ function checkAuth() {
 function initMap() {
 	$("#resource_card, #location_card").hide();
 	
+	/* Add position:relative; to the map container if not using a mobile device. */
+	if (windowHeight > 600) {
+		$("wrapper").css("position", "static");
+		$("#map_container").css("position", "relative");
+	}
+	
 	attachLegendCard();
 
 	/* Position the map in the correct element if it exists on the page. */
@@ -117,10 +123,10 @@ function initMap() {
 	/* Size the map based on the window size. */
 	var mapHeight;
 	
-	if (windowHeight < 800)
-		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - ($("#legend").outerHeight()) - 25;
+	if (windowHeight < 600)
+		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("#legend_card").outerHeight();
 	else
-		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - parseInt($("footer #site_desc").css("line-height"));
+		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
 
 	$("#map_container").css("height", mapHeight + "px");
 	
@@ -132,7 +138,7 @@ function initMap() {
 	  mapTypeControl: false
 	});
     
-	//This hides all POIs on map
+	//This hides all Points of Interest on the map
 	var noPoi = [
 	{
     featureType: "poi.attraction",
@@ -584,27 +590,37 @@ function addFusionListener(object) {
 
 function attachLegendCard() {
 		var placeholderDetails = "<div id='legend'>";
+			placeholderDetails = "<div id='title'><span>EPA Ratings – Water Test Results</span> <span>Based on State of MI Tested Samples</span></div>";
 	
-		var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='no lead results' class='legend_icons' /> ";
-		var lowIcon = "<img src='" + lowRiskSrc + "' title ='low lead' class ='legend_icons' /> ";
-		var moderateIcon = "<img src='" + moderateRiskSrc + "' title ='moderate lead' class='legend_icons' /> ";
-		var highIcon = "<img src='" + highRiskSrc + "' title ='high lead' class='legend_icons' /> ";
+		var lowIcon = "<img src='" + lowRiskSrc + "' title ='low lead test results / low predicted risk' class ='legend_icons' /> ";
+		var moderateIcon = "<img src='" + moderateRiskSrc + "' title ='medium lead test results / medium predicted risk' class='legend_icons' /> ";
+		var highIcon = "<img src='" + highRiskSrc + "' title ='high lead test results / high predicted risk' class='legend_icons' /> ";
+		var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='no lead test results, prediction only' class='legend_icons' /> ";
+		
+		var lowMsg;
+		var moderateMsg;
+		var hifgMsg;
+		var unknownMsg;
+		
+		if (windowWidth < 1280) {
+			lowMsg = "<span>Low</span> <span>(0-15 ppb Lead)</span>";
+			moderateMsg = "<span>Medium</span> <span>(16-150 ppb Lead)</span>";
+			highMsg = "<span>High</span> <span>(Over 150 ppb Lead)</span>";
+			unknownMsg = "<span>Unknown</span>";
+		}
+		else {
+			lowMsg = "<span>Reported Low Readings</span> <span>(0-15 ppb Lead)</span>";
+			moderateMsg = "<span>Reported Medium Readings</span> <span>(16-150 ppb Lead)</span>";
+			highMsg = "<span>Reported High Readings</span> <span>(Over 150 ppb Lead)</span>";
+			unknownMsg = "<span>No Reported<br />Test Results</span> <span>(Predicted Risk Only)</span>";
+		}
 	
 		placeholderDetails += "<div class='row'>";
-		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += lowIcon + "<span>Low</span>";
-		placeholderDetails += "</div>";
-		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += moderateIcon + "<span>Moderate</span>";
-		placeholderDetails += "</div>";
-		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += highIcon + "<span>High</span>";
-		placeholderDetails += "</div>";
-		placeholderDetails += "<div class='col-xs-3 text-center'>";
-		placeholderDetails += unknownIcon + "<span>No Results</span>"; 
-		placeholderDetails += "</div>";
-		placeholderDetails += "</div>";
-		placeholderDetails += "</div>";
+		placeholderDetails += "<div class='col-xs-3'>" + lowIcon + lowMsg + "</div>";
+		placeholderDetails += "<div class='col-xs-3'>" + moderateIcon + moderateMsg + "</div>";
+		placeholderDetails += "<div class='col-xs-3'>" + highIcon + highMsg + "</div>";
+		placeholderDetails += "<div class='col-xs-3'>" + unknownIcon + unknownMsg + "</div>";
+		placeholderDetails += "</div>\n</div>";
 
 		$("#legend_card .card-inner").empty().html(placeholderDetails);		
 		$("#legend_card").show();
@@ -1000,17 +1016,17 @@ function createLocationContent(streetAddress, dataObj) {
 			if (leadLevel <= 15) {
 				warningMsg = "Low Lead Level";
 				warningImg = lowRiskCircle;
-				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			else if (leadLevel <= 150) {
 				warningMsg = "Moderate Lead Level";
 				warningImg = medRiskCircle;
-				suggestedAction = "Use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			else {
 				warningMsg = "High Lead Level";
 				warningImg = highRiskCircle;
-				suggestedAction = "Use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = "Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
@@ -1051,7 +1067,7 @@ function createLocationContent(streetAddress, dataObj) {
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
-			content += "<p id='suggested_action'>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
+			content += "<p id='suggested_action'>Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 		}
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
 	}	

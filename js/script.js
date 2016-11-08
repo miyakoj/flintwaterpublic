@@ -111,15 +111,6 @@ $(document).ready(function() {
 	var average;
 	average = windowWidth/numItems;
 	$('#toggles label').css("width", average);
-
-	
-	$("footer .card-action a").each(function(i) {
-		if ($(this).attr("href").indexOf("#") == 0) {
-			id = $(this).attr("id");
-			page = id.slice(0, id.indexOf("_"));
-			$(this).attr("href", "page.php?pid=" + page);
-		}
-	});
 	
 	$("footer #copyright a").each(function(i) {		
 		if ($(this).attr("id").indexOf("contact_us") == -1) { //($(this).attr("href").length == 1)
@@ -187,8 +178,8 @@ $(document).ready(function() {
 	if (windowWidth < 768) {
 		//closes the nav drawer when you click outside of it
 		$("body").click(function(){
-			if($('.navbar').hasClass('slide-active')){
-				$('#page_content, .navbar, body, .navbar-header, .navbar-toggle').toggleClass('slide-active');
+			if($(".navbar").hasClass("slide-active")){
+				$("#page_content, .navbar, body, .navbar-header, .navbar-toggle").toggleClass("slide-active");
 				$("#main_menu li").removeClass("active");
 				$(".navbar-header, #page_content").css("left", "0px");
 				$("#main_menu").css("left", "-100%");
@@ -196,7 +187,15 @@ $(document).ready(function() {
 		}).on("click", "#main_menu, .navbar-toggle, .modal", function(event) {
 			event.stopPropagation();
 		});
+		
+		/* Set a fixed height for the main menu so that the overflow scrolls. */
+		$("#main_menu").height(windowHeight);
+		
+		/* Increase the window height of #page_content to prevent the #main_menu from being cut off. */
+		$("#page_content").css("height", windowHeight+"px");
 	}
+	else
+		$("#page_content").css("height", "auto");
 	
 	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
 	/* Size the map/video area depending on the height of the device. */	   
@@ -208,11 +207,6 @@ $(document).ready(function() {
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
 	//else for the index, news, and about pages
-	
-	
-	/* Make sure all the footer cards are the same height. */
-	$("footer div[id!='app_card'] .card-main .card-inner").css("height", $("footer #report_card .card-inner").css("height"));
-	$("footer #app_card").css("height", $("footer #report_card").css("height"));
 	
 	
 	/* Phones and small tablets. */
@@ -354,7 +348,7 @@ $(document).ready(function() {
 			event.stopPropagation();
 		});
 	}
-	else { // Desktop/Laptop
+	else { // Desktop/Laptop or HD phone
 		if (windowWidth < 1024) {
 			$("#header_top").addClass("clearfix");
 			$("#toggles").removeClass("btn-group btn-group-justified");

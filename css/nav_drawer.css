@@ -28,7 +28,7 @@ body.slide-active #main {
     position: relative;
 }
 /* screw writing importants and shit, just stick it in max width since these classes are not shared between sizes */
-@media (max-width:767px) { 
+@media (max-width:767px) {
 	#slide-nav .container-fluid {
 	    margin: 0!important;
 	    padding: 0!important;
@@ -45,8 +45,6 @@ body.slide-active #main {
 	    z-index: 1000;
 	}
 	#slide-nav #main_menu {
-		left: -85%;
-	    width: 85%;
 	    min-width: 0;
 	    position: absolute;
 	    padding-left: 0;
@@ -76,8 +74,6 @@ body.slide-active #main {
 	    top: 0;
 	    height: 100%;
         bottom:0;
-	    width: 80%;
-	    left: -80%;
 	}
 	#navbar-height-col.inverse {
 	    background: #333;
@@ -98,6 +94,7 @@ body.slide-active #main {
 	    width: 100%;
 	}
 }
+
 @media (min-width:768px) { 
 	#page-content {
 	    left: 0!important;

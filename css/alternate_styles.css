@@ -1,5 +1,9 @@
-/* Tablet only. */
-@media only screen and (min-width:600px) {	
+/* Tablets, laptops, and desktops. */
+@media only screen and (min-width:600px) {
+	#main_menu {
+		overflow-y:hidden;
+	}
+
 	#map {
 		position:relative;
 	}
@@ -30,8 +34,7 @@
 		left:0;
 	}*/
 	
-	#legend_card .col-xs-3{
-		text-align: center;
+	#legend_card .col-xs-3 {
 		padding-left: .1em;
 		padding-right: .1em;
 	}
@@ -151,7 +154,6 @@
 	}
 	
 	footer #site_desc {
-		margin:0;
 		padding-right:20px;
 		padding-bottom:0;
 	}
@@ -237,5 +239,25 @@
 		padding: 0 16px!important;
 		height: 48px;
 		line-height: 48px!important;
+	}
+	
+	footer #site_desc {
+		margin:0;
+	}
+}
+
+/* Desktop/Laptop only. */
+@media only screen and (min-width:1280px) {
+	#search_input {
+		width:500px;
+	}
+	
+	#legend_card #title {
+		margin-bottom:25px;
+		display:block;
+	}
+	
+	#legend_card .col-xs-3 span+span {
+		margin-top:10px;
 	}
 }

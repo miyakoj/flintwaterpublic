@@ -3,6 +3,14 @@ html, body {
 	padding-bottom:0!important;
 }
 
+body {
+	position:relative;
+}
+
+body[id="index_page"] {
+	overflow-y:hidden;
+}
+
 .container-fluid {
 	padding:0!important;
 }
@@ -96,7 +104,7 @@ header {
 }
 
 #page_content {
-	position:relative;
+	position:static;
 	z-index:1!important;
 }
 
@@ -109,6 +117,10 @@ header {
 #navbar-height-col {
 	width:auto!important;
 	padding-top:25px;
+}
+
+#main_menu {
+	overflow-y:scroll;
 }
 
 #main_menu li a {
@@ -236,7 +248,6 @@ input[type='checkbox'] {
 
 #map_container {
 	width:100%;
-	position:relative;
 }
 
 #map {
@@ -320,11 +331,15 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #legend_card {
     margin:0;
 	position:absolute;
-	bottom:-54px;
+	bottom:0; /*-54px*/
 	left:0;
 	right:0;
 	display:block;
 	z-index:195!important;
+}
+
+#legend_card #title {
+	display:none;
 }
 
 #legend_card .row {
@@ -338,6 +353,14 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 #legend_card .col-xs-3 {
 	padding-left: .5em;
 	padding-right: .5em;
+}
+
+#legend_card .col-xs-3 span {
+	display:block;
+}
+
+#legend_card .col-xs-3 span+span {
+	margin-top:8px;
 }
 
 .legend_icons {
@@ -618,33 +641,6 @@ body[id="index_page"] main {
 
 footer {
 	padding:10px;
-}
-
-footer #card_row h4 {
-	margin-top:0;
-	margin-bottom:15px;
-}
-
-footer #card_row #apple_store_link {
-	display:none;
-}
-
-footer.card .card-inner h3 {
-	margin:10px 0 20px 0!important;
-}
-
-footer.card .card-inner p {
-	margin:12px 0;
-}
-
-footer.card .card-action {
-	width:100%;
-	min-height:auto;
-}
-
-footer .card .btn-group {
-	width:100%;
-	padding:0 8px;
 }
 
 footer #site_desc {

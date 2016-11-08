@@ -6,14 +6,45 @@ $(document).ready(function () {
 	var toggler = '.navbar-toggle';
 	var pagewrapper = '#page_content';
 	var navigationwrapper = '.navbar-header';
-	var menuwidth = '85%'; // the menu inside the slide menu itself
-	var slidewidth = '85%';
+	var menuwidth; // the menu inside the slide menu itself
+	var slidewidth;
 	var menuneg = '-100%';
-	var slideneg = '-85%';
+	var slideneg;
+	
+	if (window.innerWidth <= 350) {
+		$("#slide-nav #main_menu").css({
+			left: "-80%",
+			width: "80%"
+		});
+		$("#navbar-height-col").css({
+			width: "80%",
+			left: "-80%"
+		});
+		
+		menuwidth = '80%';
+		slidewidth = '80%';
+		slideneg = '-80%';
+	}
+	else if (window.innerWidth <= 768) {
+		$("#slide-nav #main_menu").css({
+			left: "-55%",
+			width: "55%"
+		});
+
+		$("#navbar-height-col").css({
+			width: "55%",
+			left: "-55%"
+		});
+		
+		menuwidth = '55%';
+		slidewidth = '55%';
+		slideneg = '-55%';
+	}
 
 
 	$("#slide-nav").on("click", toggler, function (e) {
-
+		$('#legend_card').toggle(400, 'linear');
+		
 		var selected = $(this).hasClass('slide-active');
 
 		$('#main_menu').stop().animate({
