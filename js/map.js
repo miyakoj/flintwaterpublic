@@ -119,6 +119,8 @@ function initMap() {
 	/* Position the map in the correct element if it exists on the page. */
 	if($("#search_input").length != 0)
 		$("#map_container #search_input").after($("#map"));
+	
+	$("#search_input").val(""); // clear the search input upon refresh
   
 	/* Size the map based on the window size. */
 	var mapHeight;
@@ -129,8 +131,6 @@ function initMap() {
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
 
 	$("#map_container").css("height", mapHeight + "px");
-	
-	$("#search_input").val(""); // clear the search input upon refresh
 
 	map = new google.maps.Map(document.getElementById('map'), {
 	  center: mapCenter,
@@ -368,6 +368,8 @@ function initMap() {
 	// Changes CSS to make search bar visible, making sure it isn't displayed before the map
 	map.addListener('idle', function() {
 		$("#search_input").css("display", "block");
+		$("#legend_card").show();
+		$("#loading_screen").addClass("hide");
 	});
 	
 	$("#search_input").keyup(function() {
@@ -564,9 +566,12 @@ function addFusionListener(object) {
 	google.maps.event.addListener(object, "click", function(event) {		
 		var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" 
 					+ event.row["address"].value + "' ORDER BY 'testDate' DESC";
+					
+		// show loading screen
+		$("#loading_screen").show();
 
 		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
-		window.jsonpCallbacks["fusionLayerQueryCallback"] = function(data) {			
+		window.jsonpCallbacks["fusionLayerQueryCallback"] = function(data) {
 			var content = fusionQueryCallback(data, event.row["address"].value);
 			createLocationCardContent("location", content);
 			
@@ -580,6 +585,8 @@ function addFusionListener(object) {
 			// collapse expanded areas
 			$("#previous_results button").addClass("collapsed").attr("aria-expanded", "false");			
 			
+			// hide loading screen
+			$("#loading_screen").hide();
 			$("#location_card, #location_card .card-action").show();
 		};
 		
@@ -590,7 +597,7 @@ function addFusionListener(object) {
 
 function attachLegendCard() {
 		var placeholderDetails = "<div id='legend'>";
-			placeholderDetails = "<div id='title'><span>EPA Ratings – Water Test Results</span> <span>Based on State of MI Tested Samples</span></div>";
+			placeholderDetails = "<div id='title'><span>EPA Ratings Based on Tested Samples</span></div>";
 	
 		var lowIcon = "<img src='" + lowRiskSrc + "' title ='low lead test results / low predicted risk' class ='legend_icons' /> ";
 		var moderateIcon = "<img src='" + moderateRiskSrc + "' title ='medium lead test results / medium predicted risk' class='legend_icons' /> ";
@@ -599,20 +606,20 @@ function attachLegendCard() {
 		
 		var lowMsg;
 		var moderateMsg;
-		var hifgMsg;
+		var highMsg;
 		var unknownMsg;
 		
 		if (windowWidth < 1280) {
-			lowMsg = "<span>Low</span> <span>(0-15 ppb Lead)</span>";
-			moderateMsg = "<span>Medium</span> <span>(16-150 ppb Lead)</span>";
-			highMsg = "<span>High</span> <span>(Over 150 ppb Lead)</span>";
-			unknownMsg = "<span>Unknown</span>";
+			lowMsg = "<span>Low</span> <span>(0-15 ppb)</span>";
+			moderateMsg = "<span>Medium</span> <span>(16-150 ppb)</span>";
+			highMsg = "<span>High</span> <span>(Over 150 ppb)</span>";
+			unknownMsg = "<span>Predicted</span>";
 		}
 		else {
-			lowMsg = "<span>Reported Low Readings</span> <span>(0-15 ppb Lead)</span>";
-			moderateMsg = "<span>Reported Medium Readings</span> <span>(16-150 ppb Lead)</span>";
-			highMsg = "<span>Reported High Readings</span> <span>(Over 150 ppb Lead)</span>";
-			unknownMsg = "<span>No Reported<br />Test Results</span> <span>(Predicted Risk Only)</span>";
+			lowMsg = "<span>Low</span> <span>(0-15 ppb)</span>";
+			moderateMsg = "<span>Medium</span> <span>(16-150 ppb)</span>";
+			highMsg = "<span>High</span> <span>(Over 150 ppb)</span>";
+			unknownMsg = "<span>Predicted</span>";
 		}
 	
 		placeholderDetails += "<div class='row'>";
@@ -995,41 +1002,57 @@ function queryFusionTable(query, callback) {
 /* Location info card content generation. */
 function createLocationContent(streetAddress, dataObj) {
 	var leadLevel;
+	var abandonmentStatus;
 	var testDate;
 	var prediction;
 	var tempAddr;
 	
 	/* Data is from a fusion table query. */
 	if (dataObj.rows) {
+		console.log(dataObj.rows);
 		leadLevel = dataObj.rows[0][3];
+		abandonmentStatus = dataObj.rows[0][2];
 		testDate = dataObj.rows[0][4].slice(0, dataObj.rows[0][4].indexOf(" "));
 		prediction = dataObj.rows[0][5];
 	}
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	var warningMsg;
+	var abandonmentMsg;
 	var warningImg;
 	var suggestedAction;
 	
 	if (((leadLevel != -1) && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
+		// set the abandonment message for the property
+		abandonmentMsg = "This property is listed as ";
+		
+		if (abandonmentStatus === "Y")
+			abandonmentMsg += "abandoned.";
+		else if (abandonmentStatus === "N")
+			abandonmentMsg += "occupied.";
+		else
+			abandonmentMsg = "This property's abandonment status is unknown.";
+		
+		// the property has a reported lead level
 		if (leadLevel != -1) {
 			if (leadLevel <= 15) {
-				warningMsg = "Low Lead Level";
+				warningMsg = "Low Reported Lead Level";
 				warningImg = lowRiskCircle;
 				suggestedAction = "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			else if (leadLevel <= 150) {
-				warningMsg = "Moderate Lead Level";
+				warningMsg = "Moderate Reported Lead Level";
 				warningImg = medRiskCircle;
 				suggestedAction = "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			else {
-				warningMsg = "High Lead Level";
+				warningMsg = "High Reported Lead Level";
 				warningImg = highRiskCircle;
 				suggestedAction = "Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
+			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
 			content += "<div id='current_results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
 			content += "<div id='more_info_details' class='collapse'>";
 			
@@ -1055,15 +1078,17 @@ function createLocationContent(streetAddress, dataObj) {
 			
 			content += "<p id='suggested_action'>" + suggestedAction + "</p>";
 		}
+		// the property only has a prediction
 		else {
-			content += "<div id='results' class='emphasis'>No Test Results</div>";
+			content += "<div id='results' class='emphasis'>No Reported Test Results</div>";
+			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
 		
 			if (prediction >= 0.20)
-				warningMsg = "High risk of elevated lead levels. Testing is recommended.";
+				warningMsg = "High predicted risk of elevated lead levels. Testing is recommended.";
 			else if ((prediction > 0.10) && (prediction < 0.20))
-				warningMsg = "Moderate risk of elevated lead levels. Testing is recommended.";
+				warningMsg = "Moderate predicted risk of elevated lead levels. Testing is recommended.";
 			else if (prediction <= 0.10)
-				warningMsg = "At risk for elevated lead levels. Testing is recommended.";
+				warningMsg = "Predicted risk of elevated lead levels. Testing is recommended.";
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";

@@ -734,7 +734,7 @@ if (@isset($_POST["pid"])) {
 					<div class='content-top-1'>
 					<section>
 					<p class='text-justify'>The MyWater-Flint Administration site was developed by <a href='http://www.umflint.edu'>University of Michigan-Flint</a> to assist with research and the prioritization of relief efforts.</p>
-					<p class='text-justify'>Water test results courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> via UM-Ann Arbor MDST. Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
+					<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United Status Postal Service (both via UM-Ann Arbor MDST). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
 					</section>
 					</div>
 				</div>

@@ -24,6 +24,10 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 var feed_api = "https://cdn.rawgit.com/sekando/feednami-client/master/releases/1.0.2.min.js";
 
 if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1) || ($pageId.indexOf("test") != -1)) {
+	// show a loading screen until the map has loaded
+	//if ($pageId.indexOf("index") != -1)
+		//$("#loading_screen").removeClass("hide");
+	
 	$.ajax({
 		type: "GET",
 		url: map_api,
@@ -59,6 +63,9 @@ $(document).ready(function() {
 			return this.left = (windowWidth - $(".alert").width()) / 2;
 		}
 	});
+	
+	/* Position the spinner based upon the size of the screen. */
+	$(".loader").css("margin-top", windowHeight/2 - $(".loader").height()/2 + "px");
 	
 	/* Activate tooltips. */
 	$(function () {
@@ -174,6 +181,8 @@ $(document).ready(function() {
 			}
 		});
 	}
+	
+	$("#legend_card").hide();
 	
 	if (windowWidth < 768) {
 		//closes the nav drawer when you click outside of it

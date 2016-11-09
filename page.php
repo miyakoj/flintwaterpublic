@@ -531,7 +531,7 @@ if (@isset($_GET["pid"])) {
 			
 			<p class='text-justify'>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and the <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>
 			
-			<p class='text-justify'>Water test results courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> via UM-Ann Arbor MDST. Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p></section>";
+			<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United Status Postal Service (both via UM-Ann Arbor MDST). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p></section>";
 		break;
 		
 		case "disclaimer":

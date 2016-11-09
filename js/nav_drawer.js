@@ -27,18 +27,18 @@ $(document).ready(function () {
 	}
 	else if (window.innerWidth <= 768) {
 		$("#slide-nav #main_menu").css({
-			left: "-55%",
-			width: "55%"
+			left: "-60%",
+			width: "60%"
 		});
 
 		$("#navbar-height-col").css({
-			width: "55%",
-			left: "-55%"
+			width: "60",
+			left: "-60%"
 		});
 		
-		menuwidth = '55%';
-		slidewidth = '55%';
-		slideneg = '-55%';
+		menuwidth = '60';
+		slidewidth = '60%';
+		slideneg = '-60%';
 	}
 
 

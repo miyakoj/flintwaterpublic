@@ -19,6 +19,7 @@ This source enables you to create user and administration websites to aid in nav
 ### Plugins Used ###
 * [jQuery Form](http://malsup.com/jquery/form/)
 * [jQuery Validation](http://jqueryvalidation.org/)
+* [Feednami](https://github.com/sekando/feednami-client/)
 
 ### Other ###
 * [Carasmo's Bootstrap Navigation Drawer](https://jsbin.com/seqola/2/edit?html,css,js,output/)

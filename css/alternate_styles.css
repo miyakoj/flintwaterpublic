@@ -247,17 +247,13 @@
 }
 
 /* Desktop/Laptop only. */
-@media only screen and (min-width:1280px) {
-	#search_input {
-		width:500px;
-	}
-	
+@media only screen and (min-width:1280px) {	
 	#legend_card #title {
-		margin-bottom:25px;
+		margin-bottom:12px;
 		display:block;
 	}
 	
 	#legend_card .col-xs-3 span+span {
-		margin-top:10px;
+		margin-top:8px;
 	}
 }
