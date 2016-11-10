@@ -203,8 +203,22 @@ body {
 
 
 /* Profile Page */
-#show_info label {
+#profile_page #show_info label {
 	padding-right:8px;
+}
+
+#profile_page #user_group_dropdown {
+	display:none;
+}
+
+
+/* Users Page */
+#users_page #instructions {
+	margin-top:15px;
+}
+
+#users_page #user_group {
+	display:none;
 }
 
 
@@ -257,6 +271,15 @@ form label.error {
 
 form .col-xs-12, form .col-md-3, form .col-md-5, form .col-md-6 {
 	padding-left:0;
+}
+
+#loading_screen {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:1000;
 }
 
 #page_alert {

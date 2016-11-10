@@ -88,6 +88,11 @@ if (@isset($_POST["type"])) {
 	}
 }
 
+/* Handle user page new user email. */
+if (strcmp($_POST["type"], "new_user_email") === 0) {
+	email_user();
+}
+
 /* Returns a JavaScript array as a string used to generate a chart. */
 function generateChartData($type) {
 	$result = queries($type);
@@ -203,12 +208,25 @@ function getResourceLocations() {
 /* Email some info to a user. */
 function email_user() {
 	if ($_POST["type"] == "contact_form") {
-		$to = "umflinth2o@gmail.com";
-		$from = "umflinth2o@gmail.com";
+		$to = "info@mywater-flint.com";
+		$from = "info@mywater-flint.com";
 		$subject = "A Comment About MyWater-Flint (Admin Site)";
 		
 		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>
 						<p><strong>Comments:</strong><br /> %s</p>", htmlspecialchars($_POST["email"]), htmlspecialchars($_POST["comments"]));
+	}
+	else if (strcmp($_POST["type"], "new_user_email") === 0) {
+		$to = $_POST["email"];
+		$from = "info@mywater-flint.com";
+		$subject = "An account has been created for you on MyWater-Flint";
+		
+		$msg = "Hello,\n\n
+
+				Follow this link to activate your new account on MyWater-Flint. Please enter your email address and check \"Forgot Password\" to gain access.\n
+				<a href=\"https://admin.mywater-flint.com\">https://admin.mywater-flint.com</a>\n\n
+
+				Thanks,\n
+				Your MyWater-Flint team";
 	}
 	
 	try {

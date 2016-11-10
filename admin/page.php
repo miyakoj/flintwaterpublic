@@ -20,7 +20,7 @@ if (@isset($_POST["pid"])) {
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
-			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
+			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>'; // class="hide"
 		break;
 		
 		case 2:
@@ -42,13 +42,19 @@ if (@isset($_POST["pid"])) {
 	
 	$script = "";
 	
-	$user_form = "<div id='user_form' class=\"collapse\">
+	$user_form = "<div id='user_form' class=\"collapse in\">
 					<form method='post'>
 					<div class='form-group'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-2 col-md-offset-1'>
 						<label for='user_group'>User Group:</label>
 						<input id='user_group' class='form-control' type='text' name='user_group' size='5' disabled />
+						<select id='user_group_dropdown' class='form-control' name='user_group'>
+						<option></option>
+						<option value='1'>Admin</option>
+						<option value='2'>Edit Priviledges</option>
+						<option value='3'>View Only Priviledges</option>
+						</select>
 						</div>				
 						</div>
 					</div>
@@ -62,7 +68,7 @@ if (@isset($_POST["pid"])) {
 						<div class='col-xs-12 col-md-5'>
 						<label for='last_name'>Last Name:<span class='required'>*</span></label>
 						<input id='last_name' class='form-control' type='text' name='last_name' size='25' required disabled />
-						</div>						
+						</div>
 						</div>
 					</div>
 					
@@ -71,8 +77,8 @@ if (@isset($_POST["pid"])) {
 						<div class='col-xs-12 col-md-8 col-md-offset-1'>
 						<label for='title'>Title:<span class='required'>*</span></label>
 						<input id='title' class='form-control' type='text' name='title' size='5' required disabled />
-						</div>						
-						</div>						
+						</div>
+						</div>
 					</div>
 					
 					<div class='form-group'>
@@ -107,21 +113,21 @@ if (@isset($_POST["pid"])) {
 						<div class='row'>
 						<div class='col-xs-12 col-md-4 col-md-offset-1'>
 						<label for='address'>Street address:<span class='required'>*</span></label>
-						<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
+						<input id='address' class='form-control' type='text' name='address' size='25' disabled />
 						<span class='help-block hide'>Example: 303 E. Kearsley St.</span>
 						</div>
 						
 						<div class='col-xs-12 col-md-3'>
 						<label for='city'>City:<span class='required'>*</span></label>
-						<input id='city' class='form-control' type='text' name='city' size='5' required disabled />
+						<input id='city' class='form-control' type='text' name='city' size='5' disabled />
 						</div>
 						<div class='col-xs-12 col-md-1'>
 						<label for='state'>State:<span class='required'>*</span></label>
-						<input id='state' class='form-control' type='text' name='state' size='2' required disabled />
+						<input id='state' class='form-control' type='text' name='state' size='2' disabled />
 						</div>
 						<div class='col-xs-12 col-md-2'>
 						<label for='zipcode'>Zipcode:<span class='required'>*</span></label>
-						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required disabled />
+						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' disabled />
 						</div>
 						</div>
 					</div>
@@ -129,10 +135,10 @@ if (@isset($_POST["pid"])) {
 					<div class='form-group'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-10 col-md-offset-1'>
-						<label for='show_info'>Show contact information to other users<span class='required'>*</span>:</label>
+						<label for='show_info'>Show contact information to other users:</label>
 						<div id='show_info' class='radio'>
-						<label><input type='radio' name='show_info' id='show_info1' value='yes' required disabled /> Yes</label>
-						<label><input type='radio' name='show_info' id='show_info2' value='no' required checked disabled /> No</label>
+						<label><input type='radio' name='show_info' id='show_info1' value='yes' disabled /> Yes</label>
+						<label><input type='radio' name='show_info' id='show_info2' value='no' checked disabled /> No</label>
 						</div>
 						</div>						
 						</div>						
@@ -553,10 +559,12 @@ if (@isset($_POST["pid"])) {
 				$pagetitle = "Manage Users";
 				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
 				$inner_content = "<div class=\"row\">
-									<div class=\"col-xs-6 col-md-2 col-md-offset-4\"><button id=\"new_user_button\" class=\"btn btn-default\" type=\"button\" data-toggle=\"collapse\" data-target=\"#user_form\" aria-expanded=\"false\" aria-controls=\"user_form\">New User</button></div>
+									<div class=\"col-xs-6 col-md-3 col-md-offset-3\"><button id=\"new_user_button\" class=\"btn btn-default pull-right\" type=\"button\" data-toggle=\"collapse\" data-target=\"#user_form\" aria-expanded=\"false\" aria-controls=\"user_form\">New User</button></div>
 									
-									<div class=\"col-xs-6 col-md-2\"><button id=\"user_list_button\" class=\"btn btn-default\" type=\"button\" data-toggle=\"collapse\" data-target=\"#user_list\" aria-expanded=\"false\" aria-controls=\"user_list\">Edit User</button></div>
+									<div class=\"col-xs-6 col-md-3\"><button id=\"user_list_button\" class=\"btn btn-default\" type=\"button\" data-toggle=\"collapse\" data-target=\"#user_list\" aria-expanded=\"false\" aria-controls=\"user_list\">View/Edit Users</button></div>
 								</div>
+								
+								<p id='instructions' class='hide'>A password will be randomly generated and an email will be sent to the user.</p>
 				
 								<div id=\"user_list\" class=\"collapse\">
 								<div class=\"table-responsive\">
@@ -604,6 +612,30 @@ if (@isset($_POST["pid"])) {
 								$('#user_list').collapse('hide');
 							else
 								$('#user_form').collapse('hide');
+						});
+						
+						/* Enable all disabled form fields except for user group. */
+						$('#user_form #edit_button, #new_user_button').on('click', function() {
+							for (var i=0; i<$('#user_form form')[0].elements.length; i++)
+								$('#user_form form')[0].elements[i].disabled = false;
+							
+							if (\$pageId.indexOf('profile') != -1) {
+								$('#user_form #user_group').attr('disabled', 'true');
+								$('#user_form #email').parent().after().addClass('col-md-offset-1');
+							}
+							else {
+								if ($(this).attr('id') === 'new_user_button')
+									$('#instructions').removeClass('hide');
+								
+								$('#user_form #email').parent().removeClass('hide');
+								$('#user_form #edit_button').hide();
+								$('.help-block, #user_form form #submit_button').removeClass('hide');
+							}
+						});
+						
+						$('#user_list_button').on('click', function() {
+							console.log($(this));
+							$('#instructions').addClass('hide');
 						});
 					});
 					</script>";

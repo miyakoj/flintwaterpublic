@@ -2,6 +2,7 @@ var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
 
+var config;
 var app;
 var auth;
 var db;
@@ -14,8 +15,13 @@ var genericError = "<div class='alert alert-danger' role='alert'>There was an er
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
 
+$("#loading_screen").removeClass("hide");
+
 (function() {
     "use strict";
+	
+	/* Position the spinner based upon the size of the screen. */
+	$(".loader").css("margin-top", windowHeight/2 - $(".loader").height()/2 + "px");
 	
 	$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
 
@@ -28,7 +34,7 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 	});
 	
 	// Initialize Firebase
-	var config = {
+	config = {
 		apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
 		authDomain: "uniteflint.firebaseapp.com",
 		databaseURL: "https://uniteflint.firebaseio.com",
@@ -72,6 +78,7 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 					$(".name-caret").text("Hello, User");
 				
 				$("#wrapper").removeClass("hide");
+				$("#loading_screen").addClass("hide");
 			}).then(function() {
 				/* Position alert in the middle of the page. */
 				$("#page_alert").css({
@@ -417,33 +424,34 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 					return false;
 				});
 			}
-			/* PROFILE PAGE */
+			/* PROFILE & USERS PAGE */
 			else if (($pageId.indexOf("profile") != -1) || ($pageId.indexOf("users") != -1)) {
-				/* Enable all disabled form fields except the user group field. */
-				$("#user_form form #edit_button, #new_user_button").on("click", function() {
-					for (var i=0; i<$("#user_form form")[0].elements.length; i++)
-						$("#user_form form")[0].elements[i].disabled = false;
-					
-					// redisable the user group and email fields if on the profile page
-					if ($pageId.indexOf("profile") != -1) {
-						$("#user_form form #user_group").attr("disabled", "true");
-						$("#user_form form #email").parent().after().addClass("col-md-offset-1");
-					}
-					else {
-						
-						$("#user_form form #email").parent().removeClass("hide");
-					}
-					
-					$("#user_form form #edit_button").addClass("hide");
-					$(".help-block, #user_form form #submit_button").removeClass("hide");
-				});
-			
-				$("#user_form form").validate({
-					debug: true,
-					errorPlacement: function(error, element) {
-						error.appendTo(element.parent());
-					},
-					rules: {
+				var rules;
+				
+				if ($pageId.indexOf("profile") != -1) {
+					rules = {
+						phone: {
+							required: false,
+							phone: true
+						},
+						address: {
+							required: false,
+							address: true
+						},
+						state: {
+							required: false,
+							stateUS: true
+						},
+						zipcode: {
+							required: false,
+							digits: true,
+							minlength: 5,
+							maxlength: 5
+						}
+					};
+				}
+				else {
+					rules = {
 						email: {
 							required: true,
 							email: true
@@ -453,53 +461,118 @@ var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-val
 							phone: true
 						},
 						address: {
-							required: true,
+							required: false,
 							address: true
 						},
 						state: {
-							required: true,
+							required: false,
 							stateUS: true
 						},
 						zipcode: {
-							required: true,
+							required: false,
 							digits: true,
 							minlength: 5,
 							maxlength: 5
 						}
+					};
+				}
+			
+				$("#user_form form").validate({
+					debug: true,
+					errorPlacement: function(error, element) {
+						error.appendTo(element.parent());
 					},
+					rules: rules,
 					messages: messages,
 					submitHandler: function(form) {
 						$("#user_form form .alert").remove();
 						
 						var showInfo;
 						
-						if ($("#edit_profile #show_info input").val().indexOf("yes") != -1)
+						if ($("#user_form #show_info input:checked").val() === "yes")
 							showInfo = true;
 						else
 							showInfo = false;
 						
-						var data = {
-							"firstName": $("#edit_profile #first_name").val(),
-							"lastName": $("#edit_profile #last_name").val(),
-							"phone": $("#edit_profile #phone").val(),
-							"title": $("#edit_profile #title").val(),
-							"dept": $("#edit_profile #dept").val(),
-							"address": {
-								"bldg": $("#edit_profile #bldg").val(),
-								"streetAddr": $("#edit_profile #address").val(),
-								"city": $("#edit_profile #city").val(), 
-								"state": $("#edit_profile #state").val(),
-								"zipcode": $("#edit_profile #zipcode").val()
-							},
-							"showInfo": showInfo
-						};
+						
+						var data;
 					
-						var userRef = db.ref("users/" + firebase.auth().currentUser.uid);
-						var result = userRef.update(data).then(function() {
-								$("#user_form form").append("<div class='alert alert-success' role='alert'>\"Your information was successfully updated.</div>");
+						if ($pageId.indexOf("profile") != -1) {
+							data = {
+								"firstName": $("#user_form #first_name").val(),
+								"lastName": $("#user_form #last_name").val(),
+								"phone": $("#user_form #phone").val(),
+								"title": $("#user_form #title").val(),
+								"dept": $("#user_form #dept").val(),
+								"address": {
+									"bldg": $("#user_form #bldg").val(),
+									"streetAddr": $("#user_form #address").val(),
+									"city": $("#user_form #city").val(), 
+									"state": $("#user_form #state").val(),
+									"zipcode": $("#user_form #zipcode").val()
+								},
+								"showInfo": showInfo
+							};
+							
+							var userRef = db.ref("users/" + firebase.auth().currentUser.uid);
+							var result = userRef.update(data).then(function() {
+								$("#user_form form").append("<div class='alert alert-success' role='alert'>Your information was successfully updated.</div>");
 							}, function() {
 								$("#user_form form").append(genericError);
 							});
+						}
+						else {
+							data = {
+								"role": $("#user_form #user_group_dropdown").val(),
+								"firstName": $("#user_form #first_name").val(),
+								"lastName": $("#user_form #last_name").val(),
+								"email": $("#user_form #email").val(),
+								"phone": $("#user_form #phone").val(),
+								"title": $("#user_form #title").val(),
+								"dept": $("#user_form #dept").val(),
+								"address": {
+									"bldg": $("#user_form #bldg").val(),
+									"streetAddr": $("#user_form #address").val(),
+									"city": $("#user_form #city").val(), 
+									"state": $("#user_form #state").val(),
+									"zipcode": $("#user_form #zipcode").val()
+								},
+								"showInfo": showInfo
+							};
+							
+							/* Create a second connection to create the new user. */
+							if (!secondaryApp)
+								var secondaryApp = firebase.initializeApp(config, "Secondary");
+							
+							// randomly generate a new password
+							var password = Math.random().toString(36).slice(-8);
+
+							secondaryApp.auth().createUserWithEmailAndPassword($("#user_form #email").val(), password).then(function(firebaseUser) {
+								/* Update the users node. */
+								db.ref("users/" + firebaseUser.uid).update(data).then(function() {
+									/* Update the rules node. */
+									var roleData = {};
+									roleData[firebaseUser.uid] = "true";
+									var rolesRef = db.ref("roles/" + $("#user_form #user_group_dropdown").val());
+									rolesRef.update(roleData);
+									
+									$("#user_form form").append("<div class='alert alert-success' role='alert'>The user was successfully added.</div>");
+									//$("#user_form form").resetForm();
+									
+									// send an email to the user
+									$.ajax({
+										type: "POST",
+										url: "includes/functions.php",
+										data: {"type": "new_user_email", "email": $("#user_form #email").val()}
+									});
+									
+								}, function() {
+									$("#user_form form").append(genericError);
+								});
+							}).catch(function(error) {
+								$("#user_form form").append(genericError);
+							});
+						}
 					}
 				});
 				

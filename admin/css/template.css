@@ -163,6 +163,30 @@ h1 a.navbar-brand, .navbar-brand:hover {
 
 
 /* Misc */
+#loading_screen {
+	background-color:rgba(31, 31, 31, 0.50);
+}
+
+.loader {
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3a4ea2;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+  margin:0 auto;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 /*body[id='about_page'] .content-main, body[id='disclaimer_page'] .content-main {
 	background-color:transparent;
