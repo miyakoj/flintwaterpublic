@@ -20,7 +20,7 @@ if (@isset($_POST["pid"])) {
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
-			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>'; // class="hide"
+			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>'; //
 		break;
 		
 		case 2:
@@ -42,7 +42,7 @@ if (@isset($_POST["pid"])) {
 	
 	$script = "";
 	
-	$user_form = "<div id='user_form' class=\"collapse in\">
+	$user_form = "<div id='user_form' class=\"collapse\">
 					<form method='post'>
 					<div class='form-group'>
 						<div class='row'>
@@ -330,6 +330,13 @@ if (@isset($_POST["pid"])) {
 						\$('#report_area form').addClass('hide');
 				});*/
 				
+				/* Clear the report result area if the form clear button is clicked. */
+				\$('#clear_button').on('click', function() {
+					\$('#display_area').html('');
+					\$('#display_area').addClass('hide');
+					\$('form').resetForm();
+				});
+				
 				\$('#water_tests, #problem_reports, #survey_results').on('click', function() {
 					$('#instructions').addClass('hide');
 					//$(this).find('form').resetForm();
@@ -384,7 +391,7 @@ if (@isset($_POST["pid"])) {
 					</div>
 					
 					<div class='form-group'>
-						<label for='categories'>Resource Types<span class='required'>*</span></label>:
+						<label for='categories'>Resource Types<span class='required'>*</span>:</label>
 						<div id='category_options'>
 						<input id='water_pickup' type='checkbox' name='categories[]' value='Water Pickup' /> <label for='water_pickup'>Water Pickup</label><br />
 						<input id='water_filters' type='checkbox' name='categories[]' value='Water Filters' /> <label for='water_filters'>Water Filters</label><br />

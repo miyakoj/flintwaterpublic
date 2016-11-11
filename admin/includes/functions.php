@@ -208,8 +208,8 @@ function getResourceLocations() {
 /* Email some info to a user. */
 function email_user() {
 	if ($_POST["type"] == "contact_form") {
-		$to = "info@mywater-flint.com";
-		$from = "info@mywater-flint.com";
+		$to = "umflintH2O@gmail.com";
+		$from = "umflintH2O@gmail.com";
 		$subject = "A Comment About MyWater-Flint (Admin Site)";
 		
 		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>
@@ -217,7 +217,7 @@ function email_user() {
 	}
 	else if (strcmp($_POST["type"], "new_user_email") === 0) {
 		$to = $_POST["email"];
-		$from = "info@mywater-flint.com";
+		$from = "umflintH2O@gmail.com";
 		$subject = "An account has been created for you on MyWater-Flint";
 		
 		$msg = "Hello,\n\n

@@ -74,7 +74,7 @@ echo "<!DOCTYPE html>
 			auth = firebase.auth();
 			db = app.database();
 		
-			\$('#login_form').on('submit', function(event) {
+			\$('#login_form').on('submit', function(event) {				
 				var email = \$('#login_email input').val();
 				var password = \$('#login_password input').val();
 			

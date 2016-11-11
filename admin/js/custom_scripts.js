@@ -540,7 +540,9 @@ $("#loading_screen").removeClass("hide");
 								"showInfo": showInfo
 							};
 							
-							/* Create a second connection to create the new user. */
+							/* Create a second connection to create the new user. 
+							 * From: http://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551
+							 */
 							if (!secondaryApp)
 								var secondaryApp = firebase.initializeApp(config, "Secondary");
 							
@@ -684,7 +686,7 @@ $("#loading_screen").removeClass("hide");
 				}, "\"Greater than\" value must be less than the \"less than\" value.");
 				$.validator.classRuleSettings.copper_greater = {copper_greater: true};
 				
-				//Pace.track(function(){
+				
 				validator = $("form").validate({
 					debug: true,
 					errorPlacement: function(error, element) {
@@ -727,6 +729,8 @@ $("#loading_screen").removeClass("hide");
 						}
 					},
 					submitHandler: function(form) {
+						$(".loader").css("margin-top", "15px").appendTo("form");
+						
 						$(form).ajaxSubmit({
 							type: "POST",
 							data: {"report_type": $(".nav button[class*=active]").attr("id")},
@@ -747,6 +751,7 @@ $("#loading_screen").removeClass("hide");
 												<th class=\"lead_level\">Lead Level (ppb)</th> \
 												<th class=\"copper_level\">Copper Level (ppb)</th> \
 												<th class=\"date\">Date Submtted</th> \
+												<th></th> \
 											</tr> \
 										</table> \
 										\
@@ -770,6 +775,7 @@ $("#loading_screen").removeClass("hide");
 								else
 									content = "There is no data available.";
 								
+								$(".loader").addClass("hide");
 								
 								$("#display_area").html(content);
 								$("#display_area").removeClass("hide");
@@ -777,7 +783,6 @@ $("#loading_screen").removeClass("hide");
 									"margin-top": $("#report_area #display_area #table_header").css("height"),
 									"height": (windowHeight * 0.75) + "px"
 								});
-								//Pace.stop();
 							}
 						});
 						
@@ -798,12 +803,6 @@ $("#loading_screen").removeClass("hide");
 					validator.element("#copper_less");
 					validator.element("#copper_greater");
 				});
-				
-				$("#clear_button").on("click", function() {
-					$("form").resetForm();
-				});
-				
-				//});
 			}
 			
 			

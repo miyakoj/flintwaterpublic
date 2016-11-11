@@ -42,7 +42,7 @@ else {
 
 function email_user() {
 	if (($_POST["type"] == "problem_report") || ($obj->{"type"} == "problem_report")) {
-		$from = "info@mywater-flint.com";
+		$from = "umflintH2O@gmail.com";
 		$subject = "A Message from MyWater-Flint";
 		
 		if ($obj) {
@@ -63,8 +63,8 @@ function email_user() {
 		}
 	}
 	else if ($_POST["type"] == "site_report") {
-		$to = "info@mywater-flint.com";
-		$from = "info@mywater-flint.com";
+		$to = "umflintH2O@gmail.com";
+		$from = "umflintH2O@gmail.com";
 		$subject = "A Comment About MyWater-Flint";
 		
 		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>

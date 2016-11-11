@@ -171,12 +171,20 @@ body {
 	width:2%;
 }
 
-#report_area #display_area table .address, #report_area #display_area table .date {
+#report_area #display_area table .address {
 	width:30%;
+}
+
+#report_area #display_area table .date {
+	width:29%;
 }
 
 #report_area #display_area table .lead_level, #report_area #display_area table .copper_level {
 	width:19%;
+}
+
+#report_area #display_area table th:last-of-type {
+	width:1%;
 }
 
 #report_area #display_area #scrollbox {
