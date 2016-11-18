@@ -78,7 +78,8 @@ $("#loading_screen").removeClass("hide");
 					$(".name-caret").text("Hello, User");
 				
 				$("#wrapper").removeClass("hide");
-				$("#loading_screen").addClass("hide");
+				if ($("#wrapper").length != 0)
+					$("#loading_screen").addClass("hide");
 			}).then(function() {
 				/* Position alert in the middle of the page. */
 				$("#page_alert").css({
@@ -733,15 +734,22 @@ $("#loading_screen").removeClass("hide");
 						
 						$(form).ajaxSubmit({
 							type: "POST",
-							data: {"report_type": $(".nav button[class*=active]").attr("id")},
+							data: {
+								"report_type": $(".nav button[class*=active]").attr("id"),
+								"uid": firebase.auth().currentUser.uid,
+								"spreadsheet": 0
+							},
 							dataType: "json",
 							url: "includes/functions.php",
 							success: function(data) {
+								console.log(firebase.auth().currentUser.uid);
+								
 								var content;
 								var total_results = data.water_tests.length;
 								
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
+									content += "<button id='create_spreadsheet' type='button' class='btn btn-default'>Export Excel File</button>";
 									
 									content += "<div class=\"table-responsive\"> \
 										<table id=\"table_header\" class=\"table\"> \

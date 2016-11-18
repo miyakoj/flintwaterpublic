@@ -9,18 +9,21 @@ require __ROOT__ . "/admin/includes/functions.php";
 
 if (@isset($_POST["pid"])) {
 	$pid = $_POST["pid"];
-	$role = $_POST["role"];
 	
-	$navigation = '<ul class="nav navbar-nav" id="top-menu">';
-	$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
-	$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
+	if (@isset($_POST["role"])) {
+		$role = $_POST["role"];
+		
+		$navigation = '<ul class="nav navbar-nav" id="top-menu">';
+		$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
+		$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
+	}
 	
 	switch($role) {
 		// admin users and those with edit only privileges
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
-			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>'; //
+			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		
 		case 2:
@@ -302,11 +305,6 @@ if (@isset($_POST["pid"])) {
 			$script = "<script>
 			\$(document).ready(function() {
 				//\$('#display_area form').resetForm();
-				/*Pace.options = {
-					ajax: true,
-					document: false,
-					eventLag: false
-				};*/
 				
 				var timePeriods = $TIME_PERIOD;
 				var months = $MONTHS;
@@ -354,6 +352,20 @@ if (@isset($_POST["pid"])) {
 						
 					\$('#report_type select').append(content);
 					\$('#report_area form').removeClass('hide');
+				});
+				
+				\$('#create_spreadsheet').on('click', function() {				
+					/*\$.ajax({
+						type: 'POST',
+						data: {
+							'uid': firebaseUser.uid,
+							'spreadsheet': 1
+						},
+						url: 'includes/functions.php',
+						success: function(data) {
+							
+						}
+					});*/
 				});
 			});
 			</script>";
