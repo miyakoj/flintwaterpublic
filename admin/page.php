@@ -353,7 +353,7 @@ if (@isset($_POST["pid"])) {
 				
 				\$('#create_spreadsheet').on('click', function() {
 					var form = \$('<form></form>');
-					\$(form).attr('method", "post').attr('action', 'includes/spreadsheet_download.php');
+					\$(form).attr('method', 'post').attr('action', 'includes/spreadsheet_download.php');
 					var type_input = \$('<input type=\"hidden\" name=\"report_type\" />').val(\$('.nav button[class*=active]').attr('id'));
 					var pid_input = \$('<input type=\"hidden\" name=\"uid\" />').val(firebase.auth().currentUser.uid);
 					\$(form).append(type_input, pid_input);
@@ -813,7 +813,8 @@ if (@isset($_POST["pid"])) {
 		
 		$content = "<div class='content-top'>
 			<div id='chart_area' class='col-md-4'>
-			<div class='row'>	
+			<div class='row'>
+				<div class='content-top-1'><canvas id='parcel_info_chart'></canvas></div>
 				<div class='content-top-1'><canvas id='water_tests_chart'></canvas></div>
 				<div class='content-top-1 hide'><canvas id='repairs_chart'></canvas></div>
 				
@@ -824,13 +825,13 @@ if (@isset($_POST["pid"])) {
 			<div class='col-md-8'>
 			<div class='row'>
 				<div class='content-top-1'>
+					<div id='map'></div>
+					
 					<div id='legend_card' class='card hide'>
 						<div class='card-main'>
 							<div class='card-inner'></div>
 						</div>
 					</div>
-					
-					<div id='map'></div>
 					
 					<div id='map_layer_selection' class='btn-toolbar' role='group' aria-label='Map Layer Buttons'>
 						<div class='btn-group' role='group'><button id='heatmap_btn' type='button' class='btn btn-default'>Lead Levels</button></div>
@@ -845,7 +846,7 @@ if (@isset($_POST["pid"])) {
 						<div class='btn-group' role='group'><button id='water_filters_btn' type='button' class='btn btn-default'>Water Filters</button></div>
 					</div>
 					
-					<div id='location_card' class='card'>
+					<div id='location_card' class='card hide'>
 						<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
 						
 						<div class='card-main'>
@@ -853,7 +854,7 @@ if (@isset($_POST["pid"])) {
 						</div>
 					</div>
 					
-					<div id='resource_card' class='card'>
+					<div id='resource_card' class='card hide'>
 						<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
 						
 						<div class='card-main'>				
@@ -886,8 +887,13 @@ if (@isset($_POST["pid"])) {
 		$TIME_PERIOD = implode("', '", $TIME_PERIOD);
 		$TIME_PERIOD = "['" . $TIME_PERIOD . "']";
 		
-		$totalLocationsTested = generateChartData("total_locations");
-		$totalApprovedRepairs = generateChartData("total_approved_repairs");
+		$total_parcels = generateChartData("total_parcels");
+		$abandoned_parcels = generateChartData("abandoned_parcels");
+		$unknown_parcels = generateChartData("unknown_parcels");
+		
+		$totalLocationsTested = generateChartData("total_locations_tested");
+		$totalApprovedRepairs;
+		//$totalApprovedRepairs = generateChartData("total_approved_repairs");
 		//$repairsChart = ;
 		
 		$testLevelsData = generateChartData("test_data");
@@ -910,9 +916,28 @@ if (@isset($_POST["pid"])) {
 		
 		$numTestsData = arrayAccumulation($testLevelsData[2]);
 		
+		
 		$script = "<script>
 		\$(document).ready(function() {
 			/* Dashboard doughnut status charts. */
+			var parcelChart = new Chart(\$('#parcel_info_chart'), {
+				type: 'doughnut',
+				data: {
+					labels: ['Total Properties', 'Total Abandoned Properties', 'Total Unknown Properties'],
+					datasets: [{
+						data: [$total_parcels[0], $abandoned_parcels[0], $unknown_parcels[0]],
+						backgroundColor: ['#CCC', '#5266B0', '#252e56']
+					}]
+				},
+				options: {
+					title: {
+						display: true,
+						fontSize: 15,
+						text: 'Abandoned Property Info'
+					}
+				}
+			});
+			
 			var waterTestsChart = new Chart(\$('#water_tests_chart'), {
 				type: 'doughnut',
 				data: {

@@ -25,6 +25,31 @@ body {
 	margin:10px 0 10px -5px;
 }
 
+#legend_card {
+	margin-top:0;
+}
+
+#legend_card #title {
+	margin-bottom:12px;
+	display:block;
+}
+
+#legend_card .col-xs-3 {
+	padding-left: .1em;
+	padding-right: .1em;
+}
+
+#legend_card .card-inner {
+	margin: 14px 4px!important;
+	padding:3px 0;
+}
+
+#legend_card .legend_icons {
+	display: block;
+	height: .8em;
+	width: 100%;
+}
+
 .btn-toolbar > .btn-group {
 	margin-left:10px;
 }

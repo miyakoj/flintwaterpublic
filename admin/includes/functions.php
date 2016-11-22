@@ -127,7 +127,7 @@ function generateChartData($type) {
 		$array[] = $avgCopperLevels;
 		$array[] = $totalTests;
 	}
-	else if (strcmp($type, "total_locations") === 0) {
+	else if (strcmp($type, "total_locations_tested") === 0) {
 		$row = $result->fetch_assoc();
 		$array[] = $row["totalLocationsTested"];
 	}
@@ -135,6 +135,10 @@ function generateChartData($type) {
 		$row = $result->fetch_assoc();
 		$array[] = $row["totalApprovedRepairs"];
 		$array[] = 38;
+	}
+	else if ((strcmp($type, "total_parcels") === 0) || (strcmp($type, "abandoned_parcels") === 0) || (strcmp($type, "unknown_parcels") === 0)) {
+		$row = $result->fetch_assoc();
+		$array[] = $row["total_parcels"];
 	}
 	
 	return $array;

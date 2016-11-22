@@ -116,7 +116,17 @@ h1 a.navbar-brand, .navbar-brand:hover {
 
 
 /* Dashboard Page */
-#location_card, #resource_card {
+#legend_card #title {
+	display:none;
+}
+	
+#legend_card .col-xs-3 span {
+	text-align:center;
+	line-height:normal;
+	display:block;
+}
+
+#location_card, #resource_card, #legend_card {
 	font-size:0.9em;
 }
 
@@ -762,7 +772,7 @@ i.fa.fa-globe {
 /*--content--*/
 .content-top-1 {
     background-color: #fff;
-   	padding: 1.8em;
+   	padding: 1em;
    	margin-bottom: 1em; 
     border: 1px solid #ebeff6;
     border-radius: 4px;

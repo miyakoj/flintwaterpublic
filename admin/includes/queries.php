@@ -15,8 +15,17 @@ function queries($choice, $var = "", $var2 = array()) {
 	if (strcmp($choice, "test_data") === 0) {
 		$query = "SELECT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month, Avg(`leadLevel`) AS avgLeadLevel, Avg(`copperLevel`) AS avgCopperLevel, Sum(`leadLevel`) AS totalTests FROM `waterCondition` GROUP BY year ASC, month ASC;";
 	}
-	else if (strcmp($choice, "total_locations") === 0) {
+	else if (strcmp($choice, "total_locations_tested") === 0) {
 		$query = "SELECT DISTINCT `latitude`, `longitude`, COUNT(`latitude`) AS totalLocationsTested FROM waterCondition;";
+	}
+	else if (strcmp($choice, "total_parcels") === 0) {
+		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM geolocation;";
+	}
+	else if (strcmp($choice, "abandoned_parcels") === 0) {
+		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM geolocation WHERE `abandoned` = 'Y';";
+	}
+	else if (strcmp($choice, "unknown_parcels") === 0) {
+		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM geolocation WHERE `abandoned` = 'U';";
 	}
 	else if (strcmp($choice, "total_approved_repairs") === 0) {
 		$query = "SELECT COUNT(`address`) as totalApprovedRepairs FROM ConstructionInfo;";

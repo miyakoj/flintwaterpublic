@@ -367,7 +367,7 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	margin-top:8px;
 }
 
-.legend_icons {
+#legend_card .legend_icons {
 	display: block;
 	height: .5em;
 	width: 100%;

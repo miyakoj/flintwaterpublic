@@ -949,6 +949,9 @@ function setupResourceMarkers() {
 	if (resourceActiveArray[0] == 1) {
 		$("#heatmap_btn").addClass("active");
 		$("#heatmap_btn img").attr("src", $folderPrefix+"images/lead_info_icon.png");
+		
+		if ($pageId.indexOf("dashboard") != -1)
+			$("#legend_card").removeClass("hide");	
 	}
 	
 	if (resourceActiveArray[1] == 1) {
@@ -1395,11 +1398,17 @@ $(document).ready(function() {
 				resourceActiveArray[0] = 0;
 				$("body[id='dashboard_page'] #heatmap_btn").removeClass("active");
 				$("#heatmap_btn img").attr("src", $folderPrefix+"images/lead_info_icon_white.png");
+				
+				if ($pageId.indexOf("dashboard") != -1)
+					$("#legend_card").addClass("hide");	
 			}
 			else {
 				resourceActiveArray[0] = 1;
 				$("body[id='dashboard_page'] #heatmap_btn").addClass("active");
 				$("#heatmap_btn img").attr("src", $folderPrefix+"images/lead_info_icon.png");
+				
+				if ($pageId.indexOf("dashboard") != -1)
+					$("#legend_card").removeClass("hide");	
 			}
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));

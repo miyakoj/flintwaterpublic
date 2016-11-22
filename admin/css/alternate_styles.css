@@ -4,6 +4,11 @@
 		bottom:auto;
 		right:auto;
 	}
+	
+	#legend_card #title {
+		text-align:center;
+		font-weight:bold;
+	}
 }
 
 /* Tablet and desktop/laptop only. */
