@@ -149,6 +149,10 @@ body {
 	margin-top:15px;
 }
 
+#report_area #display_area #create_spreadsheet {
+	margin-top:15px;
+}
+
 #report_area #display_area .table-responsive {
 	position:relative;
 }

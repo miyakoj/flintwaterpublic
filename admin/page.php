@@ -9,14 +9,11 @@ require __ROOT__ . "/admin/includes/functions.php";
 
 if (@isset($_POST["pid"])) {
 	$pid = $_POST["pid"];
-	
-	if (@isset($_POST["role"])) {
-		$role = $_POST["role"];
+	$role = $_POST["role"];
 		
-		$navigation = '<ul class="nav navbar-nav" id="top-menu">';
-		$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
-		$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
-	}
+	$navigation = '<ul class="nav navbar-nav" id="top-menu">';
+	$dashboard_link = '<li><a id="dashboard_link" href="#"><span class="material-icons nav_icon">dashboard</span> <span class="nav-label">Dashboard</span></a></li>';
+	$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
 	
 	switch($role) {
 		// admin users and those with edit only privileges
@@ -354,18 +351,13 @@ if (@isset($_POST["pid"])) {
 					\$('#report_area form').removeClass('hide');
 				});
 				
-				\$('#create_spreadsheet').on('click', function() {				
-					/*\$.ajax({
-						type: 'POST',
-						data: {
-							'uid': firebaseUser.uid,
-							'spreadsheet': 1
-						},
-						url: 'includes/functions.php',
-						success: function(data) {
-							
-						}
-					});*/
+				\$('#create_spreadsheet').on('click', function() {
+					var form = \$('<form></form>');
+					\$(form).attr('method", "post').attr('action', 'includes/spreadsheet_download.php');
+					var type_input = \$('<input type=\"hidden\" name=\"report_type\" />').val(\$('.nav button[class*=active]').attr('id'));
+					var pid_input = \$('<input type=\"hidden\" name=\"uid\" />').val(firebase.auth().currentUser.uid);
+					\$(form).append(type_input, pid_input);
+					\$(form).appendTo('body').submit();
 				});
 			});
 			</script>";

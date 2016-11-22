@@ -210,7 +210,7 @@ echo header("Accept-Encoding: gzip");
 	</div>
 </div>
 
-<footer class="copy hide">
+<footer class="copy">
 <div id="copyright">
 	<span>MyWater-Flint &copy;2016</span>
 	<a id="about_link" href="#">About</a>

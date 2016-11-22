@@ -11,23 +11,8 @@ require_once __ROOT__ . "/vendor/autoload.php";
 use google\appengine\api\mail\Message;
 
 
-/* Custom serialization for PHPExcel objects. */
-/*class PHPExcelSerialize extends PHPExcel {
-	public function __sleep() {
-		
-	}
-	
-	public function __wakeup() {
-		
-	}
-}*/
-
 /* Handles report page queries. */
-if (@isset($_POST["spreadsheet"]) && $_POST["spreadsheet"] === 0) {	
-	$cacheMethod = PHPExcel_CachedObjectStorageFactory::cache_in_memory_gzip;
-	PHPExcel_Settings::setCacheStorageMethod($cacheMethod);
-	$objPHPExcel = new PHPExcel();
-		
+if (@isset($_POST["report_type"])) {
 	$options = array(
 		"months" => $_POST["months"],
 		"years" => $_POST["years"],
@@ -44,13 +29,7 @@ if (@isset($_POST["spreadsheet"]) && $_POST["spreadsheet"] === 0) {
 	
 	$result = queries($_POST["report_type"], "", $options);
 	
-	$objPHPExcel->setActiveSheetIndex(0);
-	$objPHPExcel->getActiveSheet()->getColumnDimension("A")->setAutoSize(true)->setCellValue("A1", "Address");
-	$objPHPExcel->getActiveSheet()->getColumnDimension("B")->setAutoSize(true)->setCellValue("B1", "Lead Level (ppb)");
-	$objPHPExcel->getActiveSheet()->getColumnDimension("C")->setAutoSize(true)->setCellValue("C1", "Copper Level (ppb)");
-	$objPHPExcel->getActiveSheet()->getColumnDimension("D")->setAutoSize(true)->setCellValue("D1", "Date Submtted");
-	
-	$i = 0;
+	$spreadsheet_array = array();
 	
 	$output = "{ \"" . $_POST["report_type"] . "\": [\n";
 	
@@ -62,35 +41,18 @@ if (@isset($_POST["spreadsheet"]) && $_POST["spreadsheet"] === 0) {
 		
 		$output .= "\n";
 		
-		// add the data to a spreadsheet that may be downloaded by the user
-		$objPHPExcel->getActiveSheet()->setCellValue("A".($i+2), $row["address"]);
-		$objPHPExcel->getActiveSheet()->setCellValue("B".($i+2), $row["leadLevel"]);
-		$objPHPExcel->getActiveSheet()->setCellValue("C".($i+2), $row["copperLevel"]);
-		$objPHPExcel->getActiveSheet()->setCellValue("D".($i+2), $row["dateUpdated"]);
+		$spreadsheet_array[] = $row;
 		
 		$i++;
 	}
 	
 	$output .= "]}";
 	
-	$objPHPExcel->getActiveSheet()->getStyle("B2:C"+$result->num_rows)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-	$writer = new PHPExcel_Writer_Excel2007($objPHPExcel);
-	
 	$memcache = new Memcache;
-	$memcache->set($_POST["uid"], serialize($writer));
-	
-	$objPHPExcel->disconnectWorksheets();
-	unset($objPHPExcel);
+	$memcache->set($_POST["uid"], $spreadsheet_array);
 	
 	print_r($output);
 }
-/*else {
-	$memcache = new Memcache;
-	$writer = unserialize($memcache->get($_POST["uid"]));
-	
-	$outputFile = $_POST["report_type"] . mt_rand(0,5999) . ".xlsx";
-	$writer->save($outputFile);
-}*/
 
 
 /* Handles edit page queries. */	
@@ -135,7 +97,7 @@ if (@isset($_POST["type"])) {
 }
 
 /* Handle user page new user email. */
-if (strcmp($_POST["type"], "new_user_email") === 0) {
+if (@strcmp($_POST["type"], "new_user_email") === 0) {
 	email_user();
 }
 

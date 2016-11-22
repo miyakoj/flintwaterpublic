@@ -45,6 +45,15 @@ $("#loading_screen").removeClass("hide");
 	auth = firebase.auth();
 	db = app.database();
 	
+	// hide the header for footer pages if the user isn't logged in
+	if (($pageId.indexOf("login") == -1) && !userObj) {
+		$("#main_menu").addClass("hide");
+		$("#login_link").removeClass("hide");
+		$("#wrapper").removeClass("hide");
+		if ($("#wrapper").length != 0)
+			$("#loading_screen").addClass("hide");
+	}
+	
 	firebase.auth().onAuthStateChanged(function(user) {
 		if (user) {
 			db.ref("users/" + user.uid).once("value").then(function(snapshot) {
@@ -77,6 +86,9 @@ $("#loading_screen").removeClass("hide");
 				else
 					$(".name-caret").text("Hello, User");
 				
+				$("#login_link").addClass("hide");
+				
+				$("#main_menu").removeClass("hide");
 				$("#wrapper").removeClass("hide");
 				if ($("#wrapper").length != 0)
 					$("#loading_screen").addClass("hide");
@@ -736,8 +748,7 @@ $("#loading_screen").removeClass("hide");
 							type: "POST",
 							data: {
 								"report_type": $(".nav button[class*=active]").attr("id"),
-								"uid": firebase.auth().currentUser.uid,
-								"spreadsheet": 0
+								"uid": firebase.auth().currentUser.uid
 							},
 							dataType: "json",
 							url: "includes/functions.php",
@@ -749,7 +760,8 @@ $("#loading_screen").removeClass("hide");
 								
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
-									content += "<button id='create_spreadsheet' type='button' class='btn btn-default'>Export Excel File</button>";
+									
+									/*content += "<a id='create_spreadsheet' type='button' class='btn btn-default' href='includes/spreadsheet_download.php?uid=" + firebase.auth().currentUser.uid + "' target='_blank'>Export Excel File</a>";*/
 									
 									content += "<div class=\"table-responsive\"> \
 										<table id=\"table_header\" class=\"table\"> \
@@ -915,27 +927,27 @@ $("#loading_screen").removeClass("hide");
 	$("#about_link").on("click", function() {
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
-		var pid_input = $("<input type='hidden' name='pid' />").val("about");
-		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
-		$(form).append(pid_input, role_input);
+		$(form).append($("<input type='hidden' name='pid' />").val("about"));
 		$(form).appendTo("body").submit();
 	});
 	
 	$("#disclaimer_link").on("click", function() {
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
-		var pid_input = $("<input type='hidden' name='pid' />").val("disclaimer");
-		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
-		$(form).append(pid_input, role_input);
+		$(form).append($("<input type='hidden' name='pid' />").val("disclaimer"));
 		$(form).appendTo("body").submit();
 	});
 	
 	$("#privacy_link").on("click", function() {
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
-		var pid_input = $("<input type='hidden' name='pid' />").val("privacy");
-		var role_input = $("<input type='hidden' name='role' />").val(userObj.role);
-		$(form).append(pid_input, role_input);
+		$(form).append($("<input type='hidden' name='pid' />").val("privacy"));
+		$(form).appendTo("body").submit();
+	});
+	
+	$("#login_link").on("click", function() {
+		var form = $("<form></form>");
+		$(form).attr("method", "post").attr("action", "login.php");
 		$(form).appendTo("body").submit();
 	});
 })(jQuery);

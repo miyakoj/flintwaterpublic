@@ -108,7 +108,7 @@ function queries($choice, $var = "", $var2 = array()) {
 		
 		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE %s%s%s;", $where_clause, $groupby_clause, $orderby_clause);
 	}
-	else if (strcmp($choice, "all_water_tests2") === 0) {
+	/*else if (strcmp($choice, "all_water_tests2") === 0) {
 		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}
 	else if (strcmp($choice, "high_water_tests1") === 0) {
@@ -116,7 +116,7 @@ function queries($choice, $var = "", $var2 = array()) {
 	}
 	else if (strcmp($choice, "high_water_tests2") === 0) {
 		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE `leadLevel` > 15 GROUP BY `address` ORDER BY `dateUpdated` DESC;";
-	}
+	}*/
 	/* Edit Page Queries */
 	else if (strcmp($choice, "resource_locations") === 0) {
 		$query = "SELECT aidAddress FROM AidLocation WHERE aidAddress != '' ORDER BY aidAddress+0<>0 DESC, aidAddress+0, aidAddress;";
