@@ -1,9 +1,5 @@
 /* Tablets, laptops, and desktops. */
 @media only screen and (min-width:600px) {
-	#main_menu {
-		overflow-y:hidden;
-	}
-
 	#map {
 		position:relative;
 	}
@@ -109,10 +105,6 @@
 		margin:0;
 		padding:0;
 		line-height:48px;
-	}
-	
-	#main_menu .nav-justified li {
-		width:10em;
 	}
 	
 	#show_me_menu ul {

@@ -13,25 +13,25 @@ function queries($choice, $var = "", $var2 = array()) {
 
 	/* Dashboard Queries */
 	if (strcmp($choice, "test_data") === 0) {
-		$query = "SELECT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month, Avg(`leadLevel`) AS avgLeadLevel, Avg(`copperLevel`) AS avgCopperLevel, Sum(`leadLevel`) AS totalTests FROM `waterCondition` GROUP BY year ASC, month ASC;";
+		$query = "SELECT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month, Avg(`leadLevel`) AS avgLeadLevel, Avg(`copperLevel`) AS avgCopperLevel, Sum(`leadLevel`) AS totalTests FROM `WaterCondition` GROUP BY year ASC, month ASC;";
 	}
 	else if (strcmp($choice, "total_locations_tested") === 0) {
-		$query = "SELECT DISTINCT `latitude`, `longitude`, COUNT(`latitude`) AS totalLocationsTested FROM waterCondition;";
+		$query = "SELECT DISTINCT `latitude`, `longitude`, COUNT(`latitude`) AS totalLocationsTested FROM WaterCondition;";
 	}
 	else if (strcmp($choice, "total_parcels") === 0) {
-		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM geolocation;";
+		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM Geolocation;";
 	}
 	else if (strcmp($choice, "abandoned_parcels") === 0) {
-		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM geolocation WHERE `abandoned` = 'Y';";
+		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM Geolocation WHERE `abandoned` = 'Y';";
 	}
 	else if (strcmp($choice, "unknown_parcels") === 0) {
-		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM geolocation WHERE `abandoned` = 'U';";
+		$query = "SELECT COUNT(`parcelID`) AS total_parcels FROM Geolocation WHERE `abandoned` = 'U';";
 	}
 	else if (strcmp($choice, "total_approved_repairs") === 0) {
 		$query = "SELECT COUNT(`address`) as totalApprovedRepairs FROM ConstructionInfo;";
 	}
 	else if (strcmp($choice, "time_period") === 0) {
-		$query = "SELECT DISTINCT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month FROM waterCondition ORDER BY year ASC, month ASC;";
+		$query = "SELECT DISTINCT Year(`dateUpdated`) AS year, Month(`dateUpdated`) AS month FROM WaterCondition ORDER BY year ASC, month ASC;";
 	}
 	/* Report Queries */
 	else if (strcmp($choice, "water_tests") === 0) {
@@ -115,16 +115,16 @@ function queries($choice, $var = "", $var2 = array()) {
 		$where_clause = "Month(`dateUpdated`) IN(" . implode(",", $var2["months"]) . ") && Year(`dateUpdated`) IN(" . implode(",", $var2["years"]) . ")"
 						. $limit_clause;
 		
-		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE %s%s%s;", $where_clause, $groupby_clause, $orderby_clause);
+		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE %s%s%s;", $where_clause, $groupby_clause, $orderby_clause);
 	}
 	/*else if (strcmp($choice, "all_water_tests2") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}
 	else if (strcmp($choice, "high_water_tests1") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE `leadLevel` > 15 ORDER BY `dateUpdated` DESC;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE `leadLevel` > 15 ORDER BY `dateUpdated` DESC;";
 	}
 	else if (strcmp($choice, "high_water_tests2") === 0) {
-		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `waterCondition` WHERE `leadLevel` > 15 GROUP BY `address` ORDER BY `dateUpdated` DESC;";
+		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE `leadLevel` > 15 GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}*/
 	/* Edit Page Queries */
 	else if (strcmp($choice, "resource_locations") === 0) {

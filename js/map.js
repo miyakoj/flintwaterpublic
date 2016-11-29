@@ -9,6 +9,7 @@ var scopes = "https:// www.googleapis.com/auth/devstorage.read_only https://www.
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+var folderPrefix;
 
 var map;
 var mapCenter = {lat: 43.021, lng: -83.681};
@@ -39,7 +40,6 @@ var markerImg;
 var savedLocationTotal;
 
 var savedIcon;
-// resource marker that is clicked or last clicked
 var resourceMarker;
 
 // for construction
@@ -70,21 +70,21 @@ var iconSize = 30;
 
 /* The admin site uses the same map.js so the folder depth has to be compensated for. */
 if (location.href.indexOf("admin"))
-	$folderPrefix = "../";
+	folderPrefix = "../";
 else
-	$folderPrefix = "";
+	folderPrefix = "";
 
 /* Meters for predicted risk. */
-var unknownRiskSrc = $folderPrefix+"images/unknownbar.png";
-var lowRiskSrc = $folderPrefix+"images/lowbar.png";
-var moderateRiskSrc = $folderPrefix+"images/moderatebar.png";
-var highRiskSrc = $folderPrefix+"images/highbar.png";
+var unknownRiskSrc = folderPrefix+"images/unknownbar.png";
+var lowRiskSrc = folderPrefix+"images/lowbar.png";
+var moderateRiskSrc = folderPrefix+"images/moderatebar.png";
+var highRiskSrc = folderPrefix+"images/highbar.png";
 
 /* Circles for lead data. */
-var unknownRiskCircle = $folderPrefix+"images/unknownrisklevel.png";
-var lowRiskCircle = $folderPrefix+"images/lowrisklevel.png";
-var medRiskCircle = $folderPrefix+"images/medrisklevel.png";
-var highRiskCircle = $folderPrefix+"images/highrisklevel.png";
+var unknownRiskCircle = folderPrefix+"images/unknownrisklevel.png";
+var lowRiskCircle = folderPrefix+"images/lowrisklevel.png";
+var medRiskCircle = folderPrefix+"images/medrisklevel.png";
+var highRiskCircle = folderPrefix+"images/highrisklevel.png";
 
 var leadLevelOfInput;
 
@@ -139,62 +139,42 @@ function initMap() {
 	});
     
 	//This hides all Points of Interest on the map
-	var noPoi = [
-	{
-    featureType: "poi.attraction",
-    stylers: [
-      { visibility: "off" }
-    ]   
+	var noPoi = [{
+		featureType: "poi.attraction",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.business",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.business",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.government",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.government",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.medical",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.medical",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.park",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.park",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.place_of_worship",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.place_of_worship",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.school",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.school",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "poi.sports_complex",
-    stylers: [
-      { visibility: "off" }
-    ]   
+		featureType: "poi.sports_complex",
+		stylers: [{visibility: "off"}]
 	},
 	{
-    featureType: "transit.station",
-    stylers: [
-      { visibility: "off" }
-    ]   
-	}
-	];
+		featureType: "transit.station",
+		stylers: [{visibility: "off"}]   
+	}];
 
 	map.setOptions({styles: noPoi});
 	
@@ -220,77 +200,77 @@ function initMap() {
 
 	// make icons for each resource
 	bloodIcon = {
-		url: $folderPrefix+"images/bloodtest_circle_icon.png",
+		url: folderPrefix+"images/bloodtest_circle_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	waterPickupIcon = {
-		url: $folderPrefix+"images/water_pickup_circle_icon.png",
+		url: folderPrefix+"images/water_pickup_circle_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	leadTestIcon = {
-		url: $folderPrefix+"images/lead_test_circle_icon.png",
+		url: folderPrefix+"images/lead_test_circle_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	recycleIcon = {
-		url: $folderPrefix+"images/recycle_circle_icon.png",
+		url: folderPrefix+"images/recycle_circle_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	filterIcon = {
-		url: $folderPrefix+"images/water_filter_circle_icon.png",
+		url: folderPrefix+"images/water_filter_circle_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	pipesIcon = {
-		url: $folderPrefix+"images/pipes_icon.png",
+		url: folderPrefix+"images/pipes_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	constructionIcon = {
-		url: $folderPrefix+"images/construction_icon.png",
+		url: folderPrefix+"images/construction_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	waterplantIcon = {
-		url: $folderPrefix+"images/water_plant_icon.png",
+		url: folderPrefix+"images/water_plant_icon.png",
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		size: new google.maps.Size(64, 64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	savedResourceIcon = {
-		url: $folderPrefix+"images/saved_resource_icon.png",
+		url: folderPrefix+"images/saved_resource_icon.png",
 		origin: new google.maps.Point(0,0),
 		anchor: new google.maps.Point(0,0),
 		size: new google.maps.Size(64,64),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	locationIcon = {
-		url: $folderPrefix+"images/location_icon.png",
+		url: folderPrefix+"images/location_icon.png",
 		size: new google.maps.Size(64, 64),
 		origin: new google.maps.Point(0, 0),
 		anchor: new google.maps.Point(0, 0),
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	  };
 	savedLocationIcon = {
-		url: $folderPrefix+"images/saved_location_icon.png",
+		url: folderPrefix+"images/saved_location_icon.png",
 		origin: new google.maps.Point(0,0),
 		anchor: new google.maps.Point(0,0),
 		size: new google.maps.Size(64,64),
@@ -348,7 +328,7 @@ function initMap() {
 	// Water Plant Stuff
 	var waterplantLatLng = {lat:43.056269, lng:-83.669625};
 	var waterplantTitle = "City of Flint Water Plant";
-	var waterplantImage = $folderPrefix+"images/water_plant_icon.png";
+	var waterplantImage = folderPrefix+"images/water_plant_icon.png";
 	waterplantMarker = new google.maps.Marker({
 		position : waterplantLatLng,
 		map: map,
@@ -738,7 +718,7 @@ function callStorageAPI(object) {
 					var marker;
 					
 					if (provider.resType.indexOf("Water Pickup") != -1) {
-						markerImg = $folderPrefix+"images/water_pickup_icon.png";
+						markerImg = folderPrefix+"images/water_pickup_icon.png";
 						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Pickup' /> ";
 						resourcesAvailable += "Water Pickup, ";
 						
@@ -747,7 +727,7 @@ function callStorageAPI(object) {
 					}
 					
 					if (provider.resType.indexOf("Recycle") != -1) {
-						markerImg = $folderPrefix+"images/recycle_icon.png";
+						markerImg = folderPrefix+"images/recycle_icon.png";
 						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Recycling' /> ";
 						resourcesAvailable += "Recycling, ";
 						
@@ -756,7 +736,7 @@ function callStorageAPI(object) {
 					}
 					
 					if (provider.resType.indexOf("Blood Testing") != -1) {
-						markerImg = $folderPrefix+"images/bloodtest_icon.png";
+						markerImg = folderPrefix+"images/bloodtest_icon.png";
 						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Blood Testing' /> ";
 						resourcesAvailable += "Blood Testing, ";
 						
@@ -765,7 +745,7 @@ function callStorageAPI(object) {
 					}
 					
 					if (provider.resType.indexOf("Water Filters") != -1) {
-						markerImg = $folderPrefix+"images/water_filter_icon.png";
+						markerImg = folderPrefix+"images/water_filter_icon.png";
 						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Filters' /> ";
 						resourcesAvailable += "Water Filters, ";
 						
@@ -774,7 +754,7 @@ function callStorageAPI(object) {
 					}
 					
 					if (provider.resType.indexOf("Test Kits") != -1) {
-						markerImg = $folderPrefix+"images/lead_test_icon.png";
+						markerImg = folderPrefix+"images/lead_test_icon.png";
 						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Testing' />";
 						resourcesAvailable += "Water Testing";
 						
@@ -853,7 +833,7 @@ function callStorageAPI(object) {
 					});
 					
 					// Define the Icon
-					markerImg = $folderPrefix+"images/pipes_icon.png";
+					markerImg = folderPrefix+"images/pipes_icon.png";
 					images = "<img src='" + markerImg + "' class='marker_popup_icons' title='Construction' />";
 
 					// Set the content of the info card.
@@ -948,7 +928,7 @@ function setupResourceMarkers() {
 
 	if (resourceActiveArray[0] == 1) {
 		$("#heatmap_btn").addClass("active");
-		$("#heatmap_btn img").attr("src", $folderPrefix+"images/lead_info_icon.png");
+		$("#heatmap_btn img").attr("src", folderPrefix+"images/lead_info_icon.png");
 		
 		if ($pageId.indexOf("dashboard") != -1)
 			$("#legend_card").removeClass("hide");	
@@ -956,32 +936,32 @@ function setupResourceMarkers() {
 	
 	if (resourceActiveArray[1] == 1) {
 		$("#water_pickup_btn").addClass("active");
-		$("#water_pickup_btn img").attr("src", $folderPrefix+"images/water_pickup_icon.png");
+		$("#water_pickup_btn img").attr("src", folderPrefix+"images/water_pickup_icon.png");
 	}
 	
 	if (resourceActiveArray[2] == 1) {
 		$("#recycling_btn").addClass("active");
-		$("#recycling_btn img").attr("src", $folderPrefix+"images/recycle_icon.png");
+		$("#recycling_btn img").attr("src", folderPrefix+"images/recycle_icon.png");
 	}
 	
 	if (resourceActiveArray[3] == 1) {
 		$("#water_filters_btn").addClass("active");
-		$("#water_filters_btn img").attr("src", $folderPrefix+"images/water_filter_icon.png");
+		$("#water_filters_btn img").attr("src", folderPrefix+"images/water_filter_icon.png");
 	}
 	
 	if (resourceActiveArray[4] == 1) {
 		$("#water_testing_btn").addClass("active");
-		$("#water_testing_btn img").attr("src", $folderPrefix+"images/lead_test_icon.png");
+		$("#water_testing_btn img").attr("src", folderPrefix+"images/lead_test_icon.png");
 	}
 	
 	if (resourceActiveArray[5] == 1) {
 		$("#blood_testing_btn").addClass("active");
-		$("#blood_testing_btn img").attr("src", $folderPrefix+"images/bloodtest_icon.png");
+		$("#blood_testing_btn img").attr("src", folderPrefix+"images/bloodtest_icon.png");
 	}
 	
 	if (resourceActiveArray[6] == 1) {
 		$("#pipes_btn").addClass("active");
-		$("#pipes_btn img").attr("src", $folderPrefix+"images/pipes_icon.png");
+		$("#pipes_btn img").attr("src", folderPrefix+"images/pipes_icon.png");
 	}
 
 	setMarkers();
@@ -1012,7 +992,6 @@ function createLocationContent(streetAddress, dataObj) {
 	
 	/* Data is from a fusion table query. */
 	if (dataObj.rows) {
-		console.log(dataObj.rows);
 		leadLevel = dataObj.rows[0][3];
 		abandonmentStatus = dataObj.rows[0][2];
 		testDate = dataObj.rows[0][4].slice(0, dataObj.rows[0][4].indexOf(" "));
@@ -1079,7 +1058,8 @@ function createLocationContent(streetAddress, dataObj) {
 				content += "</div>";
 			}
 			
-			content += "<p id='suggested_action'>" + suggestedAction + "</p>";
+			if ($pageId.indexOf("dashboard") == -1)
+				content += "<p id='suggested_action'>" + suggestedAction + "</p>";
 		}
 		// the property only has a prediction
 		else {
@@ -1095,7 +1075,9 @@ function createLocationContent(streetAddress, dataObj) {
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
-			content += "<p id='suggested_action'>Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
+			
+			if ($pageId.indexOf("dashboard") == -1)
+				content += "<p id='suggested_action'>Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
 		}
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
 	}	
@@ -1106,7 +1088,8 @@ function createLocationContent(streetAddress, dataObj) {
 		//content += "<div id='suggested_action' class='hide'>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</div>";
 	}
 	
-	content += "<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr class='hide' /> <div id='location_questions' class='hide'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div></div>"
+	if ($pageId.indexOf("dashboard") == -1)
+		content += "<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr class='hide' /> <div id='location_questions' class='hide'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div></div>";
 	
 	return content;
 }
@@ -1397,7 +1380,7 @@ $(document).ready(function() {
 			if (resourceActiveArray[0] == 1) {
 				resourceActiveArray[0] = 0;
 				$("body[id='dashboard_page'] #heatmap_btn").removeClass("active");
-				$("#heatmap_btn img").attr("src", $folderPrefix+"images/lead_info_icon_white.png");
+				$("#heatmap_btn img").attr("src", folderPrefix+"images/lead_info_icon_white.png");
 				
 				if ($pageId.indexOf("dashboard") != -1)
 					$("#legend_card").addClass("hide");	
@@ -1405,7 +1388,7 @@ $(document).ready(function() {
 			else {
 				resourceActiveArray[0] = 1;
 				$("body[id='dashboard_page'] #heatmap_btn").addClass("active");
-				$("#heatmap_btn img").attr("src", $folderPrefix+"images/lead_info_icon.png");
+				$("#heatmap_btn img").attr("src", folderPrefix+"images/lead_info_icon.png");
 				
 				if ($pageId.indexOf("dashboard") != -1)
 					$("#legend_card").removeClass("hide");	
@@ -1421,12 +1404,12 @@ $(document).ready(function() {
 			if (resourceActiveArray[1] == 1) {
 				resourceActiveArray[1] = 0;
 				$("body[id='dashboard_page'] #water_pickup_btn").removeClass("active");
-				$("#water_pickup_btn img").attr("src", $folderPrefix+"images/water_pickup_icon_white.png");
+				$("#water_pickup_btn img").attr("src", folderPrefix+"images/water_pickup_icon_white.png");
 			}
 			else {
 				resourceActiveArray[1] = 1;
 				$("body[id='dashboard_page'] #water_pickup_btn").addClass("active");
-				$("#water_pickup_btn img").attr("src", $folderPrefix+"images/water_pickup_icon.png");
+				$("#water_pickup_btn img").attr("src", folderPrefix+"images/water_pickup_icon.png");
 			}
 			
 			if (map.getZoom() > 15)
@@ -1442,12 +1425,12 @@ $(document).ready(function() {
 			if (resourceActiveArray[2] == 1) {
 				resourceActiveArray[2] = 0;
 				$("body[id='dashboard_page'] #recycling_btn").removeClass("active");
-				$("#recycling_btn img").attr("src", $folderPrefix+"images/recycle_icon_white.png");
+				$("#recycling_btn img").attr("src", folderPrefix+"images/recycle_icon_white.png");
 			}
 			else {
 				resourceActiveArray[2] = 1;
 				$("body[id='dashboard_page'] #recycling_btn").addClass("active");
-				$("#recycling_btn img").attr("src", $folderPrefix+"images/recycle_icon.png");
+				$("#recycling_btn img").attr("src", folderPrefix+"images/recycle_icon.png");
 			}
 			
 			if (map.getZoom() > 15)
@@ -1463,12 +1446,12 @@ $(document).ready(function() {
 			if (resourceActiveArray[4] == 1) {
 				resourceActiveArray[4] = 0;
 				$("body[id='dashboard_page'] #water_testing_btn").removeClass("active");
-				$("#water_testing_btn img").attr("src", $folderPrefix+"images/lead_test_icon_white.png");
+				$("#water_testing_btn img").attr("src", folderPrefix+"images/lead_test_icon_white.png");
 			}
 			else {
 				resourceActiveArray[4] = 1;
 				$("body[id='dashboard_page'] #water_testing_btn").addClass("active");
-				$("#water_testing_btn img").attr("src", $folderPrefix+"images/lead_test_icon.png");
+				$("#water_testing_btn img").attr("src", folderPrefix+"images/lead_test_icon.png");
 			}
 			
 			if (map.getZoom() > 15)
@@ -1484,12 +1467,12 @@ $(document).ready(function() {
 			if (resourceActiveArray[5] == 1) {
 				resourceActiveArray[5] = 0;
 				$("body[id='dashboard_page'] #blood_testing_btn").removeClass("active");
-				$("#blood_testing_btn img").attr("src", $folderPrefix+"images/bloodtest_icon_white.png");
+				$("#blood_testing_btn img").attr("src", folderPrefix+"images/bloodtest_icon_white.png");
 			}
 			else {
 				resourceActiveArray[5] = 1;
 				$("body[id='dashboard_page'] #blood_testing_btn").addClass("active");
-				$("#blood_testing_btn img").attr("src", $folderPrefix+"images/bloodtest_icon.png");
+				$("#blood_testing_btn img").attr("src", folderPrefix+"images/bloodtest_icon.png");
 			}
 			
 			if (map.getZoom() > 14)
@@ -1505,12 +1488,12 @@ $(document).ready(function() {
 			if (resourceActiveArray[3] == 1) {
 				resourceActiveArray[3] = 0;
 				$("body[id='dashboard_page'] #water_filters_btn").removeClass("active");
-				$("#water_filters_btn img").attr("src", $folderPrefix+"images/water_filter_icon_white.png");
+				$("#water_filters_btn img").attr("src", folderPrefix+"images/water_filter_icon_white.png");
 			}
 			else {
 				resourceActiveArray[3] = 1;
 				$("body[id='dashboard_page'] #water_filters_btn").addClass("active");
-				$("#water_filters_btn img").attr("src", $folderPrefix+"images/water_filter_icon.png");
+				$("#water_filters_btn img").attr("src", folderPrefix+"images/water_filter_icon.png");
 			}
 			
 			if (map.getZoom() > 15)
@@ -1526,7 +1509,7 @@ $(document).ready(function() {
 			if (resourceActiveArray[6] == 1) {
 				resourceActiveArray[6] = 0;
 				$("body[id='dashboard_page'] #pipes_btn").removeClass("active");
-				$("#pipes_btn img").attr("src", $folderPrefix+"images/pipes_icon_white.png");
+				$("#pipes_btn img").attr("src", folderPrefix+"images/pipes_icon_white.png");
 				
 				for (var i=0; i<constructionMarkers.length; i++)
 					constructionMarkers[i].setMap(null);
@@ -1534,7 +1517,7 @@ $(document).ready(function() {
 			else {
 				resourceActiveArray[6] = 1;
 				$("body[id='dashboard_page'] #pipes_btn").addClass("active");
-				$("#pipes_btn img").attr("src", $folderPrefix+"images/pipes_icon.png");
+				$("#pipes_btn img").attr("src", folderPrefix+"images/pipes_icon.png");
 				
 				for (var i=0; i<constructionMarkers.length; i++)
 					constructionMarkers[i].setMap(map);

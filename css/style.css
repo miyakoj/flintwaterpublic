@@ -119,18 +119,8 @@ header {
 	padding-top:25px;
 }
 
-#main_menu {
-	overflow-y:scroll;
-}
-
 #main_menu li a {
 	min-height:30px;
-}
-
-#main_menu span {
-	text-transform:uppercase;
-	font-weight:500;
-	font-size:13px;
 }
 
 .navbar {

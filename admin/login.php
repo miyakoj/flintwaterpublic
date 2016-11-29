@@ -93,6 +93,7 @@ echo header("Accept-Encoding: gzip");
 					},
 					function(error) {
 						if (error) {
+							$("#loading_screen").addClass("hide");
 							var errorCode = error.code;
 							var errorMsg;
 							

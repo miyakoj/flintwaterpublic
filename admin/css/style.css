@@ -18,7 +18,8 @@ body {
 }
 
 #map {
-	position:relative;
+	width:100%;
+	height:100%;
 }
 
 #map_layer_selection {
@@ -63,6 +64,8 @@ body {
 }
 
 #location_card .close, #resource_card .close {
+	margin-top:3px;
+	margin-right:5px;
 	position:absolute;
 	right:0;
 }
@@ -71,19 +74,14 @@ body {
 	margin-right:10px;
 }
 
+#location_card h5, #resource_card h5 {
+	font-weight:bold;
+}
+
 #location_card {
-	width:20em;
+	width:25em;
 	margin:0;
 	z-index:200!important;
-}
-
-#location_card .close {
-	margin-top:3px;
-	margin-right:5px;
-}
-
-#location_card h5 {
-	padding:8px 0;
 }
 
 #location_card .card-inner {
@@ -94,10 +92,37 @@ body {
 	margin:8px 0;
 }
 
+#location_card .card-inner #warning, #location_card .card-inner #results {
+	margin-top:12px;
+}
+
+#location_card .card-inner #abandonment {
+	margin-bottom:12px;
+}
+
+#location_card .card-inner #address + #results {
+	margin-bottom:12px;
+}
+
 #location_card #risk_img {
 	width:auto;
 	height:22px;
 	margin-right:10px;
+}
+
+#location_card #previous_results button {
+	padding:4px 0;
+	padding-top:6px;
+	line-height:30px;
+}
+
+#location_card #previous_results button span {
+	display:inline-block;
+	line-height:30px;
+}
+
+#location_card #previous_results .material-icons {
+	vertical-align:text-bottom;
 }
 
 #resource_card {

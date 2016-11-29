@@ -16,16 +16,17 @@ if (@isset($_POST["pid"])) {
 	$reports_link = '<li><a id="reports_link" href="#"><span class="material-icons nav_icon">list</span> <span class="nav-label">View Reports</span></a></li>';
 	
 	switch($role) {
-		// admin users and those with edit only privileges
+		// admin users
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
 			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		
+		// users with edit only privileges
 		case 2:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li class="disabled"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
+			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
 			$users_link = "";
 		break;
 		
@@ -319,13 +320,13 @@ if (@isset($_POST["pid"])) {
 				\$('#time_period #years').html(yearOpts);
 				\$('#time_period #months').html(monthsOpts);
 				
-				/* Hide the form if the report type is blank. */
+				/* Hide the form if no report type is selected. */
 				/*\$('#report_type').on('change', function() {
 					if (\$('#report_type').val() === '')
 						\$('#report_area form').addClass('hide');
 				});*/
 				
-				/* Clear the report result area if the form clear button is clicked. */
+				/* Clear the report result area and the form if the form clear button is clicked. */
 				\$('#clear_button').on('click', function() {
 					\$('#display_area').html('');
 					\$('#display_area').addClass('hide');
@@ -349,15 +350,6 @@ if (@isset($_POST["pid"])) {
 						
 					\$('#report_type select').append(content);
 					\$('#report_area form').removeClass('hide');
-				});
-				
-				\$('#create_spreadsheet').on('click', function() {
-					var form = \$('<form></form>');
-					\$(form).attr('method', 'post').attr('action', 'includes/spreadsheet_download.php');
-					var type_input = \$('<input type=\"hidden\" name=\"report_type\" />').val(\$('.nav button[class*=active]').attr('id'));
-					var pid_input = \$('<input type=\"hidden\" name=\"uid\" />').val(firebase.auth().currentUser.uid);
-					\$(form).append(type_input, pid_input);
-					\$(form).appendTo('body').submit();
 				});
 			});
 			</script>";
@@ -825,7 +817,25 @@ if (@isset($_POST["pid"])) {
 			<div class='col-md-8'>
 			<div class='row'>
 				<div class='content-top-1'>
-					<div id='map'></div>
+					<div id='map_container'>
+						<div id='map'></div>
+						
+						<div id='location_card' class='card' style='display:none;'>
+							<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
+							
+							<div class='card-main'>
+								<div class='card-inner'></div>
+							</div>
+						</div>
+						
+						<div id='resource_card' class='card' style='display:none;'>
+							<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
+							
+							<div class='card-main'>				
+								<div class='card-inner'></div>
+							</div>
+						</div>
+					</div>
 					
 					<div id='legend_card' class='card hide'>
 						<div class='card-main'>
@@ -844,22 +854,6 @@ if (@isset($_POST["pid"])) {
 						<div class='btn-group' role='group'><button id='water_testing_btn' type='button' class='btn btn-default'>Water Testing</button></div>
 						<div class='btn-group' role='group'><button id='blood_testing_btn' type='button' class='btn btn-default'>Blood Testing</button></div>
 						<div class='btn-group' role='group'><button id='water_filters_btn' type='button' class='btn btn-default'>Water Filters</button></div>
-					</div>
-					
-					<div id='location_card' class='card hide'>
-						<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
-						
-						<div class='card-main'>
-							<div class='card-inner'></div>
-						</div>
-					</div>
-					
-					<div id='resource_card' class='card hide'>
-						<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
-						
-						<div class='card-main'>				
-							<div class='card-inner'></div>
-						</div>
 					</div>
 				</div>
 			</div>
@@ -892,9 +886,7 @@ if (@isset($_POST["pid"])) {
 		$unknown_parcels = generateChartData("unknown_parcels");
 		
 		$totalLocationsTested = generateChartData("total_locations_tested");
-		$totalApprovedRepairs;
-		//$totalApprovedRepairs = generateChartData("total_approved_repairs");
-		//$repairsChart = ;
+		$totalApprovedRepairs = generateChartData("total_approved_repairs");
 		
 		$testLevelsData = generateChartData("test_data");
 		
@@ -919,6 +911,9 @@ if (@isset($_POST["pid"])) {
 		
 		$script = "<script>
 		\$(document).ready(function() {
+			/* Map-related stuff. */
+			\$('#location_card #more_info_details').hide();
+			
 			/* Dashboard doughnut status charts. */
 			var parcelChart = new Chart(\$('#parcel_info_chart'), {
 				type: 'doughnut',
@@ -1017,7 +1012,7 @@ if (@isset($_POST["pid"])) {
 					title: {
 						display: true,
 						fontSize: 15,
-						text: 'Lead Levels by Month'
+						text: 'Lead & Copper Levels by Month'
 					},
 					scales: {
 						xAxes: [{

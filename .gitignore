@@ -66,6 +66,7 @@ admin/h2o-flint-default-acct.json
 admin/Firebase_login_example.html
 *.lock
 *.csv
+*.xlsx
 includes/uma_db_processing.php
 leadLevels_birdview.json
 admin/user_data_new.json

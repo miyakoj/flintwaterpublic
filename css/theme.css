@@ -135,6 +135,12 @@ html, body {
 	color:#3A4fA1!important;
 }
 
+#main_menu span {
+	text-transform:uppercase;
+	font-weight:500;
+	font-size:13px;
+}
+
 #show_me_menu ul {
 	line-height:35px!important;
 	font-size:85%;
