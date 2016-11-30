@@ -115,7 +115,7 @@ function queries($choice, $var = "", $var2 = array()) {
 		$where_clause = "Month(`dateUpdated`) IN(" . implode(",", $var2["months"]) . ") && Year(`dateUpdated`) IN(" . implode(",", $var2["years"]) . ")"
 						. $limit_clause;
 		
-		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE %s%s%s;", $where_clause, $groupby_clause, $orderby_clause);
+		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE %s%s;", $where_clause, $orderby_clause);
 	}
 	/*else if (strcmp($choice, "all_water_tests2") === 0) {
 		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";

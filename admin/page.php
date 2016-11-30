@@ -168,6 +168,7 @@ if (@isset($_POST["pid"])) {
 						
 						<ul class='nav'>
 							<li><button id='water_tests' type='button' class='btn btn-default'>Water Tests</button></li>
+							<li class='hide'><button id='predictions' type='button' class='btn btn-default' disabled='disabled'>Prediction Data</button></li>
 							<li class='hide'><button id='problem_reports' type='button' class='btn btn-default' disabled='disabled'>Problem Reports</button></li>
 							<li class='hide'><button id='survey_results' type='button' class='btn btn-default' disabled='disabled'>Survey Results</button></li>
 						</ul>

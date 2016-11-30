@@ -565,7 +565,7 @@ $("#loading_screen").removeClass("hide");
 							if (!secondaryApp)
 								var secondaryApp = firebase.initializeApp(config, "Secondary");
 							
-							// randomly generate a new password
+							// randomly generate a new temp password
 							var password = Math.random().toString(36).slice(-8);
 
 							secondaryApp.auth().createUserWithEmailAndPassword($("#user_form #email").val(), password).then(function(firebaseUser) {
@@ -578,7 +578,6 @@ $("#loading_screen").removeClass("hide");
 									rolesRef.update(roleData);
 									
 									$("#user_form form").append("<div class='alert alert-success' role='alert'>The user was successfully added.</div>");
-									//$("#user_form form").resetForm();
 									
 									// send an email to the user
 									$.ajax({
@@ -586,6 +585,8 @@ $("#loading_screen").removeClass("hide");
 										url: "includes/functions.php",
 										data: {"type": "new_user_email", "email": $("#user_form #email").val()}
 									});
+									
+									$("#user_form form").resetForm();
 									
 								}, function() {
 									$("#user_form form").append(genericError);
@@ -767,7 +768,7 @@ $("#loading_screen").removeClass("hide");
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
 									
-									content += "<button id='create_spreadsheet' type='button' class='btn btn-default hide' href='#'>Export Excel File</button>";
+									content += "<button id='create_spreadsheet' type='button' class='btn btn-default' href='#'>Email Spreadsheet</button>";
 									
 									content += "<div class=\"table-responsive\"> \
 										<table id=\"table_header\" class=\"table\"> \
@@ -811,7 +812,23 @@ $("#loading_screen").removeClass("hide");
 								});
 								
 								$("#create_spreadsheet").on("click", function(event) {
-									event.stopPropagation();
+									$("#create_spreadsheet").siblings(".alert").remove();
+									
+									$.ajax({
+										type: "POST",
+										url: "includes/functions.php",
+										data: {
+											"report_type": $(".nav button[class*=active]").attr("id"),
+											"uid": firebase.auth().currentUser.uid,
+											"email": userObj.email
+											}
+									}).done(function(data) {
+										$("#create_spreadsheet").after("<div class='alert alert-success' role='alert'>The spreadsheet will be emailed to you within 1 hour.</div>");
+									}).fail(function(data) {
+										$("#create_spreadsheet").after(genericError);
+									});
+									
+									/*event.stopPropagation();
 									
 									var form = $("<form></form>");
 									$(form).attr("method", "post").attr("target", "_blank").attr("action", "includes/spreadsheet_download.php");
@@ -819,7 +836,7 @@ $("#loading_screen").removeClass("hide");
 									var pid_input = $("<input type='hidden' name='uid' />").val(firebase.auth().currentUser.uid);
 									var email_input = $("<input type='hidden' name='email' />").val(userObj.email);
 									$(form).append(type_input, pid_input, email_input);
-									$(form).appendTo("body").submit();
+									$(form).appendTo("body").submit();*/
 								});
 							}
 						});

@@ -8,50 +8,61 @@ else
 require_once __ROOT__ . "/admin/includes/queries.php";
 require_once __ROOT__ . "/vendor/autoload.php";
 
+use google\appengine\api\taskqueue\PushTask;
 use google\appengine\api\mail\Message;
 
 
 /* Handles report page queries. */
 if (@isset($_POST["report_type"])) {
-	$options = array(
-		"months" => $_POST["months"],
-		"years" => $_POST["years"],
-		//"aggregation" => $_POST["aggregation"],
-		//"group_by" => $_POST["group_by"],
-		"order_by" => $_POST["order_by"],
-		"limit" => array(
-			"lead_less" => $_POST["lead_less"],
-			"lead_greater" => $_POST["lead_greater"],
-			"copper_less" => $_POST["copper_less"],
-			"copper_greater" => $_POST["copper_greater"]
-		)
-	);
-	
-	$result = queries($_POST["report_type"], "", $options);
-	
-	$spreadsheet_array = array();
-	
-	$output = "{ \"" . $_POST["report_type"] . "\": [\n";
-	
-	while ($row = $result->fetch_assoc()) {
-		$output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
+	if (@!isset($_POST["email"])) {
+		$options = array(
+			"months" => $_POST["months"],
+			"years" => $_POST["years"],
+			//"aggregation" => $_POST["aggregation"],
+			//"group_by" => $_POST["group_by"],
+			"order_by" => $_POST["order_by"],
+			"limit" => array(
+				"lead_less" => $_POST["lead_less"],
+				"lead_greater" => $_POST["lead_greater"],
+				"copper_less" => $_POST["copper_less"],
+				"copper_greater" => $_POST["copper_greater"]
+			)
+		);
 		
-		if ($i < $result->num_rows-1)
-			$output .= ",";
+		$result = queries($_POST["report_type"], "", $options);
 		
-		$output .= "\n";
+		$spreadsheet_array = array();
 		
-		$spreadsheet_array[] = $row;
+		$output = "{ \"" . $_POST["report_type"] . "\": [\n";
 		
-		$i++;
+		$i = 0;
+		
+		while ($row = $result->fetch_assoc()) {
+			$output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
+			
+			if ($i < $result->num_rows-1)
+				$output .= ",";
+			
+			$output .= "\n";
+			
+			$spreadsheet_array[] = $row;
+			
+			$i++;
+		}
+		
+		$output .= "]}";
+		
+		$memcache = new Memcache;
+		$memcache->set($_POST["uid"], $spreadsheet_array);
+		
+		print_r($output);
 	}
-	
-	$output .= "]}";
-	
-	$memcache = new Memcache;
-	$memcache->set($_POST["uid"], $spreadsheet_array);
-	
-	print_r($output);
+	else {
+		$task = new PushTask(
+		"/tasks/spreadsheet",
+		["report_type" => $_POST["report_type"], "uid" => $_POST["uid"], "email" => $_POST["email"]]);
+		$task->add("spreadsheet");
+	}
 }
 
 
@@ -91,15 +102,16 @@ if (@isset($_POST["type"])) {
 
 		echo $result;
 	}
-	else if ($_POST["type"] == "contact_form") {	
+	// the site admin contact form
+	else if (strcmp($_POST["type"], "contact_form") === 0) {	
+		email_user();
+	}
+	// user page new user email
+	else if (strcmp($_POST["type"], "new_user_email") === 0) {
 		email_user();
 	}
 }
 
-/* Handle user page new user email. */
-if (@strcmp($_POST["type"], "new_user_email") === 0) {
-	email_user();
-}
 
 /* Returns a JavaScript array as a string used to generate a chart. */
 function generateChartData($type) {
@@ -146,8 +158,8 @@ function generateChartData($type) {
 
 /* Returns two JavaScript arrays as strings used to generate a chart. */
 function arrayAccumulation($array) {
-	$newArray = array();
-	$accumulationArray = array();
+	$monthlyArray = array(); // monthly totals
+	$accumulationArray = array(); // grand totals
 	$total = 0;
 	
 	foreach ($array as $val) {
@@ -161,13 +173,13 @@ function arrayAccumulation($array) {
 	$accumulationArray = implode("', '", $accumulationArray);
 	$accumulationArray = "['" . $accumulationArray . "']";
 	
-	$newArray[] = $array;
-	$newArray[] = $accumulationArray;
+	$monthlyArray[] = $array;
+	$monthlyArray[] = $accumulationArray;
 	
-	return $newArray;
+	return $monthlyArray;
 }
 
-/* Returns the time period of available test data. */
+/* Returns the text time period of available water test data. */
 function getTimePeriod() {
 	$result = queries("time_period");
 	
