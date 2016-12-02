@@ -5,12 +5,14 @@ if (strstr($_SERVER["PHP_SELF"], "/admin/") !== FALSE)
 else
 	@define("__ROOT__", dirname(dirname(__FILE__)));
 
-//require_once __ROOT__ . "/vendor/phpoffice/phpexcel/Classes/PHPExcel.php";
 require_once __ROOT__ . "/vendor/autoload.php";
 
 use google\appengine\api\mail\Message;
 
+libxml_disable_entity_loader(false);
+
 PHPExcel_Settings::setCacheStorageMethod(PHPExcel_CachedObjectStorageFactory::cache_in_memory);
+PHPExcel_Settings::setZipClass(PHPExcel_Settings::ZIPARCHIVE);
 PHPExcel_Cell::setValueBinder(new PHPExcel_Cell_AdvancedValueBinder());
 $objPHPExcel = new PHPExcel();	
 $objPHPExcel->setActiveSheetIndex(0);
@@ -45,8 +47,8 @@ foreach ($spreadsheet_array as $row) {
 }
 
 $objPHPExcel->getActiveSheet()->getStyle("B2:C"+sizeof($spreadsheet_array))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-//$outputFile = $_POST["report_type"] . mt_rand(0,5999) . ".xlsx";
-$outputFile = "water_tests" . mt_rand(0,5999);
+$outputFile = $_POST["report_type"] . mt_rand(0,5999) . ".xlsx";
+//$outputFile = "water_tests" . mt_rand(0,5999) . ".xlsx";
 
 $dir = sys_get_temp_dir();
 $tmp = tempnam($dir, $outputFile);
@@ -55,17 +57,18 @@ $writer = new PHPExcel_Writer_Excel2007($objPHPExcel);
 $writer->save($tmp);
 
 /* Email the spreadsheet to the user. */
-try {
+/*try {
 	$message = new Message();
 	$message->setSender("umflintH2O@gmail.com");
 	//$message->addTo($_POST["email"]);
+	$message->addTo("mystc.raine@gmail.com");
 	$message->setSubject("MyWater-Flint Report Spreadsheet");
 	$message->addAttachment($outputFile, file_get_contents($tmp));
 	$message->setHtmlBody("testing");
 	$message->send();
 } catch (InvalidArgumentException $e) {
 	echo $e;
-}
+}*/
 
 $objPHPExcel->disconnectWorksheets();
 unset($objPHPExcel);

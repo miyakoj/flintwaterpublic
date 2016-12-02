@@ -168,9 +168,9 @@ if (@isset($_POST["pid"])) {
 						
 						<ul class='nav'>
 							<li><button id='water_tests' type='button' class='btn btn-default'>Water Tests</button></li>
-							<li class='hide'><button id='predictions' type='button' class='btn btn-default' disabled='disabled'>Prediction Data</button></li>
-							<li class='hide'><button id='problem_reports' type='button' class='btn btn-default' disabled='disabled'>Problem Reports</button></li>
-							<li class='hide'><button id='survey_results' type='button' class='btn btn-default' disabled='disabled'>Survey Results</button></li>
+							<li><button id='predictions' type='button' class='btn btn-default'>Prediction Data</button></li>
+							<li class='hide'><button id='problem_reports' type='button' class='btn btn-default'>Problem Reports</button></li>
+							<li class='hide'><button id='survey_results' type='button' class='btn btn-default'>Survey Results</button></li>
 						</ul>
 					</div>
 				</div>
@@ -181,7 +181,7 @@ if (@isset($_POST["pid"])) {
 					<div class='content-top-1'>
 						<p id='instructions'>Select a report type from the menu to the left.</p>
 					
-						<form class='form-inline hide' method='post'>
+						<form id='water_tests_form' class='form-inline hide' method='post'>
 							<div id='report_type' class='row'>
 								<div class='form-group col-xs-12 col-md-6'>
 									<h5 style='font-weight:500;'>Report Type</h5>
@@ -303,7 +303,7 @@ if (@isset($_POST["pid"])) {
 			
 			$script = "<script>
 			\$(document).ready(function() {
-				//\$('#display_area form').resetForm();
+				\$('#display_area form').resetForm();
 				
 				var timePeriods = $TIME_PERIOD;
 				var months = $MONTHS;
@@ -334,10 +334,11 @@ if (@isset($_POST["pid"])) {
 					\$('form').resetForm();
 				});
 				
-				\$('#water_tests, #problem_reports, #survey_results').on('click', function() {
-					$('#instructions').addClass('hide');
-					//$(this).find('form').resetForm();
-					$(this).addClass('active');
+				\$('#water_tests').on('click', function() {
+					\$(this).addClass('active');
+					\$('#instructions').addClass('hide');
+					//\$(this).find('#water_tests_form').resetForm();
+					
 					var content = '';
 					
 					if ($(this).attr('id').indexOf('water') != -1) {
@@ -350,7 +351,35 @@ if (@isset($_POST["pid"])) {
 					}					
 						
 					\$('#report_type select').append(content);
-					\$('#report_area form').removeClass('hide');
+					\$('#report_area #water_tests_form').removeClass('hide');
+				});
+				
+				/* Load a new window with a print version of the data. */
+				\$('#print_report').on('click', function() {
+					
+				});
+				
+				/* Load a new window with a print version of the data. */
+				\$('#print_report').on('click', function() {
+					
+				});
+				
+				\$('#predictions').on('click', function(event) {
+					\$(this).addClass('active');
+					\$('#instructions').addClass('hide').after($('.loader'));
+					\$('.loader').css({'margin-top': '15px', 'margin-bottom': '15px'});
+					
+					\$.ajax({
+						type: 'POST',
+						url: 'includes/functions.php',
+						data: {'report_type': \$('.nav button[class*=active]').attr('id')}
+					}).done(function(data) {
+						\$('#display_area p').remove();
+						\$('.loader').addClass('hide');
+						\$('#display_area').removeClass('hide').before('<p>The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>.</p>');
+					}).fail(function(data) {
+						\$('.loader').after(genericError);
+					});
 				});
 			});
 			</script>";
@@ -508,7 +537,19 @@ if (@isset($_POST["pid"])) {
 
 				<div id='edit_construction' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_construction_heading'>
 				<div class='panel-body'>
-				NEW CONSTRUCTION LOCATION FORM
+				EDIT CONSTRUCTION LOCATION FORM
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='delete_construction_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#construction_accordion' href='#delete_construction' aria-expanded='true' aria-controls='delete_construction'>Delete Construction Location</a></h4>
+				</div>
+
+				<div id='delete_construction' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_construction_heading'>
+				<div class='panel-body'>
+				DELETE CONSTRUCTION LOCATION FORM
 				</div>
 				</div>
 				</div>
@@ -770,7 +811,7 @@ if (@isset($_POST["pid"])) {
 					<div class='content-top-1'>
 					<section>
 					<p class='text-justify'>The MyWater-Flint Administration site was developed by <a href='http://www.umflint.edu'>University of Michigan-Flint</a> to assist with research and the prioritization of relief efforts.</p>
-					<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United Status Postal Service (both via UM-Ann Arbor MDST). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
+					<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United Status Postal Service (both via <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>UM-Ann Arbor Michigan Data Science Team</a>). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
 					</section>
 					</div>
 				</div>

@@ -675,7 +675,7 @@ $("#loading_screen").removeClass("hide");
 				});
 			}
 			/* REPORT PAGE */
-			else if ($pageId.indexOf("report") != -1) {
+			else if ($pageId.indexOf("report") != -1) {					
 				$.validator.addMethod("aggregation", function(value, element) {
 					return this.optional(element) || ($("#group_by").val() !== "" && $("#aggregation").val() !== "");
 				}, "A group by option must also be selected.");
@@ -707,7 +707,7 @@ $("#loading_screen").removeClass("hide");
 				$.validator.classRuleSettings.copper_greater = {copper_greater: true};
 				
 				
-				validator = $("form").validate({
+				validator = $("#water_tests_form").validate({
 					debug: true,
 					errorPlacement: function(error, element) {
 						element.parent().append(error);
@@ -748,8 +748,8 @@ $("#loading_screen").removeClass("hide");
 							copper_greater: true
 						}
 					},
-					submitHandler: function(form) {
-						$(".loader").css("margin-top", "15px").appendTo("form");
+					submitHandler: function(form) {						
+						$(".loader").css("margin-top", "15px").appendTo("#water_tests_form");
 						
 						$(form).ajaxSubmit({
 							type: "POST",
@@ -768,7 +768,7 @@ $("#loading_screen").removeClass("hide");
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
 									
-									content += "<button id='create_spreadsheet' type='button' class='btn btn-default' href='#'>Email Spreadsheet</button>";
+									content += "<button id='print_report' type='button' class='btn btn-default' href='#'>Print</button> <button id='create_csv' type='button' class='btn btn-default' href='#'>Export as CSV</button>";
 									
 									content += "<div class=\"table-responsive\"> \
 										<table id=\"table_header\" class=\"table\"> \
@@ -811,8 +811,8 @@ $("#loading_screen").removeClass("hide");
 									"height": (windowHeight * 0.75) + "px"
 								});
 								
-								$("#create_spreadsheet").on("click", function(event) {
-									$("#create_spreadsheet").siblings(".alert").remove();
+								$("#create_csv").on("click", function(event) {
+									$("#create_csv").siblings(".alert").remove();
 									
 									$.ajax({
 										type: "POST",
@@ -823,9 +823,9 @@ $("#loading_screen").removeClass("hide");
 											"email": userObj.email
 											}
 									}).done(function(data) {
-										$("#create_spreadsheet").after("<div class='alert alert-success' role='alert'>The spreadsheet will be emailed to you within 1 hour.</div>");
+										$("#create_csv").after("<div class='alert alert-success' role='alert'>The CSV file will be emailed to you within 1 hour.</div>");
 									}).fail(function(data) {
-										$("#create_spreadsheet").after(genericError);
+										$("#create_csv").after(genericError);
 									});
 									
 									/*event.stopPropagation();

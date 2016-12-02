@@ -199,7 +199,7 @@ body {
 	margin-top:15px;
 }
 
-#report_area #display_area #create_spreadsheet {
+#report_area #display_area #print_report, #report_area #display_area #create_spreadsheet {
 	margin-top:15px;
 }
 

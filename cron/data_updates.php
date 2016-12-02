@@ -1,13 +1,14 @@
 <?php
 
 /*
- * Update the database and fusion tables if new water tests are found.
+ * Update the database, fusion tables, predictions report CSV, and lead area JSON if new water tests are found.
  */
-require_once "database_config.php";
-include_once "../vendor/autoload.php";
+@define("__ROOT__", dirname(dirname(__FILE__)));
+require __ROOT__ . "/includes/database_config.php";
+include_once __ROOT__ . "/vendor/autoload.php";
 
 /* MongoDB connection info. */
-$port = "27017";
+/*$port = "27017";
 $db = getenv('MONGODB_DATABASE');
 $connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . getenv('MONGODB_PASSWORD') . "@" . getenv('MONGODB_IP') . ":" . $port . "/" .  $db);
 
@@ -32,9 +33,10 @@ $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 $client->setRedirectUri($redirect_uri);
 
 /* Call the Fusion Table service. */
-$service = new Google_Service_Fusiontables($client);
+//$service = new Google_Service_Fusiontables($client);
 
-getNewTestData();
+//getNewTestData();
+updatePredictionsReport();
 
 /* Retrieve new water test results from Ann Arbor's DB */
 function getNewTestData() {
@@ -86,6 +88,50 @@ function updateFTAll() {
 	$result = $service->query->sql("SELECT * FROM " . $fusion_table_all . " LIMIT 10");
 
 	var_dump($result);
+}
+
+/* Update the CSV used to display the results of the admin predictions report. */
+function updatePredictionsReport() {
+	global $mysqli;
+	
+	$query = "SELECT g.address, p.parcelID, p.prediction FROM PredictionLocations p JOIN Geolocation g ON p.parcelID = g.parcelID ORDER BY p.parcelID ASC;";
+	$result = $mysqli->query($query);
+
+	$csv_output = "parcelID,address,prediction,avgLeadLevel\n";
+	$json_output = "{ \"predictions_report\": [\n";
+	$i = 0;
+				
+	while ($row = $result->fetch_assoc()) {
+		$query = sprintf("SELECT parcelID, address, AVG(leadLevel) AS avgLeadLevel FROM WaterCondition WHERE parcelID = '%s' GROUP BY parcelID;", $row["parcelID"]);
+		$result2 = $mysqli->query($query);	
+		$row2 = $result2->fetch_assoc();
+					
+		if ($row2) {
+			$csv_output .= sprintf("%s,%s,%s,%s\n", $row["parcelID"], $row["address"], $row["prediction"], $row2["avgLeadLevel"]);
+			$json_output .= json_encode(array($row["parcelID"], $row["address"], $row["prediction"], $row2["avgLeadLevel"]), JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
+		}
+		else {
+			$csv_output .= sprintf("%s,%s,%s,-1\n", $row["parcelID"], $row["address"], $row["prediction"]);
+			$json_output .= json_encode(array($row["parcelID"], $row["address"], $row["prediction"], -1), JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
+		}
+		
+		if ($i < $result->num_rows-1)
+			$json_output .= ",";
+		
+		$json_output .= "\n";
+		
+		$i++;
+	}
+
+	$json_output .= "]}";
+
+	$options = ['gs' => ['Content-Type' => 'text/csv', 'read_cache_expiry_seconds' => '86400']];
+	$context = stream_context_create($options);
+	file_put_contents("gs://h2o-flint.appspot.com/predictions_report.csv", $csv_output, 0, $context);
+
+	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
+	$context = stream_context_create($options);
+	file_put_contents("gs://h2o-flint.appspot.com/predictions_report.json", $json_output, 0, $context);
 }
 
 ?>
