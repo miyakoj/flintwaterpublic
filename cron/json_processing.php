@@ -1,6 +1,8 @@
 <?php
 
-require_once "queries.php";
+@define("__ROOT__", dirname(dirname(__FILE__)));
+
+require_once __ROOT__ . "queries.php";
 
 /* Process lead level data. */
 //query_json_output(queries("leadLevels"), "leadLevels", "leadlevels.json");

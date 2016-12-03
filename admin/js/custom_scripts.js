@@ -755,6 +755,7 @@ $("#loading_screen").removeClass("hide");
 							type: "POST",
 							data: {
 								"report_type": $(".nav button[class*=active]").attr("id"),
+								"file": $("form").hasClass("hide") ? "true" : "false", // if there is a form visible then the data comes from the DB
 								"uid": firebase.auth().currentUser.uid
 							},
 							dataType: "json",
@@ -763,38 +764,71 @@ $("#loading_screen").removeClass("hide");
 								console.log(firebase.auth().currentUser.uid);
 								
 								var content;
-								var total_results = data.water_tests.length;
+								console.log(eval(data.$(".nav button[class*=active]").attr("id").length));
+								var total_results = eval(data.$(".nav button[class*=active]").attr("id").length);
 								
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
 									
 									content += "<button id='print_report' type='button' class='btn btn-default' href='#'>Print</button> <button id='create_csv' type='button' class='btn btn-default' href='#'>Export as CSV</button>";
 									
-									content += "<div class=\"table-responsive\"> \
-										<table id=\"table_header\" class=\"table\"> \
-											<tr> \
-												<th class=\"record_number\">&nbsp;</th> \
-												<th class=\"address\">Address</th> \
-												<th class=\"lead_level\">Lead Level (ppb)</th> \
-												<th class=\"copper_level\">Copper Level (ppb)</th> \
-												<th class=\"date\">Date Submtted</th> \
-												<th></th> \
-											</tr> \
-										</table> \
-										\
-										<div id='scrollbox'> \
-										<table id=\"table_body\" class=\"table\">";
-									
-									for (var i=0; i<total_results; i++) {
-										var temp = data.water_tests[i];
+									if ($(".nav button[class*=active]").attr("id") === "water_tests") {
+										content += "<div class=\"table-responsive\"> \
+											<table id=\"table_header\" class=\"table\"> \
+												<tr> \
+													<th class=\"record_number\">&nbsp;</th> \
+													<th class=\"address\">Address</th> \
+													<th class=\"lead_level\">Lead Level (ppb)</th> \
+													<th class=\"copper_level\">Copper Level (ppb)</th> \
+													<th class=\"date\">Date Submtted</th> \
+													<th></th> \
+												</tr> \
+											</table> \
+											\
+											<div id='scrollbox'> \
+											<table id=\"table_body\" class=\"table\">";
 										
-										content += "<tr> \
-											<td class=\"record_number\">" + (i+1) + "</td> \
-											<td class=\"address\">" + temp.address + "</td> \
-											<td class=\"lead_level\">" + temp.leadLevel + "</td> \
-											<td class=\"copper_level\">" + temp.copperLevel + "</td> \
-											<td class=\"date\">" + temp.dateUpdated + "</td> \
-										</tr>";
+										for (var i=0; i<total_results; i++) {
+											var temp = data.water_tests[i];
+											
+											content += "<tr> \
+												<td class=\"record_number\">" + (i+1) + "</td> \
+												<td class=\"address\">" + temp.address + "</td> \
+												<td class=\"lead_level\">" + temp.leadLevel + "</td> \
+												<td class=\"copper_level\">" + temp.copperLevel + "</td> \
+												<td class=\"date\">" + temp.dateUpdated + "</td> \
+											</tr>";
+										}
+									}
+									else if ($(".nav button[class*=active]").attr("id") === "predictions") {
+										content += "<div class=\"table-responsive\"> \
+											<table id=\"table_header\" class=\"table\"> \
+												<tr> \
+													<th class=\"record_number\">&nbsp;</th> \
+													<th class=\"parcel_id\">Parcel ID</th> \
+													<th class=\"address\">Address</th> \
+													<th class=\"prediction\">Prediction</th> \
+													<th class=\"lead_level\">Average Lead Level</th> \
+													<th></th> \
+												</tr> \
+											</table> \
+											\
+											<div id='scrollbox'> \
+											<table id=\"table_body\" class=\"table\">";
+											
+										console.log(data);
+										
+										for (var i=0; i<total_results; i++) {
+											var temp = data.predictions_report[i];
+											
+											content += "<tr> \
+												<td class=\"record_number\">" + (i+1) + "</td> \
+												<td class=\"parcel_id\">" + temp.parcelID + "</td> \
+												<td class=\"address\">" +temp.address + "</td> \
+												<td class=\"prediction\">" + temp.prediction + "</td> \
+												<td class=\"lead_level\">" + temp.avgLeadLevel + "</td> \
+											</tr>";
+										}
 									}
 											
 									content += "</table></div></div>";
@@ -811,32 +845,33 @@ $("#loading_screen").removeClass("hide");
 									"height": (windowHeight * 0.75) + "px"
 								});
 								
+								/* Load a new window with a print version of the data. */
+								$("#print_report").on("click", function() {									
+									var printWindow = window.open("", "PrintWindow", "menubar=yes,toolbar=no,scrollbars=yes,resizable=no,width="+window.outerWidth+",height="+window.outerHeight);
+									
+									$(printWindow.document.body).html($("#table_header").clone()).append($("#table_body").clone());
+									$(printWindow.document.body).find("table").css("width", "100%");
+									
+									if ($(".nav button[class*=active]").attr("id") === "water_tests") {
+										$(printWindow.document.body).find(".record_number").css("width", "8%");
+										$(printWindow.document.body).find(".lead_level, .copper_level").css({"width": "19%", "text-align": "center"});
+										$(printWindow.document.body).find(".date").css({"width": "20%", "text-align": "center"});
+									}
+									else if ($(".nav button[class*=active]").attr("id") === "predictions") {
+										
+									}
+								});
+								
+								/* Display a dialog to let the user download a CSV file of the data. */
 								$("#create_csv").on("click", function(event) {
 									$("#create_csv").siblings(".alert").remove();
 									
-									$.ajax({
-										type: "POST",
-										url: "includes/functions.php",
-										data: {
-											"report_type": $(".nav button[class*=active]").attr("id"),
-											"uid": firebase.auth().currentUser.uid,
-											"email": userObj.email
-											}
-									}).done(function(data) {
-										$("#create_csv").after("<div class='alert alert-success' role='alert'>The CSV file will be emailed to you within 1 hour.</div>");
-									}).fail(function(data) {
-										$("#create_csv").after(genericError);
-									});
-									
-									/*event.stopPropagation();
-									
 									var form = $("<form></form>");
-									$(form).attr("method", "post").attr("target", "_blank").attr("action", "includes/spreadsheet_download.php");
+									$(form).attr("method", "post").attr("target", "_blank").attr("action", "includes/report_download.php");
 									var type_input = $("<input type='hidden' name='report_type' />").val($(".nav button[class*=active]").attr("id"));
 									var pid_input = $("<input type='hidden' name='uid' />").val(firebase.auth().currentUser.uid);
-									var email_input = $("<input type='hidden' name='email' />").val(userObj.email);
-									$(form).append(type_input, pid_input, email_input);
-									$(form).appendTo("body").submit();*/
+									$(form).append(type_input, pid_input);
+									$(form).appendTo("body").submit();
 								});
 							}
 						});

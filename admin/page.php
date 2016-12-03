@@ -269,6 +269,8 @@ if (@isset($_POST["pid"])) {
 								</div>
 							</div>
 							
+							<input type='hidden' name='file' value='false' />
+							
 							<div class='row'><div class='form-group col-xs-12'>
 							<button id='submit_button' type='submit' class='btn btn-default pull-right'>Submit</button>
 							<button id='clear_button' type='button' class='btn btn-default pull-right'>Clear</button>
@@ -335,14 +337,17 @@ if (@isset($_POST["pid"])) {
 				});
 				
 				\$('#water_tests').on('click', function() {
+					// deactivate all other buttons
+					\$('#report_list .nav button').removeClass('active');
+					
 					\$(this).addClass('active');
 					\$('#instructions').addClass('hide');
-					//\$(this).find('#water_tests_form').resetForm();
+					\$(this).find('#water_tests_form').resetForm();
 					
 					var content = '';
 					
-					if ($(this).attr('id').indexOf('water') != -1) {
-						$('#report_type').addClass('hide');
+					if (\$(this).attr('id').indexOf('water') != -1) {
+						\$('#report_type').addClass('hide');
 						
 						/*content = '<option id=\"all_water_tests1\">All Water Tests (Ungrouped)</option> \
 								<option id=\"all_water_tests2\" disabled=\"disabled\">All Water Tests (Grouped by Address)</option> \
@@ -351,20 +356,21 @@ if (@isset($_POST["pid"])) {
 					}					
 						
 					\$('#report_type select').append(content);
+					
+					// hide all forms
+					\$('#report_area form').addClass('hide');
+					\$('#report_area #details').remove();
+					
 					\$('#report_area #water_tests_form').removeClass('hide');
 				});
 				
-				/* Load a new window with a print version of the data. */
-				\$('#print_report').on('click', function() {
+				\$('#predictions').on('click', function() {
+					// deactivate all other buttons
+					\$('#report_list .nav button').removeClass('active');
 					
-				});
-				
-				/* Load a new window with a print version of the data. */
-				\$('#print_report').on('click', function() {
+					// hide all forms
+					$('#report_area form').addClass('hide');
 					
-				});
-				
-				\$('#predictions').on('click', function(event) {
 					\$(this).addClass('active');
 					\$('#instructions').addClass('hide').after($('.loader'));
 					\$('.loader').css({'margin-top': '15px', 'margin-bottom': '15px'});
@@ -372,11 +378,12 @@ if (@isset($_POST["pid"])) {
 					\$.ajax({
 						type: 'POST',
 						url: 'includes/functions.php',
-						data: {'report_type': \$('.nav button[class*=active]').attr('id')}
+						data: {'report_type': \$('.nav button[class*=active]').attr('id'), 'file': $('form').hasClass('hide') ? 'true' : 'false'}
 					}).done(function(data) {
 						\$('#display_area p').remove();
 						\$('.loader').addClass('hide');
-						\$('#display_area').removeClass('hide').before('<p>The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>.</p>');
+						\$('#report_area #details').remove();
+						\$('#display_area').removeClass('hide').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>.</p>');
 					}).fail(function(data) {
 						\$('.loader').after(genericError);
 					});

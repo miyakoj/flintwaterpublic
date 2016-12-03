@@ -115,12 +115,6 @@ function queries($choice, $var = "", $var2 = array()) {
 		
 		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE %s%s;", $where_clause, $orderby_clause);
 	}
-	else if (strcmp($choice, "predictions") === 0) {
-		if (strcmp($var, "") !== 0)
-			$query = sprintf("SELECT `parcelID`, `address`, AVG(`leadLevel`) AS avgLeadLevel FROM WaterCondition WHERE `parcelID` = '%s' GROUP BY `parcelID`;", $var);
-		else
-			$query = "SELECT g.`address`, p.`parcelID`, p.`prediction` FROM PredictionLocations p JOIN Geolocation g ON p.`parcelID` = g.`parcelID` ORDER BY g.`address` ASC;";
-	}
 	/*else if (strcmp($choice, "all_water_tests2") === 0) {
 		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}

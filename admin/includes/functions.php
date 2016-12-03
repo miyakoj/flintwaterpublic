@@ -8,66 +8,59 @@ else
 require_once __ROOT__ . "/admin/includes/queries.php";
 require_once __ROOT__ . "/vendor/autoload.php";
 
-//use google\appengine\api\taskqueue\PushTask;
 use google\appengine\api\mail\Message;
 
 /* Handles report page queries. */
-if (@isset($_POST["report_type"])) {	
-	if (@!isset($_POST["email"])) {
-		if (strcmp($_POST["report_type"], "water_tests") === 0) {
-			$options = array(
-				"months" => $_POST["months"],
-				"years" => $_POST["years"],
-				//"aggregation" => $_POST["aggregation"],
-				//"group_by" => $_POST["group_by"],
-				"order_by" => $_POST["order_by"],
-				"limit" => array(
-					"lead_less" => $_POST["lead_less"],
-					"lead_greater" => $_POST["lead_greater"],
-					"copper_less" => $_POST["copper_less"],
-					"copper_greater" => $_POST["copper_greater"]
-				)
-			);
-			
-			$result = queries($_POST["report_type"], "", $options);
-		}		
+if (@isset($_POST["report_type"]) && strcmp($_POST["file"], "false") === 0) {
+	if (strcmp($_POST["report_type"], "water_tests") === 0) {
+		$options = array(
+			"months" => $_POST["months"],
+			"years" => $_POST["years"],
+			//"aggregation" => $_POST["aggregation"],
+			//"group_by" => $_POST["group_by"],
+			"order_by" => $_POST["order_by"],
+			"limit" => array(
+				"lead_less" => $_POST["lead_less"],
+				"lead_greater" => $_POST["lead_greater"],
+				"copper_less" => $_POST["copper_less"],
+				"copper_greater" => $_POST["copper_greater"]
+			)
+		);
 		
-		//$spreadsheet_array = array();
-		$csv_output = "address,leadLevel,copperLevel,dateUpdated\n";		
-		$json_output = "{ \"" . $_POST["report_type"] . "\": [\n";
+		$result = queries($_POST["report_type"], "", $options);
 		
-		$i = 0;
+		$csv_output = "address,leadLevel,copperLevel,dateUpdated\n";
+	}
 		
-		while ($row = $result->fetch_assoc()) {
-			$json_output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
-			
-			if ($i < $result->num_rows-1)
-				$json_output .= ",";
-			
-			$json_output .= "\n";
+	$json_output = "{ \"" . $_POST["report_type"] . "\": [\n";
+	
+	$i = 0;
+	
+	while ($row = $result->fetch_assoc()) {
+		if (strcmp($_POST["report_type"], "water_tests") === 0)
 			$csv_output .= sprintf("%s,%s,%s,%s\n", $row["address"], $row["leadLevel"], $row["copperLevel"], $row["dateUpdated"]);
-			
-			//$spreadsheet_array[] = $row;
-			
-			$i++;
-		}
 		
-		$json_output .= "]}";
+		$json_output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
 		
-		$memcache = new Memcache;
-		$memcache->set($_POST["uid"], $csv_output);
+		if ($i < $result->num_rows-1)
+			$json_output .= ",";
 		
-		print_r($json_output);
+		$json_output .= "\n";
+		
+		$i++;
 	}
-	else {
-		/*$task = new PushTask(
-		"/tasks/spreadsheet",
-		["report_type" => $_POST["report_type"], "uid" => $_POST["uid"], "email" => $_POST["email"]]);
-		$task->add("spreadsheet");*/
-		
-		$memcache = new Memcache;
-		echo $memcache->get($_POST["uid"]);
-	}
+	
+	$json_output .= "]}";
+	
+	$memcache = new Memcache;
+	$memcache->set($_POST["uid"], $csv_output);
+	
+	print_r($json_output);
+}
+// the data has been pre-saved
+else if (@isset($_POST["report_type"]) && strcmp($_POST["file"], "true") === 0) {
+	$json_output = file_get_contents("gs://h2o-flint.appspot.com/" . $_POST["report_type"] . "_report.json");
+	print_r($json_output);
 }
 
 

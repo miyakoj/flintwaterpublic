@@ -199,8 +199,9 @@ body {
 	margin-top:15px;
 }
 
-#report_area #display_area #print_report, #report_area #display_area #create_spreadsheet {
+#report_area #display_area #print_report, #report_area #display_area #create_csv {
 	margin-top:15px;
+	margin-right:8px;
 }
 
 #report_area #display_area .table-responsive {
@@ -229,12 +230,12 @@ body {
 	width:30%;
 }
 
-#report_area #display_area table .date {
-	width:29%;
-}
-
 #report_area #display_area table .lead_level, #report_area #display_area table .copper_level {
 	width:19%;
+}
+
+#report_area #display_area table .date {
+	width:29%;
 }
 
 #report_area #display_area table th:last-of-type {
