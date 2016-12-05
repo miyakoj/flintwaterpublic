@@ -222,6 +222,10 @@ body {
 	width:100%;
 }
 
+#report_area #display_area td {
+	margin-left:0;
+}
+
 #report_area #display_area table .record_number {
 	width:2%;
 }
@@ -230,11 +234,11 @@ body {
 	width:30%;
 }
 
-#report_area #display_area table .lead_level, #report_area #display_area table .copper_level {
+#report_area #display_area table .small_num {
 	width:19%;
 }
 
-#report_area #display_area table .date {
+#report_area #display_area table .date, #report_area #display_area table .large_num {
 	width:29%;
 }
 
@@ -282,6 +286,14 @@ body {
 
 #users_page #user_group {
 	display:none;
+}
+
+#users_page td .material-icons {
+	padding-top:0;
+}
+
+#edit_modal .modal-footer button {
+	margin-right:0;
 }
 
 
@@ -357,7 +369,11 @@ form .col-xs-12, form .col-md-3, form .col-md-5, form .col-md-6 {
 	margin-top:0;
 }
 
-#comments_form .modal-body .alert {
+.modal-title {
+	margin-bottom:0;
+}
+
+.modal-body .alert {
 	margin-top:15px;
 }
 

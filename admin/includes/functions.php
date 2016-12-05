@@ -6,12 +6,11 @@ else
 	@define("__ROOT__", dirname(dirname(__FILE__)));
 
 require_once __ROOT__ . "/admin/includes/queries.php";
-require_once __ROOT__ . "/vendor/autoload.php";
 
 use google\appengine\api\mail\Message;
 
 /* Handles report page queries. */
-if (@isset($_POST["report_type"]) && strcmp($_POST["file"], "false") === 0) {
+if (@isset($_POST["report_type"])) {
 	if (strcmp($_POST["report_type"], "water_tests") === 0) {
 		$options = array(
 			"months" => $_POST["months"],
@@ -55,11 +54,6 @@ if (@isset($_POST["report_type"]) && strcmp($_POST["file"], "false") === 0) {
 	$memcache = new Memcache;
 	$memcache->set($_POST["uid"], $csv_output);
 	
-	print_r($json_output);
-}
-// the data has been pre-saved
-else if (@isset($_POST["report_type"]) && strcmp($_POST["file"], "true") === 0) {
-	$json_output = file_get_contents("gs://h2o-flint.appspot.com/" . $_POST["report_type"] . "_report.json");
 	print_r($json_output);
 }
 
@@ -245,7 +239,7 @@ function email_user() {
 		$msg = "Hello,\n\n
 
 				Follow this link to activate your new account on MyWater-Flint. Please enter your email address and check \"Forgot Password\" to gain access.\n
-				<a href=\"https://admin.mywater-flint.com\">https://admin.mywater-flint.com</a>\n\n
+				<a href=\"https://www.mywater-flint.com/admin\">https://www.mywater-flint.com/admin</a>\n\n
 
 				Thanks,\n
 				Your MyWater-Flint team";

@@ -78,60 +78,6 @@ echo header("Accept-Encoding: gzip");
 			
 			auth = firebase.auth();
 			db = app.database();
-		
-			$("#login_form").on("submit", function(event) {
-				$("#loading_screen").removeClass("hide");				
-				var email = $("#login_email input").val();
-				var password = $("#login_password input").val();
-			
-				// if reset password is unchecked, do normal sign in
-				if ($("#forgot_password input").prop("checked") == false) {
-					firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
-						$(".alert").addClass("hide");
-
-						decodeIDToken(firebase.auth().currentUser.uid, "login");
-					},
-					function(error) {
-						if (error) {
-							$("#loading_screen").addClass("hide");
-							var errorCode = error.code;
-							var errorMsg;
-							
-							$(".alert-danger").addClass("hide");
-
-							if (errorCode === "auth/wrong-password")
-								errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">Your password is incorrect.</div>";			
-							else if (errorCode === "auth/invalid-email")
-								errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">Your email address is invalid.</div>";
-							else if (errorCode === "auth/user-not-found")
-								errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">There is no user account associated with this email address.</div>";
-							else if (errorCode  === "auth/too-many-requests") {
-								$("#login_email input").addClass("disable");
-								$("#login_password input").addClass("disable");
-								$("#forgot_password input").addClass("disable");
-								$(".login-do input").addClass("disable");
-								
-								errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">You have run out of login attempts. Please try again later.</div>";
-							}
-							else
-								errorMsg = genericError;
-							
-							$("#login_form").append(errorMsg);
-
-							console.log(error);
-						}
-					});
-				}
-				else {
-					auth.sendPasswordResetEmail(email).then(function() {
-						$("#login_form").append("<div class=\"alert alert-success\" role=\"alert\">A password reset email has been sent.</div>");
-					}, function(error) {
-						$("#login_form").append(genericError);
-					});
-				}
-				
-				event.preventDefault();
-			});
 		}
 	});
 	
@@ -194,7 +140,7 @@ echo header("Accept-Encoding: gzip");
 				<i class="fa fa-envelope"></i>
 			</div>
 			<div id="login_password" class="login-mail">
-				<input type="password" placeholder="Password" name="password" required />
+				<input type="password" placeholder="Password" name="password" />
 				<i class="fa fa-lock"></i>
 			</div>
 				<a id="forgot_password" class="news-letter" href="#">

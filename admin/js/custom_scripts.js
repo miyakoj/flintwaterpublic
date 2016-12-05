@@ -1,3 +1,7 @@
+// Access Google Cloud Storage
+/*var defaultBucket = "h2o-flint.appspot.com";
+var scopes = "https:// www.googleapis.com/auth/devstorage.read_only";*/
+
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
@@ -79,7 +83,6 @@ $("#loading_screen").removeClass("hide");
 				
 				$("#login_link").addClass("hide");
 				
-				//$("#main_menu").removeClass("hide");
 				$("#wrapper").removeClass("hide");
 				if ($("#wrapper").length != 0)
 					$("#loading_screen").addClass("hide");
@@ -129,9 +132,14 @@ $("#loading_screen").removeClass("hide");
 					if (parseInt(userObj.role) == 1)
 						user_group = "Admin";
 					else if (parseInt(userObj.role) == 2)
-						user_group = "Edit and View";
+						user_group = "Edit Priviledges";
 					else
-						user_group = "View Only";
+						user_group = "View Only Priviledges";
+					
+					if (userObj.showInfo)
+						show_info = "yes";
+					else
+						show_info = "no";
 					
 					$("#user_form form #user_group").val(user_group);
 					$("#user_form form #first_name").val(userObj.firstName);
@@ -145,12 +153,6 @@ $("#loading_screen").removeClass("hide");
 					$("#user_form form #city").val(userObj.address.city);
 					$("#user_form form #zipcode").val(userObj.address.zipcode);
 					$("#user_form form #state").val(userObj.address.state);
-					
-					if (userObj.showInfo)
-						show_info = "yes";
-					else
-						show_info = "no";
-					
 					$("#user_form form #show_info input").val([show_info]);
 				}
 			});
@@ -166,12 +168,6 @@ $("#loading_screen").removeClass("hide");
 			}
 		}
 	});
-	
-	/* Various device size differences. */
-	if (windowWidth < 768) {
-	}
-	else {
-	}
 	
 	// mark the current page's navigation button as active
 	$("#" + $pageId + "_link").addClass('active');
@@ -247,8 +243,83 @@ $("#loading_screen").removeClass("hide");
 				}
 			};
 			
+			/* LOGIN PAGE FORM */
+			if ($pageId.indexOf("login") != -1) {
+				$("#forgot_password input").on("click", function() {
+					if ($("#forgot_password input").prop("checked") == false)
+						$("#login_password input").rules( "add", {required: true});
+					else
+						$("#login_password input").rules( "add", {required: false});
+				});
+			
+				$("#login_form").validate({
+					debug: false,
+					errorPlacement: function(error, element) {
+						element.parent().append(error);
+					},
+					rules: {
+						password: {
+							required: true
+						}
+					},
+					submitHandler: function(form) {
+						var email = $("#login_email input").val();
+						var password = $("#login_password input").val();
+						
+						// if reset password is unchecked, do normal sign in
+						if ($("#forgot_password input").prop("checked") == false) {
+							$("#loading_screen").removeClass("hide");
+							
+							firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+								$(".alert").addClass("hide");
+
+								decodeIDToken(firebase.auth().currentUser.uid, "login");
+							},
+							function(error) {
+								if (error) {
+									$("#loading_screen").addClass("hide");
+									var errorCode = error.code;
+									var errorMsg;
+									
+									$(".alert-danger").addClass("hide");
+
+									if (errorCode === "auth/wrong-password")
+										errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">Your password is incorrect.</div>";			
+									else if (errorCode === "auth/invalid-email")
+										errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">Your email address is invalid.</div>";
+									else if (errorCode === "auth/user-not-found")
+										errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">There is no user account associated with this email address.</div>";
+									else if (errorCode  === "auth/too-many-requests") {
+										$("#login_email input").addClass("disable");
+										$("#login_password input").addClass("disable");
+										$("#forgot_password input").addClass("disable");
+										$(".login-do input").addClass("disable");
+										
+										errorMsg = "<div class=\"alert alert-danger\" role=\"alert\">You have run out of login attempts. Please try again later.</div>";
+									}
+									else
+										errorMsg = genericError;
+									
+									$("#login_form").append(errorMsg);
+
+									console.log(error);
+								}
+							});
+						}
+						else {
+							auth.sendPasswordResetEmail(email).then(function() {
+								$("#login_form").append("<div class=\"alert alert-success\" role=\"alert\">A password reset email has been sent.</div>");
+							}, function(error) {
+								$("#login_form").append(genericError);
+							});
+						}
+						
+						return false;
+					}
+				});
+			}			
 			/* EDIT PAGE FORMS */
-			if ($pageId.indexOf("edit") != -1) {
+			else if ($pageId.indexOf("edit") != -1) {
 				$("#location_form .char_count").html("<span>Characters remaining:</span> " + (600 - $("#location_form #notes").val().length));
 				$("#location_form #notes").on("keyup", function(event) {
 					$(".char_count").html("<span>Characters remaining:</span> " + (600 - $(this).val().length));
@@ -445,6 +516,28 @@ $("#loading_screen").removeClass("hide");
 			}
 			/* PROFILE & USERS PAGE */
 			else if (($pageId.indexOf("profile") != -1) || ($pageId.indexOf("users") != -1)) {
+				/* Enable all disabled form fields except for user group. */
+				$("#user_form #edit_button, #edit_modal #edit_button, #new_user_button").on("click", function() {					
+					$("#user_form form, #edit_modal form").resetForm();
+					
+					for (var i=0; i<$("#user_form form, #edit_modal form")[0].elements.length; i++)
+						$("#user_form form, #edit_modal form")[0].elements[i].disabled = false;
+					
+					if ($(this).attr("id") === "new_user_button") {
+						if ($("#edit_modal form").length > 0)
+							$("#user_form").html($("#edit_modal form"));
+						
+						$("#instructions").removeClass("hide");
+						$("label[for='user_group'], label[for='email']").append($("label[for='first_name'] .required").clone());
+					}
+					
+					if ($pageId.indexOf("profile") == -1)
+						$("#user_form #email").parent().removeClass("hide");
+					
+					$("#user_form #edit_button, #edit_modal #edit_button ").hide();
+					$(".help-block, #user_form #submit_button, #edit_modal #submit_button").removeClass("hide");
+				});
+				
 				var rules;
 				
 				if ($pageId.indexOf("profile") != -1) {
@@ -496,19 +589,19 @@ $("#loading_screen").removeClass("hide");
 					};
 				}
 			
-				$("#user_form form").validate({
+				$("#user_form form, #edit_modal form").validate({
 					debug: true,
 					errorPlacement: function(error, element) {
 						error.appendTo(element.parent());
 					},
 					rules: rules,
 					messages: messages,
-					submitHandler: function(form) {
-						$("#user_form form .alert").remove();
+					submitHandler: function(form) {						
+						$("form .alert").remove();
 						
 						var showInfo;
 						
-						if ($("#user_form #show_info input:checked").val() === "yes")
+						if ($("#show_info input:checked").val() === "yes")
 							showInfo = true;
 						else
 							showInfo = false;
@@ -516,54 +609,94 @@ $("#loading_screen").removeClass("hide");
 						
 						var data;
 					
-						if ($pageId.indexOf("profile") != -1) {
+						if (($pageId.indexOf("profile") != -1) || ($("#edit_modal form").length > 0)) {
 							data = {
-								"firstName": $("#user_form #first_name").val(),
-								"lastName": $("#user_form #last_name").val(),
-								"phone": $("#user_form #phone").val(),
-								"title": $("#user_form #title").val(),
-								"dept": $("#user_form #dept").val(),
+								"firstName": $("form #first_name").val(),
+								"lastName": $("form #last_name").val(),
+								"phone": $("form #phone").val(),
+								"title": $("form #title").val(),
+								"dept": $("form #dept").val(),
 								"address": {
-									"bldg": $("#user_form #bldg").val(),
-									"streetAddr": $("#user_form #address").val(),
-									"city": $("#user_form #city").val(), 
-									"state": $("#user_form #state").val(),
-									"zipcode": $("#user_form #zipcode").val()
+									"bldg": $("form #bldg").val(),
+									"streetAddr": $("form #address").val(),
+									"city": $("form #city").val(), 
+									"state": $("form #state").val(),
+									"zipcode": $("form #zipcode").val()
 								},
 								"showInfo": showInfo
 							};
 							
-							var userRef = db.ref("users/" + firebase.auth().currentUser.uid);
+							var userRef;
+							
+							if ($pageId.indexOf("profile") != -1)
+								userRef = db.ref("users/" + firebase.auth().currentUser.uid);
+							else
+								userRef = db.ref("users/" + $("#edit_modal form #uid").val());
+							
 							var result = userRef.update(data).then(function() {
-								$("#user_form form").append("<div class='alert alert-success' role='alert'>Your information was successfully updated.</div>");
+								$("#user_form form, #edit_modal form").append("<div class='alert alert-success' role='alert'>The information was successfully updated.</div>");
+								var oldRole = $("#edit_modal form #old_role").val();
+								
+								/* Update the role node if necessary. */
+								if (($("#edit_modal form").length > 0) && ($("#edit_modal #user_group_dropdown").val() !== oldRole)) {
+									/* Update the rules node. */
+									var roleData = {};
+									roleData[userRef] = "true";
+									
+									var rolesRef = db.ref("roles/" + $("#edit_modal #user_group_dropdown").val());
+									rolesRef.update(roleData).then(function() {
+										/* Remove the user from the old node. */
+										var oldRolesRef = db.ref("roles/" + oldRole);
+										oldRolesRef.remove().catch(function(error) {
+											$("#edit_modal form").append(genericError);
+											
+											/* Roll back the change if the delete fails. */
+											oldRolesRef.update(roleData);
+											userRef.update({"role": oldRole});
+										});
+									}).catch(function(error) {
+										$("#edit_modal form").append(genericError);
+										
+										/* Roll back user data change if the role node update fails. */
+										userRef.update({"role": oldRole});
+									});
+								}
 							}, function() {
-								$("#user_form form").append(genericError);
+								$("#user_form form, #edit_modal form").append(genericError);
 							});
 						}
-						else {
+						else if ($pageId.indexOf("users") != -1) {
 							data = {
-								"role": $("#user_form #user_group_dropdown").val(),
-								"firstName": $("#user_form #first_name").val(),
-								"lastName": $("#user_form #last_name").val(),
-								"email": $("#user_form #email").val(),
-								"phone": $("#user_form #phone").val(),
-								"title": $("#user_form #title").val(),
-								"dept": $("#user_form #dept").val(),
+								"role": $("form #user_group_dropdown").val(),
+								"firstName": $("form #first_name").val(),
+								"lastName": $("form #last_name").val(),
+								"email": $("form #email").val(),
+								"phone": $("form #phone").val(),
+								"title": $("form #title").val(),
+								"dept": $("form #dept").val(),
 								"address": {
-									"bldg": $("#user_form #bldg").val(),
-									"streetAddr": $("#user_form #address").val(),
-									"city": $("#user_form #city").val(), 
-									"state": $("#user_form #state").val(),
-									"zipcode": $("#user_form #zipcode").val()
+									"bldg": $("form #bldg").val(),
+									"streetAddr": $("form #address").val(),
+									"city": $("form #city").val(), 
+									"state": $("form #state").val(),
+									"zipcode": $("form #zipcode").val()
 								},
 								"showInfo": showInfo
 							};
+							
+							//console.log();
 							
 							/* Create a second connection to create the new user. 
 							 * From: http://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551
 							 */
-							if (!secondaryApp)
-								var secondaryApp = firebase.initializeApp(config, "Secondary");
+							var secondaryApp;
+							 
+							try {
+								secondaryApp = firebase.app("Secondary");
+							}
+							catch(err) {
+								secondaryApp = firebase.initializeApp(config, "Secondary");
+							}								
 							
 							// randomly generate a new temp password
 							var password = Math.random().toString(36).slice(-8);
@@ -591,8 +724,11 @@ $("#loading_screen").removeClass("hide");
 								}, function() {
 									$("#user_form form").append(genericError);
 								});
-							}).catch(function(error) {
-								$("#user_form form").append(genericError);
+							}).catch(function(error) {								
+								if (error.code == "auth/email-already-in-use")
+									$("#user_form form").append("<div class='alert alert-danger' role='alert'>This email address is already in use.</div>");
+								else
+									$("#user_form form").append(genericError);
 							});
 						}
 					}
@@ -748,29 +884,28 @@ $("#loading_screen").removeClass("hide");
 							copper_greater: true
 						}
 					},
-					submitHandler: function(form) {						
-						$(".loader").css("margin-top", "15px").appendTo("#water_tests_form");
+					submitHandler: function(form) {
+						$(".loader").removeClass("hide").css("margin-top", "15px").insertAfter("#water_tests_form");
+						$("#display_area").html("");
 						
 						$(form).ajaxSubmit({
 							type: "POST",
+							url: "includes/functions.php",
 							data: {
 								"report_type": $(".nav button[class*=active]").attr("id"),
 								"file": $("form").hasClass("hide") ? "true" : "false", // if there is a form visible then the data comes from the DB
 								"uid": firebase.auth().currentUser.uid
 							},
 							dataType: "json",
-							url: "includes/functions.php",
 							success: function(data) {
 								console.log(firebase.auth().currentUser.uid);
+								$("form .alert").remove();
 								
 								var content;
-								console.log(eval(data.$(".nav button[class*=active]").attr("id").length));
-								var total_results = eval(data.$(".nav button[class*=active]").attr("id").length);
+								var total_results = eval("data." + $(".nav button[class*=active]").attr("id") + ".length");
 								
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
-									
-									content += "<button id='print_report' type='button' class='btn btn-default' href='#'>Print</button> <button id='create_csv' type='button' class='btn btn-default' href='#'>Export as CSV</button>";
 									
 									if ($(".nav button[class*=active]").attr("id") === "water_tests") {
 										content += "<div class=\"table-responsive\"> \
@@ -778,55 +913,25 @@ $("#loading_screen").removeClass("hide");
 												<tr> \
 													<th class=\"record_number\">&nbsp;</th> \
 													<th class=\"address\">Address</th> \
-													<th class=\"lead_level\">Lead Level (ppb)</th> \
-													<th class=\"copper_level\">Copper Level (ppb)</th> \
+													<th class=\"small_num\">Test Lead Level (ppb)</th> \
+													<th class=\"small_num\">Test Copper Level (ppb)</th> \
 													<th class=\"date\">Date Submtted</th> \
 													<th></th> \
 												</tr> \
 											</table> \
 											\
-											<div id='scrollbox'> \
+											<div id=\"scrollbox\"> \
 											<table id=\"table_body\" class=\"table\">";
 										
 										for (var i=0; i<total_results; i++) {
-											var temp = data.water_tests[i];
+											var temp = eval("data." + $(".nav button[class*=active]").attr("id") + "[i]");
 											
 											content += "<tr> \
 												<td class=\"record_number\">" + (i+1) + "</td> \
 												<td class=\"address\">" + temp.address + "</td> \
-												<td class=\"lead_level\">" + temp.leadLevel + "</td> \
-												<td class=\"copper_level\">" + temp.copperLevel + "</td> \
+												<td class=\"small_num\">" + temp.leadLevel + "</td> \
+												<td class=\"small_num\">" + temp.copperLevel + "</td> \
 												<td class=\"date\">" + temp.dateUpdated + "</td> \
-											</tr>";
-										}
-									}
-									else if ($(".nav button[class*=active]").attr("id") === "predictions") {
-										content += "<div class=\"table-responsive\"> \
-											<table id=\"table_header\" class=\"table\"> \
-												<tr> \
-													<th class=\"record_number\">&nbsp;</th> \
-													<th class=\"parcel_id\">Parcel ID</th> \
-													<th class=\"address\">Address</th> \
-													<th class=\"prediction\">Prediction</th> \
-													<th class=\"lead_level\">Average Lead Level</th> \
-													<th></th> \
-												</tr> \
-											</table> \
-											\
-											<div id='scrollbox'> \
-											<table id=\"table_body\" class=\"table\">";
-											
-										console.log(data);
-										
-										for (var i=0; i<total_results; i++) {
-											var temp = data.predictions_report[i];
-											
-											content += "<tr> \
-												<td class=\"record_number\">" + (i+1) + "</td> \
-												<td class=\"parcel_id\">" + temp.parcelID + "</td> \
-												<td class=\"address\">" +temp.address + "</td> \
-												<td class=\"prediction\">" + temp.prediction + "</td> \
-												<td class=\"lead_level\">" + temp.avgLeadLevel + "</td> \
 											</tr>";
 										}
 									}
@@ -838,41 +943,14 @@ $("#loading_screen").removeClass("hide");
 								
 								$(".loader").addClass("hide");
 								
-								$("#display_area").html(content);
-								$("#display_area").removeClass("hide");
+								$("#display_area").html(content).removeClass("hide");
 								$("#report_area #display_area #scrollbox").css({
 									"margin-top": $("#report_area #display_area #table_header").css("height"),
 									"height": (windowHeight * 0.75) + "px"
 								});
-								
-								/* Load a new window with a print version of the data. */
-								$("#print_report").on("click", function() {									
-									var printWindow = window.open("", "PrintWindow", "menubar=yes,toolbar=no,scrollbars=yes,resizable=no,width="+window.outerWidth+",height="+window.outerHeight);
-									
-									$(printWindow.document.body).html($("#table_header").clone()).append($("#table_body").clone());
-									$(printWindow.document.body).find("table").css("width", "100%");
-									
-									if ($(".nav button[class*=active]").attr("id") === "water_tests") {
-										$(printWindow.document.body).find(".record_number").css("width", "8%");
-										$(printWindow.document.body).find(".lead_level, .copper_level").css({"width": "19%", "text-align": "center"});
-										$(printWindow.document.body).find(".date").css({"width": "20%", "text-align": "center"});
-									}
-									else if ($(".nav button[class*=active]").attr("id") === "predictions") {
-										
-									}
-								});
-								
-								/* Display a dialog to let the user download a CSV file of the data. */
-								$("#create_csv").on("click", function(event) {
-									$("#create_csv").siblings(".alert").remove();
-									
-									var form = $("<form></form>");
-									$(form).attr("method", "post").attr("target", "_blank").attr("action", "includes/report_download.php");
-									var type_input = $("<input type='hidden' name='report_type' />").val($(".nav button[class*=active]").attr("id"));
-									var pid_input = $("<input type='hidden' name='uid' />").val(firebase.auth().currentUser.uid);
-									$(form).append(type_input, pid_input);
-									$(form).appendTo("body").submit();
-								});
+							},
+							fail: function() {
+								$("form").append(genericError);
 							}
 						});
 						
@@ -892,6 +970,43 @@ $("#loading_screen").removeClass("hide");
 					validator.element("#lead_greater");
 					validator.element("#copper_less");
 					validator.element("#copper_greater");
+				});
+				
+				/* Load a new window with a print version of the data. */
+				$("#print_report").on("click", function() {									
+					var printWindow = window.open("", "PrintWindow", "menubar=yes,toolbar=no,scrollbars=yes,resizable=no,width="+window.outerWidth+",height="+window.outerHeight);
+					
+					$(printWindow.document.body).html($("#table_header").clone()).append($("#table_body").clone());
+					$(printWindow.document.body).find("table").css("width", "100%");
+					
+					if ($(".nav button[class*=active]").attr("id") === "water_tests") {
+						$(printWindow.document.body).find(".record_number").css("width", "8%");
+						$(printWindow.document.body).find(".lead_level, .copper_level").css({"width": "19%", "text-align": "center"});
+						$(printWindow.document.body).find(".date").css({"width": "20%", "text-align": "center"});
+					}
+					else if ($(".nav button[class*=active]").attr("id") === "predictions") {
+						
+					}
+				});
+				
+				/* Display a dialog to let the user download a CSV file of the data. */
+				$("#create_csv").on("click", function(event) {
+					$("#create_csv").siblings(".alert").remove();
+					
+					var report_type = $(".nav button[class*=active]").attr("id");
+					var file_status = $("form").hasClass("hide") ? "true" : "false";
+					
+					if (!file_status) {
+						var form = $("<form></form>");
+						$(form).attr("method", "post").attr("target", "_blank").attr("action", "includes/report_download.php");
+						var type_input = $("<input type='hidden' name='report_type' />").val(report_type);
+						var file_input = $("<input type='hidden' name='file' />").val(file_status);
+						var uid_input = $("<input type='hidden' name='uid' />").val(firebase.auth().currentUser.uid);
+						$(form).append(type_input, file_input, uid_input);
+						$(form).appendTo("body").submit();
+					}
+					else
+						window.location.href="https://storage.cloud.google.com/h2o-flint.appspot.com/" + report_type + "_report.csv";
 				});
 			}
 			

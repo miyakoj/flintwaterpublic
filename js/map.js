@@ -616,7 +616,7 @@ function attachLegendCard() {
 
 /* Calls the Google Cloud Storage API and reads in the JSON files created from the database data. */
 function callStorageAPI(object) {
-	gapi.client.load('storage', 'v1').then(function() {
+	gapi.client.load("storage", "v1").then(function() {
 		var request = gapi.client.storage.objects.get({
 			"bucket": defaultBucket,
 			"object": object,
@@ -624,17 +624,6 @@ function callStorageAPI(object) {
 		});
 		
 		request.then(function(resp) {
-			/* Heatmap Data */
-			/*if (object == "leadlevels.json") {
-				heatmapData = [];
-				js_obj = $.parseJSON(resp.body);
-				
-				for (i=0; i<js_obj.leadLevels.length; i++) {
-					var info = js_obj.leadLevels[i];
-					// var weightValue = assignWeight(info.lead_ppb);
-					heatmapData.push({lat: info.latitude, lng: info.longitude, lead: info.leadlevel, date: info.dateUpdated, address: info.StAddress});
-				}
-			}*/
 			/* Lead level area data. */
 			if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);

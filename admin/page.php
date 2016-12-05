@@ -20,7 +20,7 @@ if (@isset($_POST["pid"])) {
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
 			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
-			$users_link = '<li class="hide"><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
+			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		
 		// users with edit only privileges
@@ -47,7 +47,7 @@ if (@isset($_POST["pid"])) {
 					<form method='post'>
 					<div class='form-group'>
 						<div class='row'>
-						<div class='col-xs-12 col-md-2 col-md-offset-1'>
+						<div class='col-xs-12 col-md-3 col-md-offset-1'>
 						<label for='user_group'>User Group:</label>
 						<input id='user_group' class='form-control' type='text' name='user_group' size='5' disabled />
 						<select id='user_group_dropdown' class='form-control' name='user_group'>
@@ -277,6 +277,8 @@ if (@isset($_POST["pid"])) {
 							</div></div>
 						</form>
 						
+						<button id='print_report' type='button' class='btn btn-default hide' href='#'>Print</button> <button id='create_csv' type='button' class='btn btn-default hide' href='#'>Export as CSV</button>
+						
 						<div id='display_area' class='hide'></div>
 					</div>
 				</div>
@@ -304,8 +306,8 @@ if (@isset($_POST["pid"])) {
 			$years = "['" . $years . "']";
 			
 			$script = "<script>
-			\$(document).ready(function() {
-				\$('#display_area form').resetForm();
+			$(document).ready(function() {
+				$('#display_area form').resetForm();
 				
 				var timePeriods = $TIME_PERIOD;
 				var months = $MONTHS;
@@ -320,34 +322,34 @@ if (@isset($_POST["pid"])) {
 				for (var i=0; i<months.length; i++)
 					monthsOpts += '<option value=\"' + (i+1) + '\">' + months[i] + '</option>';
 				
-				\$('#time_period #years').html(yearOpts);
-				\$('#time_period #months').html(monthsOpts);
+				$('#time_period #years').html(yearOpts);
+				$('#time_period #months').html(monthsOpts);
 				
 				/* Hide the form if no report type is selected. */
-				/*\$('#report_type').on('change', function() {
-					if (\$('#report_type').val() === '')
-						\$('#report_area form').addClass('hide');
+				/*$('#report_type').on('change', function() {
+					if ($('#report_type').val() === '')
+						$('#report_area form').addClass('hide');
 				});*/
 				
 				/* Clear the report result area and the form if the form clear button is clicked. */
-				\$('#clear_button').on('click', function() {
-					\$('#display_area').html('');
-					\$('#display_area').addClass('hide');
-					\$('form').resetForm();
+				$('#clear_button').on('click', function() {
+					$('#display_area').html('');
+					$('#display_area').addClass('hide');
+					$('form').resetForm();
 				});
 				
-				\$('#water_tests').on('click', function() {
+				$('#water_tests').on('click', function() {
 					// deactivate all other buttons
-					\$('#report_list .nav button').removeClass('active');
+					$('#report_list .nav button').removeClass('active');
 					
-					\$(this).addClass('active');
-					\$('#instructions').addClass('hide');
-					\$(this).find('#water_tests_form').resetForm();
+					$(this).addClass('active');
+					$('#instructions').addClass('hide');
+					$(this).find('#water_tests_form').resetForm();
 					
 					var content = '';
 					
-					if (\$(this).attr('id').indexOf('water') != -1) {
-						\$('#report_type').addClass('hide');
+					if ($(this).attr('id').indexOf('water') != -1) {
+						$('#report_type').addClass('hide');
 						
 						/*content = '<option id=\"all_water_tests1\">All Water Tests (Ungrouped)</option> \
 								<option id=\"all_water_tests2\" disabled=\"disabled\">All Water Tests (Grouped by Address)</option> \
@@ -355,38 +357,33 @@ if (@isset($_POST["pid"])) {
 								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Grouped by Address)</option>';*/
 					}					
 						
-					\$('#report_type select').append(content);
-					
-					// hide all forms
-					\$('#report_area form').addClass('hide');
-					\$('#report_area #details').remove();
-					
-					\$('#report_area #water_tests_form').removeClass('hide');
-				});
-				
-				\$('#predictions').on('click', function() {
-					// deactivate all other buttons
-					\$('#report_list .nav button').removeClass('active');
+					$('#report_type select').append(content);
 					
 					// hide all forms
 					$('#report_area form').addClass('hide');
+					$('#report_area #details').remove();
+					$('#display_area').html('').addClass('hide');
 					
-					\$(this).addClass('active');
-					\$('#instructions').addClass('hide').after($('.loader'));
-					\$('.loader').css({'margin-top': '15px', 'margin-bottom': '15px'});
+					$('#report_area #water_tests_form').removeClass('hide');
+				});
+				
+				$('#predictions').on('click', function() {
+					var report = $(this).attr('id') + '_report.json';
 					
-					\$.ajax({
-						type: 'POST',
-						url: 'includes/functions.php',
-						data: {'report_type': \$('.nav button[class*=active]').attr('id'), 'file': $('form').hasClass('hide') ? 'true' : 'false'}
-					}).done(function(data) {
-						\$('#display_area p').remove();
-						\$('.loader').addClass('hide');
-						\$('#report_area #details').remove();
-						\$('#display_area').removeClass('hide').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>.</p>');
-					}).fail(function(data) {
-						\$('.loader').after(genericError);
-					});
+					// deactivate all other buttons
+					$('#report_list .nav button').removeClass('active');
+					
+					// hide all forms
+					$('#report_area form').addClass('hide');
+					$('#display_area').html('').addClass('hide');
+					
+					$(this).addClass('active');
+					$('#instructions').addClass('hide');
+					//$('.loader').removeClass('hide').css({'margin-top': '15px', 'margin-bottom': '15px'}).insertBefore($('#display_area'));
+					
+					$('#display_area').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>.</p>');
+					$('#details').css('margin-bottom', '0');
+					$('#create_csv').css('margin-bottom', '15px').removeClass('hide');
 				});
 			});
 			</script>";
@@ -617,12 +614,26 @@ if (@isset($_POST["pid"])) {
 								</div>
 								
 								<p id='instructions' class='hide'>A password will be randomly generated and an email will be sent to the user.</p>
+								
+								<div id=\"edit_modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">
+								<div class=\"modal-dialog\" role=\"document\">
+									<div class=\"modal-content\">
+									<div class=\"modal-header\">
+										<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\"><span aria-hidden=\"true\">&times;</span></button>
+										<h4 class=\"modal-title\">Edit User</h4>
+									</div>
+									  
+									<div class=\"modal-body\"></div>
+									</div>
+								</div>
+								</div>
 				
 								<div id=\"user_list\" class=\"collapse\">
 								<div class=\"table-responsive\">
 								<table class=\"table table-striped\">
 									<thead>
 										<tr>
+										<th class=\"edit\">*</th>
 										<th class=\"first_name\">First Name</th>
 										<th class=\"last_name\">Last Name</th>
 										<th class=\"email\">Email</th>
@@ -636,27 +647,8 @@ if (@isset($_POST["pid"])) {
 								</div>";
 				
 				$script = "<script>
-					\$(document).ready(function() {
+					$(document).ready(function() {
 						var field;
-						var content = '';
-						
-						var query = db.ref('users').orderByChild('firstName');
-						var uid;
-				
-						query.once(\"value\").then(function(snapshot) {
-							snapshot.forEach(function(childSnapshot) {
-								uid = childSnapshot.key;
-								
-								content += '<tr id=\"' + uid + '\">';
-								content += '<td id=\"first_name\">' + childSnapshot.child(\"firstName\").val() + '</td>';
-								content += '<td id=\"last_name\">' + childSnapshot.child(\"lastName\").val() + '</td>';
-								content += '<td id=\"email\">' + childSnapshot.child(\"email\").val() + '</td>';
-								content += '<td id=\"title\">' + childSnapshot.child(\"title\").val() + '</td>';
-								content += '</tr>';
-							});
-							
-							\$('table tbody').append(content);
-						});
 						
 						/* Hide the other collapsible if it's visible. */
 						$('#user_form, #user_list').on('show.bs.collapse', function() {
@@ -666,28 +658,73 @@ if (@isset($_POST["pid"])) {
 								$('#user_form').collapse('hide');
 						});
 						
-						/* Enable all disabled form fields except for user group. */
-						$('#user_form #edit_button, #new_user_button').on('click', function() {
-							for (var i=0; i<$('#user_form form')[0].elements.length; i++)
-								$('#user_form form')[0].elements[i].disabled = false;
-							
-							if (\$pageId.indexOf('profile') != -1) {
-								$('#user_form #user_group').attr('disabled', 'true');
-								$('#user_form #email').parent().after().addClass('col-md-offset-1');
-							}
-							else {
-								if ($(this).attr('id') === 'new_user_button')
-									$('#instructions').removeClass('hide');
-								
-								$('#user_form #email').parent().removeClass('hide');
-								$('#user_form #edit_button').hide();
-								$('.help-block, #user_form form #submit_button').removeClass('hide');
-							}
-						});
-						
 						$('#user_list_button').on('click', function() {
-							console.log($(this));
 							$('#instructions').addClass('hide');
+							$('#user_form form .required').hide();
+							
+							var content = '';
+						
+							var query = db.ref('users').orderByChild('firstName');
+							var uid;
+					
+							query.once(\"value\").then(function(snapshot) {				
+								snapshot.forEach(function(childSnapshot) {
+									uid = childSnapshot.key;
+									
+									content += '<tr id=\"' + uid + '\">';
+									content += '<td id=\"edit\"><a href=\"#\"><span class=\"material-icons\">edit</span></a></td>';
+									content += '<td id=\"first_name\">' + childSnapshot.child(\"firstName\").val() + '</td>';
+									content += '<td id=\"last_name\">' + childSnapshot.child(\"lastName\").val() + '</td>';
+									content += '<td id=\"email\">' + childSnapshot.child(\"email\").val() + '</td>';
+									content += '<td id=\"title\">' + childSnapshot.child(\"title\").val() + '</td>';
+									content += '</tr>';
+								});
+								
+								$('table tbody').append(content);
+								
+								$('#user_list table #edit a').on('click', function() {
+									uid = $(this).parents('tr').attr('id');
+									
+									db.ref('users/' + uid).once('value').then(function(snapshot) {										
+										for (var i=0; i<$('#user_form form')[0].elements.length; i++)
+											$('#user_form form, #edit_modal form')[0].elements[i].disabled = true;
+										
+										// enable the edit and submit buttons
+										$('#user_form form #edit_button, #user_form form #submit_button').removeAttr('disabled');
+										
+										var show_info;
+										
+										if (snapshot.val().showInfo)
+											show_info = 'yes';
+										else
+											show_info = 'no';
+										
+										$('#user_form form #user_group_dropdown').val(snapshot.val().role);
+										$('#user_form form #first_name').val(snapshot.val().firstName);
+										$('#user_form form #last_name').val(snapshot.val().lastName);
+										$('#user_form form #title').val(snapshot.val().title);
+										$('#user_form form #email').val(snapshot.val().email);
+										$('#user_form form #phone').val(snapshot.val().phone);
+										$('#user_form form #dept').val(snapshot.val().dept);
+										$('#user_form form #bldg').val(snapshot.val().address.bldg);
+										$('#user_form form #address').val(snapshot.val().address.streetAddr);
+										$('#user_form form #city').val(snapshot.val().address.city);
+										$('#user_form form #zipcode').val(snapshot.val().address.zipcode);
+										$('#user_form form #state').val(snapshot.val().address.state);
+										$('#user_form form #show_info input').val([show_info]);
+										
+										var role_input = '<input id=\"old_role\" type=\"hidden\" value=\"' + snapshot.val().role + '\" />';
+										var uid_input =  '<input id=\"uid\" type=\"hidden\" value=\"' + uid + '\" />';
+										
+										$('#user_form form').append(role_input, uid_input); // hidden old role field
+										
+										$('#user_form form .required').show();
+										$('#user_form form #phone').parents('.row').find('.col-md-offset-1').removeClass('hide');
+										$('#edit_modal .modal-body').html($('#user_form form'));
+										$('#edit_modal').modal('show');
+									});
+								});
+							});
 						});
 					});
 					</script>";
@@ -794,7 +831,17 @@ if (@isset($_POST["pid"])) {
 				</div>
 				</div>
 				</div>
-				</div>";			
+				</div>";
+
+			$script = "<script>
+					$(document).ready(function() {
+						$('#edit_profile_heading a').on('click', function() {
+							$('#user_form #user_group').attr('disabled', 'true');
+							$('#user_form #phone').parent().addClass('col-md-offset-1');								
+							$('#user_form').removeClass('collapse');
+						});						
+					});
+					</script>";
 			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
@@ -959,12 +1006,12 @@ if (@isset($_POST["pid"])) {
 		
 		
 		$script = "<script>
-		\$(document).ready(function() {
+		$(document).ready(function() {
 			/* Map-related stuff. */
-			\$('#location_card #more_info_details').hide();
+			$('#location_card #more_info_details').hide();
 			
 			/* Dashboard doughnut status charts. */
-			var parcelChart = new Chart(\$('#parcel_info_chart'), {
+			var parcelChart = new Chart($('#parcel_info_chart'), {
 				type: 'doughnut',
 				data: {
 					labels: ['Total Properties', 'Total Abandoned Properties', 'Total Unknown Properties'],
@@ -982,7 +1029,7 @@ if (@isset($_POST["pid"])) {
 				}
 			});
 			
-			var waterTestsChart = new Chart(\$('#water_tests_chart'), {
+			var waterTestsChart = new Chart($('#water_tests_chart'), {
 				type: 'doughnut',
 				data: {
 					labels: ['Total Households', 'Total Locations Tested'],
@@ -1000,7 +1047,7 @@ if (@isset($_POST["pid"])) {
 				}
 			});
 		
-			/*var repairsChart = new Chart(\$('#repairs_chart'), {
+			/*var repairsChart = new Chart($('#repairs_chart'), {
 				type: 'doughnut',
 				data: {
 					labels: ['Approved Repairs', 'Completed Repairs'],
@@ -1020,11 +1067,11 @@ if (@isset($_POST["pid"])) {
 			
 			// change how much area the line graphs take up depending on display size
 			if (windowWidth >= 1920)
-				\$('#graph_area div').addClass('col-lg-6');
+				$('#graph_area div').addClass('col-lg-6');
 			else
-				\$('#graph_area div').addClass('col-lg-10 col-lg-offset-1');
+				$('#graph_area div').addClass('col-lg-10 col-lg-offset-1');
 			
-			var levelsChart = new Chart(\$('#levels_trend'), {
+			var levelsChart = new Chart($('#levels_trend'), {
 				type: 'line',
 				data: {
 					labels: $TIME_PERIOD,
@@ -1082,7 +1129,7 @@ if (@isset($_POST["pid"])) {
 				}
 			});
 			
-			var waterTests = new Chart(\$('#water_tests_trend'), {
+			var waterTests = new Chart($('#water_tests_trend'), {
 				type: 'line',
 				data: {
 					labels: $TIME_PERIOD,

@@ -39,7 +39,3 @@ $json_output .= "]}";
 $options = ['gs' => ['Content-Type' => 'text/csv', 'read_cache_expiry_seconds' => '86400']];
 $context = stream_context_create($options);
 file_put_contents("gs://h2o-flint.appspot.com/predictions_report.csv", $csv_output, 0, $context);
-
-$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
-$context = stream_context_create($options);
-file_put_contents("gs://h2o-flint.appspot.com/predictions_report.json", $json_output, 0, $context);
