@@ -305,7 +305,7 @@ if (@isset($_POST["pid"])) {
 			$years = implode("', '", $years);
 			$years = "['" . $years . "']";
 			
-			$script = "<script>
+			$script = "<script type='text/javascript'>
 			$(document).ready(function() {
 				$('#display_area form').resetForm();
 				
@@ -646,7 +646,7 @@ if (@isset($_POST["pid"])) {
 								</div>
 								</div>";
 				
-				$script = "<script>
+				$script = "<script type='text/javascript'>
 					$(document).ready(function() {
 						var field;
 						
@@ -833,7 +833,7 @@ if (@isset($_POST["pid"])) {
 				</div>
 				</div>";
 
-			$script = "<script>
+			$script = "<script type='text/javascript'>
 					$(document).ready(function() {
 						$('#edit_profile_heading a').on('click', function() {
 							$('#user_form #user_group').attr('disabled', 'true');
@@ -933,12 +933,6 @@ if (@isset($_POST["pid"])) {
 						</div>
 					</div>
 					
-					<div id='legend_card' class='card hide'>
-						<div class='card-main'>
-							<div class='card-inner'></div>
-						</div>
-					</div>
-					
 					<div id='map_layer_selection' class='btn-toolbar' role='group' aria-label='Map Layer Buttons'>
 						<div class='btn-group' role='group'><button id='heatmap_btn' type='button' class='btn btn-default'>Lead Levels</button></div>
 						<div class='btn-group' role='group'><button id='pipes_btn' type='button' class='btn btn-default'>Pipes &amp; Construction Sites</button></div>
@@ -950,6 +944,12 @@ if (@isset($_POST["pid"])) {
 						<div class='btn-group' role='group'><button id='water_testing_btn' type='button' class='btn btn-default'>Water Testing</button></div>
 						<div class='btn-group' role='group'><button id='blood_testing_btn' type='button' class='btn btn-default'>Blood Testing</button></div>
 						<div class='btn-group' role='group'><button id='water_filters_btn' type='button' class='btn btn-default'>Water Filters</button></div>
+					</div>
+					
+					<div id='legend_card' class='card hide'>
+						<div class='card-main'>
+							<div class='card-inner'></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -1005,8 +1005,14 @@ if (@isset($_POST["pid"])) {
 		$numTestsData = arrayAccumulation($testLevelsData[2]);
 		
 		
-		$script = "<script>
+		$script = "<script type='text/javascript'>
 		$(document).ready(function() {
+			/* Global Chart Config */
+			Chart.defaults.global.defaultFontFamily = '\"Verdana\", sans-serif';
+			Chart.defaults.global.defaultFontSize = 11;
+			Chart.defaults.global.responsive = true;
+			Chart.defaults.global.maintainAspectRatio = true;
+			
 			/* Map-related stuff. */
 			$('#location_card #more_info_details').hide();
 			
@@ -1014,7 +1020,7 @@ if (@isset($_POST["pid"])) {
 			var parcelChart = new Chart($('#parcel_info_chart'), {
 				type: 'doughnut',
 				data: {
-					labels: ['Total Properties', 'Total Abandoned Properties', 'Total Unknown Properties'],
+					labels: ['Total Properties', 'Total Abandoned Properties', 'Total Unknown Status Properties'],
 					datasets: [{
 						data: [$total_parcels[0], $abandoned_parcels[0], $unknown_parcels[0]],
 						backgroundColor: ['#CCC', '#5266B0', '#252e56']

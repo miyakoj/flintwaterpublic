@@ -1372,7 +1372,7 @@ $(document).ready(function() {
 				$("#heatmap_btn img").attr("src", folderPrefix+"images/lead_info_icon_white.png");
 				
 				if ($pageId.indexOf("dashboard") != -1)
-					$("#legend_card").addClass("hide");	
+					$("#legend_card").addClass("hide");
 			}
 			else {
 				resourceActiveArray[0] = 1;

@@ -29,9 +29,8 @@ $("#loading_screen").removeClass("hide");
 	
 	$('#supported').text('Supported/allowed: ' + !!screenfull.enabled);
 
-	if (!screenfull.enabled) {
+	if (!screenfull.enabled)
 		return false;
-	}
 
 	$('#toggle').click(function () {
 		screenfull.toggle($('#container')[0]);
@@ -187,10 +186,10 @@ $("#loading_screen").removeClass("hide");
 			var validator;
 			
 			/* From: http://regexlib.com/REDetails.aspx?regexp_id=1111 */
-			$.validator.addMethod("password", function(value, element) {
-				return this.optional(element) || /(?=^.{6,10}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*()_+}{&quot;:;'?/&gt;.&lt;,])(?!.*\s).*$/.test(value);
+			$.validator.addMethod("new_password", function(value, element) {
+			return this.optional(element) || /(?=^.{8,20}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+}{\";:;'?/>.<,])(?!.*\s).*$/.test(value);
 			}, "Your password is too simple.");
-			$.validator.classRuleSettings.password = {password: true};
+			$.validator.classRuleSettings.new_password = {new_password: true};
 			
 			$.validator.addMethod("password_confirm", function(value, element) {
 				return this.optional(element) || value == $("#password").val();
@@ -273,7 +272,7 @@ $("#loading_screen").removeClass("hide");
 							firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
 								$(".alert").addClass("hide");
 
-								decodeIDToken(firebase.auth().currentUser.uid, "login");
+								decodeIDToken(firebase.auth().currentUser.uid);
 							},
 							function(error) {
 								if (error) {
@@ -301,8 +300,6 @@ $("#loading_screen").removeClass("hide");
 										errorMsg = genericError;
 									
 									$("#login_form").append(errorMsg);
-
-									console.log(error);
 								}
 							});
 						}
@@ -590,7 +587,7 @@ $("#loading_screen").removeClass("hide");
 				}
 			
 				$("#user_form form, #edit_modal form").validate({
-					debug: true,
+					debug: false,
 					errorPlacement: function(error, element) {
 						error.appendTo(element.parent());
 					},
@@ -735,7 +732,7 @@ $("#loading_screen").removeClass("hide");
 				});
 				
 				$("#change_email form").validate({
-					debug: true,
+					debug: false,
 					errorPlacement: function(error, element) {
 						error.appendTo(element.parent());
 					},
@@ -776,14 +773,14 @@ $("#loading_screen").removeClass("hide");
 				});
 				
 				$("#change_password form").validate({
-					debug: true,
+					debug: false,
 					errorPlacement: function(error, element) {
 						error.appendTo(element.parent());
 					},
 					rules: {
-						password: {
+						new_password: {
 							required: true,
-							password: true
+							new_password: true
 						},
 						password_confirm: {
 							required: true,
@@ -844,7 +841,7 @@ $("#loading_screen").removeClass("hide");
 				
 				
 				validator = $("#water_tests_form").validate({
-					debug: true,
+					debug: false,
 					errorPlacement: function(error, element) {
 						element.parent().append(error);
 					},

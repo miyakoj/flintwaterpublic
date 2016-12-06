@@ -41,59 +41,52 @@ echo header("Accept-Encoding: gzip");
 
 <script>
 	$(document).ready(function() {
-	$("#loading_screen").addClass("hide");
+		$("#loading_screen").addClass("hide");
 		
-		if (firebase.auth().currentUser) {
-			app = firebase.auth().app;
-			db = app.database();
+		/* If the user is logged in and they load the login page, forward them to the dashboard page. */
+		firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+				app = firebase.auth().app;
+				db = app.database();
 			
-			/* If the user is logged in and they load the login page, forward them to the dashboard page. */
-			firebase.auth().onAuthStateChanged(function(user) {
-				if (user) {
-					db.ref("users/" + user.uid).once("value").then(function(snapshot) {
-						var form = $("<form></form>");
-						$(form).attr("method", "post").attr("action", "page.php");
-						var pid_input = $("<input type=\"hidden\" name=\"pid\" />").val("dashboard");
-						var role_input = $("<input type=\"hidden\" name=\"role\" />").val(snapshot.val().role);
-						$(form).append(pid_input, role_input);
-						$(form).appendTo("body").submit();
-					});
-				}
-			});
-		}
-		else {
-			/* Position the spinner based upon the size of the screen. */
-			$(".loader").css("margin-top", windowHeight/2 - $(".loader").height()/2 + "px");
-	
-			var config = {
-				apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
-				authDomain: "uniteflint.firebaseapp.com",
-				databaseURL: "https://uniteflint.firebaseio.com",
-				storageBucket: "uniteflint.appspot.com",
-				messagingSenderId: "402781339047"
-			};
-			
-			if (!firebase.auth().app)
-				app = firebase.initializeApp(config);
-			
-			auth = firebase.auth();
-			db = app.database();
-		}
+				db.ref("users/" + user.uid).once("value").then(function(snapshot) {
+					var form = $("<form></form>");
+					$(form).attr("method", "post").attr("action", "page.php");
+					var pid_input = $("<input type=\"hidden\" name=\"pid\" />").val("dashboard");
+					var role_input = $("<input type=\"hidden\" name=\"role\" />").val(snapshot.val().role);
+					$(form).append(pid_input, role_input);
+					$(form).appendTo("body").submit();
+				});
+			}
+			else {
+				/* Position the spinner based upon the size of the screen. */
+				//$(".loader").css("margin-top", windowHeight/2 - $(".loader").height()/2 + "px");
+		
+				/*var config = {
+					apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
+					authDomain: "uniteflint.firebaseapp.com",
+					databaseURL: "https://uniteflint.firebaseio.com",
+					storageBucket: "uniteflint.appspot.com",
+					messagingSenderId: "402781339047"
+				};
+				
+				if (!firebase.auth().app)
+					app = firebase.initializeApp(config);
+				
+				auth = firebase.auth();
+				db = app.database();*/
+			}
+		});
 	});
 	
-	function decodeIDToken(uid, requestType) {
-		firebase.auth().currentUser.getToken(true).then(function(token) {
+	function decodeIDToken(uid, status) {
+		firebase.auth().currentUser.getToken().then(function(token) {
 			$.ajax({
 				type: "POST",
 				url: "includes/verify_ID_token.php",
 				data: {"uid": uid, "token": token}
-			}).done(function(data) {
-				// store the token in a global user object if it"s valid
-				if (data.indexOf("1") != -1) {
-					// store the token in local storage along with the current time
-					//if (typeof(Storage) !== "undefined")
-						//localStorage.setItem("ID_token", token);
-					
+			}).done(function(data) {				
+				if (data === "1") {					
 					db.ref("users/" + uid).once("value").then(function(snapshot) {
 						// load the dashboard page
 						var form = $("<form></form>");
@@ -106,18 +99,18 @@ echo header("Accept-Encoding: gzip");
 						$("#loading_screen").addClass("hide");
 					},
 					function(error) {
-						$(".alert-danger").addClass("hide");
+						$("#loading_screen, .alert-danger").addClass("hide");
 						$("#login_form").append(genericError);
 					});
 				}
 				// ask the user to sign in again if invalid
 				else {
-					$(".alert-danger").addClass("hide");
+					$("#loading_screen, .alert-danger").addClass("hide");
 					$("#login_form").append(genericError);
 				}
 			});
 		}).catch(function(error) {
-			$(".alert-danger").addClass("hide");
+			$("#loading_screen, .alert-danger").addClass("hide");
 			$("#login_form").append(genericError);
 		});
 	}

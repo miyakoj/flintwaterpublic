@@ -35,60 +35,64 @@
 
 {SCRIPT}
 
-<script>			
-$(function () {
-	/* Global Chart Config */
-	Chart.defaults.global.defaultFontFamily = "'Verdana', sans-serif";
-	Chart.defaults.global.defaultFontSize = 11;
-	Chart.defaults.global.responsive = true;
-	Chart.defaults.global.maintainAspectRatio = true;
-	
-	/* Idle Logout 
+<script type="text/javascript">
+	/* 
+	 * Idle Logout 
 	 * From: http://stackoverflow.com/a/955704
-	*/	
-	/*var timer = 0;
-	function set_interval() {
-	  // the interval 'timer' is set as soon as the page loads
-	  timer = setInterval("auto_logout()", 300000);
-	  // the figure '10000' above indicates how many milliseconds the timer be set to.
-	  // Eg: to set it to 5 mins, calculate 5min = 5x60 = 300 sec = 300,000 millisec.
-	  // So set it to 300000
-	}
+	 */
+	var timer = 0;
+	var timeout;
 
-	function reset_interval() {
-	  //resets the timer. The timer is reset on each of the below events:
-	  // 1. mousemove   2. mouseclick   3. key press 4. scroliing
-	  //first step: clear the existing timer
+	var loginResetInterval = function() {
+		if (timer != 0) {
+			// first step: clear the existing timer
+			window.clearInterval(timer);
+			timer = 0;
+			window.clearTimeout(timeout);
+			
+			// second step: implement the timer again
+			timer = window.setInterval(loginAutoLogout, 1200000);
+			
+			$("#timeout_modal").modal("hide");
+		}
+	};
 
-	  if (timer != 0) {
-		clearInterval(timer);
-		timer = 0;
-		// second step: implement the timer again
-		timer = setInterval("auto_logout()", 10000);
-		// completed the reset of the timer
-	  }
-	}
-
-	function auto_logout() {
-	  // this function will redirect the user to the logout script
-	  //window.location = "your_logout_script.php";
-	}
+	var loginAutoLogout = function() {
+		// warn user about impending logout two minutes before
+		$("#timeout_modal").on("click", loginResetInterval).modal("show");
+		
+		// auto-close timeout dialog after two min
+		timeout = setTimeout(function() {
+			firebase.auth().signOut().then(function(user) {
+				// redirect to the login page
+				window.location.href="login.php";
+			}, function(error) {
+				console.log(error);
+			});
+		}, 120000);
+	};
 	
 	$("body").on({
-	load: "set_interval",
-	mousemove: "reset_interval",
-	click: "reset_interval",
-	keypress: "reset_interval",
-	scroll: "reset_interval"
-	});*/
-
-	// Add the following attributes into your BODY tag
-	/*onload="set_interval()"
-	onmousemove="reset_interval()"
-	onclick="reset_interval()"
-	onkeypress="reset_interval()"
-	onscroll="reset_interval()"*/
-});
+		mousemove: loginResetInterval,
+		click: loginResetInterval,
+		keypress: loginResetInterval,
+		scroll: loginResetInterval
+	});
+	
+	$(document).ready(function() {
+		// the interval 'timer' is set as soon as the page loads to 20 min
+		timer = window.setInterval(loginAutoLogout, 1200000);
+		
+		// the idle logout prevention dialog
+		$("body").prepend("<div id='timeout_modal' class='modal fade' tabindex='-1' role='dialog'>" +
+			"<div class='modal-dialog modal-sm' role='document'>" +
+				"<div class='modal-content'>" +
+					"<div class='modal-body'>In two minutes your session will end. Click \"OK\" to extend it another 20 min.</div>" +
+					"<div class='modal-footer'><button type='button' class='btn btn-default pull-right' data-dismiss='modal'>OK</button></div>" +
+				"</div>" +
+			"</div>" +
+		"</div>");
+	});
 </script>
 
 <!----->
