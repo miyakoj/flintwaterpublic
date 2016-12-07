@@ -13,13 +13,17 @@ require_once __ROOT__ . "/includes/queries.php";
 class Location {
 	private $lat;
 	private $lng;
-	private $lead;
+	private $leadval;
 	
-	public function __construct($lat, $lng, $lead) {
+	public function __construct($lat, $lng, $leadval) {
 		$this->lat = $lat;
 		$this->lng = $lng;
-		$this->lead = $lead;
+		$this->lead = $leadval;
 	}
+	
+	public function setLat() {$this->lat = $lat;}
+	public function setLng() {$this->lng = $lng;}
+	public function setLead() {$this->lead = $leadval;}
 	
 	public function getLat() {return $this->lat;}
 	public function getLng() {return $this->lng;}
@@ -42,14 +46,11 @@ class TestsList {
 		$a = func_get_args();
         $i = func_num_args();
 		
-        if (method_exists($this, $f='__construct'.$i)) {
+        if (method_exists($this, $f='__construct'.$i))
             call_user_func_array(array($this, $f), $a);
-        }
 	}
 	
-	public function __construct1($location) {
-		//var_dump($location);
-		
+	public function __construct1($location) {		
 		$this->location = $location; //stores a location object
 		$this->next = NULL;	//points to the next node
 	}
@@ -82,29 +83,21 @@ class TestsList {
 		
 		$temp->next = new testsList($location);
 		
-		//var_dump($this);
-		
-		//echo "===========================================\n";
-		
 		/*
 		 * This is where you will set the bounds for where you want the points located
 		 * 
 		 * Set minimum and maximum latitude and longitude for the view
 		 */
-		//if (($location->getLat() < $this->minLatitude) && ($location->getLat() > 42.9811436))
-		if ($location->getLat() < $this->minLatitude)
+		if (($location->getLat() < $this->minLatitude) && ($location->getLat() > 42.9811436))
 			$this->minLatitude = $location->getLat();
 		
-		//if (($location->getLng() < $this->minLongitude) && ($location->getLng() > -83.7412662))
-		if ($location->getLng() < $this->minLongitude)
+		if (($location->getLng() < $this->minLongitude) && ($location->getLng() > -83.7412662))
 			$this->minLongitude = $location->getLng();
 		
-		//if (($location->getLat() > $this->maxLatitude) && ($location->getLat() < 43.0765585))
-		if ($location->getLat() > $this->maxLatitude)
+		if (($location->getLat() > $this->maxLatitude) && ($location->getLat() < 43.0765585))
 			$this->maxLatitude = $location->getLat();
 		
-		//if (($location->getLng() > $this->maxLongitude) && ($location->getLng() <  -83.6349159))
-		if ($location->getLng() > $this->maxLongitude)
+		if (($location->getLng() > $this->maxLongitude) && ($location->getLng() <  -83.6349159))
 			$this->maxLongitude = $location->getLng();
 		
 		if ($location->getLead() > 15)
@@ -114,7 +107,7 @@ class TestsList {
 	}
 	
 	/* 
-	 * This created an indexed list.
+	 * This creates an indexed list.
 	 */
 	public function insertTwo($location, $countIn) {
 		$temp = $this; //Point to our current list and use temp to view/edit it
@@ -126,22 +119,18 @@ class TestsList {
 		
 		//set the lower bound for latitude in visualization
 		if (($location->getLat() < $this->minLatitude) && ($location->getLat() > 42.9811436))
-		//if ($location->getLat() < $this->minLatitude)
 			$this->minLatitude = $location->getLat();
 		
 		//set the lower bound for longitude in visualization
 		if (($location->getLng() < $this->minLongitude) && ($location->getLng() > -83.7412662))
-		//if ($location->getLng() < $this->minLongitude)
 			$this->minLongitude = $location->getLng();
 		
 		//set the upper bound for latitude in the visualization
 		if (($location->getLat() > $this->maxLatitude) && ($location->getLat() < 43.0765585))
-		//if ($location->getLat() > $this->maxLatitude)
 			$this->maxLatitude = $location->getLat();
 		
 		//set the upper bound for longitude in the visualization
 		if (($location->getLng() > $this->maxLongitude) && ($location->getLng() < -83.6349159))
-		//if ($location->getLng() > $this->maxLongitude)
 			$this->maxLongitude = $location->getLng();
 		
 		//count dangerous lead levels
@@ -233,6 +222,7 @@ class TestsList {
 	 */
 	private function mySort($left, $right) {
 		$list = new testsList();
+		
 		//sort the mini lists
 		$left = $left->next;
 		$right = $right->next;
@@ -277,6 +267,7 @@ class TestsList {
 	public function getCount() {return $this->listCount;} // return list size
 }
 
+
 /* Update lead area data. */
 lead_area_processing();
 
@@ -308,8 +299,8 @@ function lead_area_processing() {
 	$lngMin = $grid->getLngMin();
 	$lngMax = $grid->getLngMax();
 	
-	$latDistance = ($latMax - $latMin)/13; //divide by number of vertical blocks
-	$lngDistance = ($lngMax - $lngMin)/13; //divide by number of horizontal blocks
+	$latDistance = ($latMax - $latMin) / 13; //divide by number of vertical blocks
+	$lngDistance = ($lngMax - $lngMin) / 13; //divide by number of horizontal blocks
 	
 	//walk through the data by row
 	while ($latMin < $latMax) {
@@ -330,7 +321,6 @@ function lead_area_processing() {
 	   $latMin += $latDistance;
 	}
    
-	//$filename = "lead_areas.json";
 	$filename = "leadLevels_birdview.json";
 	$tmp = $zoomOut->getNext();
 	$output = "";
@@ -358,9 +348,7 @@ function lead_area_processing() {
 	
 	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
 	$context = stream_context_create($options);
-	//file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
-	
-	file_put_contents($filename, $output);
+	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
 }
 
 ?>

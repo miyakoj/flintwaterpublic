@@ -278,15 +278,11 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	margin:8px 0;
 }
 
-#location_card .card-inner #warning, #location_card .card-inner #results {
+#location_card .card-inner #results {
 	margin-top:12px;
 }
 
-#location_card .card-inner #abandonment {
-	margin-bottom:12px;
-}
-
-#location_card .card-inner #address + #results {
+#location_card .card-inner #abandonment, #location_card .card-inner #warning, #location_card .card-inner #address + #results {
 	margin-bottom:12px;
 }
 

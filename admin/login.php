@@ -40,9 +40,7 @@ echo header("Accept-Encoding: gzip");
 <!--//skycons-icons-->
 
 <script>
-	$(document).ready(function() {
-		$("#loading_screen").addClass("hide");
-		
+	$(document).ready(function() {		
 		/* If the user is logged in and they load the login page, forward them to the dashboard page. */
 		firebase.auth().onAuthStateChanged(function(user) {
 			if (user) {
@@ -59,6 +57,8 @@ echo header("Accept-Encoding: gzip");
 				});
 			}
 			else {
+				$("#loading_screen").addClass("hide");
+				$("#wrapper").removeClass("hide");
 				/* Position the spinner based upon the size of the screen. */
 				//$(".loader").css("margin-top", windowHeight/2 - $(".loader").height()/2 + "px");
 		
@@ -120,6 +120,7 @@ echo header("Accept-Encoding: gzip");
 <body id="login_page">
 <div id="loading_screen" class="hide"><div class="loader"></div></div>
 
+<div id="wrapper" class="hide">
 <div class="login">
 	<h2 class="page_title">MyWater-Flint Administration Site</h2>
 		
@@ -159,6 +160,7 @@ echo header("Accept-Encoding: gzip");
 	<a id="contact_us" href="#">Contact</a>
 </div>
 </footer>
+</div>
 
 <!--scrolling js-->
 <script src="js/jquery.nicescroll.js"></script>

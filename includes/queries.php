@@ -12,12 +12,7 @@ function queries($choice, $var = "", $var2 = "", $obj = null) {
 	$var2 = $mysqli->real_escape_string($var2);
 
 	/* Data file update queries. */
-	if (strcmp($choice, "leadLevels") === 0) {
-		$query = "SELECT Geo.latitude, Geo.longitude, leadlevel, testID, address FROM waterCondition, (SELECT * FROM GeoLocation) Geo WHERE propertyID = locationID ORDER BY leadLevel ASC;";
-		
-		//SELECT Geo.latitude, Geo.longitude, Geo.StAddress, leadLevel FROM watercondition, (SELECT * FROM geolocation) Geo WHERE address = address ORDER BY leadLevel ASC;
-	}
-	else if (strcmp($choice, "providers") === 0) {
+	if (strcmp($choice, "providers") === 0) {
 		$query = "SELECT latitude, longitude, locationName, AidLocation.aidAddress, city, zipcode, hours, phone, notes, GROUP_CONCAT(resType) AS resType FROM AidLocation INNER JOIN ResourcesQuantity ON AidLocation.aidAddress = ResourcesQuantity.aidAddress GROUP BY AidLocation.aidAddress ORDER BY locationName ASC;";
 	}
 	else if (strcmp($choice, "leadArea") === 0) {
@@ -25,7 +20,7 @@ function queries($choice, $var = "", $var2 = "", $obj = null) {
 	}
 	/* Updates from Ann Arbor's DB queries. */
 	else if(strcmp($choice, "max_date") === 0) {
-		$query = "SELECT MAX(dateUpdated) as newestDate FROM `WaterCondition`;";
+		$query = "SELECT MAX(dateUpdated) as newestDate FROM WaterCondition;";
 	}
 	/* Website-related queries. */
 	else if(strcmp($choice, "problem_report") === 0) {

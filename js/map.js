@@ -21,7 +21,6 @@ var heatmap;
 var fusionTableAllId = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 var leadLayer; // fusion table layer to set up lead levels
 var leadLayerBirdViewMarkers = [];
-//var leadLayerBirdView_info;
 var leadAndPredictiveLayer; // fusion table layer to show both lead and prediction layer
 var heatmapData;
 
@@ -101,7 +100,7 @@ function checkAuth() {
 		client_id: clientId,
 		scope: scopes
 	}).then(function() {
-	  initMap();
+		initMap();
 	});
 }
 
@@ -133,9 +132,9 @@ function initMap() {
 	$("#map_container").css("height", mapHeight + "px");
 
 	map = new google.maps.Map(document.getElementById('map'), {
-	  center: mapCenter,
-	  zoom: 13,
-	  mapTypeControl: false
+		center: mapCenter,
+		zoom: 13,
+		mapTypeControl: false
 	});
     
 	//This hides all Points of Interest on the map
@@ -280,8 +279,6 @@ function initMap() {
 	if ($pageId.indexOf("dashboard") != -1)
 		callStorageAPI("leadLevels_birdview.json");
 	
-	//callStorageAPI("leadlevels.json");
-	
 	callStorageAPI("providers.json");
 	callStorageAPI("pipedata.json");
 	callStorageAPI("construction_sites.json");
@@ -370,23 +367,25 @@ function initMap() {
 		$("#legend_card").show();
   	});
 	
-	/*if ($pageId.indexOf("dashboard") != -1) {
+	if ($pageId.indexOf("dashboard") != -1) {
 		map.addListener('zoom_changed', function() {
 			var zoomLvl = map.getZoom();
 			if (resourceActiveArray[0] == 1 && zoomLvl < 16) {
 				leadAndPredictiveLayer.setMap(null);
+				
 				for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
 					leadLayerBirdViewMarkers[i].setMap(map);
 				}
 			}
 			else if (resourceActiveArray[0] == 1 && zoomLvl >= 16) {
 				leadAndPredictiveLayer.setMap(map);
+				
 				for (var i = 0; i < leadLayerBirdViewMarkers.length; i++) {
 					leadLayerBirdViewMarkers[i].setMap(null);
 				}
 			}
 		 });
-	}*/
+	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
 	// more details for that place.
@@ -633,16 +632,16 @@ function callStorageAPI(object) {
 				var latDist = 0.00366980384615384615384615384615;
 				var lngDist = 0.00409039615384615384615384615385;
 				
-				for (var i=0; i<js_obj.area.length; i++) {  
-					var temp = js_obj.area[i];
-					var numOfTests = temp.numOfTests;
-					var numOfDangerous = temp.numOfDangerous;
+				for (var i=0; i<js_obj.area.length; i++) {
+					var area = js_obj.area[i];
+					var numOfTests = area.numOfTests;
+					var numOfDangerous = area.numOfDangerous;
 					var warningImg;
 
-					var upperLat = temp.latitude + latDist;
-					var lowerLat = temp.latitude - latDist;
-					var upperLng = temp.longitude + lngDist;
-					var lowerLng = temp.longitude - lngDist;
+					var upperLat = area.latitude + latDist;
+					var lowerLat = area.latitude - latDist;
+					var upperLng = area.longitude + lngDist;
+					var lowerLng = area.longitude - lngDist;
 
 					var squareCoordinates = [
 						{lat: upperLat, lng: upperLng},
@@ -652,12 +651,12 @@ function callStorageAPI(object) {
 					];
 
 					var color;
-					var weirdnessLevel = weirdnessEquation(temp.numOfTests, temp.numOfDangerous);
+					var weirdnessLevel = weirdnessEquation(area.numOfTests, area.numOfDangerous);
 					if (weirdnessLevel < 0) {
 						color = "#F9D17A";
 						warningImg = lowRiskCircle;
 					}
-					else if (weirdnessLevel < .6) {
+					else if (weirdnessLevel < 0.6) {
 						color = "#E49C49";
 						warningImg = medRiskCircle;
 					}
@@ -672,17 +671,17 @@ function callStorageAPI(object) {
 						paths: squareCoordinates,
 						strokeColor: color,
 						strokeOpacity: 0,
+						strokeWeight: 0,
 						fillColor: color,
 						fillOpacity: opacity
 					});
 
-					leadLayerBirdViewMarkers.push(leadLevelAreaSquare);
-
 					content = "<h5>About this area</h5>";
 					content += "<div class='row'><div class='col-xs-2'><img id='risk_img' src='" + warningImg + "' /></div> <div class='col-xs-10'><strong>" + numOfDangerous + "</strong> out of <strong>" + numOfTests + "</strong> total tests in this area had dangerous lead levels.</div></div>";
-					content += "<p>Zoom in for specific lead test results.</p>";
+					content += "<p style='margin-top:12px;'>Zoom in for specific lead test results.</p>";
 					
 					attachLocationCard("leadArea", leadLevelAreaSquare, "", content);
+					leadLayerBirdViewMarkers.push(leadLevelAreaSquare);
 					
 					$("#location_card .card-action").hide();
 				}
@@ -765,8 +764,6 @@ function callStorageAPI(object) {
 					if (provider.notes.length > 0)
 						content += "<p id='provider_notes'>" + provider.notes + "</p>";
 					
-					// content += "<p>" + images + "</p></div>";
-					
 					if ($pageId.indexOf("dashboard") == -1)
 						content += "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
 
@@ -807,8 +804,6 @@ function callStorageAPI(object) {
 			else if (object == "construction_sites.json") {
 				js_obj = $.parseJSON(resp.body);
 				
-				//Adam Working Here
-				
 				for (var i=0; i<js_obj.construction_sites.length; i++) {
 					var marker;
 					var address = js_obj.construction_sites[i].ADDRESS;
@@ -832,15 +827,13 @@ function callStorageAPI(object) {
 					// Call the info window.
 					bindInfoWindow("resource", constructionMarker, map, 'Construction', constructionContent);					
 					constructionMarkers.push(constructionMarker);
-				}
-					//var latLng = new google.maps.LatLng(provider.latitude, provider.longitude);
-					//var title = provider.locationName;
-				
+				}				
 			}
 			// Uploading Pipe Data From JSON in bucket
 			else if (object == "pipedata.json") {
 				js_obj = $.parseJSON(resp.body);
 				var tempArr;
+				
 				for (i=0; i<js_obj.pipedata.length; i++) {
 					var pipe = js_obj.pipedata[i];
 					var tempArray = new Array();
@@ -855,8 +848,7 @@ function callStorageAPI(object) {
 							lngLat[1] = parseFloat(newPipe.lng);
 							tempArray.push(lngLat);	// Add it to temp arr
 						}
-						else if (newPipe.streetName == "endOfFile")
-						{
+						else if (newPipe.streetName == "endOfFile") {
 							masterPipeArray.push(tempArray);
 						}
 						else {
@@ -895,16 +887,18 @@ function callStorageAPI(object) {
 	});
 }
 
-function weirdnessEquation(N, K) {
-	var sqrt = Math.sqrt(N);
-	var weirdness = (K/sqrt) - (sqrt*.084);
+/* The measure of how unusual the number of samples above 15ppb in an area is.
+ * From Jake Abernethy, Assistant Professor of Electrical Engineering and Computer Science at University of Michigan
+ */
+function weirdnessEquation(n, k) {
+	var sqrt = Math.sqrt(n);
+	var weirdness = (k/sqrt) - (sqrt*0.084);
+	
 	return weirdness;
 }
 
 function setupResourceMarkers() {
 	var retrieveArray = localStorage.getItem("resource_array");
-	
-	console.log(localStorage);
 
 	if ((localStorage !== "undefined") && (retrieveArray != null)) {
 		resourceActiveArray = JSON.parse(retrieveArray);
@@ -961,7 +955,6 @@ function fusionQueryCallback(data, address) {
 	return createLocationContent(address, data);
 }
 
-
 function queryFusionTable(query, callback) {	
 	$.ajax({
 		type: "GET",
@@ -972,20 +965,12 @@ function queryFusionTable(query, callback) {
 }
 
 /* Location info card content generation. */
-function createLocationContent(streetAddress, dataObj) {
-	var leadLevel;
-	var abandonmentStatus;
-	var testDate;
-	var prediction;
-	var tempAddr;
-	
-	/* Data is from a fusion table query. */
-	if (dataObj.rows) {
-		leadLevel = dataObj.rows[0][3];
-		abandonmentStatus = dataObj.rows[0][2];
-		testDate = dataObj.rows[0][4].slice(0, dataObj.rows[0][4].indexOf(" "));
-		prediction = dataObj.rows[0][5];
-	}
+function createLocationContent(streetAddress, dataObj) {	
+	/* The data is from a fusion table query. */
+	var leadLevel = dataObj.rows[0][3];
+	var abandonmentStatus = dataObj.rows[0][2];
+	var testDate = dataObj.rows[0][4].slice(0, dataObj.rows[0][4].indexOf(" "));
+	var prediction = dataObj.rows[0][5];
 	
 	var content = "<h5 id='address'>" + streetAddress + "</h5>";
 	var warningMsg;
@@ -1022,8 +1007,8 @@ function createLocationContent(streetAddress, dataObj) {
 				suggestedAction = "Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.";
 			}
 			
-			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
 			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
+			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";			
 			content += "<div id='current_results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
 			content += "<div id='more_info_details' class='collapse'>";
 			
@@ -1074,7 +1059,6 @@ function createLocationContent(streetAddress, dataObj) {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
 		content += "<div>No test results available.<br />";
 		content += "No lead prediction available.</div>";
-		//content += "<div id='suggested_action' class='hide'>Use only bottled water for drinking, cooking, washing food, and brushing teeth.</div>";
 	}
 	
 	if ($pageId.indexOf("dashboard") == -1)
@@ -1083,13 +1067,9 @@ function createLocationContent(streetAddress, dataObj) {
 	return content;
 }
 
-/* */
+/* Insert the location card content into the correct location. */
 function createLocationCardContent(type, content) {
 	$("#location_card .card-inner").empty().html(content);
-		
-	/*if (type.search(/location/i) != -1) {
-		$("#location_card .card-inner").append("<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr class='hide' /> <div id='location_questions' class='hide'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div>");
-	}*/
 	
 	if (windowWidth >= 600)
 		$("#location_card #more_info_details").removeClass("collapse");
@@ -1103,11 +1083,9 @@ function createLocationCardContent(type, content) {
 
 
 /* Insert the data into the location card and show it when the marker is clicked. */
-function attachLocationCard(type, marker, address, content) {
-	marker.addListener("click", function() {
+function attachLocationCard(type, clickedMarker, address, content) {
+	clickedMarker.addListener("click", function() {
 		$("#resource_card, #legend_card").hide();
-		
-		clickedMarker = marker;
 		
 		/* Insert the saved location address in the location bar on the report page when clicked. */
 		if (($pageId.indexOf("report") != -1) && (type == "savedLocation")) {
@@ -1118,16 +1096,16 @@ function attachLocationCard(type, marker, address, content) {
 		
 		createLocationCardContent(type, content);
 		
-		if (type.indexOf("leadArea") == -1)
-			checkIfSaved(marker.getPosition());
-		
-		// add hidden lat/long fields after the address
-		$("#location_card #address").after("<div id='lat' class='hide'></div> <div id='lng' class='hide'></div>");
-		
 		if (type.indexOf("leadArea") == -1) {
+			checkIfSaved(marker.getPosition());
+			
+			// add hidden lat/long fields after the address
+			$("#location_card #address").after("<div id='lat' class='hide'></div> <div id='lng' class='hide'></div>");			
 			$("#location_card #lat").html(clickedMarker.getPosition().lat());
 			$("#location_card #lng").html(clickedMarker.getPosition().lng());
 		}
+		else
+			$("#location_card").css("width", "20em");
 		
 		$("#location_card").show();
 	});
@@ -1222,25 +1200,27 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 /* Set markers on the map based on type. */
 function setMarkers() {
 	zoomLvl = map.getZoom();
-	
-	/*if ($pageId.indexOf("dashboard") != -1) {
+
+	if ($pageId.indexOf("dashboard") != -1) {
 		if ((resourceActiveArray[0] == 1) && (zoomLvl < 16)) {
 			leadAndPredictiveLayer.setMap(null);
+			
 			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
 				leadLayerBirdViewMarkers[i].setMap(map);
 		}
 		else if ((resourceActiveArray[0] == 1) && (zoomLvl >= 16)) {
 			leadAndPredictiveLayer.setMap(map);
+			
 			for (var i = 0; i < leadLayerBirdViewMarkers.length; i++)
 				leadLayerBirdViewMarkers[i].setMap(null);
 		}
 	}
-	else {*/
+	else {
 		if (resourceActiveArray[0] == 1)
 			leadAndPredictiveLayer.setMap(map);
 		else if (resourceActiveArray[0] == 0)
 			leadAndPredictiveLayer.setMap(null);
-	//}
+	}
 	
 	for (var i = 0; i < allMarkers.length; i++) {
 		allMarkers[i].setMap(null);
@@ -1528,8 +1508,6 @@ $(document).ready(function() {
 
 	// gives directions to a resource location when get dircetions is clicked
 	$("#resource_card #card_directions").on("click", function() {
-		//var resource_directions = resourceMarker.getPosition();
-        //window.open('http://maps.google.com/?q='+resourceMarker.getPosition(), '_blank');
 		var end = $("#resource_card #provider_address").text().indexOf(",");
 		var address;
 		

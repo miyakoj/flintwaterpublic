@@ -64,8 +64,6 @@ body {
 }
 
 #location_card .close, #resource_card .close {
-	margin-top:3px;
-	margin-right:5px;
 	position:absolute;
 	right:0;
 }

@@ -82,7 +82,9 @@ $("#loading_screen").removeClass("hide");
 				
 				$("#login_link").addClass("hide");
 				
-				$("#wrapper").removeClass("hide");
+				if ($pageId.indexOf("login") == -1)
+					$("#wrapper").removeClass("hide");
+				
 				if ($("#wrapper").length != 0)
 					$("#loading_screen").addClass("hide");
 			}).then(function() {
@@ -119,8 +121,8 @@ $("#loading_screen").removeClass("hide");
 					}
 					else {
 						$("#location_card").css({
-							left: (($("#map_container").width() / 2) - ($("#location_card").width() / 2)) + "px",
-							bottom: (($("#map_container").height() / 2) + 10) + "px"
+							right: (($("#map_container").width() / 2) - ($("#location_card").width() / 2)) + "px",
+							bottom: (($("#map_container").height() / 2) + 10) - $("#location_card").height() + "px"
 						});
 					}
 				}
@@ -265,7 +267,7 @@ $("#loading_screen").removeClass("hide");
 						var email = $("#login_email input").val();
 						var password = $("#login_password input").val();
 						
-						// if reset password is unchecked, do normal sign in
+						// if forgot password is unchecked, do normal sign in
 						if ($("#forgot_password input").prop("checked") == false) {
 							$("#loading_screen").removeClass("hide");
 							
@@ -1047,7 +1049,9 @@ $("#loading_screen").removeClass("hide");
 	});
 	
 	/* NAVIGATION LINKS */
-	$("#dashboard_link").on("click", function() {
+	$("#dashboard_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
 		var pid_input = $("<input type='hidden' name='pid' />").val("dashboard");
@@ -1056,7 +1060,9 @@ $("#loading_screen").removeClass("hide");
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#reports_link").on("click", function() {
+	$("#reports_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
 		var pid_input = $("<input type='hidden' name='pid' />").val("reports");
@@ -1065,7 +1071,9 @@ $("#loading_screen").removeClass("hide");
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#edit_link").on("click", function() {
+	$("#edit_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
 		var pid_input = $("<input type='hidden' name='pid' />").val("edit");
@@ -1074,7 +1082,9 @@ $("#loading_screen").removeClass("hide");
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#alerts_link").on("click", function() {
+	$("#alerts_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
 		var pid_input = $("<input type='hidden' name='pid' />").val("alerts");
@@ -1083,7 +1093,9 @@ $("#loading_screen").removeClass("hide");
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#users_link").on("click", function() {
+	$("#users_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
 		var pid_input = $("<input type='hidden' name='pid' />").val("users");
@@ -1092,7 +1104,9 @@ $("#loading_screen").removeClass("hide");
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#profile_link").on("click", function() {
+	$("#profile_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
 		var pid_input = $("<input type='hidden' name='pid' />").val("profile");
@@ -1101,33 +1115,49 @@ $("#loading_screen").removeClass("hide");
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#logout_link").on("click", function() {
+	$("#logout_link").on("click", function(event) {
+		event.preventDefault();
+		
 		userLogout();
 	});
 	
 	/* Footer Links */
-	$("#about_link").on("click", function() {
+	$("#about_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
-		$(form).append($("<input type='hidden' name='pid' />").val("about"));
+		var pid_input = $("<input type='hidden' name='pid' />").val("about");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj ? userObj.role : "");
+		$(form).append(pid_input, role_input);
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#disclaimer_link").on("click", function() {
+	$("#disclaimer_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
-		$(form).append($("<input type='hidden' name='pid' />").val("disclaimer"));
+		var pid_input = $("<input type='hidden' name='pid' />").val("disclaimer");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj ? userObj.role : "");
+		$(form).append(pid_input, role_input);
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#privacy_link").on("click", function() {
+	$("#privacy_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "page.php");
-		$(form).append($("<input type='hidden' name='pid' />").val("privacy"));
+		var pid_input = $("<input type='hidden' name='pid' />").val("privacy");
+		var role_input = $("<input type='hidden' name='role' />").val(userObj ? userObj.role : "");
+		$(form).append(pid_input, role_input);
 		$(form).appendTo("body").submit();
 	});
 	
-	$("#login_link").on("click", function() {
+	$("#login_link").on("click", function(event) {
+		event.preventDefault();
+		
 		var form = $("<form></form>");
 		$(form).attr("method", "post").attr("action", "login.php");
 		$(form).appendTo("body").submit();
