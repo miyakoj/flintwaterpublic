@@ -4,6 +4,10 @@
 		position:relative;
 	}
 	
+	#search_input {
+		width:22em;
+	}
+	
 	#location_card, #resource_card, #legend_card {
 		bottom:auto;
 		right:auto;
@@ -15,8 +19,6 @@
 		
 	#resource_card {
 		width:25em;
-		/*top:3.5em;
-		bottom:auto;*/
 	}
 	
 	#resource_card #card_report_menu {

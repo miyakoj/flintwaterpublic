@@ -157,7 +157,7 @@ $(document).ready(function() {
 	}
 	/* Large tablets and computers. */
 	else if (windowWidth >= 600) {
-		$("#location_card").css({
+		$("#location_card, #resource_card").css({
 			"width": function() {
 				return $("#search_input").outerWidth();
 			},

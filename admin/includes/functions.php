@@ -224,8 +224,8 @@ function getResourceLocations() {
 /* Email some info to a user. */
 function email_user() {
 	if ($_POST["type"] == "contact_form") {
-		$to = "umflintH2O@gmail.com";
-		$from = "umflintH2O@gmail.com";
+		$to = getenv('APP_EMAIL');
+		$from = getenv('APP_EMAIL');
 		$subject = "A Comment About MyWater-Flint (Admin Site)";
 		
 		$msg = sprintf("<p><strong>Email:</strong><br /> %s</p>

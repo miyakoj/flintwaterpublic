@@ -134,7 +134,9 @@ function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: mapCenter,
 		zoom: 13,
-		mapTypeControl: false
+		mapTypeControl: false,
+		fullscreenControl: false,
+		gestureHandling: "greedy"
 	});
     
 	//This hides all Points of Interest on the map
@@ -1177,7 +1179,7 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 				$("#resource_card .card-action").hide();
 			}
 			
-			if (windowWidth >= 600) {
+			if (windowWidth >= 600 && $pageId.indexOf("test") != -1) {
 				$("#resource_card").css({
 					left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
 					bottom: (($("#map").height() / 2) + 10) + "px"
