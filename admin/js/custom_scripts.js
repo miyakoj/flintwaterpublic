@@ -133,9 +133,9 @@ $("#loading_screen").removeClass("hide");
 					if (parseInt(userObj.role) == 1)
 						user_group = "Admin";
 					else if (parseInt(userObj.role) == 2)
-						user_group = "Edit Priviledges";
+						user_group = "Edit Privileges";
 					else
-						user_group = "View Only Priviledges";
+						user_group = "View Only Privileges";
 					
 					if (userObj.showInfo)
 						show_info = "yes";
@@ -516,23 +516,26 @@ $("#loading_screen").removeClass("hide");
 			/* PROFILE & USERS PAGE */
 			else if (($pageId.indexOf("profile") != -1) || ($pageId.indexOf("users") != -1)) {
 				/* Enable all disabled form fields except for user group. */
-				$("#user_form #edit_button, #edit_modal #edit_button, #new_user_button").on("click", function() {					
-					$("#user_form form, #edit_modal form").resetForm();
+				$("#user_form #edit_button, #edit_modal #edit_button, #new_user_button").on("click", function() {
 					
 					for (var i=0; i<$("#user_form form, #edit_modal form")[0].elements.length; i++)
 						$("#user_form form, #edit_modal form")[0].elements[i].disabled = false;
 					
 					if ($(this).attr("id") === "new_user_button") {
+						$('#user_list_button').removeClass('active');
+						$(this).addClass("active");
+						
 						if ($("#edit_modal form").length > 0)
 							$("#user_form").html($("#edit_modal form"));
 						
 						$("#instructions").removeClass("hide");
-						$("label[for='user_group'], label[for='email']").append($("label[for='first_name'] .required").clone());
 					}
 					
 					if ($pageId.indexOf("profile") == -1)
 						$("#user_form #email").parent().removeClass("hide");
 					
+					$("label[for='user_group'] .required, label[for='email'] .required").remove();
+					$("label[for='user_group'], label[for='email']").append($("label[for='first_name'] .required").clone());					
 					$("#user_form #edit_button, #edit_modal #edit_button ").hide();
 					$(".help-block, #user_form #submit_button, #edit_modal #submit_button").removeClass("hide");
 				});
@@ -610,6 +613,7 @@ $("#loading_screen").removeClass("hide");
 					
 						if (($pageId.indexOf("profile") != -1) || ($("#edit_modal form").length > 0)) {
 							data = {
+								"role": $("#edit_modal #user_group_dropdown").val(),
 								"firstName": $("form #first_name").val(),
 								"lastName": $("form #last_name").val(),
 								"phone": $("form #phone").val(),
@@ -622,7 +626,7 @@ $("#loading_screen").removeClass("hide");
 									"state": $("form #state").val(),
 									"zipcode": $("form #zipcode").val()
 								},
-								"showInfo": showInfo
+								"showInfo": false
 							};
 							
 							var userRef;
@@ -634,18 +638,19 @@ $("#loading_screen").removeClass("hide");
 							
 							var result = userRef.update(data).then(function() {
 								$("#user_form form, #edit_modal form").append("<div class='alert alert-success' role='alert'>The information was successfully updated.</div>");
-								var oldRole = $("#edit_modal form #old_role").val();
+								var oldRole = eval($("#edit_modal form #old_role").val());
 								
 								/* Update the role node if necessary. */
-								if (($("#edit_modal form").length > 0) && ($("#edit_modal #user_group_dropdown").val() !== oldRole)) {
+								if (($("#edit_modal form").length > 0) && (eval($("#edit_modal #user_group_dropdown").val()) !== oldRole)) {
 									/* Update the rules node. */
 									var roleData = {};
-									roleData[userRef] = "true";
+									roleData[userRef.key] = true;
 									
-									var rolesRef = db.ref("roles/" + $("#edit_modal #user_group_dropdown").val());
+									var rolesRef = db.ref("roles/" + eval($("#edit_modal #user_group_dropdown").val()));
 									rolesRef.update(roleData).then(function() {
 										/* Remove the user from the old node. */
-										var oldRolesRef = db.ref("roles/" + oldRole);
+										var oldRolesRef = db.ref("roles/" + oldRole + "/" + userRef.key);
+										
 										oldRolesRef.remove().catch(function(error) {
 											$("#edit_modal form").append(genericError);
 											
@@ -680,10 +685,8 @@ $("#loading_screen").removeClass("hide");
 									"state": $("form #state").val(),
 									"zipcode": $("form #zipcode").val()
 								},
-								"showInfo": showInfo
+								"showInfo": false
 							};
-							
-							//console.log();
 							
 							/* Create a second connection to create the new user. 
 							 * From: http://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551
@@ -884,20 +887,19 @@ $("#loading_screen").removeClass("hide");
 						}
 					},
 					submitHandler: function(form) {
+						$("#display_area").addClass("hide").html("");
+						$("#report_area button").addClass("hide");
 						$(".loader").removeClass("hide").css("margin-top", "15px").insertAfter("#water_tests_form");
-						$("#display_area").html("");
 						
 						$(form).ajaxSubmit({
 							type: "POST",
 							url: "includes/functions.php",
 							data: {
 								"report_type": $(".nav button[class*=active]").attr("id"),
-								"file": $("form").hasClass("hide") ? "true" : "false", // if there is a form visible then the data comes from the DB
 								"uid": firebase.auth().currentUser.uid
 							},
 							dataType: "json",
 							success: function(data) {
-								console.log(firebase.auth().currentUser.uid);
 								$("form .alert").remove();
 								
 								var content;
@@ -915,7 +917,7 @@ $("#loading_screen").removeClass("hide");
 													<th class=\"small_num\">Test Lead Level (ppb)</th> \
 													<th class=\"small_num\">Test Copper Level (ppb)</th> \
 													<th class=\"date\">Date Submtted</th> \
-													<th></th> \
+													<th>&nbsp;</th> \
 												</tr> \
 											</table> \
 											\
@@ -933,20 +935,27 @@ $("#loading_screen").removeClass("hide");
 												<td class=\"date\">" + temp.dateUpdated + "</td> \
 											</tr>";
 										}
+										
+										content += "</table></div></div>";
 									}
-											
-									content += "</table></div></div>";
 								}
 								else
-									content = "There is no data available.";
+									content = "There is no data available for " + $("#months option:selected").text() + " " + $("#years").val() + ".";
 								
 								$(".loader").addClass("hide");
 								
+								$("#report_area button").removeClass("hide");
 								$("#display_area").html(content).removeClass("hide");
 								$("#report_area #display_area #scrollbox").css({
 									"margin-top": $("#report_area #display_area #table_header").css("height"),
 									"height": (windowHeight * 0.75) + "px"
 								});
+								
+								// adjust the heading column width
+								$("th.record_number").innerWidth($("td.record_number").innerWidth());
+								$("th.address").innerWidth($("td.address").innerWidth());
+								$("th.small_num").innerWidth($("td.small_num").innerWidth());
+								$("th.date").innerWidth($("td.date").innerWidth());
 							},
 							fail: function() {
 								$("form").append(genericError);
@@ -993,7 +1002,7 @@ $("#loading_screen").removeClass("hide");
 					$("#create_csv").siblings(".alert").remove();
 					
 					var report_type = $(".nav button[class*=active]").attr("id");
-					var file_status = $("form").hasClass("hide") ? "true" : "false";
+					var file_status = $("form").hasClass("hide") ? true : false;
 					
 					if (!file_status) {
 						var form = $("<form></form>");

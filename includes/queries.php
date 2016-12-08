@@ -69,17 +69,3 @@ function queries($choice, $var = "", $var2 = "", $obj = null) {
 
 	return $mysqli->query($query);
 }
-
-function prepared_statements($choice, $array = null) {
-	global $mysqli;
-	
-	/* Updates from Ann Arbor's DB statements. */
-	if (strcmp($choice, "new_tests") === 0) {
-		$stmt = "";
-	}
-	else if (strcmp($choice, "abandoned_update") === 0) {
-		$stmt = "";
-	}
-	
-	$stmt->execute();
-}

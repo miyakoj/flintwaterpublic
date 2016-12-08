@@ -151,13 +151,43 @@ echo header("Accept-Encoding: gzip");
 	</div>
 </div>
 
+<div id="contact_form" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<form>
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="icon" aria-hidden="true">close</span></button>
+			<h4 class="modal-title">Contact Us</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="form-group">
+				<label for="email">Email:</label>
+				<input id="email" class="form-control" type="text" name="email" placeholder="Enter your email address if you would like a response." tabindex="1" />
+				</div>
+				
+				<div class="form-group">
+				<label for="comments">Comments:</label>
+				<textarea id="comments" class="form-control textarea-autosize" rows="5" name="comments" placeholder="Please enter at least 20 characters." tabindex="2" character limit required></textarea>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+			<button type="button" class="btn btn-flat" data-dismiss="modal" tabindex="4">Cancel</button>
+			<button type="submit" class="submit_button btn btn-default" tabindex="3">Submit</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+
 <footer class="copy">
 <div id="copyright">
 	<span>MyWater-Flint &copy;2016</span>
 	<a id="about_link" href="#">About</a>
 	<a id="disclaimer_link" href="#">Disclaimer</a>
 	<a id="privacy_link" href="#" class="hide">Privacy</a>
-	<a id="contact_us" href="#">Contact</a>
+	<a id="contact_link" href="#" data-toggle="modal" data-target="#contact_form">Contact</a>
 </div>
 </footer>
 </div>

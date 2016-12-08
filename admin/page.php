@@ -53,8 +53,8 @@ if (@isset($_POST["pid"])) {
 						<select id='user_group_dropdown' class='form-control' name='user_group'>
 						<option></option>
 						<option value='1'>Admin</option>
-						<option value='2'>Edit Priviledges</option>
-						<option value='3'>View Only Priviledges</option>
+						<option value='2'>Edit Privileges</option>
+						<option value='3'>View Only Privileges</option>
 						</select>
 						</div>				
 						</div>
@@ -133,7 +133,7 @@ if (@isset($_POST["pid"])) {
 						</div>
 					</div>
 					
-					<div class='form-group'>
+					<div class='form-group hide'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-10 col-md-offset-1'>
 						<label for='show_info'>Show contact information to other users:</label>
@@ -167,8 +167,8 @@ if (@isset($_POST["pid"])) {
 						<h3>Reports</h3>
 						
 						<ul class='nav'>
-							<li><button id='water_tests' type='button' class='btn btn-default'>Water Tests</button></li>
-							<li><button id='predictions' type='button' class='btn btn-default'>Prediction Data</button></li>
+							<li><button id='water_tests' type='button' class='btn btn-default'>Water Test Results</button></li>
+							<li><button id='predictions' type='button' class='btn btn-default'>Lead Prediction Data</button></li>
 							<li class='hide'><button id='problem_reports' type='button' class='btn btn-default'>Problem Reports</button></li>
 							<li class='hide'><button id='survey_results' type='button' class='btn btn-default'>Survey Results</button></li>
 						</ul>
@@ -198,12 +198,12 @@ if (@isset($_POST["pid"])) {
 								
 								<div class='row'>						
 									<div class='form-group col-xs-12 col-md-3'>
-									<label for='years'>Years</label>
+									<label for='years'>Years<span class='required'>*</span></label>
 									<select id='years' class='form-control' name='years[]' multiple='multiple' required></select>
 									</div>
 								
 									<div class='form-group col-xs-12 col-md-3'>
-									<label for='months'>Months</label>
+									<label for='months'>Months<span class='required'>*</span></label>
 									<select id='months' class='form-control' name='months[]' multiple='multiple' required></select>
 									</div>
 								</div>
@@ -373,17 +373,17 @@ if (@isset($_POST["pid"])) {
 					// deactivate all other buttons
 					$('#report_list .nav button').removeClass('active');
 					
-					// hide all forms
+					// hide all forms and the results display area
 					$('#report_area form').addClass('hide');
-					$('#display_area').html('').addClass('hide');
+					$('#display_area').addClass('hide');
 					
 					$(this).addClass('active');
 					$('#instructions').addClass('hide');
-					//$('.loader').removeClass('hide').css({'margin-top': '15px', 'margin-bottom': '15px'}).insertBefore($('#display_area'));
 					
-					$('#display_area').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>.</p>');
+					$('#display_area').html('').removeClass('hide');
+					$('#report_area button:first-of-type').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>. No water tests results have been reported for addresses with \"Unknown\" average lead values.</p>');
 					$('#details').css('margin-bottom', '0');
-					$('#create_csv').css('margin-bottom', '15px').removeClass('hide');
+					$('#create_csv').removeClass('hide');
 				});
 			});
 			</script>";
@@ -423,11 +423,11 @@ if (@isset($_POST["pid"])) {
 					<div class='form-group'>
 						<label for='categories'>Resource Types<span class='required'>*</span>:</label>
 						<div id='category_options'>
-						<input id='water_pickup' type='checkbox' name='categories[]' value='Water Pickup' /> <label for='water_pickup'>Water Pickup</label><br />
-						<input id='water_filters' type='checkbox' name='categories[]' value='Water Filters' /> <label for='water_filters'>Water Filters</label><br />
-						<input id='recycling' type='checkbox' name='categories[]' value='Recycle' /> <label for='recycling'>Recycling</label><br />
-						<input id='test_kits' type='checkbox' name='categories[]' value='Test Kits' /> <label for='test_kits'>Test Kits</label><br />
-						<input id='blood_testing' type='checkbox' name='categories[]' value='Blood Testing' /> <label for='blood_testing'>Blood Testing</label>
+						<label for='water_pickup'><input id='water_pickup' type='checkbox' name='categories[]' value='Water Pickup' /> Water Pickup</label><br />
+						<label for='water_filters'><input id='water_filters' type='checkbox' name='categories[]' value='Water Filters' /> Water Filters</label><br />
+						<label for='recycling'><input id='recycling' type='checkbox' name='categories[]' value='Recycle' /> Recycling</label><br />
+						<label for='test_kits'><input id='test_kits' type='checkbox' name='categories[]' value='Test Kits' /> Test Kits</label><br />
+						<label for='blood_testing'><input id='blood_testing' type='checkbox' name='categories[]' value='Blood Testing' /> Blood Testing</label>
 						</div>
 					</div>
 					
@@ -462,6 +462,8 @@ if (@isset($_POST["pid"])) {
 						<span class='help-block'>Example: -83.6916</span>
 						</div>
 						</div>
+						
+						<div class='row'><div class='col-xs-12 col-md-6'><span class='help-block'><a href='http://en.mygeoposition.com'>Geocoding Website</a></span></div></div>
 					</div>
 					
 					<div class='form-group'>
@@ -633,7 +635,7 @@ if (@isset($_POST["pid"])) {
 								<table class=\"table table-striped\">
 									<thead>
 										<tr>
-										<th class=\"edit\">*</th>
+										<th class=\"edit\">&nbsp;</th>
 										<th class=\"first_name\">First Name</th>
 										<th class=\"last_name\">Last Name</th>
 										<th class=\"email\">Email</th>
@@ -659,20 +661,22 @@ if (@isset($_POST["pid"])) {
 						});
 						
 						$('#user_list_button').on('click', function() {
+							$('#new_user_button').removeClass('active');
+							$(this).addClass('active');
 							$('#instructions').addClass('hide');
 							$('#user_form form .required').hide();
 							
 							var content = '';
 						
-							var query = db.ref('users').orderByChild('firstName');
+							var query = db.ref('users').orderByChild('lastName');
 							var uid;
 					
-							query.once(\"value\").then(function(snapshot) {				
+							query.once(\"value\").then(function(snapshot) {
 								snapshot.forEach(function(childSnapshot) {
 									uid = childSnapshot.key;
 									
 									content += '<tr id=\"' + uid + '\">';
-									content += '<td id=\"edit\"><a href=\"#\"><span class=\"material-icons\">edit</span></a></td>';
+									content += '<td id=\"manage\"><a href=\"#\" title=\"edit\"><span class=\"material-icons\">edit</span></a> <a href=\"#\" title=\"delete\" class=\"hide\"><span class=\"material-icons\">delete</span></a></td>';
 									content += '<td id=\"first_name\">' + childSnapshot.child(\"firstName\").val() + '</td>';
 									content += '<td id=\"last_name\">' + childSnapshot.child(\"lastName\").val() + '</td>';
 									content += '<td id=\"email\">' + childSnapshot.child(\"email\").val() + '</td>';
@@ -682,7 +686,7 @@ if (@isset($_POST["pid"])) {
 								
 								$('table tbody').append(content);
 								
-								$('#user_list table #edit a').on('click', function() {
+								$('#user_list table #manage a[title=\"edit\"]').on('click', function() {
 									uid = $(this).parents('tr').attr('id');
 									
 									db.ref('users/' + uid).once('value').then(function(snapshot) {										
@@ -722,6 +726,25 @@ if (@isset($_POST["pid"])) {
 										$('#user_form form #phone').parents('.row').find('.col-md-offset-1').removeClass('hide');
 										$('#edit_modal .modal-body').html($('#user_form form'));
 										$('#edit_modal').modal('show');
+									});
+								});
+								
+								$('#user_list table #manage a[title=\"delete\"]').on('click', function() {
+									$('#user_list').after('<div id=\"delete_modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">' +
+										'<div class=\"modal-dialog modal-sm\" role=\"document\">' +
+											'<div class=\"modal-content\">' +
+												'<div class=\"modal-body\">Are you sure you want to delete ' + $('#first_name').text() + ' ' + $('#last_name').text() + '?</div>' +
+												'<div class=\"modal-footer\"><button type=\"button\" class=\"btn btn-flat pull-right\" data-dismiss=\"modal\">Cancel</button> <button type=\"button\" class=\"btn btn-default pull-right\" data-dismiss=\"modal\">Yes</button></div>' +
+											'</div>' +
+										'</div>' +
+									'</div>');
+									
+									$('#delete_modal button:contains(\"Cancel\")').on('click', function() {
+										$(this).modal('hide');
+									});
+									
+									$('#delete_modal button:contains(\"Yes\")').on('click', function() {
+										
 									});
 								});
 							});
@@ -962,8 +985,8 @@ if (@isset($_POST["pid"])) {
 		
 		<div class='content-mid'>
 			<div id='graph_area' class='row'>
-				<div class='content-top-1'><canvas id='levels_trend'></canvas></div>
-				<div class='content-top-1'><canvas id='water_tests_trend' ></canvas></div>
+				<div class='content-top-1'><canvas id='levels_trend'></canvas> <p>Click on a legend item to hide it.</p></div>
+				<div class='content-top-1'><canvas id='water_tests_trend' ></canvas> <p>Click on a legend item to hide it.</p></div>
 			</div>
 		</div>";
 		

@@ -21,8 +21,8 @@ class webpageTemplate {
 
 	function create() {
 		foreach ($this->parameters as $key => $value) {
-			$template_name = '{' . $key . '}';
-			$this->html = str_replace($template_name, $value, $this->html);
+			$templateName = '{' . $key . '}';
+			$this->html = str_replace($templateName, $value, $this->html);
 		}
 		
 		echo header("Content-type: text/html");

@@ -146,6 +146,10 @@ body {
 	margin:0 16px;
 }
 
+canvas+p {
+	margin-top:15px;
+}
+
 
 /* Reports Page */
 #report_list h5 {
@@ -197,7 +201,7 @@ body {
 	margin-top:15px;
 }
 
-#report_area #display_area #print_report, #report_area #display_area #create_csv {
+#report_area #print_report, #report_area #create_csv {
 	margin-top:15px;
 	margin-right:8px;
 }
@@ -241,7 +245,9 @@ body {
 }
 
 #report_area #display_area table th:last-of-type {
-	width:1%;
+	width:15px;
+	padding-left:0!important;
+	padding-right:0!important;
 }
 
 #report_area #display_area #scrollbox {
@@ -256,10 +262,6 @@ body {
 
 #edit_resources .panel-body #instructions, #edit_page #location_form #location_list {
 	margin-top:15px;
-}
-
-#edit_page #category_options {
-	padding-left:15px;
 }
 
 #edit_page #category_options label {
