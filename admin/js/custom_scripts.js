@@ -120,9 +120,9 @@ $("#loading_screen").removeClass("hide");
 					if (windowWidth < 768) {
 					}
 					else {
-						$("#location_card").css({
-							right: (($("#map_container").width() / 2) - ($("#location_card").width() / 2)) + "px",
-							bottom: (($("#map_container").height() / 2) + 10) - $("#location_card").height() + "px"
+						$("#resource_card").css({
+							right: (($("#map_container").width() / 2) - ($("#resource_card").width() / 2)) + "px",
+							bottom: (($("#map_container").height() / 2) + 10) - $("#resource_card").height() - 70 + "px"
 						});
 					}
 				}
@@ -528,11 +528,12 @@ $("#loading_screen").removeClass("hide");
 						if ($("#edit_modal form").length > 0)
 							$("#user_form").html($("#edit_modal form"));
 						
+						$("#user_form #email").parent().removeClass("hide");
+						
+						$("#user_form form").resetForm();
+						$("#user_form form input[type='hidden']").val("");
 						$("#instructions").removeClass("hide");
 					}
-					
-					if ($pageId.indexOf("profile") == -1)
-						$("#user_form #email").parent().removeClass("hide");
 					
 					$("label[for='user_group'] .required, label[for='email'] .required").remove();
 					$("label[for='user_group'], label[for='email']").append($("label[for='first_name'] .required").clone());					
@@ -611,6 +612,7 @@ $("#loading_screen").removeClass("hide");
 						
 						var data;
 					
+						// user profile edit form or users page edit form
 						if (($pageId.indexOf("profile") != -1) || ($("#edit_modal form").length > 0)) {
 							data = {
 								"role": $("#edit_modal #user_group_dropdown").val(),
@@ -629,15 +631,18 @@ $("#loading_screen").removeClass("hide");
 								"showInfo": false
 							};
 							
-							var userRef;
+							var uid;
 							
 							if ($pageId.indexOf("profile") != -1)
-								userRef = db.ref("users/" + firebase.auth().currentUser.uid);
+								uid = firebase.auth().currentUser.uid;
 							else
-								userRef = db.ref("users/" + $("#edit_modal form #uid").val());
+								uid = $("#edit_modal form #uid").val();
+							
+							var userRef = db.ref("users/" + uid);
 							
 							var result = userRef.update(data).then(function() {
 								$("#user_form form, #edit_modal form").append("<div class='alert alert-success' role='alert'>The information was successfully updated.</div>");
+								
 								var oldRole = eval($("#edit_modal form #old_role").val());
 								
 								/* Update the role node if necessary. */
@@ -669,7 +674,8 @@ $("#loading_screen").removeClass("hide");
 								$("#user_form form, #edit_modal form").append(genericError);
 							});
 						}
-						else if ($pageId.indexOf("users") != -1) {
+						// users page new user form
+						else if ($pageId.indexOf("users") != -1) {							
 							data = {
 								"role": $("form #user_group_dropdown").val(),
 								"firstName": $("form #first_name").val(),
@@ -691,19 +697,19 @@ $("#loading_screen").removeClass("hide");
 							/* Create a second connection to create the new user. 
 							 * From: http://stackoverflow.com/questions/37517208/firebase-kicks-out-current-user/38013551#38013551
 							 */
-							var secondaryApp;
+							var newUserApp;
 							 
 							try {
-								secondaryApp = firebase.app("Secondary");
+								newUserApp = firebase.app("NewUser");
 							}
 							catch(err) {
-								secondaryApp = firebase.initializeApp(config, "Secondary");
-							}								
+								newUserApp = firebase.initializeApp(config, "NewUser");
+							}
 							
 							// randomly generate a new temp password
 							var password = Math.random().toString(36).slice(-8);
 
-							secondaryApp.auth().createUserWithEmailAndPassword($("#user_form #email").val(), password).then(function(firebaseUser) {
+							newUserApp.auth().createUserWithEmailAndPassword($("#user_form #email").val(), password).then(function(firebaseUser) {
 								/* Update the users node. */
 								db.ref("users/" + firebaseUser.uid).update(data).then(function() {
 									/* Update the rules node. */

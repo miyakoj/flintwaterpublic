@@ -59,22 +59,6 @@ echo header("Accept-Encoding: gzip");
 			else {
 				$("#loading_screen").addClass("hide");
 				$("#wrapper").removeClass("hide");
-				/* Position the spinner based upon the size of the screen. */
-				//$(".loader").css("margin-top", windowHeight/2 - $(".loader").height()/2 + "px");
-		
-				/*var config = {
-					apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
-					authDomain: "uniteflint.firebaseapp.com",
-					databaseURL: "https://uniteflint.firebaseio.com",
-					storageBucket: "uniteflint.appspot.com",
-					messagingSenderId: "402781339047"
-				};
-				
-				if (!firebase.auth().app)
-					app = firebase.initializeApp(config);
-				
-				auth = firebase.auth();
-				db = app.database();*/
 			}
 		});
 	});

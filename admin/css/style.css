@@ -17,6 +17,10 @@ body {
 	padding:0 15px;
 }
 
+#map_container {
+	position:relative;
+}
+
 #map {
 	width:100%;
 	height:100%;
@@ -84,6 +88,10 @@ body {
 
 #location_card .card-inner {
 	margin:10px!important;
+}
+
+#location_card h5 {
+	margin-bottom:12px;
 }
 
 #location_card .card-inner hr {

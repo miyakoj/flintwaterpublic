@@ -26,7 +26,7 @@ if (@isset($_POST["pid"])) {
 		// users with edit only privileges
 		case 2:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
+			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
 			$users_link = "";
 		break;
 		
@@ -148,6 +148,7 @@ if (@isset($_POST["pid"])) {
 					<div class='form-group'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-10 col-md-offset-1'>
+						<button id='delete_button' type='button' class='btn btn-default pull-right hide'>Delete</button>
 						<button id='edit_button' type='button' class='btn btn-default pull-right'>Edit</button>
 						<button id='submit_button' type='submit' class='btn btn-default pull-right hide'>Submit</button>
 						</div>
@@ -635,7 +636,7 @@ if (@isset($_POST["pid"])) {
 								<table class=\"table table-striped\">
 									<thead>
 										<tr>
-										<th class=\"edit\">&nbsp;</th>
+										<th class=\"list_manage\">&nbsp;</th>
 										<th class=\"first_name\">First Name</th>
 										<th class=\"last_name\">Last Name</th>
 										<th class=\"email\">Email</th>
@@ -676,25 +677,34 @@ if (@isset($_POST["pid"])) {
 									uid = childSnapshot.key;
 									
 									content += '<tr id=\"' + uid + '\">';
-									content += '<td id=\"manage\"><a href=\"#\" title=\"edit\"><span class=\"material-icons\">edit</span></a> <a href=\"#\" title=\"delete\" class=\"hide\"><span class=\"material-icons\">delete</span></a></td>';
-									content += '<td id=\"first_name\">' + childSnapshot.child(\"firstName\").val() + '</td>';
-									content += '<td id=\"last_name\">' + childSnapshot.child(\"lastName\").val() + '</td>';
-									content += '<td id=\"email\">' + childSnapshot.child(\"email\").val() + '</td>';
-									content += '<td id=\"title\">' + childSnapshot.child(\"title\").val() + '</td>';
+									content += '<td class=\"list_manage\"><a href=\"#\" title=\"edit\"><span class=\"material-icons\">edit</span></a> <a href=\"#\" title=\"delete\" class=\"hide\"><span class=\"material-icons\">delete</span></a></td>';
+									content += '<td class=\"first_name\">' + childSnapshot.child(\"firstName\").val() + '</td>';
+									content += '<td class=\"last_name\">' + childSnapshot.child(\"lastName\").val() + '</td>';
+									content += '<td class=\"email\">' + childSnapshot.child(\"email\").val() + '</td>';
+									content += '<td class=\"title\">' + childSnapshot.child(\"title\").val() + '</td>';
 									content += '</tr>';
 								});
 								
-								$('table tbody').append(content);
+								$('table tbody').html(content);
 								
-								$('#user_list table #manage a[title=\"edit\"]').on('click', function() {
+								$('#user_list table .list_manage a[title=\"edit\"]').on('click', function() {
 									uid = $(this).parents('tr').attr('id');
 									
-									db.ref('users/' + uid).once('value').then(function(snapshot) {										
-										for (var i=0; i<$('#user_form form')[0].elements.length; i++)
+									// clear the form fields just in case
+									$('#user_form form, #edit_modal form').resetForm();
+									$('#user_form form, #edit_modal form').find($('input[type=\"hidden\"]')).val('');
+									
+									db.ref('users/' + uid).once('value').then(function(snapshot) {
+										for (var i=0; i<$('#user_form form, #edit_modal form')[0].elements.length; i++)
 											$('#user_form form, #edit_modal form')[0].elements[i].disabled = true;
 										
+										$('#user_form form, #edit_modal form').find($('#email')).attr('disabled', 'disabled');
+										
+										// unhide the delete button
+										//$('#user_form form, #edit_modal form').find($('#delete_button')).removeClass('hide')
+										
 										// enable the edit and submit buttons
-										$('#user_form form #edit_button, #user_form form #submit_button').removeAttr('disabled');
+										$('#user_form form, #edit_modal form').find($('#edit_button, #submit_button')).removeAttr('disabled');
 										
 										var show_info;
 										
@@ -703,33 +713,45 @@ if (@isset($_POST["pid"])) {
 										else
 											show_info = 'no';
 										
-										$('#user_form form #user_group_dropdown').val(snapshot.val().role);
-										$('#user_form form #first_name').val(snapshot.val().firstName);
-										$('#user_form form #last_name').val(snapshot.val().lastName);
-										$('#user_form form #title').val(snapshot.val().title);
-										$('#user_form form #email').val(snapshot.val().email);
-										$('#user_form form #phone').val(snapshot.val().phone);
-										$('#user_form form #dept').val(snapshot.val().dept);
-										$('#user_form form #bldg').val(snapshot.val().address.bldg);
-										$('#user_form form #address').val(snapshot.val().address.streetAddr);
-										$('#user_form form #city').val(snapshot.val().address.city);
-										$('#user_form form #zipcode').val(snapshot.val().address.zipcode);
-										$('#user_form form #state').val(snapshot.val().address.state);
-										$('#user_form form #show_info input').val([show_info]);
+										$('#user_form form, #edit_modal form').find($('#user_group_dropdown')).val(snapshot.val().role);
+										$('#user_form form, #edit_modal form').find($('#first_name')).val(snapshot.val().firstName);
+										$('#user_form form, #edit_modal form').find($('#last_name')).val(snapshot.val().lastName);
+										$('#user_form form, #edit_modal form').find($('#title')).val(snapshot.val().title);
+										$('#user_form form, #edit_modal form').find($('#email')).val(snapshot.val().email);
+										$('#user_form form, #edit_modal form').find($('#phone')).val(snapshot.val().phone);
+										$('#user_form form, #edit_modal form').find($('#dept')).val(snapshot.val().dept);
+										$('#user_form form, #edit_modal form').find($('#bldg')).val(snapshot.val().address.bldg);
+										$('#user_form form, #edit_modal form').find($('#address')).val(snapshot.val().address.streetAddr);
+										$('#user_form form, #edit_modal form').find($('#city')).val(snapshot.val().address.city);
+										$('#user_form form, #edit_modal form').find($('#zipcode')).val(snapshot.val().address.zipcode);
+										$('#user_form form, #edit_modal form').find($('#state')).val(snapshot.val().address.state);
+										$('#user_form form, #edit_modal form').find($('#show_info input')).val([show_info]);
 										
-										var role_input = '<input id=\"old_role\" type=\"hidden\" value=\"' + snapshot.val().role + '\" />';
-										var uid_input =  '<input id=\"uid\" type=\"hidden\" value=\"' + uid + '\" />';
-										
-										$('#user_form form').append(role_input, uid_input); // hidden old role field
+										if ($('#user_form form, #edit_modal form').find($('input[type=\"hidden\"]')).length == 0) {
+											var role_input = '<input id=\"old_role\" type=\"hidden\" value=\"' + snapshot.val().role + '\" />';
+											var uid_input =  '<input id=\"uid\" type=\"hidden\" value=\"' + uid + '\" />';
+											
+											$('#user_form form').append(role_input, uid_input); // hidden info fields
+										}
+										else if ($('#edit_modal form input[type=\"hidden\"]').length > 0) {
+											$('#user_form form, #edit_modal form').find($('#old_role')).val(snapshot.val().role);
+											$('#user_form form, #edit_modal form').find($('#uid')).val(uid);
+										}
 										
 										$('#user_form form .required').show();
 										$('#user_form form #phone').parents('.row').find('.col-md-offset-1').removeClass('hide');
-										$('#edit_modal .modal-body').html($('#user_form form'));
+										
+										if ($('#edit_modal .modal-body form').length == 0)
+											$('#edit_modal .modal-body').html($('#user_form form'));
+										
 										$('#edit_modal').modal('show');
 									});
 								});
 								
-								$('#user_list table #manage a[title=\"delete\"]').on('click', function() {
+								/* Delete a user. NOT IMPLEMENTED DUE TO MISSING ADMIN CAPABILITY IN FIREBASE AUTH */
+								$('#user_list table .list_manage a[title=\"delete\"]').on('click', function() {
+									uid = $(this).parents('tr').attr('id');
+									
 									$('#user_list').after('<div id=\"delete_modal\" class=\"modal fade\" tabindex=\"-1\" role=\"dialog\">' +
 										'<div class=\"modal-dialog modal-sm\" role=\"document\">' +
 											'<div class=\"modal-content\">' +

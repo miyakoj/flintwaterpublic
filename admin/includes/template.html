@@ -72,16 +72,16 @@
 		}, 120000);
 	};
 	
-	$("body").on({
+	/*$("body").on({
 		mousemove: loginResetInterval,
 		click: loginResetInterval,
 		keypress: loginResetInterval,
 		scroll: loginResetInterval
-	});
+	});*/
 	
 	$(document).ready(function() {
 		// the interval 'timer' is set as soon as the page loads to 20 min
-		timer = window.setInterval(loginAutoLogout, 1200000);
+		//timer = window.setInterval(loginAutoLogout, 1200000);
 		
 		// the idle logout prevention dialog
 		$("body").prepend("<div id='timeout_modal' class='modal fade' tabindex='-1' role='dialog'>" +

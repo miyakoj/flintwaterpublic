@@ -134,6 +134,7 @@ function initMap() {
 	map = new google.maps.Map(document.getElementById('map'), {
 		center: mapCenter,
 		zoom: 13,
+		streetViewControl: false,
 		mapTypeControl: false,
 		fullscreenControl: false,
 		gestureHandling: "greedy"
@@ -562,6 +563,14 @@ function addFusionListener(object) {
 			$("#location_card #lat").html(event.row["latitude"].value);
 			$("#location_card #lng").html(event.row["longitude"].value);
 			checkIfSaved(latLng);
+			map.panTo({lat: event.latLng.lat(), lng: event.latLng.lng()});
+			
+			if (windowWidth >= 600 && $pageId.indexOf("dashboard") != -1) {
+				$("#location_card").css({
+					left: (($("#map").width() / 2) - ($("#location_card").width() / 2)) + "px",
+					bottom: 0
+				});
+			}
 			
 			// collapse expanded areas
 			$("#previous_results button").addClass("collapsed").attr("aria-expanded", "false");			
@@ -824,7 +833,7 @@ function callStorageAPI(object) {
 
 					// Set the content of the info card.
 					var constructStr = "The city council has approved service line replacement for water service pipes near this location."
-					var constructionContent = "<p id='provider_resources'>" + images + "</p>" + "<h5 id='address'>" + address + "</h5>" +  "<p id=constructString>" + constructStr + "</p>";
+					var constructionContent = "<p id='provider_resources'>" + images + "</p>" + "<h5 id='address' style='margin-bottom:8px;'>" + address + "</h5>" +  "<p id=constructString>" + constructStr + "</p>";
 					
 					// Call the info window.
 					bindInfoWindow("resource", constructionMarker, map, 'Construction', constructionContent);					
@@ -1085,8 +1094,11 @@ function createLocationCardContent(type, content) {
 
 
 /* Insert the data into the location card and show it when the marker is clicked. */
-function attachLocationCard(type, clickedMarker, address, content) {
-	clickedMarker.addListener("click", function() {
+function attachLocationCard(type, clickedMarker, address, content) {	
+	clickedMarker.addListener("click", function(event) {
+		var lat;
+		var lng;
+		
 		$("#resource_card, #legend_card").hide();
 		
 		/* Insert the saved location address in the location bar on the report page when clicked. */
@@ -1098,29 +1110,49 @@ function attachLocationCard(type, clickedMarker, address, content) {
 		
 		createLocationCardContent(type, content);
 		
-		if (type.indexOf("leadArea") == -1) {
-			checkIfSaved(marker.getPosition());
+		// a location was clicked
+		if (type.indexOf("leadArea") == -1) {			
+			lat = clickedMarker.getPosition().lat();
+			lng = clickedMarker.getPosition().lng();
+			
+			checkIfSaved(clickedMarker.getPosition());
 			
 			// add hidden lat/long fields after the address
 			$("#location_card #address").after("<div id='lat' class='hide'></div> <div id='lng' class='hide'></div>");			
 			$("#location_card #lat").html(clickedMarker.getPosition().lat());
 			$("#location_card #lng").html(clickedMarker.getPosition().lng());
 		}
-		else
+		// a lead area was clicked
+		else {
+			lat = event.latLng.lat();
+			lng = event.latLng.lng();
+			
 			$("#location_card").css("width", "20em");
+			
+			if (windowWidth >= 600 && $pageId.indexOf("dashboard") != -1) {
+				$("#location_card").css({
+					left: (($("#map").width() / 2) - ($("#location_card").width() / 2)) + "px",
+					bottom: 0
+				});
+			}
+		}
+		
+		map.panTo({lat: lat, lng: lng});
 		
 		$("#location_card").show();
 	});
 }
 
 
-function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
+function bindInfoWindow(type, clickedMarker, map, resourcesAvailable, content) {
 	if (type.indexOf("resource") != -1) {
-		marker.addListener("click", function() {
+		clickedMarker.addListener("click", function(event) {
 			$("#location_card, #legend_card").hide();
 			
-			isSaved = checkIfSaved(marker.getPosition());
-			map.panTo(marker.getPosition());
+			isSaved = checkIfSaved(clickedMarker.getPosition());
+			map.panTo(clickedMarker.getPosition());
+			map.setZoom(15);
+			
 			$("#resource_card .card-inner").empty().prepend(content);
 			
 			/* Disable non-relevant report choices. */
@@ -1179,10 +1211,10 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 				$("#resource_card .card-action").hide();
 			}
 			
-			if (windowWidth >= 600 && $pageId.indexOf("test") != -1) {
+			if (windowWidth >= 600 && ($pageId.indexOf("test") != -1 || $pageId.indexOf("dashboard") != -1)) {
 				$("#resource_card").css({
 					left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
-					bottom: (($("#map").height() / 2) + 10) + "px"
+					bottom: 0
 				});
 			}
 			
@@ -1193,7 +1225,7 @@ function bindInfoWindow(type, marker, map, resourcesAvailable, content) {
 			else
 				$("#resource_card #card_save .icon").html("star_border");
 			
-			resourceMarker = marker;
+			resourceMarker = clickedMarker;
 		});
 	}
 }
@@ -1370,21 +1402,18 @@ $(document).ready(function() {
 		});
 
 		$("#water_pickup_btn").on("click", function() {
-			$("#resource_card, #location_card").hide();
-			
+			$("#resource_card, #location_card").hide();			
 			if (resourceActiveArray[1] == 1) {
 				resourceActiveArray[1] = 0;
 				$("body[id='dashboard_page'] #water_pickup_btn").removeClass("active");
 				$("#water_pickup_btn img").attr("src", folderPrefix+"images/water_pickup_icon_white.png");
 			}
 			else {
+				map.setZoom(14);
 				resourceActiveArray[1] = 1;
 				$("body[id='dashboard_page'] #water_pickup_btn").addClass("active");
 				$("#water_pickup_btn img").attr("src", folderPrefix+"images/water_pickup_icon.png");
 			}
-			
-			if (map.getZoom() > 15)
-				map.setZoom(15);
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			setMarkers();
@@ -1399,13 +1428,11 @@ $(document).ready(function() {
 				$("#recycling_btn img").attr("src", folderPrefix+"images/recycle_icon_white.png");
 			}
 			else {
+				map.setZoom(14);
 				resourceActiveArray[2] = 1;
 				$("body[id='dashboard_page'] #recycling_btn").addClass("active");
 				$("#recycling_btn img").attr("src", folderPrefix+"images/recycle_icon.png");
 			}
-			
-			if (map.getZoom() > 15)
-				map.setZoom(15);
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			setMarkers();
@@ -1420,13 +1447,11 @@ $(document).ready(function() {
 				$("#water_testing_btn img").attr("src", folderPrefix+"images/lead_test_icon_white.png");
 			}
 			else {
+				map.setZoom(14);
 				resourceActiveArray[4] = 1;
 				$("body[id='dashboard_page'] #water_testing_btn").addClass("active");
 				$("#water_testing_btn img").attr("src", folderPrefix+"images/lead_test_icon.png");
 			}
-			
-			if (map.getZoom() > 15)
-				map.setZoom(15);
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			setMarkers();
@@ -1441,13 +1466,11 @@ $(document).ready(function() {
 				$("#blood_testing_btn img").attr("src", folderPrefix+"images/bloodtest_icon_white.png");
 			}
 			else {
+				map.setZoom(14);
 				resourceActiveArray[5] = 1;
 				$("body[id='dashboard_page'] #blood_testing_btn").addClass("active");
 				$("#blood_testing_btn img").attr("src", folderPrefix+"images/bloodtest_icon.png");
 			}
-			
-			if (map.getZoom() > 14)
-				map.setZoom(14);
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			setMarkers();
@@ -1462,13 +1485,11 @@ $(document).ready(function() {
 				$("#water_filters_btn img").attr("src", folderPrefix+"images/water_filter_icon_white.png");
 			}
 			else {
+				map.setZoom(14);
 				resourceActiveArray[3] = 1;
 				$("body[id='dashboard_page'] #water_filters_btn").addClass("active");
 				$("#water_filters_btn img").attr("src", folderPrefix+"images/water_filter_icon.png");
 			}
-			
-			if (map.getZoom() > 15)
-				map.setZoom(15);
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			setMarkers();
@@ -1486,6 +1507,7 @@ $(document).ready(function() {
 					constructionMarkers[i].setMap(null);
 			}
 			else {
+				map.setZoom(14);
 				resourceActiveArray[6] = 1;
 				$("body[id='dashboard_page'] #pipes_btn").addClass("active");
 				$("#pipes_btn img").attr("src", folderPrefix+"images/pipes_icon.png");
@@ -1493,9 +1515,6 @@ $(document).ready(function() {
 				for (var i=0; i<constructionMarkers.length; i++)
 					constructionMarkers[i].setMap(map);
 			}
-			
-			if (map.getZoom() > 15)
-				map.setZoom(15);
 			
 			localStorage.setItem("resource_array", JSON.stringify(resourceActiveArray));
 			setMarkers();
