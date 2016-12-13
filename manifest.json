@@ -1,0 +1,33 @@
+{
+	"short_name": "MyWater-Flint",
+	"name": "MyWater-Flint",
+	"lang": "en",
+	"dir": "ltr",	
+	"scope": "/",
+	"start_url": "/index.php",
+	"icons": [
+		{
+			"src": "/images/favicon128.png",
+			"sizes": "128x128",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/favicon64.png",
+			"sizes": "64x64",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/favicon32.png",
+			"sizes": "32x32",
+			"type": "image/png"
+		},
+		{
+			"src": "/images/favicon16.png",
+			"sizes": "16x16",
+			"type": "image/png"
+		}
+	],
+	"orientation": "landscape",
+	"display": "standalone",
+	"gcm_sender_id": "103953800507"
+}

@@ -120,7 +120,14 @@ $("#loading_screen").removeClass("hide");
 					if (windowWidth < 768) {
 					}
 					else {
+						$("#location_card").css({
+							left: 0,
+							right: (($("#map_container").width() / 2) - ($("#location_card").width() / 2)) + "px",
+							bottom: (($("#map_container").height() / 2) + 10) - $("#location_card").height() - 70 + "px"
+						});
+						
 						$("#resource_card").css({
+							left: 0,
 							right: (($("#map_container").width() / 2) - ($("#resource_card").width() / 2)) + "px",
 							bottom: (($("#map_container").height() / 2) + 10) - $("#resource_card").height() - 70 + "px"
 						});

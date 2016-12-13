@@ -976,7 +976,7 @@ function queryFusionTable(query, callback) {
 }
 
 /* Location info card content generation. */
-function createLocationContent(streetAddress, dataObj) {	
+function createLocationContent(streetAddress, dataObj) {
 	/* The data is from a fusion table query. */
 	var leadLevel = dataObj.rows[0][3];
 	var abandonmentStatus = dataObj.rows[0][2];
@@ -1048,8 +1048,8 @@ function createLocationContent(streetAddress, dataObj) {
 		}
 		// the property only has a prediction
 		else {
-			content += "<div id='results' class='emphasis'>No Reported Test Results</div>";
 			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
+			content += "<div id='results' class='emphasis'>No Reported Test Results</div>";
 		
 			if (prediction >= 0.20)
 				warningMsg = "High predicted risk of elevated lead levels. Testing is recommended.";
@@ -1202,6 +1202,9 @@ function bindInfoWindow(type, clickedMarker, map, resourcesAvailable, content) {
 			}
 			
 			if (resourcesAvailable.indexOf("Construction") == -1) {
+				// zoom in when a marker is clicked
+				map.setZoom(15);
+				
 				$("#resource_card #card_report_menu a:contains('Construction')").parent().addClass("disabled");
 				$("#resource_card #card_report_menu a:contains('Construction')").removeAttr("href");
 			}

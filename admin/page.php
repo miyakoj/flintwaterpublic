@@ -19,14 +19,13 @@ if (@isset($_POST["pid"])) {
 		// admin users
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
 			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		
 		// users with edit only privileges
 		case 2:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
+			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
 			$users_link = "";
 		break;
 		
@@ -585,7 +584,89 @@ if (@isset($_POST["pid"])) {
 			if (($role == 1) || ($role == 2)) {
 				$pagetitle = "Manage Alerts";
 				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-				$inner_content = "INSERT FORM HERE";
+				$inner_content = "<div class='panel-group hide' id='notification_accordion' role='tablist' aria-multiselectable='true'>
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='new_notification_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#notification_accordion' href='#new_notification' aria-expanded='true' aria-controls='new_notification'>New Notification</a></h4>
+				</div>
+
+				<div id='new_notification' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_notification_heading'>
+				<div class='panel-body'>
+				NEW NOTIFICATION
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='edit_notification_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#notification_accordion' href='#edit_notification' aria-expanded='true' aria-controls='edit_notification'>Edit Notification</a></h4>
+				</div>
+
+				<div id='edit_notification' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_notification_heading'>
+				<div class='panel-body'>
+				EDIT NOTIFICATION
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='delete_notification_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#notification_accordion' href='#delete_notification' aria-expanded='true' aria-controls='delete_notification'>Delete Notification</a></h4>
+				</div>
+
+				<div id='delete_notification' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_notification_heading'>
+				<div class='panel-body'>
+				DELETE NOTIFICATION
+				</div>
+				</div>
+				</div>
+				</div>";
+				
+				$script = "<script type='text/javascript'>
+					$(document).ready(function() {
+						const messaging = firebase.messaging();
+						
+						messaging.requestPermission().then(function() {
+							console.log('Notification permission granted.');
+							
+							messaging.getToken().then(function(currentToken) {
+								if (currentToken) {
+								  sendTokenToServer(currentToken);
+								  updateUIForPushEnabled(currentToken);
+								  // store token?
+								}
+								else {
+								  // Show permission request.
+								  console.log('No Instance ID token available. Request permission to generate one.');
+								  // Show permission UI.
+								  updateUIForPushPermissionRequired();
+								  setTokenSentToServer(false);
+								}
+							}).catch(function(err) {
+								console.log('An error occurred while retrieving token. ', err);
+								showToken('Error retrieving Instance ID token. ', err);
+								setTokenSentToServer(false);
+							});
+						}).catch(function(err) {
+							console.log('Unable to get permission to notify.', err);
+						});
+						
+						messaging.onTokenRefresh(function() {
+							messaging.getToken().then(function(refreshedToken) {
+								console.log('Token refreshed.');
+								// Indicate that the new Instance ID token has not yet been sent to the
+								// app server.
+								setTokenSentToServer(false);
+								// Send Instance ID token to app server.
+								sendTokenToServer(refreshedToken);
+								// ...
+							}).catch(function(err) {
+								console.log('Unable to retrieve refreshed token ', err);
+								showToken('Unable to retrieve refreshed token ', err);
+							});
+						});
+					});
+				</script>";
 			}
 			else {
 				$pagetitle = "";
