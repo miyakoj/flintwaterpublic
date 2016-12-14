@@ -7,6 +7,8 @@ else
 
 require_once __ROOT__ . "/admin/includes/queries.php";
 
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
 use google\appengine\api\mail\Message;
 
 /* Handles report page queries. */
@@ -30,6 +32,10 @@ if (@isset($_POST["report_type"])) {
 		
 		$csv_output = "address,leadLevel,copperLevel,dateUpdated\n";
 	}
+	else if (strcmp($_POST["report_type"], "contact_form_resp") === 0) {
+		$result = queries($_POST["report_type"]);
+		$csv_output = "type,email,comments,dateAdded\n";
+	}
 		
 	$json_output = "{ \"" . $_POST["report_type"] . "\": [\n";
 	
@@ -38,6 +44,8 @@ if (@isset($_POST["report_type"])) {
 	while ($row = $result->fetch_assoc()) {
 		if (strcmp($_POST["report_type"], "water_tests") === 0)
 			$csv_output .= sprintf("%s,%s,%s,%s\n", $row["address"], $row["leadLevel"], $row["copperLevel"], $row["dateUpdated"]);
+		else if (strcmp($_POST["report_type"], "contact_form_resp") === 0)
+			$csv_output .= sprintf("%s,%s,%s,%s\n", $row["form_type"], $row["email"], $row["comments"], $row["dateAdded"]);
 		
 		$json_output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
 		
@@ -66,7 +74,7 @@ if (@isset($_POST["type"])) {
 	
 	// get resource location info
 	if (strcmp($_POST["type"], "edit_resource_load") === 0) {
-		$result = queries("edit_resource_load", $_POST["location"]);
+		$result = queries($_POST["type"], $_POST["location"]);
 		$row = $result->fetch_assoc();
 			
 		/* Generate an array out of the resource type. */
@@ -80,28 +88,35 @@ if (@isset($_POST["type"])) {
 	}
 	// submit resource info updates
 	else if (strcmp($_POST["type"], "edit_resource_submit") === 0) {
-		$result = queries("edit_resource_submit", "", $_POST);
+		$result = queries($_POST["type"]);
 
 		echo $result;
 	}
 	else if (strcmp($_POST["type"], "new_resource") === 0) {
-		$result = queries("new_resource", "", $_POST);
+		$result = queries($_POST["type"]);
 		
 		echo $result;
 	}
 	else if (strcmp($_POST["type"], "delete_resource") === 0) {
-		$result = queries("delete_resource", $_POST["location"]);
+		$result = queries($_POST["type"], $_POST["location"]);
 
 		echo $result;
 	}
 	// the site admin contact form
-	else if (strcmp($_POST["type"], "contact_form") === 0) {	
+	else if (strcmp($_POST["type"], "contact_form") === 0) {
+		// insert contact form data into the database
+		$result = queries($_POST["type"]);
+		
 		email_user();
 	}
 	// user page new user email
 	else if (strcmp($_POST["type"], "new_user_email") === 0) {
 		email_user();
 	}
+}
+
+/* Handles new alert queries. */
+if (@isset($_POST["alerts"])) {
 }
 
 

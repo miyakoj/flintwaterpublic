@@ -129,7 +129,7 @@ $(document).ready(function() {
 	
 	/* Launch the contact form in a modal. */
 	$("footer #contact_us").on("click", function() {
-		$('#comments_form').modal("toggle")
+		$('#contact_form').modal("toggle")
 	});
 	
 	
@@ -221,7 +221,7 @@ $(document).ready(function() {
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
 		$("#main_menu").append($("#made_in_Flint"), $("#google_play_link"), $("footer"));
-		//$("#header").append($("#comments_form"));
+		//$("#header").append($("#contact_form"));
 		
 		$("#made_in_Flint img").css({
 			"margin-left": "auto",
@@ -904,11 +904,12 @@ $(document).ready(function() {
 				$("#report_problem #report_step3_content .next_button").addClass("disabled");
 		});*/
 	}
-	
-	/* Site problem form. */
-	if ($pageId.indexOf("index") != -1) {
-		$("#comments_form #email").val("");
-		$("#comments_form #comments").val("");
+	/* Contact us form. */
+	else if ($pageId.indexOf("index") != -1) {
+		$("#contact_form .char_count").html("<span>Characters remaining:</span> " + (1000 - $("#contact_form #comments").val().length));
+		$("#contact_form #comments").on("keyup", function(event) {
+			$(".char_count").html("<span>Characters remaining:</span> " + (1000 - $(this).val().length));
+		});
 		
 		$.ajax({
 			type: "GET",
@@ -916,59 +917,119 @@ $(document).ready(function() {
 			dataType: "script",
 			cache: true,
 			success: function() {
-				var comments_validator = $("#comments_form form").validate({
+				var comments_validator = $("#contact_form form").validate({
 					debug: false,
 					errorPlacement: function(error, element) {
 						element.after(error);
 					},
-					messages: {
-						email: "Please enter a valid email address.",
-						description: "Please describe the problem."
+					rules: {
+						email: {
+							required: false,
+							email: true
+						},
+						comments: {
+							required: true,
+							minlength: 20,
+							maxlength: 1000
+						}
 					},
 					submitHandler: function(form) {			
 						$(form).ajaxSubmit({
 							type: "POST",
 							url: "includes/functions.php",
 							data: {
-								type: "site_report",
-								email: $("#comments_form #email").val(),
-								description: $("#comments_form #comments").val()
+								"type": "contact_form",
+								"form_type": "user"
 							},
-							complete: function(resp) {
-								console.log(resp);
-								
+							complete: function(resp) {								
 								if (resp.responseText.indexOf("1") != -1) {
-									$("#comments_form div[class*='alert-danger']").remove();
-									$("#comments_form .modal-content").html("<div class='alert alert-success' role='alert'>Your comments have been successfully submitted.</div>").resetForm();
+									$("#contact_form div[class*='alert-danger']").remove();
+									$("#contact_form .modal-header, #contact_form .modal-body, #contact_form .modal-footer").hide();
+									$("#contact_form .modal-content").prepend("<div class='alert alert-success' role='alert'>Your comments have been successfully submitted.</div>");
+									$("#contact_form form").resetForm();
 								}
 								else {
-									$("#comments_form div[class*='alert-danger']").remove();
-									$("#comments_form .modal-body").append("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your comments. Please try again.</div>");
+									$("#contact_form div[class*='alert-danger']").remove();
+									$("#contact_form .modal-body").append("<div class='alert alert-danger' role='alert' style='margin-top:20px;'>There was an error submitting your comments. Please try again.</div>");
 								}
 								
-								$("#comments_form .alert").show();
+								$("#contact_form .alert").show();
 							}
 						});
+						
+						return false;
 					}
 				});
-			
-				$("#comments_form #comments").on("keyup", function() {
-					if (comments_validator.element("#comments_form #comments") && comments_validator.element("#comments_form #comments"))
-						$("#comments_form .submit_button").removeClass("disabled");
+				
+				$("#contact_form").on("show.bs.modal", function() {
+					$("#contact_form .modal-content .alert-success").remove();
+					$("#contact_form .modal-header, #contact_form .modal-body, #contact_form .modal-footer").show();
+				});
+				
+				$("#contact_form").on("shown.bs.modal", function() {
+					if (comments_validator.element("#contact_form #comments"))
+						$("#contact_form .submit_button").removeClass("disabled");
 					else
-						$("#comments_form .submit_button").addClass("disabled");
+						$("#contact_form .submit_button").addClass("disabled");
+				});
+			
+				$("#contact_form #comments").on("keyup", function() {
+					if (comments_validator.element("#contact_form #comments"))
+						$("#contact_form .submit_button").removeClass("disabled");
+					else
+						$("#contact_form .submit_button").addClass("disabled");
 				});
 			}	
 		});
-	}
-		
-	
-	if ($pageId.indexOf("news") != -1) {		
+	}	
+	else if ($pageId.indexOf("news") != -1) {		
 		$.ajax({
 			type: "GET",
 			url: feed_api,
 			dataType: "script",
 			cache: true
 		});
+		
+		/*const messaging = firebase.messaging();
+						
+		messaging.requestPermission().then(function() {
+			console.log("Notification permission granted.");
+			
+			messaging.getToken().then(function(currentToken) {
+				if (currentToken) {
+				  sendTokenToServer(currentToken);
+				  updateUIForPushEnabled(currentToken);
+				  // store token?
+				}
+				else {
+				  // Show permission request.
+				  console.log("No Instance ID token available. Request permission to generate one.");
+				  // Show permission UI.
+				  updateUIForPushPermissionRequired();
+				  setTokenSentToServer(false);
+				}
+			}).catch(function(err) {
+				console.log("An error occurred while retrieving token. ", err);
+				showToken("Error retrieving Instance ID token. ", err);
+				setTokenSentToServer(false);
+			});
+		}).catch(function(err) {
+			console.log("Unable to get permission to notify.", err);
+		});
+		
+		messaging.onTokenRefresh(function() {
+			messaging.getToken().then(function(refreshedToken) {
+				console.log("Token refreshed.");
+				// Indicate that the new Instance ID token has not yet been sent to the
+				// app server.
+				setTokenSentToServer(false);
+				// Send Instance ID token to app server.
+				sendTokenToServer(refreshedToken);
+				// ...
+			}).catch(function(err) {
+				console.log("Unable to retrieve refreshed token ", err);
+				showToken("Unable to retrieve refreshed token ", err);
+			});
+		});*/
 	}
 });

@@ -24,18 +24,21 @@ if ($obj) {
 /* The data came from the website. */
 else {
 	if ($_POST["type"] == "resource_report") {	
-		$result = queries("resource_report", "" , $paddedId);
+		$result = queries($_POST["type"], "" , $paddedId);
 		echo $result;
 	}
 	else if ($_POST["type"] == "problem_report") {
-		$result = queries("problem_report", "" , $paddedId);
+		$result = queries($_POST["type"], "" , $paddedId);
 		
 		if ($result)
 			email_user();
 		else
 			echo 0;
 	}
-	else if ($_POST["type"] == "site_report") {	
+	else if ($_POST["type"] == "contact_form") {
+		// insert contact form data into the database
+		$result = queries($_POST["type"]);
+	
 		email_user();
 	}
 }
@@ -45,6 +48,7 @@ function email_user() {
 		$from = getenv('APP_EMAIL');
 		$subject = "A Message from MyWater-Flint";
 		
+		// comes from the Android app
 		if ($obj) {
 			$to = sprintf("%s", $obj->{"email"});
 			$msg = sprintf("<p>Thank you for your submission. Someone will be in contact with you to follow up on your report.</p>
@@ -53,6 +57,7 @@ function email_user() {
 				<p><strong>Problem Type:</strong><br /> %s</p>
 				<p><strong>Problem Description:</strong><br /> %s</p>", $obj->{"location"}, $obj->{"problemType"}, htmlspecialchars($obj->{"description"}));
 		}
+		// comes from the website
 		else {
 			$to = sprintf("%s", $_POST["email"]);
 			$msg = sprintf("<p>Thank you for your submission. Someone will be in contact with you to follow up on your report.</p>
@@ -62,7 +67,7 @@ function email_user() {
 				<p><strong>Problem Description:</strong><br /> %s</p>", $_POST["location"], $_POST["problemType"], htmlspecialchars($_POST["description"]));
 		}
 	}
-	else if ($_POST["type"] == "site_report") {
+	else if ($_POST["type"] == "contact_form") {
 		$to = getenv('APP_EMAIL');
 		$from = getenv('APP_EMAIL');
 		$subject = "A Comment About MyWater-Flint";

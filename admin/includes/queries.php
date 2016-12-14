@@ -115,6 +115,9 @@ function queries($choice, $var = "", $var2 = array()) {
 		
 		$query = sprintf("SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE %s%s;", $where_clause, $orderby_clause);
 	}
+	else if (strcmp($choice, "contact_form_resp") === 0) {
+		$query = "SELECT * FROM `ContactForm` ORDER BY `dateAdded` DESC;";
+	}
 	/*else if (strcmp($choice, "all_water_tests2") === 0) {
 		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}
@@ -132,23 +135,27 @@ function queries($choice, $var = "", $var2 = array()) {
 		$query = sprintf("SELECT latitude, longitude, locationName, AidLocation.aidAddress, city, zipcode, hours, phone, notes, GROUP_CONCAT(resType) AS resType FROM AidLocation INNER JOIN ResourcesQuantity ON AidLocation.aidAddress = ResourcesQuantity.aidAddress WHERE AidLocation.aidAddress = '%s';", $var);
 	}
 	if (strcmp($choice, "edit_resource_submit") === 0) {
-		$query = sprintf("UPDATE AidLocation SET latitude = '%s', longitude = '%s', locationName = '%s', city = '%s', state='MI', zipcode = '%s', hours = '%s', phone = '%s', notes = '%s' WHERE aidAddress = '%s';", $var2["latitude"], $var2["longitude"], $var2["site"], $var2["city"], $var2["zipcode"], $mysqli->real_escape_string($var2["hours"]), $var2["phone"], $mysqli->real_escape_string($var2["notes"]), $var2["address"]);
+		$query = sprintf("UPDATE AidLocation SET latitude = '%s', longitude = '%s', locationName = '%s', city = '%s', state='MI', zipcode = '%s', hours = '%s', phone = '%s', notes = '%s' WHERE aidAddress = '%s';", $_POST["latitude"], $_POST["longitude"], $_POST["site"], $_POST["city"], $_POST["zipcode"], $mysqli->real_escape_string($_POST["hours"]), $_POST["phone"], $mysqli->real_escape_string($_POST["notes"]), $_POST["address"]);
 		
 		/* Deal with the resource types. */
-		$query .= sprintf("DELETE FROM ResourcesQuantity WHERE aidAddress = '%s';", $var2["address"]);
+		$query .= sprintf("DELETE FROM ResourcesQuantity WHERE aidAddress = '%s';", $_POST["address"]);
 		
-		foreach ($var2["categories"] as $value)
-			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $var2["address"]);
+		foreach ($_POST["categories"] as $value)
+			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $_POST["address"]);
 	}
 	else if (strcmp($choice, "new_resource") === 0) {
-		$query = sprintf("INSERT INTO AidLocation (latitude, longitude, locationName, aidAddress, city, state, zipcode, hours, phone, notes) VALUES ('%s', '%s', '%s', '%s', '%s', 'MI', '%s', '%s', '%s', '%s');", $var2["latitude"], $var2["longitude"], $var2["site"], $var2["address"], $var2["city"], $var2["zipcode"], $mysqli->real_escape_string($var2["hours"]), $var2["phone"], $mysqli->real_escape_string($var2["notes"]));
+		$query = sprintf("INSERT INTO AidLocation (latitude, longitude, locationName, aidAddress, city, state, zipcode, hours, phone, notes) VALUES ('%s', '%s', '%s', '%s', '%s', 'MI', '%s', '%s', '%s', '%s');", $_POST["latitude"], $_POST["longitude"], $_POST["site"], $_POST["address"], $_POST["city"], $_POST["zipcode"], $mysqli->real_escape_string($_POST["hours"]), $_POST["phone"], $mysqli->real_escape_string($_POST["notes"]));
 		
-		foreach ($var2["categories"] as $value)
-			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $var2["address"]);
+		foreach ($_POST["categories"] as $value)
+			$query .= sprintf("INSERT INTO ResourcesQuantity (resType, aidAddress, quantity) VALUES ('%s', '%s', 1000);", $value, $_POST["address"]);
 	}
 	else if (strcmp($choice, "delete_resource") === 0) {
 		$query = sprintf("DELETE FROM AidLocation WHERE aidAddress = '%s';", $var);
 		$query .= sprintf("DELETE FROM ResourcesQuantity WHERE aidAddress = '%s';", $var);
+	}
+	/* Misc Queries */
+	else if (strcmp($choice, "contact_form") === 0) {
+		$query = sprintf("INSERT INTO ContactForm (type, email, comments) VALUES ('%s', '%s', '%s');", $_POST["form_type"], $mysqli->real_escape_string($_POST["email"]), $mysqli->real_escape_string($_POST["comments"]));
 	}
 	/*else if (strcmp($choice, "") === 0) {
 		

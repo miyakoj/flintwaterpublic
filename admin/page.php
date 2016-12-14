@@ -19,6 +19,7 @@ if (@isset($_POST["pid"])) {
 		// admin users
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
+			$alerts_link = '<li><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
 			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		
@@ -171,6 +172,7 @@ if (@isset($_POST["pid"])) {
 							<li><button id='predictions' type='button' class='btn btn-default'>Lead Prediction Data</button></li>
 							<li class='hide'><button id='problem_reports' type='button' class='btn btn-default'>Problem Reports</button></li>
 							<li class='hide'><button id='survey_results' type='button' class='btn btn-default'>Survey Results</button></li>
+							<li><button id='contact_form_resp' type='button' class='btn btn-default'>Contact Form Responses</button></li>
 						</ul>
 					</div>
 				</div>
@@ -277,6 +279,10 @@ if (@isset($_POST["pid"])) {
 							</div></div>
 						</form>
 						
+						<form id='contact_resp_form' class='form-inline hide' method='post'>
+							<input type='hidden' name='file' value='false' />
+						</form>
+						
 						<button id='print_report' type='button' class='btn btn-default hide' href='#'>Print</button> <button id='create_csv' type='button' class='btn btn-default hide' href='#'>Export as CSV</button>
 						
 						<div id='display_area' class='hide'></div>
@@ -335,10 +341,56 @@ if (@isset($_POST["pid"])) {
 				$('#clear_button').on('click', function() {
 					$('#display_area').html('');
 					$('#display_area').addClass('hide');
-					$('form').resetForm();
+					$(this).closest('form').resetForm();
 				});
 				
 				$('#water_tests').on('click', function() {
+					$('#years').rules('add', {
+						required: true
+					});
+					
+					$('#months').rules('add', {
+						required: true
+					});
+					
+					$('#aggregation').rules('add', {
+						required: false,
+						aggregation: true
+					});
+					
+					$('#group_by').rules('add', {
+						required: false,
+						group_by: true
+					});
+					
+					$('#lead_less').rules('add', {
+						required: false,
+						digits: true,
+						min: 1,
+						lead_less: true
+					});
+					
+					$('#lead_greater').rules('add', {
+						required: false,
+						digits: true,
+						min: 0,
+						lead_greater: true
+					});
+					
+					$('#copper_less').rules('add', {
+						required: false,
+						digits: true,
+						min: 1,
+						copper_less: true
+					});
+					
+					$('#copper_greater').rules('add', {
+						required: false,
+						digits: true,
+						min: 0,
+						copper_greater: true
+					});
+					
 					// deactivate all other buttons
 					$('#report_list .nav button').removeClass('active');
 					
@@ -346,7 +398,7 @@ if (@isset($_POST["pid"])) {
 					$('#instructions').addClass('hide');
 					$(this).find('#water_tests_form').resetForm();
 					
-					var content = '';
+					//var content = '';
 					
 					if ($(this).attr('id').indexOf('water') != -1) {
 						$('#report_type').addClass('hide');
@@ -357,7 +409,7 @@ if (@isset($_POST["pid"])) {
 								<option id=\"high_water_tests1\" disabled=\"disabled\">High Water Tests (Grouped by Address)</option>';*/
 					}					
 						
-					$('#report_type select').append(content);
+					//$('#report_type select').append(content);
 					
 					// hide all forms
 					$('#report_area form').addClass('hide');
@@ -367,10 +419,8 @@ if (@isset($_POST["pid"])) {
 					$('#report_area #water_tests_form').removeClass('hide');
 				});
 				
-				$('#predictions').on('click', function() {
-					var report = $(this).attr('id') + '_report.json';
-					
-					// deactivate all other buttons
+				$('#predictions').on('click', function() {					
+					// remove active state from all other buttons
 					$('#report_list .nav button').removeClass('active');
 					
 					// hide all forms and the results display area
@@ -384,6 +434,23 @@ if (@isset($_POST["pid"])) {
 					$('#report_area button:first-of-type').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>. No water tests results have been reported for addresses with \"Unknown\" average lead values.</p>');
 					$('#details').css('margin-bottom', '0');
 					$('#create_csv').removeClass('hide');
+				});
+				
+				$('#contact_form_resp').on('click', function() {
+					$('#contact_resp_form').submit();
+					
+					// deactivate all other buttons
+					$('#report_list .nav button').removeClass('active');
+					
+					$(this).addClass('active');
+					$('#instructions').addClass('hide');
+					
+					// hide all forms
+					$('#report_area form').addClass('hide');
+					$('#report_area #details').remove();
+					$('#display_area').html('').addClass('hide');
+					
+					$('#report_area #contact_resp_form').removeClass('hide');
 				});
 			});
 			</script>";
@@ -624,47 +691,7 @@ if (@isset($_POST["pid"])) {
 				
 				$script = "<script type='text/javascript'>
 					$(document).ready(function() {
-						const messaging = firebase.messaging();
 						
-						messaging.requestPermission().then(function() {
-							console.log('Notification permission granted.');
-							
-							messaging.getToken().then(function(currentToken) {
-								if (currentToken) {
-								  sendTokenToServer(currentToken);
-								  updateUIForPushEnabled(currentToken);
-								  // store token?
-								}
-								else {
-								  // Show permission request.
-								  console.log('No Instance ID token available. Request permission to generate one.');
-								  // Show permission UI.
-								  updateUIForPushPermissionRequired();
-								  setTokenSentToServer(false);
-								}
-							}).catch(function(err) {
-								console.log('An error occurred while retrieving token. ', err);
-								showToken('Error retrieving Instance ID token. ', err);
-								setTokenSentToServer(false);
-							});
-						}).catch(function(err) {
-							console.log('Unable to get permission to notify.', err);
-						});
-						
-						messaging.onTokenRefresh(function() {
-							messaging.getToken().then(function(refreshedToken) {
-								console.log('Token refreshed.');
-								// Indicate that the new Instance ID token has not yet been sent to the
-								// app server.
-								setTokenSentToServer(false);
-								// Send Instance ID token to app server.
-								sendTokenToServer(refreshedToken);
-								// ...
-							}).catch(function(err) {
-								console.log('Unable to retrieve refreshed token ', err);
-								showToken('Unable to retrieve refreshed token ', err);
-							});
-						});
 					});
 				</script>";
 			}
@@ -673,6 +700,32 @@ if (@isset($_POST["pid"])) {
 				$content = "";
 				$inner_content = $access_denied;
 			}
+			
+			$priority = "normal";
+			$title = "test title";
+			$body = "test body";
+			$url = "http://www.mywater-flint.com";
+			$ttl = 604800;
+			
+			$notification_array = array(
+				"to" => "/topics/flint-water-updates",
+				"priority" => $priority,
+				"data" => array(
+					"title" => $title,
+					"body" => $body,
+					"click_action" => $url
+				),
+				"time_to_live" => $ttl,
+				"dry_run" => true
+			);
+			
+			$notification_json .= json_encode($notification_array, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+			
+			$client = new \GuzzleHttp\Client();
+			
+			/*$res = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
+				
+			]);*/
 			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
@@ -1028,8 +1081,8 @@ if (@isset($_POST["pid"])) {
 		$content = "<div class='content-top'>
 			<div id='chart_area' class='col-md-4'>
 			<div class='row'>
-				<div class='content-top-1'><canvas id='parcel_info_chart'></canvas></div>
 				<div class='content-top-1'><canvas id='water_tests_chart'></canvas></div>
+				<div class='content-top-1'><canvas id='parcel_info_chart'></canvas></div>
 				<div class='content-top-1 hide'><canvas id='repairs_chart'></canvas></div>
 				
 				<div class='clearfix'> </div>

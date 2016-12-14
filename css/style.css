@@ -532,6 +532,10 @@ body[id="index_page"] main {
 	display:none;
 }
 
+.char_count {
+	margin-top:0;
+}
+
 .char_count span {
 	font-weight:bold;
 }
@@ -629,6 +633,8 @@ body[id="index_page"] main {
 }
 
 
+
+
 footer {
 	padding:10px;
 }
@@ -668,12 +674,12 @@ form .alert, .row .alert, .modal .alert {
 	margin-top:10px!important;
 }
 
-#comments_form .alert-success {
+#contact_form .alert-success {
 	margin-top:0!important;
 }
 
 
-/* Modals and loading screen. */
+/* Modals and the loading screen. */
 .modal {
 	z-index:2000;
 }

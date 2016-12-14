@@ -373,11 +373,15 @@ form .col-xs-12, form .col-md-3, form .col-md-5, form .col-md-6 {
 	position:absolute;
 }
 
-#comments_form .icon {
+#contact_form .alert-success {
+	margin-top:0!important;
+}
+
+#contact_form .icon {
 	margin-top:0;
 }
 
-#comments_form .alert {
+#contact_form .alert {
 	margin-top:0;
 }
 

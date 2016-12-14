@@ -826,7 +826,7 @@ $("#loading_screen").removeClass("hide");
 				});
 			}
 			/* REPORT PAGE */
-			else if ($pageId.indexOf("report") != -1) {					
+			else if ($pageId.indexOf("report") != -1) {
 				$.validator.addMethod("aggregation", function(value, element) {
 					return this.optional(element) || ($("#group_by").val() !== "" && $("#aggregation").val() !== "");
 				}, "A group by option must also be selected.");
@@ -857,47 +857,10 @@ $("#loading_screen").removeClass("hide");
 				}, "\"Greater than\" value must be less than the \"less than\" value.");
 				$.validator.classRuleSettings.copper_greater = {copper_greater: true};
 				
-				
-				validator = $("#water_tests_form").validate({
+				validator = $("#water_tests_form, #contact_resp_form").validate({
 					debug: false,
 					errorPlacement: function(error, element) {
 						element.parent().append(error);
-					},
-					rules: {
-						years: "required",
-						months: "required",
-						aggregation: {
-							required: false,
-							aggregation: true
-						},
-						group_by: {
-							required: false,
-							group_by: true
-						},
-						lead_less: {
-							required: false,
-							digits: true,
-							min: 1,
-							lead_less: true
-						},
-						lead_greater: {
-							required: false,
-							digits: true,
-							min: 0,
-							lead_greater: true
-						},
-						copper_less: {
-							required: false,
-							digits: true,
-							min: 1,
-							copper_less: true
-						},
-						copper_greater: {
-							required: false,
-							digits: true,
-							min: 0,
-							copper_greater: true
-						}
 					},
 					submitHandler: function(form) {
 						$("#display_area").addClass("hide").html("");
@@ -994,7 +957,7 @@ $("#loading_screen").removeClass("hide");
 				});
 				
 				/* Load a new window with a print version of the data. */
-				$("#print_report").on("click", function() {									
+				$("#print_report").on("click", function() {
 					var printWindow = window.open("", "PrintWindow", "menubar=yes,toolbar=no,scrollbars=yes,resizable=no,width="+window.outerWidth+",height="+window.outerHeight);
 					
 					$(printWindow.document.body).html($("#table_header").clone()).append($("#table_body").clone());
@@ -1033,7 +996,12 @@ $("#loading_screen").removeClass("hide");
 			
 			
 			/* CONTACT FORM */
-			$("#contact_form form").validate({
+			$("#contact_form .char_count").html("<span>Characters remaining:</span> " + (1000 - $("#contact_form #comments").val().length));
+			$("#contact_form #comments").on("keyup", function(event) {
+				$(".char_count").html("<span>Characters remaining:</span> " + (1000 - $(this).val().length));
+			});
+				
+			var comments_validator = $("#contact_form form").validate({
 				debug: false,
 				errorPlacement: function(error, element) {
 					element.parent().append(error);
@@ -1045,18 +1013,24 @@ $("#loading_screen").removeClass("hide");
 					},
 					comments: {
 						required: true,
-						minlength: 20
+						minlength: 20,
+						maxlength: 1000
 					}
 				},
 				submitHandler: function(form) {
 					$(form).ajaxSubmit({
 						type: "POST",
 						url: "includes/functions.php",
-						data: {"type": "contact_form"},
+						data: {
+							"type": "contact_form",
+							"form_type": "admin"
+						},
 						success: function(resp) {
 							if (resp.indexOf("1") != -1) {
-								$("#contact_form #email, #contact_form #comments").val("");
-								$("#contact_form form").html("<div class='alert alert-success' role='alert'>Your comment was successfully sent.</div>");
+								$("#contact_form div[class*='alert-danger']").remove();
+								$("#contact_form .modal-header, #contact_form .modal-body, #contact_form .modal-footer").hide();
+								$("#contact_form .modal-content").prepend("<div class='alert alert-success' role='alert'>Your comments have been successfully submitted.</div>");
+								$("#contact_form form").resetForm();
 							}
 							else {
 								$("#contact_form").append(genericError);
@@ -1066,6 +1040,25 @@ $("#loading_screen").removeClass("hide");
 					
 					return false;
 				}
+			});
+			
+			$("#contact_form").on("show.bs.modal", function() {
+				$("#contact_form .modal-content .alert-success").remove();
+				$("#contact_form .modal-header, #contact_form .modal-body, #contact_form .modal-footer").show();
+			});
+			
+			$("#contact_form").on("shown.bs.modal", function() {
+				if (comments_validator.element("#contact_form #comments"))
+					$("#contact_form .submit_button").removeClass("disabled");
+				else
+					$("#contact_form .submit_button").addClass("disabled");
+			});
+		
+			$("#contact_form #comments").on("keyup", function() {
+				if (comments_validator.element("#contact_form #comments"))
+					$("#contact_form .submit_button").removeClass("disabled");
+				else
+					$("#contact_form .submit_button").addClass("disabled");
 			});
 		});
 	});
