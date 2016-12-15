@@ -30,11 +30,11 @@ if (@isset($_POST["report_type"])) {
 		
 		$result = queries($_POST["report_type"], "", $options);
 		
-		$csv_output = "address,leadLevel,copperLevel,dateUpdated\n";
+		$csv_output = "address;leadLevel;copperLevel;dateUpdated\n";
 	}
 	else if (strcmp($_POST["report_type"], "contact_form_resp") === 0) {
 		$result = queries($_POST["report_type"]);
-		$csv_output = "type,email,comments,dateAdded\n";
+		$csv_output = "type;email;comments;dateAdded\n";
 	}
 		
 	$json_output = "{ \"" . $_POST["report_type"] . "\": [\n";
@@ -43,9 +43,9 @@ if (@isset($_POST["report_type"])) {
 	
 	while ($row = $result->fetch_assoc()) {
 		if (strcmp($_POST["report_type"], "water_tests") === 0)
-			$csv_output .= sprintf("%s,%s,%s,%s\n", $row["address"], $row["leadLevel"], $row["copperLevel"], $row["dateUpdated"]);
+			$csv_output .= sprintf("%s;%s;%s;%s\n", $row["address"], $row["leadLevel"], $row["copperLevel"], $row["dateUpdated"]);
 		else if (strcmp($_POST["report_type"], "contact_form_resp") === 0)
-			$csv_output .= sprintf("%s,%s,%s,%s\n", $row["form_type"], $row["email"], $row["comments"], $row["dateAdded"]);
+			$csv_output .= sprintf("%s;%s,%s;%s\n", $row["type"], $row["email"], $row["comments"], $row["dateAdded"]);
 		
 		$json_output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT);
 		

@@ -2,10 +2,14 @@
 
 @define("__ROOT__", dirname(dirname(__FILE__)));
 
-require __ROOT__ . "/admin/includes/template.php";
-require __ROOT__ . "/admin/includes/globals.php";
-require __ROOT__ . "/admin/includes/verify_ID_token.php";
-require __ROOT__ . "/admin/includes/functions.php";
+require_once __ROOT__ . "/admin/includes/template.php";
+require_once __ROOT__ . "/admin/includes/globals.php";
+require_once __ROOT__ . "/admin/includes/verify_ID_token.php";
+require_once __ROOT__ . "/admin/includes/functions.php";
+require_once __ROOT__ . "/vendor/autoload.php";
+
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
 
 if (@isset($_POST["pid"])) {
 	$pid = $_POST["pid"];
@@ -391,7 +395,8 @@ if (@isset($_POST["pid"])) {
 						copper_greater: true
 					});
 					
-					// deactivate all other buttons
+					// deactivate all other buttons and hide all other forms
+					$('#report_area form').addClass('hide');
 					$('#report_list .nav button').removeClass('active');
 					
 					$(this).addClass('active');
@@ -411,8 +416,8 @@ if (@isset($_POST["pid"])) {
 						
 					//$('#report_type select').append(content);
 					
-					// hide all forms
-					$('#report_area form').addClass('hide');
+					// hide all forms and buttons
+					$('#report_area form, #print_report, #create_csv').addClass('hide');
 					$('#report_area #details').remove();
 					$('#display_area').html('').addClass('hide');
 					
@@ -437,9 +442,8 @@ if (@isset($_POST["pid"])) {
 				});
 				
 				$('#contact_form_resp').on('click', function() {
-					$('#contact_resp_form').submit();
-					
-					// deactivate all other buttons
+					// deactivate all other buttons and hide all other forms
+					$('#report_area form').addClass('hide');
 					$('#report_list .nav button').removeClass('active');
 					
 					$(this).addClass('active');
@@ -450,7 +454,7 @@ if (@isset($_POST["pid"])) {
 					$('#report_area #details').remove();
 					$('#display_area').html('').addClass('hide');
 					
-					$('#report_area #contact_resp_form').removeClass('hide');
+					$('#report_area #contact_resp_form').removeClass('hide').submit();
 				});
 			});
 			</script>";
@@ -719,12 +723,34 @@ if (@isset($_POST["pid"])) {
 				"dry_run" => true
 			);
 			
-			$notification_json .= json_encode($notification_array, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+			$notification_json = json_encode($notification_array, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
 			
-			$client = new \GuzzleHttp\Client();
+			$client = new GuzzleHttp\Client(["verify" => __ROOT__ . "/vendor/ca-bundle.crt"]);
 			
-			/*$res = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
+			try {
+				$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
+					"debug" => true,
+					"headers" => [
+						"Content-Type" => "application/json",
+						"Authorization" => "key=" . getenv("FIREBASE_SERVER_KEY")
+					],
+					"body" => $notification_json
+				]);
 				
+				var_dump($response);
+			}
+			catch (ClientException $e) {
+				echo Psr7\str($e->getRequest());
+				echo Psr7\str($e->getResponse());
+			}
+			
+			/*$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
+				"debug" => true,
+				"headers" => [
+					"Content-Type" => "application/json",
+					"Authorization" => "key=" . getenv("FIREBASE_SERVER_KEY")
+				],
+				"body" => $notification_json
 			]);*/
 			
 			$content .= "<div class='content-top'>
@@ -1147,7 +1173,7 @@ if (@isset($_POST["pid"])) {
 		</div>";
 		
 		/* CHART VARIABLES */
-		/* Retrieve the water test data from the database and process it. */
+		/* Retrieve data from the database and process it. */
 		if (!isset($TIME_PERIOD))
 			$TIME_PERIOD = getTimePeriod();
 		

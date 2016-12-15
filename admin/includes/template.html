@@ -29,9 +29,6 @@
 <link href="css/custom.css" rel="stylesheet" rel="stylesheet" type="text/css" />
 <script src="js/custom.js" type="text/javascript"></script>
 <script src="js/screenfull.js" type="text/javascript"></script>
-<!-- Progress Bar 
-<script src="pace/pace.min.js"></script>
-<link href="pace/themes/blue/pace-theme-flash.css" rel="stylesheet" />-->
 
 {SCRIPT}
 
@@ -92,6 +89,13 @@
 				"</div>" +
 			"</div>" +
 		"</div>");
+		
+		// fix the AJAX linebreaks problem
+		$.valHooks.textarea = {
+		  get: function( elem ) {
+			return elem.value.replace( /\r?\n/g, "\r\n" );
+		  }
+		};
 	});
 </script>
 

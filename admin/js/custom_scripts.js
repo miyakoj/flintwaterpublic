@@ -883,6 +883,7 @@ $("#loading_screen").removeClass("hide");
 								
 								if (total_results > 0) {
 									content = "<p>Result Set: " + total_results + " records</p>";
+									content += "<p>Note: attempting to print a large result set (>1,000) may crash your browser.</p>";
 									
 									if ($(".nav button[class*=active]").attr("id") === "water_tests") {
 										content += "<div class=\"table-responsive\"> \
@@ -911,9 +912,38 @@ $("#loading_screen").removeClass("hide");
 												<td class=\"date\">" + temp.dateUpdated + "</td> \
 											</tr>";
 										}
-										
-										content += "</table></div></div>";
 									}
+									else if ($(".nav button[class*=active]").attr("id") === "contact_form_resp") {
+										content += "<div class=\"table-responsive\"> \
+											<table id=\"table_header\" class=\"table\"> \
+												<tr> \
+													<th class=\"record_number\">&nbsp;</th> \
+													<th class=\"small_num\">Site Type</th> \
+													<th class=\"address\">Email</th> \
+													<th class=\"text\">Comments</th> \
+													<th class=\"date\">Date Added</th> \
+													<th>&nbsp;</th> \
+												</tr> \
+											</table> \
+											\
+											<div id=\"scrollbox\"> \
+											<table id=\"table_body\" class=\"table\">";
+										
+										for (var i=0; i<total_results; i++) {
+											var temp = eval("data." + $(".nav button[class*=active]").attr("id") + "[i]");
+											
+											content += "<tr> \
+												<td class=\"record_number\">" + (i+1) + "</td> \
+												<td class=\"small_num\">" + temp.type + "</td> \
+												<td class=\"address\">" + temp.email + "</td> \
+												<td class=\"text\">" + temp.comments + "</td> \
+												<td class=\"date\">" + temp.dateAdded + "</td> \
+											</tr>";
+										}
+										
+									}
+									
+									content += "</table></div></div>";
 								}
 								else
 									content = "There is no data available for " + $("#months option:selected").text() + " " + $("#years").val() + ".";
@@ -922,14 +952,21 @@ $("#loading_screen").removeClass("hide");
 								
 								$("#report_area button").removeClass("hide");
 								$("#display_area").html(content).removeClass("hide");
-								$("#report_area #display_area #scrollbox").css({
-									"margin-top": $("#report_area #display_area #table_header").css("height"),
-									"height": (windowHeight * 0.75) + "px"
+								
+								var scrollbox_height = windowHeight * 0.75;
+								
+								if ($("#display_area #table_body").height() < scrollbox_height)
+									scrollbox_height = $("#display_area #table_body").height();
+								
+								$("#display_area #scrollbox").css({
+									"margin-top": $("#display_area #table_header").css("height"),
+									"height": scrollbox_height + "px"
 								});
 								
 								// adjust the heading column width
 								$("th.record_number").innerWidth($("td.record_number").innerWidth());
 								$("th.address").innerWidth($("td.address").innerWidth());
+								$("th.text").innerWidth($("td.text").innerWidth());
 								$("th.small_num").innerWidth($("td.small_num").innerWidth());
 								$("th.date").innerWidth($("td.date").innerWidth());
 							},
@@ -960,16 +997,26 @@ $("#loading_screen").removeClass("hide");
 				$("#print_report").on("click", function() {
 					var printWindow = window.open("", "PrintWindow", "menubar=yes,toolbar=no,scrollbars=yes,resizable=no,width="+window.outerWidth+",height="+window.outerHeight);
 					
-					$(printWindow.document.body).html($("#table_header").clone()).append($("#table_body").clone());
-					$(printWindow.document.body).find("table").css("width", "100%");
+					var header = "<h2 style='text-align:center;'>" + $(".nav button[class*=active]").text() + "</h2>";					
+					$(printWindow.document.body).append(header, $("#table_header").clone(), $("#table_body").clone());
+					$(printWindow.document.body).find("table").css({"width": "100%", "border-collapse": "collapse"});
+					$(printWindow.document.body).find("td").css({"border-bottom": "1px solid #CCC", "padding": "5px 1px"});
+					$(printWindow.document.body).find("th:last-child").remove();
+					$(printWindow.document.body).find("tr:last-child td").css("border-bottom", "none");
 					
 					if ($(".nav button[class*=active]").attr("id") === "water_tests") {
 						$(printWindow.document.body).find(".record_number").css("width", "8%");
-						$(printWindow.document.body).find(".lead_level, .copper_level").css({"width": "19%", "text-align": "center"});
+						$(printWindow.document.body).find(".address").css("width", "30%");
+						$(printWindow.document.body).find(".small_num").css({"width": "19%", "text-align": "center"});
 						$(printWindow.document.body).find(".date").css({"width": "20%", "text-align": "center"});
 					}
-					else if ($(".nav button[class*=active]").attr("id") === "predictions") {
-						
+					else if ($(".nav button[class*=active]").attr("id") === "contact_form_resp") {
+						$(printWindow.document.body).find("th").css("text-align", "left");
+						$(printWindow.document.body).find(".record_number").css("width", "5%");
+						$(printWindow.document.body).find(".small_num").css({"width": "15%", "text-align": "center"});
+						$(printWindow.document.body).find(".address").css("width", "27%");
+						$(printWindow.document.body).find(".text").css("width", "33%");
+						$(printWindow.document.body).find(".date").css({"width": "20%", "text-align": "center"});
 					}
 				});
 				
@@ -978,9 +1025,9 @@ $("#loading_screen").removeClass("hide");
 					$("#create_csv").siblings(".alert").remove();
 					
 					var report_type = $(".nav button[class*=active]").attr("id");
-					var file_status = $("form").hasClass("hide") ? true : false;
+					var file_status = eval($("form").filter(":visible").find("input[name='file']").val());
 					
-					if (!file_status) {
+					if (!file_status) {						
 						var form = $("<form></form>");
 						$(form).attr("method", "post").attr("target", "_blank").attr("action", "includes/report_download.php");
 						var type_input = $("<input type='hidden' name='report_type' />").val(report_type);

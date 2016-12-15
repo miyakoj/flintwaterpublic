@@ -25,8 +25,7 @@ $fusion_table_recent = "11sVcd8gCuqrM3H3UFViwXthNir3bUFc0BDwSJgoy";
 $fusion_table_test = "1hzW6T-v5Ak3KsAPrtXWfblTYd6tr4tt_FUxGCCiL";
 
 $client = new Google_Client();
-//$client->setHttpClient(new GuzzleHttp\Client(['verify' => '../vendor/ca-bundle.crt']));
-$client->setHttpClient(new GuzzleHttp\Client(['verify' => false]));
+$client->setHttpClient(new GuzzleHttp\Client(['verify' => __ROOT__ . "/vendor/ca-bundle.crt"]));
 $client->setApplicationName();
 $client->setDeveloperKey(getenv('API_KEY'));
 $client->useApplicationDefaultCredentials(getenv('APP_ID'));

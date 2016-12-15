@@ -252,6 +252,10 @@ canvas+p {
 	width:29%;
 }
 
+#report_area #display_area table .text {
+	width:30%;
+}
+
 #report_area #display_area table th:last-of-type {
 	width:15px;
 	padding-left:0!important;
