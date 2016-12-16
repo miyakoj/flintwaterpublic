@@ -539,7 +539,7 @@ if (@isset($_POST["pid"])) {
 						</div>
 						</div>
 						
-						<div class='row'><div class='col-xs-12 col-md-6'><span class='help-block'><a href='http://en.mygeoposition.com'>Geocoding Website</a></span></div></div>
+						<div class='row'><div class='col-xs-12 col-md-12'><span class='help-block'><a href='http://en.mygeoposition.com'>Geocoding Website</a> (The location can't be mapped without these coordinates.)</span></div></div>
 					</div>
 					
 					<div class='form-group'>
@@ -662,6 +662,9 @@ if (@isset($_POST["pid"])) {
 			if (($role == 1) || ($role == 2)) {
 				$pagetitle = "Manage Alerts";
 				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+				
+				$alerts = getAlerts();
+				
 				$inner_content = "<div class='panel-group' id='alert_accordion' role='tablist' aria-multiselectable='true'>
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='new_alert_heading'>
@@ -670,12 +673,12 @@ if (@isset($_POST["pid"])) {
 
 				<div id='new_alert' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_alert_heading'>
 				<div class='panel-body'>
-					<form id='alert_form' method='post'>
+					<form id='alerts_form' method='post'>
 						<div id='instructions'>Click \"Load\" to retrieve data for the selected alert.</div>
 						
-						<div id='alert_list' class='form-group'>
+						<div id='alerts_list' class='form-group'>
 						<div class='row'>
-						<div class='col-xs-12 col-md-5'><select class='form-control' name='alert_menu'>$alerts</select></div>
+						<div class='col-xs-12 col-md-5'><select class='form-control' name='alerts_menu'>$alerts</select></div>
 						<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default'>Load</button></div>
 						</div>
 						</div>
@@ -698,12 +701,13 @@ if (@isset($_POST["pid"])) {
 						
 						<div class='form-group'>
 						<label for='expiration'>Expiration Date:</label>
-						<input id='expiration' class='form-control' type='text' name='expiration' size='30' required />
+						<input id='expiration' class='form-control' type='text' name='expiration' size='20' required />
+						<span class='help-block'>Example: 2016-12-16 11:54:00 (24 hour time format)</span>
 						</div>
 						
 						<div class='form-group'>
-						<label for='priority'>Priority:</label>
-						<select class='form-control' name='priority'>
+						<label for='priority'>Priority<span class='required'>*</span>:</label>
+						<select id='priority' class='form-control' name='priority'>
 						<option value='normal'>Normal</option>
 						<option value='high'>High</option>
 						</select>
@@ -717,7 +721,7 @@ if (@isset($_POST["pid"])) {
 				
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='edit_alert_heading'>
-				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#edit_alert' aria-expanded='true' aria-controls='edit_alert'>Edit Alert</a></h4>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#edit_alert' aria-expanded='true' aria-controls='edit_alerts'>Edit Alert</a></h4>
 				</div>
 
 				<div id='edit_alert' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_alert_heading'>
@@ -732,7 +736,7 @@ if (@isset($_POST["pid"])) {
 
 				<div id='delete_alert' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_alert_heading'>
 				<div class='panel-body'>
-					<form id='delete_form' method='post'>
+					<form id='delete_alerts_form' method='post'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$alerts</select></div>
 						<div class='col-xs-12 col-md-3'><button type='submit' class='btn btn-default' disabled='disabled'>Delete</button></div>

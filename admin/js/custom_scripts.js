@@ -225,6 +225,10 @@ $("#loading_screen").removeClass("hide");
 			};
 			$.validator.messages.phone = "Please enter a valid phone number.";
 			
+			$.validator.methods.mysqlDate = function(value, element) {
+				return this.optional(element) || /^201[6|7|8]-[0|1][0-9]-[0-3][0-9]\s[0-2][0-3]:[0-5][0-9]:[0-5][0-9]/.test(value);
+			};
+			
 			var messages = {
 				site: "Please enter the name of the location.",
 				category: "Please choose at least one category.",
@@ -330,21 +334,6 @@ $("#loading_screen").removeClass("hide");
 				$("#location_form #notes").on("keyup", function(event) {
 					$(".char_count").html("<span>Characters remaining:</span> " + (600 - $(this).val().length));
 				});
-			
-				$("#edit_resources").on("show.bs.collapse", function() {
-					$("#location_form").resetForm();
-					// add instructions
-					$("#edit_resources .panel-body #instructions").removeClass("hide");
-					// hide all alerts
-					$("#location_form .alert").remove();
-					// move the form into the edit section when opened
-					$("#edit_resources .panel-body").append($("#location_form"));
-					// hide the location list for the edit form
-					$("#location_form #location_list").removeClass("hide");
-					// enable the address field
-					$("#location_form #address").attr("disabled", "disabled");
-					$("#location_form #address").next().addClass("hide");
-				});
 				
 				$("#new_resources").on("show.bs.collapse", function() {
 					$("#location_form").resetForm();					
@@ -359,6 +348,21 @@ $("#loading_screen").removeClass("hide");
 					// enable the address field
 					$("#location_form #address").removeAttr("disabled");
 					$("#location_form #address").next().removeClass("hide");
+				});
+				
+				$("#edit_resources").on("show.bs.collapse", function() {
+					$("#location_form").resetForm();
+					// add instructions
+					$("#edit_resources .panel-body #instructions").removeClass("hide");
+					// hide all alerts
+					$("#location_form .alert").remove();
+					// move the form into the edit section when opened
+					$("#edit_resources .panel-body").append($("#location_form"));
+					// hide the location list for the edit form
+					$("#location_form #location_list").removeClass("hide");
+					// enable the address field
+					$("#location_form #address").attr("disabled", "disabled");
+					$("#location_form #address").next().addClass("hide");
 				});
 				
 				if ($("#location_form #location_list select").children().length == 0)
@@ -503,12 +507,14 @@ $("#loading_screen").removeClass("hide");
 									$("#delete_form .alert").remove();
 									$("#delete_form select[name='location_menu'] option[value='" + location + "']").remove();
 									$("#delete_form select").val("");
-									$("#delete_form .alert-info, #delete_form .alert-danger").hide();
+									$("#delete_form .alert-info, #delete_form .alert-danger").remove();
 									$("#delete_form").append("<div class='alert alert-success' role='alert'>\"" + location + "\" was successfully deleted.</div>");
 									$("#delete_form").resetForm();
 								}
-								else
+								else {
+									$("#delete_form .alert-success, #delete_form .alert-danger").remove();
 									$("#delete_form").append(genericError);
+								}
 							}
 						});
 						
@@ -516,6 +522,179 @@ $("#loading_screen").removeClass("hide");
 					}
 					else
 						$("#delete_form").append("<div class='alert alert-info' role='alert'>\"Delete location\" was canceled.</div>");
+					
+					return false;
+				});
+			}
+			/* MANAGE ALERTS PAGE */
+			else if ($pageId.indexOf("alerts") != -1) {
+				$("#alerts_form .char_count").html("<span>Characters remaining:</span> " + (500 - $("#alerts_form #body").val().length));
+				$("#alerts_form #body").on("keyup", function(event) {
+					$(".char_count").html("<span>Characters remaining:</span> " + (500 - $(this).val().length));
+				});
+				
+				$("#new_alert").on("show.bs.collapse", function() {
+					$("#alerts_form").resetForm();					
+					// remove instructions
+					$("#new_alert .panel-body #instructions").addClass("hide");
+					// hide all status alerts
+					$("#alerts_form .alert").remove();
+					// move the form into the new section when opened
+					$("#new_alert .panel-body").append($("#alerts_form"));
+					// display the list of alerts for the edit form
+					$("#alerts_form #alerts_list").addClass("hide");
+				});
+				
+				$("#edit_alert").on("show.bs.collapse", function() {
+					$("#alerts_form").resetForm();
+					// add instructions
+					$("#edit_alert .panel-body #instructions").removeClass("hide");
+					// hide all status alerts
+					$("#alerts_form .alert").remove();
+					// move the form into the edit section when opened
+					$("#edit_alert .panel-body").append($("#alerts_form"));
+					// hide the list of alerts for the edit form
+					$("#alerts_form #alerts_list").removeClass("hide");
+				});
+				
+				if ($("#alerts_form #alerts_list select").children().length == 0)
+					$("#alerts_form #alerts_list button").addClass("disabled");
+				else
+					$("#alerts_form #alerts_list button").removeClass("disabled");
+				
+				$("#alerts_form #alerts_list button").on("click", function() {
+					$.ajax({
+						type: "POST",
+						url: "includes/functions.php",
+						data: {"type": "edit_alert_load", "id": $("#alerts_form #alerts_list option:selected").val()}
+					}).done(function(data) {
+						//reset the form
+						$("#alerts_form").resetForm();
+						
+						var js_obj = $.parseJSON(data);
+						$("#alerts_form #alerts_list select").val(js_obj.alerts[0].id.toString());
+						
+						$("#alerts_form #title").val(js_obj.alerts[0].title);						
+						$("#alerts_form #body").val(js_obj.alerts[0].body);
+						$("#alerts_form #url").val(js_obj.alerts[0].url);
+						$("#alerts_form #expiration").val((js_obj.alerts[0].expiration.indexOf("0000") != -1) ? "" : js_obj.alerts[0].expiration);
+						$("#alerts_form #priority").val(js_obj.alerts[0].priority);
+					});
+				});
+				
+				$("#alerts_form").validate({
+					debug: true,
+					errorPlacement: function(error, element) {
+						element.parent().append(error);
+					},
+					rules: {
+						title: {
+							required: true,
+							minlength: 20,
+							maxlength: 100
+						},
+						body: {
+							required: true,
+							minlength: 20,
+							maxlength: 500
+						},
+						url: {
+							url: true
+						},
+						expiration: {
+							required: false,
+							mysqlDate: true
+						},
+						priority: "required"
+					},
+					messages: messages,
+					submitHandler: function(form) {
+						var data;
+						
+						if ($("#new_alert #alerts_form").length == 1)
+							data = {"type": "new_alert"};
+						else
+							data = {"type": "edit_alert_submit", "id": $("form option:selected").val()};
+							
+						$(form).ajaxSubmit({
+							type: "POST",
+							url: "includes/functions.php",
+							data: data,
+							success: function(resp) {
+								if (resp.indexOf("0") != -1) {
+									$("#alerts_form button[type='submit']").before(genericError);
+								}
+								else {
+									$("#alerts_form .alert").remove();
+									
+									var msg;
+									
+									if ($("#new_alert").hasClass("in")) {
+										msg = "<div class='alert alert-success' role='alert'>\"" + form.title.value + "\" was successfully added.</div>";
+										
+										// update alerts list
+										$.ajax({
+											type: "POST",
+											url: "includes/functions.php",
+											data: {"type": "load_alerts"}
+										}).done(function(data) {
+											$("#alerts_form select[name='alerts_menu'] option, #delete_form select[name='alerts_menu'] option").remove();
+											$("#alerts_form select[name='alerts_menu'], #delete_form select[name='alerts_menu']").html(data);
+										});
+										
+										$("#alerts_form").resetForm();
+									}
+									else {
+										msg = "<div class='alert alert-success' role='alert'>\"" + form.title.value + "\" was successfully updated.</div>";
+									}
+									
+									$("#alerts_form").append(msg);
+								}
+							}
+						});
+						
+						return false;
+					}
+				});
+			
+				$("#delete_alert select").on("change", function() {
+					if ($(this).val() != "")
+						$("#delete_alert button").removeAttr("disabled");
+					else
+						$("#delete_alert button").attr("disabled", "disabled");
+				});
+				
+				$("#delete_alert").on("submit", function() {
+					var $alert_title = $("#delete_alert form option:selected").html();						
+					var delete_confirm = confirm("Are you sure you want to delete \"" + $alert_title + "\"? This action cannot be undone.");
+					
+					if (delete_confirm == true) {
+						var $id = $("form option:selected").val();
+						
+						$(this).ajaxSubmit({
+							type: "POST",
+							url: "includes/functions.php",
+							data: {"type": "delete_alert", "id": $id},
+							success: function(resp) {
+								if (resp.indexOf("1") != -1) {
+									$("#delete_alert .alert").remove();
+									$("#delete_alert select[name='location_menu'] option[value='" + $id + "']").remove();
+									$("#delete_alert select").val("");
+									$("#delete_alert .alert-info, #delete_alert .alert-danger").remove();
+									$("#delete_alert form").append("<div class='alert alert-success' role='alert'>\"" + $alert_title + "\" was successfully deleted.</div>");
+									$("#delete_alert form").resetForm();
+								}
+								else
+									$("#delete_alert form").append(genericError);
+							}
+						});
+						
+						return false; 
+					}
+					else {
+						$("#delete_alert .alert-success, #delete_alert .alert-danger").remove();
+						$("#delete_alert form").append("<div class='alert alert-info' role='alert'>\"Delete Alert\" was canceled.</div>");
+					}
 					
 					return false;
 				});

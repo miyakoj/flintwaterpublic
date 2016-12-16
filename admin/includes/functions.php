@@ -66,14 +66,15 @@ if (@isset($_POST["report_type"])) {
 }
 
 
-/* Handles edit page queries. */	
+/* Handles AJAX requests. */	
 if (@isset($_POST["type"])) {
+	/* RESOURCES */
 	// load all resource locations
-	if (strcmp($_POST["type"], "load_resource_locations") === 0)
+	if (strcmp($_POST["type"], "load_resource_locations") === 0) {
 		echo getResourceLocations();
-	
+	}
 	// get resource location info
-	if (strcmp($_POST["type"], "edit_resource_load") === 0) {
+	else if (strcmp($_POST["type"], "edit_resource_load") === 0) {
 		$result = queries($_POST["type"], $_POST["location"]);
 		$row = $result->fetch_assoc();
 			
@@ -102,6 +103,41 @@ if (@isset($_POST["type"])) {
 
 		echo $result;
 	}
+	
+	/* ALERTS */
+	// load all alert titles and ids
+	else if (strcmp($_POST["type"], "load_alerts") === 0) {
+		echo getAlerts();
+	}
+	// get alerts
+	else if (strcmp($_POST["type"], "edit_alert_load") === 0) {
+		$result = queries($_POST["type"], $_POST["id"]);
+		$row = $result->fetch_assoc();
+			
+		$output = "{ \"alerts\": [";
+		$output .= json_encode($row, JSON_NUMERIC_CHECK);		
+		$output .= "]}";
+		
+		echo $output;
+	}
+	// submit alert updates
+	else if (strcmp($_POST["type"], "edit_alert_submit") === 0) {
+		$result = queries($_POST["type"]);
+
+		echo $result;
+	}
+	else if (strcmp($_POST["type"], "new_alert") === 0) {
+		$result = queries($_POST["type"]);
+		
+		echo $result;
+	}
+	else if (strcmp($_POST["type"], "delete_alert") === 0) {
+		$result = queries($_POST["type"], $_POST["id"]);
+
+		echo $result;
+	}
+	
+	/* MISC */
 	// the site admin contact form
 	else if (strcmp($_POST["type"], "contact_form") === 0) {
 		// insert contact form data into the database
@@ -113,10 +149,6 @@ if (@isset($_POST["type"])) {
 	else if (strcmp($_POST["type"], "new_user_email") === 0) {
 		email_user();
 	}
-}
-
-/* Handles new alert queries. */
-if (@isset($_POST["alerts"])) {
 }
 
 
@@ -234,6 +266,18 @@ function getResourceLocations() {
 		$resourceList .= "<option value='" . $row["aidAddress"] . "'>" . $row["aidAddress"] . "</option>\n";
 	
 	return $resourceList;
+}
+
+/* Returns a list of all alerts. */
+function getAlerts() {
+	$result = queries("alerts_titles");
+	
+	$alertsList = "<option value=''></option>\n";
+	
+	while ($row = $result->fetch_assoc())
+		$alertsList .= "<option value='" . $row["id"] . "'>" . $row["title"] . "</option>\n";
+	
+	return $alertsList;
 }
 
 /* Email some info to a user. */

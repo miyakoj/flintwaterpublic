@@ -127,6 +127,32 @@ function queries($choice, $var = "", $var2 = array()) {
 	else if (strcmp($choice, "high_water_tests2") === 0) {
 		$query = "SELECT `address`, `leadLevel`, `copperLevel`, `dateUpdated` FROM `WaterCondition` WHERE `leadLevel` > 15 GROUP BY `address` ORDER BY `dateUpdated` DESC;";
 	}*/
+	/* Manage Alerts Queries */
+	else if (strcmp($choice, "alerts_titles") === 0) {
+		$query = "SELECT id, title FROM Alerts ORDER BY title ASC;";
+	}
+	else if (strcmp($choice, "edit_alert_load") === 0) {
+		$query = sprintf("SELECT * FROM Alerts WHERE id = %d;", $var);
+	}
+	else if (strcmp($choice, "edit_alert_submit") === 0) {
+		if ($_POST["expiration"] === "")
+			$expiration = "0000-00-00 00:00:00";
+		else
+			$expiration = $_POST["expiration"];
+		
+		$query = sprintf("UPDATE Alerts SET title = '%s', body = '%s', url = '%s', expiration = '%s', priority = '%s' WHERE id = %d;", $mysqli->real_escape_string($_POST["title"]), $mysqli->real_escape_string($_POST["body"]), $_POST["url"], $expiration, $_POST["priority"], $_POST["id"]);
+	}
+	else if (strcmp($choice, "new_alert") === 0) {
+		if ($_POST["expiration"] === "")
+			$expiration = "0000-00-00 00:00:00";
+		else
+			$expiration = $_POST["expiration"];
+		
+		$query = sprintf("INSERT INTO Alerts (title, body, url, expiration, priority) VALUES ('%s', '%s', '%s', '%s', '%s');", $mysqli->real_escape_string($_POST["title"]), $mysqli->real_escape_string($_POST["body"]), $_POST["url"], $expiration, $_POST["priority"]);
+	}
+	else if (strcmp($choice, "delete_alert") === 0) {
+		$query = sprintf("DELETE FROM Alerts WHERE id = %d;", $var);
+	}
 	/* Edit Page Queries */
 	else if (strcmp($choice, "resource_locations") === 0) {
 		$query = "SELECT aidAddress FROM AidLocation WHERE aidAddress != '' ORDER BY aidAddress+0<>0 DESC, aidAddress+0, aidAddress;";

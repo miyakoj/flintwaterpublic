@@ -281,6 +281,12 @@ canvas+p {
 }
 
 
+/* Alerts Page */
+#expiration.form-control, #priority.form-control {
+	width:auto;
+}
+
+
 /* Profile Page */
 #profile_page #show_info label {
 	padding-right:8px;
@@ -352,6 +358,10 @@ li.disabled a {
 	margin:15px 0 0 0;
 }
 
+form .alert {
+	clear:both;
+}
+
 form label {
 	width:100%;
 }
@@ -362,6 +372,10 @@ form label.error {
 
 form .col-xs-12, form .col-md-3, form .col-md-5, form .col-md-6 {
 	padding-left:0;
+}
+
+form p.char_count {
+	margin-bottom:0;
 }
 
 #loading_screen {
