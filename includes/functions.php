@@ -41,6 +41,9 @@ else {
 	
 		email_user();
 	}
+	else if ($_POST["type"] == "alerts") {
+		
+	}
 }
 
 function email_user() {

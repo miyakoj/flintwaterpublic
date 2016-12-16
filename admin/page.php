@@ -435,8 +435,13 @@ if (@isset($_POST["pid"])) {
 					$(this).addClass('active');
 					$('#instructions').addClass('hide');
 					
-					$('#display_area').html('').removeClass('hide');
-					$('#report_area button:first-of-type').before('<p id=\"details\">The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>. No water tests results have been reported for addresses with \"Unknown\" average lead values.</p>');
+					var details = 'The prediction value is the probability that a property has a lead level value above 15ppb. It was developed using computer modeling by the <a href=\"http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html\">UM-Ann Arbor Michigan Data Science Team</a>. No water tests results have been reported for addresses with \"Unknown\" average lead values.';
+					
+					if ($('#report_area #details').length == 0)
+						$('#report_area #print_report').before('<p id=\"details\">' + details + '</p>');
+					else
+						$('#report_area #details').html(details);
+					
 					$('#details').css('margin-bottom', '0');
 					$('#create_csv').removeClass('hide');
 				});
@@ -638,6 +643,8 @@ if (@isset($_POST["pid"])) {
 				$inner_content = $access_denied;
 			}
 			
+			//$alerts = ;
+			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
@@ -655,39 +662,82 @@ if (@isset($_POST["pid"])) {
 			if (($role == 1) || ($role == 2)) {
 				$pagetitle = "Manage Alerts";
 				$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-				$inner_content = "<div class='panel-group hide' id='notification_accordion' role='tablist' aria-multiselectable='true'>
+				$inner_content = "<div class='panel-group' id='alert_accordion' role='tablist' aria-multiselectable='true'>
 				<div class='panel panel-default'>
-				<div class='panel-heading' role='tab' id='new_notification_heading'>
-				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#notification_accordion' href='#new_notification' aria-expanded='true' aria-controls='new_notification'>New Notification</a></h4>
+				<div class='panel-heading' role='tab' id='new_alert_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#new_alert' aria-expanded='true' aria-controls='new_alert'>New Alert</a></h4>
 				</div>
 
-				<div id='new_notification' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_notification_heading'>
+				<div id='new_alert' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_alert_heading'>
 				<div class='panel-body'>
-				NEW NOTIFICATION
+					<form id='alert_form' method='post'>
+						<div id='instructions'>Click \"Load\" to retrieve data for the selected alert.</div>
+						
+						<div id='alert_list' class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-5'><select class='form-control' name='alert_menu'>$alerts</select></div>
+						<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default'>Load</button></div>
+						</div>
+						</div>
+						
+						<div class='form-group'>
+						<label for='title'>Title<span class='required'>*</span>:</label>
+						<input id='title' class='form-control' type='text' name='title' size='55' required />
+						</div>
+						
+						<div class='form-group'>
+						<label for='body'>Text<span class='required'>*</span>:</label>
+						<textarea id='body' class='form-control' rows='3' name='body' cols='50' placeholder='500 character limit' required></textarea>
+						<p class='char_count'></p>
+						</div>
+						
+						<div class='form-group'>
+						<label for='url'>Link:</label>
+						<input id='url' class='form-control' type='text' name='url' size='55' />
+						</div>
+						
+						<div class='form-group'>
+						<label for='expiration'>Expiration Date:</label>
+						<input id='expiration' class='form-control' type='text' name='expiration' size='30' required />
+						</div>
+						
+						<div class='form-group'>
+						<label for='priority'>Priority:</label>
+						<select class='form-control' name='priority'>
+						<option value='normal'>Normal</option>
+						<option value='high'>High</option>
+						</select>
+						</div>
+						
+						<button type='submit' class='btn btn-default pull-right'>Submit</button>
+					</form>
 				</div>
 				</div>
 				</div>
 				
 				<div class='panel panel-default'>
-				<div class='panel-heading' role='tab' id='edit_notification_heading'>
-				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#notification_accordion' href='#edit_notification' aria-expanded='true' aria-controls='edit_notification'>Edit Notification</a></h4>
+				<div class='panel-heading' role='tab' id='edit_alert_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#edit_alert' aria-expanded='true' aria-controls='edit_alert'>Edit Alert</a></h4>
 				</div>
 
-				<div id='edit_notification' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_notification_heading'>
-				<div class='panel-body'>
-				EDIT NOTIFICATION
-				</div>
+				<div id='edit_alert' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_alert_heading'>
+				<div class='panel-body'></div>
 				</div>
 				</div>
 				
 				<div class='panel panel-default'>
-				<div class='panel-heading' role='tab' id='delete_notification_heading'>
-				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#notification_accordion' href='#delete_notification' aria-expanded='true' aria-controls='delete_notification'>Delete Notification</a></h4>
+				<div class='panel-heading' role='tab' id='delete_alert_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#delete_alert' aria-expanded='true' aria-controls='delete_alert'>Delete Alert</a></h4>
 				</div>
 
-				<div id='delete_notification' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_notification_heading'>
+				<div id='delete_alert' class='panel-collapse collapse' role='tabpanel' aria-labelledby='delete_alert_heading'>
 				<div class='panel-body'>
-				DELETE NOTIFICATION
+					<form id='delete_form' method='post'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$alerts</select></div>
+						<div class='col-xs-12 col-md-3'><button type='submit' class='btn btn-default' disabled='disabled'>Delete</button></div>
+						</div>
+					</form>
 				</div>
 				</div>
 				</div>
@@ -705,7 +755,7 @@ if (@isset($_POST["pid"])) {
 				$inner_content = $access_denied;
 			}
 			
-			$priority = "normal";
+			/*$priority = "normal";
 			$title = "test title";
 			$body = "test body";
 			$url = "http://www.mywater-flint.com";
@@ -742,7 +792,7 @@ if (@isset($_POST["pid"])) {
 			catch (ClientException $e) {
 				echo Psr7\str($e->getRequest());
 				echo Psr7\str($e->getResponse());
-			}
+			}*/
 			
 			/*$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
 				"debug" => true,

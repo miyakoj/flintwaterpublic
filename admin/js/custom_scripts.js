@@ -941,6 +941,12 @@ $("#loading_screen").removeClass("hide");
 											</tr>";
 										}
 										
+										var details = "The CSV file uses a semicolon as a delimiter. In order to open it in Excel, you must click the \"Data\" tab then click \"From Text\" in the \"Get External Data\" section.";
+										
+										if ($("#report_area #details").length == 0)
+											$("#report_area #print_report").before("<p id=\"details\">" + details + "</p>");
+										else
+											$("#report_area #details").html(details);
 									}
 									
 									content += "</table></div></div>";
