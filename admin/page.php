@@ -6,10 +6,6 @@ require_once __ROOT__ . "/admin/includes/template.php";
 require_once __ROOT__ . "/admin/includes/globals.php";
 require_once __ROOT__ . "/admin/includes/verify_ID_token.php";
 require_once __ROOT__ . "/admin/includes/functions.php";
-require_once __ROOT__ . "/vendor/autoload.php";
-
-use GuzzleHttp\Psr7;
-use GuzzleHttp\Exception\RequestException;
 
 if (@isset($_POST["pid"])) {
 	$pid = $_POST["pid"];
@@ -487,7 +483,7 @@ if (@isset($_POST["pid"])) {
 					<div id='location_list' class='form-group'>
 					<div class='row'>
 					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
-					<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default'>Load</button></div>
+					<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default' disabled='disabled'>Load</button></div>
 					</div>
 					</div>
 					
@@ -643,8 +639,6 @@ if (@isset($_POST["pid"])) {
 				$inner_content = $access_denied;
 			}
 			
-			//$alerts = ;
-			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>
 				<div class='row'>
@@ -679,7 +673,7 @@ if (@isset($_POST["pid"])) {
 						<div id='alerts_list' class='form-group'>
 						<div class='row'>
 						<div class='col-xs-12 col-md-5'><select class='form-control' name='alerts_menu'>$alerts</select></div>
-						<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default'>Load</button></div>
+						<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default' disabled='disabled'>Load</button></div>
 						</div>
 						</div>
 						
@@ -758,54 +752,6 @@ if (@isset($_POST["pid"])) {
 				$content = "";
 				$inner_content = $access_denied;
 			}
-			
-			/*$priority = "normal";
-			$title = "test title";
-			$body = "test body";
-			$url = "http://www.mywater-flint.com";
-			$ttl = 604800;
-			
-			$notification_array = array(
-				"to" => "/topics/flint-water-updates",
-				"priority" => $priority,
-				"data" => array(
-					"title" => $title,
-					"body" => $body,
-					"click_action" => $url
-				),
-				"time_to_live" => $ttl,
-				"dry_run" => true
-			);
-			
-			$notification_json = json_encode($notification_array, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
-			
-			$client = new GuzzleHttp\Client(["verify" => __ROOT__ . "/vendor/ca-bundle.crt"]);
-			
-			try {
-				$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
-					"debug" => true,
-					"headers" => [
-						"Content-Type" => "application/json",
-						"Authorization" => "key=" . getenv("FIREBASE_SERVER_KEY")
-					],
-					"body" => $notification_json
-				]);
-				
-				var_dump($response);
-			}
-			catch (ClientException $e) {
-				echo Psr7\str($e->getRequest());
-				echo Psr7\str($e->getResponse());
-			}*/
-			
-			/*$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
-				"debug" => true,
-				"headers" => [
-					"Content-Type" => "application/json",
-					"Authorization" => "key=" . getenv("FIREBASE_SERVER_KEY")
-				],
-				"body" => $notification_json
-			]);*/
 			
 			$content .= "<div class='content-top'>
 				<div class='col-xs-12 col-md-8 col-md-offset-2'>

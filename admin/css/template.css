@@ -166,6 +166,12 @@ h1 a.navbar-brand, .navbar-brand:hover {
 }
 
 
+/* Alerts Page */
+#alerts_page .panel-title {
+	font-weight:bold;
+}
+
+
 /* Users Page */
 #users_page th.edit {
 	text-align:center;

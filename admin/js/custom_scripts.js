@@ -228,6 +228,12 @@ $("#loading_screen").removeClass("hide");
 			$.validator.methods.mysqlDate = function(value, element) {
 				return this.optional(element) || /^201[6|7|8]-[0|1][0-9]-[0-3][0-9]\s[0-2][0-3]:[0-5][0-9]:[0-5][0-9]/.test(value);
 			};
+			$.validator.messages.mysqlDate = "Please enter the date and time in the correct format.";
+			
+			$.validator.methods.futureDate = function(value, element) {
+				return this.optional(element) || Date.parse(value.replace(" ", "T")) > new Date().getTime();
+			};
+			$.validator.messages.futureDate = "Please enter a future date.";
 			
 			var messages = {
 				site: "Please enter the name of the location.",
@@ -363,12 +369,19 @@ $("#loading_screen").removeClass("hide");
 					// enable the address field
 					$("#location_form #address").attr("disabled", "disabled");
 					$("#location_form #address").next().addClass("hide");
+					
+					if ($("#location_form #location_list select").children().length == 1)
+						$("#location_form #location_list button").addClass("disabled");
+					else
+						$("#location_form #location_list button").removeClass("disabled");
 				});
 				
-				if ($("#location_form #location_list select").children().length == 0)
-					$("#location_form #location_list button").addClass("disabled");
-				else
-					$("#location_form #location_list button").removeClass("disabled");
+				$("#delete_resources").on("show.bs.collapse", function() {
+					if ($("#delete_form #location_list select").children().length == 1)
+						$("#delete_form #location_list button").addClass("disabled");
+					else
+						$("#delete_form #location_list button").removeClass("disabled");
+				});
 				
 				$("#location_form #location_list button").on("click", function() {
 					$.ajax({
@@ -486,11 +499,11 @@ $("#loading_screen").removeClass("hide");
 					}
 				});
 			
-				$("#delete_form select").on("change", function() {
+				$("#edit_resources select, #delete_resources select").on("change", function() {
 					if ($(this).val() != "")
-						$("#delete_form button").removeAttr("disabled");
+						$(this).closest(".row").find("button").removeAttr("disabled");
 					else
-						$("#delete_form button").attr("disabled", "disabled");
+						$(this).closest(".row").find("button").attr("disabled", "disabled");
 				});
 				
 				$("#delete_form").on("submit", function() {
@@ -555,19 +568,19 @@ $("#loading_screen").removeClass("hide");
 					$("#edit_alert .panel-body").append($("#alerts_form"));
 					// hide the list of alerts for the edit form
 					$("#alerts_form #alerts_list").removeClass("hide");
+					
+					if ($("#alerts_form #alerts_list select").children().length == 1)
+						$("#alerts_form #alerts_list button").addClass("disabled");
+					else
+						$("#alerts_form #alerts_list button").removeClass("disabled");
 				});
-				
-				if ($("#alerts_form #alerts_list select").children().length == 0)
-					$("#alerts_form #alerts_list button").addClass("disabled");
-				else
-					$("#alerts_form #alerts_list button").removeClass("disabled");
 				
 				$("#alerts_form #alerts_list button").on("click", function() {
 					$.ajax({
 						type: "POST",
 						url: "includes/functions.php",
 						data: {"type": "edit_alert_load", "id": $("#alerts_form #alerts_list option:selected").val()}
-					}).done(function(data) {
+					}).done(function(data) {						
 						//reset the form
 						$("#alerts_form").resetForm();
 						
@@ -583,7 +596,7 @@ $("#loading_screen").removeClass("hide");
 				});
 				
 				$("#alerts_form").validate({
-					debug: true,
+					debug: false,
 					errorPlacement: function(error, element) {
 						element.parent().append(error);
 					},
@@ -603,7 +616,8 @@ $("#loading_screen").removeClass("hide");
 						},
 						expiration: {
 							required: false,
-							mysqlDate: true
+							mysqlDate: true,
+							futureDate: true
 						},
 						priority: "required"
 					},
@@ -621,12 +635,12 @@ $("#loading_screen").removeClass("hide");
 							url: "includes/functions.php",
 							data: data,
 							success: function(resp) {
+								$("#alerts_form .alert").remove();
+								
 								if (resp.indexOf("0") != -1) {
 									$("#alerts_form button[type='submit']").before(genericError);
 								}
-								else {
-									$("#alerts_form .alert").remove();
-									
+								else {									
 									var msg;
 									
 									if ($("#new_alert").hasClass("in")) {
@@ -656,12 +670,19 @@ $("#loading_screen").removeClass("hide");
 						return false;
 					}
 				});
-			
-				$("#delete_alert select").on("change", function() {
-					if ($(this).val() != "")
-						$("#delete_alert button").removeAttr("disabled");
+				
+				$("#delete_alert").on("show.bs.collapse", function() {					
+					if ($("#alerts_form #alerts_list select").children().length == 1)
+						$("#alerts_form #alerts_list button").addClass("disabled");
 					else
-						$("#delete_alert button").attr("disabled", "disabled");
+						$("#alerts_form #alerts_list button").removeClass("disabled");
+				});
+			
+				$("#alerts_form select, #delete_alerts_form select").on("change", function() {
+					if ($(this).val() != "")
+						$(this).closest(".row").find("button").removeAttr("disabled");
+					else
+						$(this).closest(".row").find("button").attr("disabled", "disabled");
 				});
 				
 				$("#delete_alert").on("submit", function() {

@@ -6,6 +6,7 @@ else
 	@define("__ROOT__", dirname(dirname(__FILE__)));
 
 require_once __ROOT__ . "/admin/includes/queries.php";
+require_once __ROOT__ . "/vendor/autoload.php";
 
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
@@ -125,11 +126,15 @@ if (@isset($_POST["type"])) {
 		$result = queries($_POST["type"]);
 
 		echo $result;
+		
+		sendFirebaseNotification();
 	}
 	else if (strcmp($_POST["type"], "new_alert") === 0) {
 		$result = queries($_POST["type"]);
 		
 		echo $result;
+		
+		sendFirebaseNotification();
 	}
 	else if (strcmp($_POST["type"], "delete_alert") === 0) {
 		$result = queries($_POST["type"], $_POST["id"]);
@@ -280,6 +285,48 @@ function getAlerts() {
 	return $alertsList;
 }
 
+/* Sends out a Firebase notification when an alert is created or edited. */
+function sendFirebaseNotification() {
+	$priority = $_POST["priority"];
+	$title = $_POST["title"];
+	$body = $_POST["body"];
+	$url = $_POST["url"];
+	
+	// if the expiration isn't set, set ttl to the default of 4 weeks
+	if (strcmp($_POST["expiration"], "") === 0)
+		$ttl = 2419000;
+	else
+		$ttl = strtotime($_POST["expiration"]) - time();
+	
+	$notification_array = array(
+		"to" => "/topics/flint-water-updates",
+		"priority" => $priority,
+		"data" => array(
+			"title" => $title,
+			"body" => $body,
+			"click_action" => $url
+		),
+		"time_to_live" => $ttl,
+		"dry_run" => true
+	);
+	
+	$notification_json = json_encode($notification_array, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
+	
+	$client = new GuzzleHttp\Client(["verify" => __ROOT__ . "/vendor/ca-bundle.crt"]); //__ROOT__ . "/vendor/ca-bundle.crt"
+	
+	try {
+		$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [
+			"debug" => true,
+			"headers" => [
+				"Content-Type" => "application/json",
+				"Authorization" => "key=" . getenv("FIREBASE_SERVER_KEY")
+			],
+			"body" => $notification_json
+		]);
+	}
+	catch (ClientException $e) {}
+}
+
 /* Email some info to a user. */
 function email_user() {
 	if ($_POST["type"] == "contact_form") {
@@ -292,7 +339,7 @@ function email_user() {
 	}
 	else if (strcmp($_POST["type"], "new_user_email") === 0) {
 		$to = $_POST["email"];
-		$from = "umflintH2O@gmail.com";
+		$from = getenv('APP_EMAIL');
 		$subject = "An account has been created for you on MyWater-Flint";
 		
 		$msg = "Hello,\n\n
