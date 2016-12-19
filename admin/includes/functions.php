@@ -127,14 +127,18 @@ if (@isset($_POST["type"])) {
 
 		echo $result;
 		
+		ob_start();
 		sendFirebaseNotification();
+		ob_end_clean();
 	}
 	else if (strcmp($_POST["type"], "new_alert") === 0) {
 		$result = queries($_POST["type"]);
 		
 		echo $result;
 		
+		ob_start();
 		sendFirebaseNotification();
+		ob_end_clean();
 	}
 	else if (strcmp($_POST["type"], "delete_alert") === 0) {
 		$result = queries($_POST["type"], $_POST["id"]);
@@ -312,7 +316,7 @@ function sendFirebaseNotification() {
 	
 	$notification_json = json_encode($notification_array, JSON_NUMERIC_CHECK | JSON_UNESCAPED_SLASHES);
 	
-	$client = new GuzzleHttp\Client(["verify" => __ROOT__ . "/vendor/ca-bundle.crt"]); //__ROOT__ . "/vendor/ca-bundle.crt"
+	$client = new GuzzleHttp\Client(["verify" => __ROOT__ . "/vendor/ca-bundle.crt"]);
 	
 	try {
 		$response = $client->request("POST", "https://fcm.googleapis.com/fcm/send", [

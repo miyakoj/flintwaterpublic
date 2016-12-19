@@ -580,7 +580,7 @@ $("#loading_screen").removeClass("hide");
 						type: "POST",
 						url: "includes/functions.php",
 						data: {"type": "edit_alert_load", "id": $("#alerts_form #alerts_list option:selected").val()}
-					}).done(function(data) {						
+					}).done(function(data) {
 						//reset the form
 						$("#alerts_form").resetForm();
 						

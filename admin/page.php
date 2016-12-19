@@ -469,7 +469,8 @@ if (@isset($_POST["pid"])) {
 				
 				$resource_locations = getResourceLocations();
 				
-				$inner_content = "<div class='panel-group' id='resources_accordion' role='tablist' aria-multiselectable='true'>
+				$inner_content = "<p>The data used on the main website is updated weekly on Monday morning around 3 am.</p>
+				<div class='panel-group' id='resources_accordion' role='tablist' aria-multiselectable='true'>
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='edit_resource_heading'>
 				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#edit_resources' aria-expanded='true' aria-controls='edit_resources'>Edit Resource Location</a></h4>

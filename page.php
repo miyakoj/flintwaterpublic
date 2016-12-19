@@ -16,16 +16,16 @@ if (@isset($_GET["pid"])) {
 			$content = "<section class='container'><h2>News</h2>
 				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
-					<li id='news_tab' role='presentation' class='active tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
-					<li id='alerts_tab' role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
+					<li id='alerts_tab' role='presentation' class='tab-nav-brand active'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
+					<li id='news_tab' role='presentation' class='tab-nav-brand'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
 				  </ul>
 				</nav>
 				
 				<div class='card-inner'>
 				  <div class='tab-content'>
 					<div class='row'>
-					<div id='news' role='tabpanel' class='tab-pane fade in active'></div>
-					<div id='alerts' role='tabpanel' class='tab-pane fade'></div>
+					<div id='alerts' role='tabpanel' class='tab-pane fade in active'><div id='alerts_content'></div></div>
+					<div id='news' role='tabpanel' class='tab-pane fade'></div>
 					</div>
 				  </div>
 				</div>

@@ -123,10 +123,6 @@
 		padding:5px!important;
 	}
 	
-	#news_page h2, #test_page h2, #filter_page h2, #aerator_page h2, #report_page h2 {
-		display:none;
-	}
-	
 	#sidebar {
 		height:35em;
 	}
@@ -217,10 +213,18 @@
     #provider_popup img {
 		width:30px;
 	}
-
-	/*#news_page .tab-nav {
-		margin-top:24px!important;
-	}*/
+	
+	#news_page .container {
+		padding:0 16px;
+	}
+	
+	#news_page #news .card-header .card-inner {
+		display:block;
+	}
+	
+	#news_page .card-inner #expiration span {
+		display:block;
+	}
 	
 	#show_me_menu .dropdown-menu {
 		border: none;

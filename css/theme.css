@@ -320,6 +320,15 @@ html, body {
 #news_page h2, #test_page h2, #filter_page h2, #aerator_page h2, #report_page h2 {
 	font-size:1.5em;
 }
+
+#news_page .card-inner #expiration span {
+	font-weight:bold;
+}
+
+#news_page #date, #news_page .card-inner #expiration {
+	font-size:90%;
+	color:rgba(0,0,0,.75);
+}
 	
 .page-header {
 	text-align:center;

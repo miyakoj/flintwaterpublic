@@ -2,6 +2,7 @@
 
 require_once "queries.php";
 require_once "vendor/autoload.php";
+
 use google\appengine\api\mail\Message;
 
 $reportId = mt_rand(0,9999999999);
@@ -39,11 +40,35 @@ else {
 		// insert contact form data into the database
 		$result = queries($_POST["type"]);
 	
-		email_user();
+		email_user($result);
 	}
 	else if ($_POST["type"] == "alerts") {
+		$result = queries($_POST["type"]);
 		
+		createJSON($result);
 	}
+}
+
+// transform database results into JSON to return to the client
+function createJSON($result) {
+	$i = 0;
+	
+	$output = "{ \"" . $_POST["type"] . "\": [\n";
+	
+	while ($row = $result->fetch_assoc()) {
+		$output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+		
+		if ($i < $result->num_rows-1)
+			$output .= ",";
+		
+		$output .= "\n";
+		
+		$i++;
+	}
+	
+	$output .= "]}";
+	
+	print_r($output);
 }
 
 function email_user() {

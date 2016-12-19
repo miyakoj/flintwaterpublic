@@ -6,6 +6,8 @@ require_once __ROOT__ . "/includes/queries.php";
 
 /* Process provider data. */
 provider_processing();
+/* Process alert data. */
+// alert_processing();
 
 /* Array processing for providers. */
 function provider_processing() {

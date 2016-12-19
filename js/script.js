@@ -204,7 +204,8 @@ $(document).ready(function() {
 	else
 		$("#page_content").css("height", "auto");
 	
-	/* Layout mods for differences between desktop and mobile for the "show me" pages.	
+	
+	/* Layout mods for differences between desktop and mobile for various pages.	
 	/* Size the map/video area depending on the height of the device. */	   
 	if (windowHeight < 800)
 		$("#topbar").css("height", "20em");
@@ -213,7 +214,6 @@ $(document).ready(function() {
 	
 	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1))
 		$activeNode = $(".stepper-vert-inner").find($("div[class*='active']"));
-	//else for the index, news, and about pages
 	
 	
 	/* Phones and small tablets. */
@@ -359,6 +359,13 @@ $(document).ready(function() {
 		if (windowWidth < 1024) {
 			$("#header_top").addClass("clearfix");
 			$("#toggles").removeClass("btn-group btn-group-justified");
+		}
+		else {
+			/* Display the alerts next to the news on larger resolutions. */
+			$("#news_page nav[class*='tab-nav']").addClass("hide");
+			$("#news_page #alerts, #news_page #news").removeAttr("class").removeAttr("role");
+			$("#news_page #alerts").addClass("col-md-4");
+			$("#news_page #news").addClass("col-md-8");
 		}
 		
 		/* Make the stepper content span only four columns. */
@@ -987,7 +994,5 @@ $(document).ready(function() {
 			dataType: "script",
 			cache: true
 		});
-		
-		
 	}
 });
