@@ -19,7 +19,7 @@ if (@isset($_POST["pid"])) {
 		// admin users
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
+			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
 			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		

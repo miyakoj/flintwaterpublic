@@ -12,6 +12,7 @@ $port = "27017";
 $db = getenv('MONGODB_DATABASE');
 $connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . getenv('MONGODB_PASSWORD') . "@" . getenv('MONGODB_IP') . ":" . $port . "/" .  $db);
 
+// the data retrieved from the MongoDB db
 $new_data = array();
 
 $scopes = array(
@@ -21,12 +22,12 @@ $scopes = array(
 
 /* The fusion tables used are publically accessible. */
 $fusion_table_all = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
-$fusion_table_recent = "11sVcd8gCuqrM3H3UFViwXthNir3bUFc0BDwSJgoy";
-$fusion_table_test = "1hzW6T-v5Ak3KsAPrtXWfblTYd6tr4tt_FUxGCCiL";
+$fusion_table_recent = "1Kxo2QvMVHbNFPJQ9c9L3wbKrWQJPkbr_Gy90E2MZ";
+$fusion_table_test = "1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP";
 
 $client = new Google_Client();
-$client->setHttpClient(new GuzzleHttp\Client(['verify' => __ROOT__ . "/vendor/ca-bundle.crt"]));
-$client->setApplicationName();
+$client->setHttpClient(new GuzzleHttp\Client(['verify' => false])); //__ROOT__ . "/vendor/ca-bundle.crt"
+$client->setApplicationName("MyWater-Flint");
 $client->setDeveloperKey(getenv('API_KEY'));
 $client->useApplicationDefaultCredentials(getenv('APP_ID'));
 $client->addScope($scopes);
@@ -39,7 +40,7 @@ $service = new Google_Service_Fusiontables($client);
 
 getNewTestData();
 //updateSQLDB();
-updateFTRecent();
+//updateFTRecent();
 //updateFTAll();
 
 /* Retrieve new water test results from Ann Arbor's DB */
@@ -52,24 +53,43 @@ function getNewTestData() {
 	$row = $result->fetch_assoc();
 	
 	// convert a standard MySQL date into a MongoDB ISO date
-	$iso_date = new MongoDate(strtotime($row["dateUpdated"]));
+	$mongo_date = new MongoDate(strtotime($row["dateUpdated"]));
+	
+	echo "Newest Date: " . $row["dateUpdated"] . "<br />";
+	echo "MongoDate: " . $mongo_date->sec . "<br /><br />";
+	
+	/*{
+		"Date Submitted": {"$gt": new Date("2016-10-13T08:56:34Z")}
+	}*/
 	
 	//2016-10-13 08:56:39
 	
 	// only retrieve Flint, MI addresses newer than the newest test in the SQL database
 	$residential_filter = array(
-		'google_add' => array('$regex'=> '^[G]*[-]*[0-9]+[A-Za-z\s]+, Flint, MI'),
-		'Date Submitted' => array('$gt' => $iso_date)
+		'google_add' => array('$regex' => '^[G]*[-]*[0-9]+[A-Za-z\s]+, Flint, MI'),
+		'Date Submitted' => array('$gt' => $mongo_date)
 	);
 	
 	// retrieve all tests more recent than the retrieved data from Ann Arbor's DB
 	$residential_data = $connection->$db->proc_parcel_resi;
-	$cursor = $residential_data->find($residential_filter)->sort(array('Date Submitted' => -1))->limit(1);
+	$cursor = $residential_data->find($residential_filter)->sort(array('Date Submitted' => 1)); //->limit(1)
 	
-	while ($cursor->hasNext()) {
-		$array = $cursor->getNext();		
-		$new_data[] = $array;
+	if ($cursor->count() > 0) {
+		while ($cursor->hasNext()) {
+			$new_data[] = $cursor->getNext();			
+			$i = count($new_data)-1;
+			
+			$address = explode(", ", $new_data[$i]["goog_address"]);
+			$new_data[$i]["new_address"] = $address[0];
+			
+			echo "MongoID: " . $cursor->getNext()["_id"] . "<br />";
+			echo "Address: " . $cursor->getNext()["google_add"] . "<br />";
+			echo "MongoDate: " . $cursor->getNext()["Date Submitted"]->sec . "<br />";
+			echo "Date: " . date("Y-m-d h:i:s", $cursor->getNext()["Date Submitted"]->sec) . "<br /><br />";
+		}
 	}
+	else
+		exit();
 }
 
 /* Update the Cloud SQL database. */
@@ -80,20 +100,20 @@ function updateSQLDB() {
 	
 	// insert each new test result into the DB
 	foreach ($new_data as $key => $test_result) {
-		$address = explode(", ", $test_result["goog_address"]);
+		var_dump($test_result["new_address"]);
 		
-		$stmt->bind_param("ssssssss", $test_result["lat"], $test_result["lng"], $test_result["PID no Dash"], $address[0], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["sample_num"]);
+		$stmt->bind_param("ssssssss", $test_result["lat"], $test_result["lng"], $test_result["PID no Dash"], $test_result["new_address"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["sample_num"]);
 		$stmt->execute();
 		
 		// check abandoned status, change from Y or U to N if necessary
-		$abandoned_query = sprintf("SELECT abandoned FROM GeoLocation WHERE address = '%s';", $address[0]);
+		$abandoned_query = sprintf("SELECT abandoned FROM GeoLocation WHERE address = '%s';", $test_result["new_address"]);
 		$result = $mysqli->query($abandoned_query);
 		$row = $result->fetch_assoc();
 		
 		if (strcmp($row["USPS Vacancy"], "N") !== 0) {
 			$abandoned = "N";
 			$new_data[$key]["USPS Vacancy"] = $abandoned;
-			$update_abandoned_query = sprintf("UPDATE GeoLocation SET abandoned = '%s' WHERE address = '%s';", $abandoned, $address[0]);
+			$update_abandoned_query = sprintf("UPDATE GeoLocation SET abandoned = '%s' WHERE address = '%s';", $abandoned, $test_result["new_address"]);
 			$mysqli->query($update_abandoned_query);
 		}
 	}
@@ -103,19 +123,24 @@ function updateSQLDB() {
 
 /* Update the most recent tests fusion table. */
 function updateFTRecent() {
-	global $client, $new_data;
+	global $service, $new_data;
 	
 	foreach ($new_data as $test_result) {
+		$query = sprintf("SELECT ROWID FROM 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP WHERE address = '%s';", $test_result["new_address"]);
+		$rowid = $service->query->sql($query)->rows[0][0];
+		
 		// update the existing row's abandoned status, lead, copper, and test date values
-		$query = sprintf("UPDATE %s SET abandoned = '%s', leadLevel = '%s', copperLevel = '%s', testDate = '%s' WHERE address = '%s';", $fusion_table_test, $test_result["abandoned"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $address[0]);
-		echo $query;
-		//$result = $service->query->sql($query);
+		$query = sprintf("UPDATE 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP SET abandoned = '%s', leadLevel = '%s', copperLevel = '%s', testDate = '%s' WHERE ROWID = '%s';", $test_result["USPS Vacancy"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $rowid);
+		
+		$result = $service->query->sql($query);
+		
+		var_dump($result);
 	}
 }
 
 /* 
  * Generates KML for a specific location marker. NOT USED
- * Original code created in Java by Philip Boyd (https://github.com/phboyd).
+ * Original code created in Java by Philip Boyd (https://www.github.com/phboyd).
  */
 function generateKML($lat, $lng) {
 	$size = 0.00003;
@@ -170,7 +195,7 @@ function generateKML($lat, $lng) {
 
 /* Update the all tests fusion table. */
 function updateFTAll() {
-	global $client, $new_data;
+	global $service, $new_data;
 	
 	//$fusion_table_test
 	

@@ -2,17 +2,12 @@ google.setOnLoadCallback(onStartup);
 
 var html;
 var date_added;
-/*var newDay;
-var array;
-var newHours;
-var newSeconds;
-var timeOfDay;*/
 var months = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
 function onStartup() {	
 	if ($("body").attr("id").indexOf("news_page") != -1) {
 		googleRssFeed();
-		loadAlerts();
+		//loadAlerts();
 		
 		if ($("#news .card").length == 0)
 			$("#news").prepend("<p class='text-center'>There are no news articles available.</p>");
