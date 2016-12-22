@@ -40,7 +40,7 @@ $service = new Google_Service_Fusiontables($client);
 
 getNewTestData();
 //updateSQLDB();
-//updateFTRecent();
+updateFTRecent();
 //updateFTAll();
 
 /* Retrieve new water test results from Ann Arbor's DB */
@@ -53,26 +53,24 @@ function getNewTestData() {
 	$row = $result->fetch_assoc();
 	
 	// convert a standard MySQL date into a MongoDB ISO date
-	$mongo_date = new MongoDate(strtotime($row["dateUpdated"]));
+	$most_recent_date = new MongoDate(strtotime($row["dateUpdated"]));
 	
-	echo "Newest Date: " . $row["dateUpdated"] . "<br />";
-	echo "MongoDate: " . $mongo_date->sec . "<br /><br />";
+	//echo "Newest Date: " . $row["dateUpdated"] . "<br />";
+	//echo "MongoDateStart: " . $most_recent_date->sec . "<br /><br />";
 	
 	/*{
 		"Date Submitted": {"$gt": new Date("2016-10-13T08:56:34Z")}
 	}*/
 	
-	//2016-10-13 08:56:39
-	
-	// only retrieve Flint, MI addresses newer than the newest test in the SQL database
-	$residential_filter = array(
-		'google_add' => array('$regex' => '^[G]*[-]*[0-9]+[A-Za-z\s]+, Flint, MI'),
-		'Date Submitted' => array('$gt' => $mongo_date)
+	// only retrieve proper Flint, MI addresses newer than the newest test in the SQL database
+	$address_filter = array(
+		'goog_address' => array('$regex' => '^((G-)?[0-9]+\s)+([NSEW]\s)?([A-Za-z]+\s){1,}[A-Za-z]{2,4}, Flint, MI'),
+		'Date Submitted' => array('$gt' => $most_recent_date)
 	);
 	
 	// retrieve all tests more recent than the retrieved data from Ann Arbor's DB
 	$residential_data = $connection->$db->proc_parcel_resi;
-	$cursor = $residential_data->find($residential_filter)->sort(array('Date Submitted' => 1)); //->limit(1)
+	$cursor = $residential_data->find($address_filter)->sort(array('Latitude' => 1, 'Longitude' => 1))->limit(5); //->limit(1)  array('Latitude' => 1, 'Longitude' => 1)
 	
 	if ($cursor->count() > 0) {
 		while ($cursor->hasNext()) {
@@ -82,10 +80,10 @@ function getNewTestData() {
 			$address = explode(", ", $new_data[$i]["goog_address"]);
 			$new_data[$i]["new_address"] = $address[0];
 			
-			echo "MongoID: " . $cursor->getNext()["_id"] . "<br />";
-			echo "Address: " . $cursor->getNext()["google_add"] . "<br />";
-			echo "MongoDate: " . $cursor->getNext()["Date Submitted"]->sec . "<br />";
-			echo "Date: " . date("Y-m-d h:i:s", $cursor->getNext()["Date Submitted"]->sec) . "<br /><br />";
+			echo "MongoID: " . $new_data[$i]["_id"] . "<br />";
+			echo "Address: " . $new_data[$i]["goog_address"] . "<br />";
+			echo "MongoDate: " . $new_data[$i]["Date Submitted"]->sec . "<br />";
+			echo "Date: " . date("Y-m-d h:i:s", $new_data[$i]["Date Submitted"]->sec) . "<br /><br />";
 		}
 	}
 	else
@@ -99,13 +97,11 @@ function updateSQLDB() {
 	$stmt = $mysqli->prepare("INSERT INTO WaterCondition (latitude, longitude, parcelID, address, leadLevel, copperLevel, dateUpdated, testID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 	
 	// insert each new test result into the DB
-	foreach ($new_data as $key => $test_result) {
-		var_dump($test_result["new_address"]);
-		
+	foreach ($new_data as $key => $test_result) {		
 		$stmt->bind_param("ssssssss", $test_result["lat"], $test_result["lng"], $test_result["PID no Dash"], $test_result["new_address"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["sample_num"]);
 		$stmt->execute();
 		
-		// check abandoned status, change from Y or U to N if necessary
+		// check abandonment status, change from Y or U to N if necessary
 		$abandoned_query = sprintf("SELECT abandoned FROM GeoLocation WHERE address = '%s';", $test_result["new_address"]);
 		$result = $mysqli->query($abandoned_query);
 		$row = $result->fetch_assoc();
@@ -125,16 +121,22 @@ function updateSQLDB() {
 function updateFTRecent() {
 	global $service, $new_data;
 	
+	//var_dump($new_data);
+	
 	foreach ($new_data as $test_result) {
 		$query = sprintf("SELECT ROWID FROM 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP WHERE address = '%s';", $test_result["new_address"]);
-		$rowid = $service->query->sql($query)->rows[0][0];
+		//$rowid = $service->query->sql($query)->rows[0][0];
+		
+		//echo $rowid . "<br />";
+		
+		echo $query;
 		
 		// update the existing row's abandoned status, lead, copper, and test date values
 		$query = sprintf("UPDATE 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP SET abandoned = '%s', leadLevel = '%s', copperLevel = '%s', testDate = '%s' WHERE ROWID = '%s';", $test_result["USPS Vacancy"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $rowid);
 		
-		$result = $service->query->sql($query);
+		//$result = $service->query->sql($query);
 		
-		var_dump($result);
+		//var_dump($result);
 	}
 }
 

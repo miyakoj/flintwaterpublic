@@ -1,3 +1,5 @@
+/* Load alerts and news articles. */
+
 google.setOnLoadCallback(onStartup);
 
 var html;
@@ -48,41 +50,48 @@ function googleRssFeed() {
 
 /* Retrieve alerts from the database and parse. */
 function loadAlerts() {
-	$.ajax({
-		type: "POST",
-		url: "includes/functions.php",
-		data: {"type": "alerts"},
-		cache: true
-	}).done(function(data) {
-		html = "";
-		var js_obj = $.parseJSON(data);
-		var link;
-		var expiration;
-		
-		for (var i=0; i<js_obj.alerts.length; i++) {
-			var alert = js_obj.alerts[i];
-			date_added = new Date(alert.added);
-			date_expiration = new Date(alert.expiration);
+	var client = gapi.auth2.getAuthInstance();
+	
+	client.then(function() {
+		gapi.client.load("storage", "v1").then(function() {
+			var request = gapi.client.storage.objects.get({
+				"bucket": "h2o-flint.appspot.com",
+				"object": "alerts.json",
+				"alt": "media"
+			});
+			
+			request.then(function(resp) {
+				html = "";
+				var js_obj = $.parseJSON(resp.body);
+				var link;
+				var expiration;
+				
+				for (var i=0; i<js_obj.alerts.length; i++) {
+					var alert = js_obj.alerts[i];
+					date_added = new Date(alert.added);
+					date_expiration = new Date(alert.expiration);
 
-			if (alert.url === '')
-				link = alert.title;
-			else
-				link = '<a href="' + alert.url + '" target="_blank">' + alert.title + '</a>';
-			
-			html += '<div class="card">';
-			html += '<div class="card-main">';
-			html += '<div class="card-header"><div class="card-inner"><span class="pull-left"><strong>' + link + '</strong></span>' + '<p id="date" class="pull-right"><span>' + months[date_added.getMonth()] + ' ' + getDay(date_added) + ", " + date_added.getFullYear() + '&nbsp;</span> <span>' + getHours(date_added)[0] + ':' + getSeconds(date_added) + ' ' + getHours(date_added)[1] + '</span></p></div></div>';
-			
-			if (alert.expiration.indexOf('0000') != -1)
-				expiration = '';
-			else
-				expiration = '<p id="expiration"><span>Expiration: </span>' + months[date_expiration.getMonth()] + ' ' + getDay(date_added) + ", " + date_added.getFullYear() + ' ' + getHours(date_added)[0] + ':' + getSeconds(date_added) + ' ' + getHours(date_added)[1] + '</p>';
-			
-			html += '<div class="card-inner" style="clearfix"><p>' + alert.body + '</p>' + expiration + '</div>';
-			html += '</div></div>';
-		}
-		
-		$("#alerts").html(html);
+					if (alert.url === '')
+						link = alert.title;
+					else
+						link = '<a href="' + alert.url + '" target="_blank">' + alert.title + '</a>';
+					
+					html += '<div class="card">';
+					html += '<div class="card-main">';
+					html += '<div class="card-header"><div class="card-inner"><span class="pull-left"><strong>' + link + '</strong></span>' + '<p id="date" class="pull-right"><span>' + months[date_added.getMonth()] + ' ' + getDay(date_added) + ", " + date_added.getFullYear() + '&nbsp;</span> <span>' + getHours(date_added)[0] + ':' + getSeconds(date_added) + ' ' + getHours(date_added)[1] + '</span></p></div></div>';
+					
+					if (alert.expiration.indexOf('0000') != -1)
+						expiration = '';
+					else
+						expiration = '<p id="expiration"><span>Expiration: </span>' + months[date_expiration.getMonth()] + ' ' + getDay(date_added) + ", " + date_added.getFullYear() + ' ' + getHours(date_added)[0] + ':' + getSeconds(date_added) + ' ' + getHours(date_added)[1] + '</p>';
+					
+					html += '<div class="card-inner" style="clearfix"><p>' + alert.body + '</p>' + expiration + '</div>';
+					html += '</div></div>';
+				}
+				
+				$("#alerts").html(html);
+			});
+		});
 	});
 }
 

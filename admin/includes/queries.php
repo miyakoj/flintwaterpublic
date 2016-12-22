@@ -140,7 +140,7 @@ function queries($choice, $var = "", $var2 = array()) {
 		else
 			$expiration = $_POST["expiration"];
 		
-		$query = sprintf("UPDATE Alerts SET title = '%s', body = '%s', url = '%s', expiration = '%s', priority = '%s' WHERE id = %d;", $mysqli->real_escape_string($_POST["title"]), $mysqli->real_escape_string($_POST["body"]), $_POST["url"], $expiration, $_POST["priority"], $_POST["id"]);
+		$query = sprintf("UPDATE Alerts SET title = '%s', body = '%s', url = '%s', expiration = '%s', priority = '%s' WHERE id = %d;", $mysqli->real_escape_string($_POST["title"]), $mysqli->real_escape_string($_POST["body"]), $mysqli->real_escape_string($_POST["url"]), $expiration, $_POST["priority"], $_POST["id"]);
 	}
 	else if (strcmp($choice, "new_alert") === 0) {
 		if ($_POST["expiration"] === "")
@@ -148,7 +148,7 @@ function queries($choice, $var = "", $var2 = array()) {
 		else
 			$expiration = $_POST["expiration"];
 		
-		$query = sprintf("INSERT INTO Alerts (title, body, url, expiration, priority) VALUES ('%s', '%s', '%s', '%s', '%s');", $mysqli->real_escape_string($_POST["title"]), $mysqli->real_escape_string($_POST["body"]), $_POST["url"], $expiration, $_POST["priority"]);
+		$query = sprintf("INSERT INTO Alerts (title, body, url, expiration, priority) VALUES ('%s', '%s', '%s', '%s', '%s');", $mysqli->real_escape_string($_POST["title"]), $mysqli->real_escape_string($_POST["body"]), $mysqli->real_escape_string($_POST["url"]), $expiration, $_POST["priority"]);
 	}
 	else if (strcmp($choice, "delete_alert") === 0) {
 		$query = sprintf("DELETE FROM Alerts WHERE id = %d;", $var);
@@ -161,7 +161,7 @@ function queries($choice, $var = "", $var2 = array()) {
 		$query = sprintf("SELECT latitude, longitude, locationName, AidLocation.aidAddress, city, zipcode, hours, phone, notes, GROUP_CONCAT(resType) AS resType FROM AidLocation INNER JOIN ResourcesQuantity ON AidLocation.aidAddress = ResourcesQuantity.aidAddress WHERE AidLocation.aidAddress = '%s';", $var);
 	}
 	if (strcmp($choice, "edit_resource_submit") === 0) {
-		$query = sprintf("UPDATE AidLocation SET latitude = '%s', longitude = '%s', locationName = '%s', city = '%s', state='MI', zipcode = '%s', hours = '%s', phone = '%s', notes = '%s' WHERE aidAddress = '%s';", $_POST["latitude"], $_POST["longitude"], $_POST["site"], $_POST["city"], $_POST["zipcode"], $mysqli->real_escape_string($_POST["hours"]), $_POST["phone"], $mysqli->real_escape_string($_POST["notes"]), $_POST["address"]);
+		$query = sprintf("UPDATE AidLocation SET latitude = '%s', longitude = '%s', locationName = '%s', city = '%s', state='MI', zipcode = '%s', hours = '%s', phone = '%s', notes = '%s' WHERE aidAddress = '%s';", $mysqli->real_escape_string($_POST["latitude"]), $mysqli->real_escape_string($_POST["longitude"]), $mysqli->real_escape_string($_POST["site"]), $mysqli->real_escape_string($_POST["city"]), $_POST["zipcode"], $mysqli->real_escape_string($_POST["hours"]), $_POST["phone"], $mysqli->real_escape_string($_POST["notes"]), $_POST["address"]);
 		
 		/* Deal with the resource types. */
 		$query .= sprintf("DELETE FROM ResourcesQuantity WHERE aidAddress = '%s';", $_POST["address"]);

@@ -15,12 +15,9 @@ if (!Modernizr.webaudio && !localStorage.getItem("browserMsg")) {
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
 var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
-//<script src="https://maps.googleapis.com/maps/api/js?client=gme-regentsoftheuniversity&libraries=visualization,places" async defer></script>
 var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
-//var jquery_form_api = "http://malsup.github.io/min/jquery.form.min.js";
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
-//var google_js_api = "https://www.google.com/jsapi";
 var feed_api = "https://cdn.rawgit.com/sekando/feednami-client/master/releases/1.0.2.min.js";
 
 if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1) || ($pageId.indexOf("test") != -1)) {
@@ -40,6 +37,21 @@ if (($pageId.indexOf("index") != -1) || ($pageId.indexOf("report") != -1) || ($p
 		url: client_api,
 		dataType: "script",
 		cache: true
+	});
+}
+else if ($pageId.indexOf("news") != -1) {		
+	$.ajax({
+		type: "GET",
+		url: feed_api,
+		dataType: "script",
+		cache: true
+	}).done(function() {
+		$.ajax({
+			type: "GET",
+			url: client_api,
+			dataType: "script",
+			cache: true
+		});
 	});
 }
 
@@ -985,14 +997,6 @@ $(document).ready(function() {
 						$("#contact_form .submit_button").addClass("disabled");
 				});
 			}	
-		});
-	}	
-	else if ($pageId.indexOf("news") != -1) {		
-		$.ajax({
-			type: "GET",
-			url: feed_api,
-			dataType: "script",
-			cache: true
 		});
 	}
 });

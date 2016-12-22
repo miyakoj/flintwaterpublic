@@ -211,7 +211,7 @@ $("#loading_screen").removeClass("hide");
 			$.validator.classRuleSettings.password_confirm = {password_confirm: true};
 			
 			$.validator.addMethod("address", function(value, element) {
-				return this.optional(element) || /^((G-)?[0-9]+)?\s([NSEW]\.\s)?([A-Za-z]+\s){1,}[A-Za-z]{2,4}\.$/.test(value);
+				return this.optional(element) || /^((G-)?[0-9]+\s)+([NSEW]\s)?([A-Za-za]+\s){1,}[A-Za-z]{2,4}\.$/.test(value);
 			}, "Please enter a valid street address.");
 			$.validator.classRuleSettings.address = {address: true};
 			

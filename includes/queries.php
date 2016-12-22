@@ -70,7 +70,7 @@ function queries($choice, $var = "", $var2 = "", $obj = null) {
 	else if (strcmp($choice, "alerts") === 0) {
 		$date = new DateTime(); // get the current date and time
 		
-		$query = sprintf("SELECT * FROM Alerts WHERE expiration >= '%s' || YEAR(expiration) = '0000' ORDER BY expiration DESC;", $date->format("Y-m-d H:i:s"));
+		$query = sprintf("SELECT * FROM Alerts WHERE expiration >= '%s' || YEAR(expiration) = '0000' ORDER BY priority ASC, expiration DESC;", $date->format("Y-m-d H:i:s"));
 	}
 	else if (strcmp($choice, "contact_form") === 0) {
 		$query = sprintf("INSERT INTO ContactForm (type, email, comments) VALUES ('%s', '%s', '%s');", $_POST["form_type"], $mysqli->real_escape_string($_POST["email"]), $mysqli->real_escape_string($_POST["comments"]));

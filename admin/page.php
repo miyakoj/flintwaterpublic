@@ -469,109 +469,109 @@ if (@isset($_POST["pid"])) {
 				
 				$resource_locations = getResourceLocations();
 				
-				$inner_content = "<p>The data used on the main website is updated weekly on Monday morning around 3 am.</p>
+				$inner_content = "<p>The data used on the main website is updated every 12 hours.</p>
 				<div class='panel-group' id='resources_accordion' role='tablist' aria-multiselectable='true'>
-				<div class='panel panel-default'>
-				<div class='panel-heading' role='tab' id='edit_resource_heading'>
-				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#edit_resources' aria-expanded='true' aria-controls='edit_resources'>Edit Resource Location</a></h4>
-				</div>
-
-				<div id='edit_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_resource_heading'>
-				<div class='panel-body'>
-				<form id='location_form' method='post'>
-					<div id='instructions'>Click \"Load\" to retrieve data for the selected resource location.</div>
-					
-					<div id='location_list' class='form-group'>
-					<div class='row'>
-					<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
-					<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default' disabled='disabled'>Load</button></div>
-					</div>
-					</div>
-					
-					<div class='form-group'>
-					<label for='site'>Name of site<span class='required'>*</span>:</label>
-					<input id='site' class='form-control' type='text' name='site' size='55' required />
-					</div>
-					
-					<div class='form-group'>
-						<label for='categories'>Resource Types<span class='required'>*</span>:</label>
-						<div id='category_options'>
-						<label for='water_pickup'><input id='water_pickup' type='checkbox' name='categories[]' value='Water Pickup' /> Water Pickup</label><br />
-						<label for='water_filters'><input id='water_filters' type='checkbox' name='categories[]' value='Water Filters' /> Water Filters</label><br />
-						<label for='recycling'><input id='recycling' type='checkbox' name='categories[]' value='Recycle' /> Recycling</label><br />
-						<label for='test_kits'><input id='test_kits' type='checkbox' name='categories[]' value='Test Kits' /> Test Kits</label><br />
-						<label for='blood_testing'><input id='blood_testing' type='checkbox' name='categories[]' value='Blood Testing' /> Blood Testing</label>
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-6'>
-						<label for='address'>Street address<span class='required'>*</span>:</label>
-						<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
-						<span class='help-block hide'>Example: 125 E. Union St.</span>
-						</div>
-						<div class='col-xs-12 col-md-3'>
-						<label for='city'>City<span class='required'>*</span>:</label>
-						<input id='city' class='form-control' type='text' name='city' size='5' required />
-						</div>
-						<div class='col-xs-12 col-md-3'>
-						<label for='zipcode'>Zipcode<span class='required'>*</span>:</label>
-						<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required />
-						</div>
-						</div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-3'>
-						<label for='latitude'>Latitude<span class='required'>*</span>:</label>
-						<input id='latitude' class='form-control' type='text' name='latitude' size='10' required />
-						<span class='help-block'>Example: 43.0186</span>
-						</div>
-						<div class='col-xs-12 col-md-3'>
-						<label for='longitude'>Longitude<span class='required'>*</span>:</label>
-						<input id='longitude' class='form-control' type='text' name='longitude' size='10' required />
-						<span class='help-block'>Example: -83.6916</span>
-						</div>
-						</div>
-						
-						<div class='row'><div class='col-xs-12 col-md-12'><span class='help-block'><a href='http://en.mygeoposition.com'>Geocoding Website</a> (The location can't be mapped without these coordinates.)</span></div></div>
-					</div>
-					
-					<div class='form-group'>
-						<div class='row'>
-						<div class='col-xs-12 col-md-3'>
-						<label for='phone'>Phone number:</label>
-						<input id='phone' class='form-control' type='tel' name='phone' size='15' />
-						<span class='help-block'>Example: (810) 555-5555</span>
-						</div>
-						<div class='col-xs-12 col-md-6'>
-						<label for='hours'>Hours<span class='required'>*</span>:</label>
-						<input id='hours' class='form-control' type='text' name='hours' size='20' required />
-						<span class='help-block'>Example: MWRF 8-11a, 1-4p; T 1-4p</span>
-						</div>
-						</div>
-					</div>
-					
-					<div class='form-group'>
-					<label for='notes'>Notes:</label>
-					<textarea id='notes' class='form-control' rows='3' name='notes' cols='50' placeholder='600 character limit'></textarea>
-					<p class='char_count'></p>
-					</div>
-					
-					<button type='submit' class='btn btn-default pull-right'>Submit</button>
-				</form>
-				</div>
-				</div>
-				</div>
-
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='new_resource_heading'>
 				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#new_resources' aria-expanded='true' aria-controls='new_resources'>New Resource Location</a></h4>
 				</div>
 
 				<div id='new_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='new_resource_heading'>
+				<div class='panel-body'>
+					<form id='location_form' method='post'>
+						<div id='instructions'>Click \"Load\" to retrieve data for the selected resource location.</div>
+						
+						<div id='location_list' class='form-group'>
+						<div class='row'>
+						<div class='col-xs-12 col-md-5'><select class='form-control' name='location_menu'>$resource_locations</select></div>
+						<div class='col-xs-12 col-md-3'><button type='button' class='btn btn-default' disabled='disabled'>Load</button></div>
+						</div>
+						</div>
+						
+						<div class='form-group'>
+						<label for='site'>Name of site<span class='required'>*</span>:</label>
+						<input id='site' class='form-control' type='text' name='site' size='55' required />
+						</div>
+						
+						<div class='form-group'>
+							<label for='categories'>Resource Types<span class='required'>*</span>:</label>
+							<div id='category_options'>
+							<label for='water_pickup'><input id='water_pickup' type='checkbox' name='categories[]' value='Water Pickup' /> Water Pickup</label><br />
+							<label for='water_filters'><input id='water_filters' type='checkbox' name='categories[]' value='Water Filters' /> Water Filters</label><br />
+							<label for='recycling'><input id='recycling' type='checkbox' name='categories[]' value='Recycle' /> Recycling</label><br />
+							<label for='test_kits'><input id='test_kits' type='checkbox' name='categories[]' value='Test Kits' /> Test Kits</label><br />
+							<label for='blood_testing'><input id='blood_testing' type='checkbox' name='categories[]' value='Blood Testing' /> Blood Testing</label>
+							</div>
+						</div>
+						
+						<div class='form-group'>
+							<div class='row'>
+							<div class='col-xs-12 col-md-6'>
+							<label for='address'>Street address<span class='required'>*</span>:</label>
+							<input id='address' class='form-control' type='text' name='address' size='25' required disabled />
+							<span class='help-block hide'>Example: 125 E. Union St.</span>
+							</div>
+							<div class='col-xs-12 col-md-3'>
+							<label for='city'>City<span class='required'>*</span>:</label>
+							<input id='city' class='form-control' type='text' name='city' size='5' required />
+							</div>
+							<div class='col-xs-12 col-md-3'>
+							<label for='zipcode'>Zipcode<span class='required'>*</span>:</label>
+							<input id='zipcode' class='form-control' type='text' name='zipcode' size='5' required />
+							</div>
+							</div>
+						</div>
+						
+						<div class='form-group'>
+							<div class='row'>
+							<div class='col-xs-12 col-md-3'>
+							<label for='latitude'>Latitude<span class='required'>*</span>:</label>
+							<input id='latitude' class='form-control' type='text' name='latitude' size='10' required />
+							<span class='help-block'>Example: 43.0186</span>
+							</div>
+							<div class='col-xs-12 col-md-3'>
+							<label for='longitude'>Longitude<span class='required'>*</span>:</label>
+							<input id='longitude' class='form-control' type='text' name='longitude' size='10' required />
+							<span class='help-block'>Example: -83.6916</span>
+							</div>
+							</div>
+							
+							<div class='row'><div class='col-xs-12 col-md-12'><span class='help-block'><a href='http://en.mygeoposition.com'>Geocoding Website</a> (The location can't be mapped without these coordinates.)</span></div></div>
+						</div>
+						
+						<div class='form-group'>
+							<div class='row'>
+							<div class='col-xs-12 col-md-3'>
+							<label for='phone'>Phone number:</label>
+							<input id='phone' class='form-control' type='tel' name='phone' size='15' />
+							<span class='help-block'>Example: (810) 555-5555</span>
+							</div>
+							<div class='col-xs-12 col-md-6'>
+							<label for='hours'>Hours<span class='required'>*</span>:</label>
+							<input id='hours' class='form-control' type='text' name='hours' size='20' required />
+							<span class='help-block'>Example: MWRF 8-11a, 1-4p; T 1-4p</span>
+							</div>
+							</div>
+						</div>
+						
+						<div class='form-group'>
+						<label for='notes'>Notes:</label>
+						<textarea id='notes' class='form-control' rows='3' name='notes' cols='50' placeholder='600 character limit'></textarea>
+						<p class='char_count'></p>
+						</div>
+						
+						<button type='submit' class='btn btn-default pull-right'>Submit</button>
+					</form>
+				</div>
+				</div>
+				</div>
+				
+				<div class='panel panel-default'>
+				<div class='panel-heading' role='tab' id='edit_resource_heading'>
+				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#resources_accordion' href='#edit_resources' aria-expanded='true' aria-controls='edit_resources'>Edit Resource Location</a></h4>
+				</div>
+
+				<div id='edit_resources' class='panel-collapse collapse' role='tabpanel' aria-labelledby='edit_resource_heading'>
 				<div class='panel-body'></div>
 				</div>
 				</div>
@@ -660,7 +660,8 @@ if (@isset($_POST["pid"])) {
 				
 				$alerts = getAlerts();
 				
-				$inner_content = "<div class='panel-group' id='alert_accordion' role='tablist' aria-multiselectable='true'>
+				$inner_content = "<p>The data used on the main website is updated every 12 hours.</p>
+				<div class='panel-group' id='alert_accordion' role='tablist' aria-multiselectable='true'>
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='new_alert_heading'>
 				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#new_alert' aria-expanded='true' aria-controls='new_alert'>New Alert</a></h4>

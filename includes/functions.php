@@ -43,32 +43,10 @@ else {
 		email_user($result);
 	}
 	else if ($_POST["type"] == "alerts") {
-		$result = queries($_POST["type"]);
+		//$result = queries($_POST["type"]);
 		
-		createJSON($result);
+		//createJSON($result);
 	}
-}
-
-// transform database results into JSON to return to the client
-function createJSON($result) {
-	$i = 0;
-	
-	$output = "{ \"" . $_POST["type"] . "\": [\n";
-	
-	while ($row = $result->fetch_assoc()) {
-		$output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-		
-		if ($i < $result->num_rows-1)
-			$output .= ",";
-		
-		$output .= "\n";
-		
-		$i++;
-	}
-	
-	$output .= "]}";
-	
-	print_r($output);
 }
 
 function email_user() {
