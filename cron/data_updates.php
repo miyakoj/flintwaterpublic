@@ -15,33 +15,28 @@ $connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . gete
 // the data retrieved from the MongoDB db
 $new_data = array();
 
-$scopes = array(
-			'https://www.googleapis.com/auth/fusiontables'/*,
-			'https://www.googleapis.com/auth/fusiontables.readonly'*/
-		);
-
 /* The fusion tables used are publically accessible. */
 $fusion_table_all = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 $fusion_table_recent = "1Kxo2QvMVHbNFPJQ9c9L3wbKrWQJPkbr_Gy90E2MZ";
 $fusion_table_test = "1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP";
 
 $client = new Google_Client();
-$client->setHttpClient(new GuzzleHttp\Client(['verify' => false])); //__ROOT__ . "/vendor/ca-bundle.crt"
+$client->setHttpClient(new GuzzleHttp\Client(['verify' => false, 'timeout' => 0])); //__ROOT__ . "/vendor/ca-bundle.crt"
 $client->setApplicationName("MyWater-Flint");
 $client->setDeveloperKey(getenv('API_KEY'));
 $client->useApplicationDefaultCredentials(getenv('APP_ID'));
-$client->addScope($scopes);
+$client->addScope(array('https://www.googleapis.com/auth/fusiontables'));
 
 $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 $client->setRedirectUri($redirect_uri);
 
-/* Get a reference to the Fusion Table service. */
+/* Get a reference to the Fusion Table Service. */
 $service = new Google_Service_Fusiontables($client);
 
 getNewTestData();
 //updateSQLDB();
 updateFTRecent();
-//updateFTAll();
+updateFTAll();
 
 /* Retrieve new water test results from Ann Arbor's DB */
 function getNewTestData() {
@@ -56,7 +51,7 @@ function getNewTestData() {
 	$most_recent_date = new MongoDate(strtotime($row["dateUpdated"]));
 	
 	//echo "Newest Date: " . $row["dateUpdated"] . "<br />";
-	//echo "MongoDateStart: " . $most_recent_date->sec . "<br /><br />";
+	//echo "MongoDate: " . $most_recent_date->sec . "<br /><br />";
 	
 	/*{
 		"Date Submitted": {"$gt": new Date("2016-10-13T08:56:34Z")}
@@ -64,13 +59,13 @@ function getNewTestData() {
 	
 	// only retrieve proper Flint, MI addresses newer than the newest test in the SQL database
 	$address_filter = array(
-		'goog_address' => array('$regex' => '^((G-)?[0-9]+\s)+([NSEW]\s)?([A-Za-z]+\s){1,}[A-Za-z]{2,4}, Flint, MI'),
-		'Date Submitted' => array('$gt' => $most_recent_date)
+		'Date Submitted' => array('$gt' => $most_recent_date),
+		'goog_address' => array('$regex' => '^((G-)?[0-9]+\s)+([NSEW]\s)?([A-Za-z]+\s){1,}[A-Za-z]{2,4}, Flint, MI')
 	);
 	
 	// retrieve all tests more recent than the retrieved data from Ann Arbor's DB
 	$residential_data = $connection->$db->proc_parcel_resi;
-	$cursor = $residential_data->find($address_filter)->sort(array('Latitude' => 1, 'Longitude' => 1))->limit(5); //->limit(1)  array('Latitude' => 1, 'Longitude' => 1)
+	$cursor = $residential_data->find($address_filter)->sort(array('Date Submitted' => 1)); //->limit(1)  array('lat' => 1, 'lng' => 1)
 	
 	if ($cursor->count() > 0) {
 		while ($cursor->hasNext()) {
@@ -80,10 +75,10 @@ function getNewTestData() {
 			$address = explode(", ", $new_data[$i]["goog_address"]);
 			$new_data[$i]["new_address"] = $address[0];
 			
-			echo "MongoID: " . $new_data[$i]["_id"] . "<br />";
+			/*echo "MongoID: " . $new_data[$i]["_id"] . "<br />";
 			echo "Address: " . $new_data[$i]["goog_address"] . "<br />";
 			echo "MongoDate: " . $new_data[$i]["Date Submitted"]->sec . "<br />";
-			echo "Date: " . date("Y-m-d h:i:s", $new_data[$i]["Date Submitted"]->sec) . "<br /><br />";
+			echo "Date: " . date("Y-m-d h:i:s", $new_data[$i]["Date Submitted"]->sec) . "<br /><br />";*/
 		}
 	}
 	else
@@ -117,31 +112,50 @@ function updateSQLDB() {
 	$stmt->close();
 }
 
-/* Update the most recent tests fusion table. */
+/* Update the most recent data fusion table. */
 function updateFTRecent() {
-	global $service, $new_data;
-	
-	//var_dump($new_data);
+	global $service, $new_data, $fusion_table_recent, $fusion_table_test;
 	
 	foreach ($new_data as $test_result) {
-		$query = sprintf("SELECT ROWID FROM 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP WHERE address = '%s';", $test_result["new_address"]);
-		//$rowid = $service->query->sql($query)->rows[0][0];
+		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
+		$rowid = $service->query->sql($query)->rows[0][0];
 		
-		//echo $rowid . "<br />";
+		echo $query . "<br />";
+		echo $rowid . "<br />";
 		
-		echo $query;
+		// if $rowid is null, the address doesn't exist in the fusion table (wasn't retrieved from predictions collection)
 		
 		// update the existing row's abandoned status, lead, copper, and test date values
 		$query = sprintf("UPDATE 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP SET abandoned = '%s', leadLevel = '%s', copperLevel = '%s', testDate = '%s' WHERE ROWID = '%s';", $test_result["USPS Vacancy"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $rowid);
 		
-		//$result = $service->query->sql($query);
+		echo $query . "<br />";
 		
-		//var_dump($result);
+		//$result = $service->query->sql($query);
+	}
+}
+
+/* Update the all data fusion table. */
+function updateFTAll() {
+	global $service, $new_data, $fusion_table_all, $fusion_table_test;
+	
+	echo "<br />";
+	
+	foreach ($new_data as $test_result) {
+		$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
+		$prediction = $service->query->sql($query)->rows[0][0];
+		
+		// insert the new test result into the fusion table		
+		$csv_data = sprintf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], $prediction, date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"]);
+		
+		echo $csv_data . "<br />";
+
+		//$table_resource = $service->table->get($fusion_table_test);
+		//$result = $service->table->importRows($fusion_table_test, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
 	}
 }
 
 /* 
- * Generates KML for a specific location marker. NOT USED
+ * Generates a KML polygon for a specific latitude/longitude coordinate to be used in the "most recent data" fusion table. NOT USED
  * Original code created in Java by Philip Boyd (https://www.github.com/phboyd).
  */
 function generateKML($lat, $lng) {
@@ -193,15 +207,4 @@ function generateKML($lat, $lng) {
 	"</Polygon>";
 	
 	return $kml;
-}
-
-/* Update the all tests fusion table. */
-function updateFTAll() {
-	global $service, $new_data;
-	
-	//$fusion_table_test
-	
-	$result = $service->query->sql("SELECT * FROM " . $fusion_table_all . " LIMIT 10");
-
-	var_dump($result);
 }
