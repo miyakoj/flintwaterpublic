@@ -34,23 +34,21 @@ $client->setRedirectUri($redirect_uri);
 $service = new Google_Service_Fusiontables($client);
 
 getNewTestData();
-//updateSQLDB();
-updateFTRecent();
+//updateFTRecent();
 updateFTAll();
 
 /* Retrieve new water test results from Ann Arbor's DB */
 function getNewTestData() {
-	global $mysqli, $db, $connection, $new_data;
+	global $service, $db, $connection, $new_data, $fusion_table_recent;
 	
 	// get the date of the most recent test from Cloud SQL
-	$query = "SELECT dateUpdated FROM WaterCondition ORDER BY dateUpdated DESC LIMIT 1;";
-	$result = $mysqli->query($query);
-	$row = $result->fetch_assoc();
+	$query = "SELECT testDate FROM " . $fusion_table_recent . " ORDER BY testDate DESC LIMIT 1;";
+	$testDate = $service->query->sql($query)->rows[0][0];
 	
 	// convert a standard MySQL date into a MongoDB ISO date
-	$most_recent_date = new MongoDate(strtotime($row["dateUpdated"]));
+	$most_recent_date = new MongoDate(strtotime($testDate));
 	
-	//echo "Newest Date: " . $row["dateUpdated"] . "<br />";
+	//echo "Newest Date: " . $testDate . "<br />";
 	//echo "MongoDate: " . $most_recent_date->sec . "<br /><br />";
 	
 	/*{
@@ -65,7 +63,7 @@ function getNewTestData() {
 	
 	// retrieve all tests more recent than the retrieved data from Ann Arbor's DB
 	$residential_data = $connection->$db->proc_parcel_resi;
-	$cursor = $residential_data->find($address_filter)->sort(array('Date Submitted' => 1)); //->limit(1)  array('lat' => 1, 'lng' => 1)
+	$cursor = $residential_data->find($address_filter)->sort(array('Date Submitted' => 1)); //->limit(1)
 	
 	if ($cursor->count() > 0) {
 		while ($cursor->hasNext()) {
@@ -85,77 +83,84 @@ function getNewTestData() {
 		exit();
 }
 
-/* Update the Cloud SQL database. */
-function updateSQLDB() {
-	global $mysqli, $new_data;
+/* Insert a new property into the SQL database if a test is found that has no corresponding prediction value. */
+function insertNewPropertySQL($property) {
+	global $mysqli;
 	
-	$stmt = $mysqli->prepare("INSERT INTO WaterCondition (latitude, longitude, parcelID, address, leadLevel, copperLevel, dateUpdated, testID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+	$geolocation_query = sprintf("INSERT INTO Geolocation (latitude, longitude, parcelID, address, abandoned) VALUES ('%s', '%s', '%s', '%s', '%s');", $property["lat"], $property["lng"], $property["PID no Dash"], $property["new_address"], $property["USPS Vacancy"]);
+	$mysqli->query($geolocation_query);
 	
-	// insert each new test result into the DB
-	foreach ($new_data as $key => $test_result) {		
-		$stmt->bind_param("ssssssss", $test_result["lat"], $test_result["lng"], $test_result["PID no Dash"], $test_result["new_address"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["sample_num"]);
-		$stmt->execute();
-		
-		// check abandonment status, change from Y or U to N if necessary
-		$abandoned_query = sprintf("SELECT abandoned FROM GeoLocation WHERE address = '%s';", $test_result["new_address"]);
-		$result = $mysqli->query($abandoned_query);
-		$row = $result->fetch_assoc();
-		
-		if (strcmp($row["USPS Vacancy"], "N") !== 0) {
-			$abandoned = "N";
-			$new_data[$key]["USPS Vacancy"] = $abandoned;
-			$update_abandoned_query = sprintf("UPDATE GeoLocation SET abandoned = '%s' WHERE address = '%s';", $abandoned, $test_result["new_address"]);
-			$mysqli->query($update_abandoned_query);
-		}
-	}
-	
-	$stmt->close();
+	$prediction_query = sprintf("INSERT INTO PredictionLocations (latitude, longitude, prediction, parcelID) VALUES ('%s', '%s', '-1', '%s');", $property["lat"], $property["lng"], $property["PID no Dash"]);
+	$mysqli->query($prediction_query);
 }
 
 /* Update the most recent data fusion table. */
 function updateFTRecent() {
 	global $service, $new_data, $fusion_table_recent, $fusion_table_test;
+	$table_resource = $service->table->get($fusion_table_test);
+	
+	//var_dump($new_data);
 	
 	foreach ($new_data as $test_result) {
 		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
 		$rowid = $service->query->sql($query)->rows[0][0];
 		
-		echo $query . "<br />";
-		echo $rowid . "<br />";
+		//echo $query . "<br />";
+		//echo $rowid . "<br />";
 		
-		// if $rowid is null, the address doesn't exist in the fusion table (wasn't retrieved from predictions collection)
+		// update the most recent test date, lead value, and copper value in the row corresponding to the address
+		if (strcmp($rowid, "") !== 0) {
+			// update the existing row's abandoned status, lead, copper, and test date values
+			$query = sprintf("UPDATE 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP SET abandoned = '%s', testDate = '%s', leadLevel = '%s', copperLevel = '%s' WHERE ROWID = '%s';", $test_result["USPS Vacancy"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $rowid);
+			
+			//echo $query . "<br />";
 		
-		// update the existing row's abandoned status, lead, copper, and test date values
-		$query = sprintf("UPDATE 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP SET abandoned = '%s', leadLevel = '%s', copperLevel = '%s', testDate = '%s' WHERE ROWID = '%s';", $test_result["USPS Vacancy"], $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $rowid);
-		
-		echo $query . "<br />";
-		
-		//$result = $service->query->sql($query);
+			$result = $service->query->sql($query);
+		}
+		// if $rowid is null, the address doesn't exist in the fusion table so insert a new row and use -1 for the prediction
+		else {			
+			$kml = generateKML($test_result["lat"], $test_result["lng"]);
+			
+			$csv_data = sprintf("%s; %s; %s; %s; %s; -1; %s; %s; %s; %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $kml);
+			
+			//echo $csv_data . "<br /><br />";
+			
+			$result = $service->table->importRows($fusion_table_test, array('delimiter' => ';', 'postBody' => $table_resource, 'data' => $csv_data));
+			
+			// insert new rows into the SQL database
+			insertNewPropertySQL($test_result);
+		}
 	}
 }
 
 /* Update the all data fusion table. */
 function updateFTAll() {
 	global $service, $new_data, $fusion_table_all, $fusion_table_test;
+	$table_resource = $service->table->get($fusion_table_test);
 	
-	echo "<br />";
+	//echo "<br />";
 	
 	foreach ($new_data as $test_result) {
-		$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
-		$prediction = $service->query->sql($query)->rows[0][0];
+		// check to see if the row has already been entered due to a previous transaction that was interrupted due to Guzzle timeout
+		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s' AND testDate = '%s';", $fusion_table_test, $test_result["new_address"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec));
+		$rowid = $service->query->sql($query)->rows[0][0];
 		
-		// insert the new test result into the fusion table		
-		$csv_data = sprintf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], $prediction, date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"]);
-		
-		echo $csv_data . "<br />";
+		if (strcmp($rowid, "") === 0) {
+			$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
+			$prediction = $service->query->sql($query)->rows[0][0];
+			
+			// insert the new test result into the fusion table		
+			$csv_data = sprintf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], $prediction, date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"]);
+			
+			//echo $csv_data . "<br />";
 
-		//$table_resource = $service->table->get($fusion_table_test);
-		//$result = $service->table->importRows($fusion_table_test, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
+			$result = $service->table->importRows($fusion_table_test, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
+		}
 	}
 }
 
 /* 
- * Generates a KML polygon for a specific latitude/longitude coordinate to be used in the "most recent data" fusion table. NOT USED
+ * Generates a KML polygon for a specific latitude/longitude coordinate to be used in the "most recent data" fusion table.
  * Original code created in Java by Philip Boyd (https://www.github.com/phboyd).
  */
 function generateKML($lat, $lng) {

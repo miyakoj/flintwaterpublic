@@ -9,7 +9,7 @@ var months = new Array("January", "February", "March", "April", "May", "June", "
 function onStartup() {	
 	if ($("body").attr("id").indexOf("news_page") != -1) {
 		googleRssFeed();
-		//loadAlerts();
+		loadAlerts();
 		
 		if ($("#news .card").length == 0)
 			$("#news").prepend("<p class='text-center'>There are no news articles available.</p>");

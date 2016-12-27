@@ -127,6 +127,8 @@ if (@isset($_POST["type"])) {
 
 		echo $result;
 		
+		// update alerts JSON
+		
 		ob_start();
 		sendFirebaseNotification();
 		ob_end_clean();
@@ -135,6 +137,8 @@ if (@isset($_POST["type"])) {
 		$result = queries($_POST["type"]);
 		
 		echo $result;
+		
+		// update alerts JSON
 		
 		ob_start();
 		sendFirebaseNotification();
