@@ -67,15 +67,23 @@
 		float:left;
 	}
 	
+	#language_menu {
+		position:absolute!important;
+		top:10px;
+		right:10px;
+		z-index:100!important;
+	}
+	
+	#language_menu #language_toggle {
+		width:auto!important;
+		padding-left:6px!important;
+		padding-right:6px!important;
+	}
+	
 	header #google_play_link {
 		top:0;
 		right:0;
 		position:absolute;
-	}
-	
-	#google_play_badge {
-		width:auto;
-		height:4em;
 	}
 	
 	.navbar-header {

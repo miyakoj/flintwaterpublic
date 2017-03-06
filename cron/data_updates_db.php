@@ -46,6 +46,8 @@ function getNewTestData() {
 	$residential_data = $connection->$db->proc_parcel_resi;
 	$cursor = $residential_data->find($address_filter)->sort(array('Date Submitted' => 1)); //->limit(1)
 	
+	//$output = "latitude,longitude,parcelID,address,leadLevel,copperLevel,dateUpdated,testID\n";
+	
 	if ($cursor->count() > 0) {
 		while ($cursor->hasNext()) {
 			$new_data[] = $cursor->getNext();			
@@ -57,8 +59,12 @@ function getNewTestData() {
 			/*echo "MongoID: " . $new_data[$i]["_id"] . "<br />";
 			echo "Address: " . $new_data[$i]["goog_address"] . "<br />";
 			echo "MongoDate: " . $new_data[$i]["Date Submitted"]->sec . "<br />";
-			echo "Date: " . date("Y-m-d h:i:s", $new_data[$i]["Date Submitted"]->sec) . "<br /><br />";*/
+			echo "Date: " . date("Y-m-d h:i:s", $new_data[$i]["Date Submitted"]->sec) . "<br /><br />";
+			
+			$output .= sprintf("%s,%s,%s,%s,%s,%s,%s,%s\n", $new_data[$i]["lat"], $new_data[$i]["lng"], $new_data[$i]["PID no Dash"], $new_data[$i]["new_address"], $new_data[$i]["Lead (ppb)"], $new_data[$i]["Copper (ppb)"], date("Y-m-d h:i:s", $new_data[$i]["Date Submitted"]->sec), $new_data[$i]["sample_num"]);*/
 		}
+		
+		//file_put_contents("water_test_results.csv", $output, FILE_APPEND);
 	}
 	else
 		exit();

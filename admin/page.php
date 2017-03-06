@@ -19,14 +19,14 @@ if (@isset($_POST["pid"])) {
 		// admin users
 		case 1:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
+			$alerts_link = '<li><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>'; // class="hide"
 			$users_link = '<li><a id="users_link" href="#"><span class="material-icons nav_icon">person</span> <span class="nav-label">Manage Users</span></a></li>';
 		break;
 		
-		// users with edit only privileges
+		// users with edit and view privileges
 		case 2:
 			$edit_link = '<li><a id="edit_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Data</span></a></li>';
-			$alerts_link = '<li class="hide"><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
+			$alerts_link = '<li><a id="alerts_link" href="#"><span class="material-icons nav_icon">add_alert</span> <span class="nav-label">Manage Alerts</span></a></li>';
 			$users_link = "";
 		break;
 		
@@ -660,8 +660,8 @@ if (@isset($_POST["pid"])) {
 				
 				$alerts = getAlerts();
 				
-				$inner_content = "<p>The data used on the main website is updated every 12 hours.</p>
-				<div class='panel-group' id='alert_accordion' role='tablist' aria-multiselectable='true'>
+				//<p>The data used on the main website is updated every 12 hours.</p>
+				$inner_content = "<div class='panel-group' id='alert_accordion' role='tablist' aria-multiselectable='true'>
 				<div class='panel panel-default'>
 				<div class='panel-heading' role='tab' id='new_alert_heading'>
 				<h4 class='panel-title'><a role='button' data-toggle='collapse' data-parent='#alert_accordion' href='#new_alert' aria-expanded='true' aria-controls='new_alert'>New Alert</a></h4>

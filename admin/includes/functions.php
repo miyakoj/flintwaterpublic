@@ -281,6 +281,33 @@ function getResourceLocations() {
 	return $resourceList;
 }
 
+function createAlertsJSON() {
+	$filename = "alerts.json";	
+	$i = 0;
+	
+	$result = queries("get_alerts");
+	
+	$output = "{ \"alerts\": [\n";
+	
+	while ($row = $result->fetch_assoc()) {
+		$output .= json_encode($row, JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+		
+		if ($i < $result->num_rows-1)
+			$output .= ",";
+		
+		$output .= "\n";
+		
+		$i++;
+	}
+	
+	$output .= "]}";
+	
+	/* Write the file to the bucket. */
+	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
+	$context = stream_context_create($options);
+	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
+}
+
 /* Returns a list of all alerts. */
 function getAlerts() {
 	$result = queries("alerts_titles");

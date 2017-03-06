@@ -1,7 +1,6 @@
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
 var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
-console.log("$pageId = " + $pageId);
 var $activeNode;
 var autocomplete;
 
@@ -57,7 +56,7 @@ else if ($pageId.indexOf("news") != -1) {
 
 
 $(document).ready(function() {
-	// fix the AJAX linebreaks problem
+	// fix the AJAX linebreaks problem for text areas
 	$.valHooks.textarea = {
 	  get: function( elem ) {
 		return elem.value.replace( /\r?\n/g, "\r\n" );
@@ -80,6 +79,14 @@ $(document).ready(function() {
 	/* Activate tooltips. */
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
+	});
+	
+	/* Size and position the Google Play badge. */
+	//$('#language_menu').removeClass('hide');
+	$('#google_play_link').css({
+		top: function() {
+			return $('#language_menu').height() + 15 + "px"
+		}
 	});
 	
 	/* Dynamically adjust the dropdown menu links. */
@@ -230,7 +237,7 @@ $(document).ready(function() {
 	
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
-		$("#main_menu").append($("#made_in_Flint"), $("#google_play_link"), $("footer"));
+		$("#main_menu").append($("#made_in_Flint"), $("#google_play_link"), $("footer")); //$('#language_menu')
 		//$("#header").append($("#contact_form"));
 		
 		$("#made_in_Flint img").css({
@@ -238,11 +245,11 @@ $(document).ready(function() {
 			"margin-right": "auto"		
 		});
 		
-		$("#google_play_link img").addClass("center-block");
+		$("#made_in_Flint, #google_play_link img").addClass("center-block");
 		
 		$("#main_menu .nav").removeClass("nav-justified");
-		$("#show_me_menu").removeClass("dropdown");
-		$("#show_me_menu ul").removeClass("dropdown-menu");
+		$("#show_me_menu, #language_menu").removeClass("dropdown");
+		$("#show_me_menu ul, #language_menu ul").removeClass("dropdown-menu");
 		
 		/* Move the map and help videos above the steppers for phone/small tablet. */
 		$("#sidebar").addClass("hide");

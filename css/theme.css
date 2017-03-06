@@ -61,9 +61,7 @@ html, body {
 }
 
 #language_menu #language_toggle {
-	font-size:1.25rem;
 	color:#A4A8B9!important;
-	font
 }
 
 #language_menu a:hover {
@@ -533,10 +531,6 @@ footer .card-action btn {
 
 /* Desktop/Laptop only. */
 @media only screen and (min-width:992px) {
-	#language_menu #language_toggle {
-		font-size:1.3rem;
-	}
-
 	footer #site_desc p {
 		text-align:center;
 	}

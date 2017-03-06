@@ -4,7 +4,7 @@ var apiKey = "AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM";
 
 // Access Google Cloud Storage
 var defaultBucket = "h2o-flint.appspot.com";
-var scopes = "https:// www.googleapis.com/auth/devstorage.read_only https://www.googleapis.com/auth/fusiontables.readonly";
+var scopes = "https://www.googleapis.com/auth/devstorage.read_only https://www.googleapis.com/auth/fusiontables.readonly";
 
 var windowWidth = window.innerWidth;
 var windowHeight = window.innerHeight;
@@ -95,11 +95,11 @@ function setAPIKey() {
 	gapi.load("client:auth2", checkAuth);
 }
 
-function checkAuth() {
+function checkAuth() {	
 	gapi.auth2.init({
 		client_id: clientId,
 		scope: scopes
-	}).then(function() {
+	}).then(function(resp) {		
 		initMap();
 	});
 }
@@ -279,12 +279,18 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	
-	if ($pageId.indexOf("dashboard") != -1)
+	/* Only load lead areas on the index and admin dashboard pages. */
+	if ($pageId.indexOf("index") != -1 || $pageId.indexOf("dashboard") != -1) {
 		callStorageAPI("leadLevels_birdview.json");
-	
+		
+		/* Only load pipe data and construction sites on the index page. */
+		if ($pageId.indexOf("index") != -1) {
+			callStorageAPI("pipedata.json");
+			callStorageAPI("construction_sites.json");
+		}
+	}
+		
 	callStorageAPI("providers.json");
-	callStorageAPI("pipedata.json");
-	callStorageAPI("construction_sites.json");
 	
 	setUpFusionTable();
 	
@@ -387,7 +393,7 @@ function initMap() {
 					leadLayerBirdViewMarkers[i].setMap(null);
 				}
 			}
-		 });
+		});
 	}
 	
 	// Listen for the event fired when the user selects a prediction and retrieve
@@ -1110,8 +1116,8 @@ function attachLocationCard(type, clickedMarker, address, content) {
 		
 		createLocationCardContent(type, content);
 		
-		// a location was clicked
-		if (type.indexOf("leadArea") == -1) {			
+		// a location
+		if (type.indexOf("leadArea") == -1) {
 			lat = clickedMarker.getPosition().lat();
 			lng = clickedMarker.getPosition().lng();
 			
@@ -1122,7 +1128,7 @@ function attachLocationCard(type, clickedMarker, address, content) {
 			$("#location_card #lat").html(clickedMarker.getPosition().lat());
 			$("#location_card #lng").html(clickedMarker.getPosition().lng());
 		}
-		// a lead area was clicked
+		// a lead area
 		else {
 			lat = event.latLng.lat();
 			lng = event.latLng.lng();

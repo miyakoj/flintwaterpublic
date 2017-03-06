@@ -10,7 +10,8 @@ require_once __ROOT__ . "/vendor/autoload.php";
 /* MongoDB connection info. */
 $port = "27017";
 $db = getenv('MONGODB_DATABASE');
-$connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . getenv('MONGODB_PASSWORD') . "@" . getenv('MONGODB_IP') . ":" . $port . "/" .  $db);
+//$connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . getenv('MONGODB_PASSWORD') . "@" . getenv('MONGODB_IP') . ":" . $port . "/" .  $db);
+$connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . getenv('MONGODB_PASSWORD') . "@" . getenv('MONGODB_IP') . "/" .  $db);
 
 // the data retrieved from the MongoDB db
 $new_data = array();
@@ -18,12 +19,12 @@ $new_data = array();
 /* The fusion tables used are publically accessible. */
 $fusion_table_all = "17nXjYNo-XHrHiJm9oohgxBSyIXsYeXqlnVHnVrrX";
 $fusion_table_recent = "1Kxo2QvMVHbNFPJQ9c9L3wbKrWQJPkbr_Gy90E2MZ";
-$fusion_table_test = "1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP";
+//$fusion_table_test = "1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP";
 
 $client = new Google_Client();
-$client->setHttpClient(new GuzzleHttp\Client(['verify' => false, 'timeout' => 0])); //__ROOT__ . "/vendor/ca-bundle.crt"
-$client->setApplicationName("MyWater-Flint");
-$client->setDeveloperKey(getenv('API_KEY'));
+$client->setHttpClient(new GuzzleHttp\Client(['verify' => __ROOT__ . '/vendor/ca-bundle.crt', 'timeout' => 0]));
+$client->setApplicationName('MyWater-Flint');
+$client->setDeveloperKey(getenv('GOOGLE_SERVER_KEY'));
 $client->useApplicationDefaultCredentials(getenv('APP_ID'));
 $client->addScope(array('https://www.googleapis.com/auth/fusiontables'));
 
@@ -33,20 +34,25 @@ $client->setRedirectUri($redirect_uri);
 /* Get a reference to the Fusion Table Service. */
 $service = new Google_Service_Fusiontables($client);
 
-getNewTestData();
-//updateFTRecent();
+updateFTRecent();
 updateFTAll();
 
-/* Retrieve new water test results from Ann Arbor's DB */
-function getNewTestData() {
-	global $service, $db, $connection, $new_data, $fusion_table_recent;
+/* Retrieve new water test results from the remote DB */
+function getNewTestData($table) {
+	global $service, $db, $connection, $new_data;
 	
-	// get the date of the most recent test from Cloud SQL
-	$query = "SELECT testDate FROM " . $fusion_table_recent . " ORDER BY testDate DESC LIMIT 1;";
+	// get the date of the most recent test from the fusion table
+	$query = "SELECT testDate FROM " . $table . " ORDER BY testDate DESC LIMIT 1;";
 	$testDate = $service->query->sql($query)->rows[0][0];
 	
 	// convert a standard MySQL date into a MongoDB ISO date
-	$most_recent_date = new MongoDate(strtotime($testDate));
+	$most_recent_date = new MongoDate(strtotime($testDate)); // 2017-01-27 08:59:08
+	
+	// if the newest date in the "all" fusion table matches the date in the "recent" fusion table then don't query the MongoDB again
+	/*if (@isset($most_recent_date) && $most_recent_date == $most_recent_table_date)
+		return;
+	else
+		$most_recent_table_date = $most_recent_date;*/
 	
 	//echo "Newest Date: " . $testDate . "<br />";
 	//echo "MongoDate: " . $most_recent_date->sec . "<br /><br />";
@@ -63,11 +69,11 @@ function getNewTestData() {
 	
 	// retrieve all tests more recent than the retrieved data from Ann Arbor's DB
 	$residential_data = $connection->$db->proc_parcel_resi;
-	$cursor = $residential_data->find($address_filter)->sort(array('Date Submitted' => 1)); //->limit(1)
+	$cursor = $residential_data->find($address_filter)->sort(array('Date Submitted' => 1));
 	
 	if ($cursor->count() > 0) {
 		while ($cursor->hasNext()) {
-			$new_data[] = $cursor->getNext();			
+			$new_data[] = $cursor->getNext();
 			$i = count($new_data)-1;
 			
 			$address = explode(", ", $new_data[$i]["goog_address"]);
@@ -96,13 +102,15 @@ function insertNewPropertySQL($property) {
 
 /* Update the most recent data fusion table. */
 function updateFTRecent() {
-	global $service, $new_data, $fusion_table_recent, $fusion_table_test;
-	$table_resource = $service->table->get($fusion_table_test);
+	global $service, $new_data, $fusion_table_recent;
+	$table_resource = $service->table->get($fusion_table_recent);
+	
+	getNewTestData($fusion_table_recent);
 	
 	//var_dump($new_data);
 	
 	foreach ($new_data as $test_result) {
-		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
+		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s';", $fusion_table_recent, $test_result["new_address"]);
 		$rowid = $service->query->sql($query)->rows[0][0];
 		
 		//echo $query . "<br />";
@@ -111,11 +119,13 @@ function updateFTRecent() {
 		// update the most recent test date, lead value, and copper value in the row corresponding to the address
 		if (strcmp($rowid, "") !== 0) {
 			// update the existing row's abandoned status, lead, copper, and test date values
-			$query = sprintf("UPDATE 1j0C_amm3F6Tz0AEi47Poduus8ecoT389JCcmCIVP SET abandoned = '%s', testDate = '%s', leadLevel = '%s', copperLevel = '%s' WHERE ROWID = '%s';", $test_result["USPS Vacancy"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $rowid);
+			//$query = sprintf("UPDATE %s SET abandoned = '%s', testDate = '%s', leadLevel = '%s', copperLevel = '%s' WHERE ROWID = '%s';", $fusion_table_recent, $test_result["USPS Vacancy"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $rowid);
 			
 			//echo $query . "<br />";
 		
-			$result = $service->query->sql($query);
+			//$result = $service->query->sql($query);
+			
+			$csv_data = sprintf("%s; %s; %s; %s; %s; -1; %s; %s; %s; %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $kml);
 		}
 		// if $rowid is null, the address doesn't exist in the fusion table so insert a new row and use -1 for the prediction
 		else {			
@@ -125,28 +135,32 @@ function updateFTRecent() {
 			
 			//echo $csv_data . "<br /><br />";
 			
-			$result = $service->table->importRows($fusion_table_test, array('delimiter' => ';', 'postBody' => $table_resource, 'data' => $csv_data));
+			//$result = $service->table->importRows($fusion_table_recent, array('delimiter' => ';', 'postBody' => $table_resource, 'data' => $csv_data));
 			
 			// insert new rows into the SQL database
-			insertNewPropertySQL($test_result);
+			//insertNewPropertySQL($test_result);
 		}
+		
+		file_put_contents("fusion_table_recent.csv", $csv_data, FILE_APPEND);
 	}
 }
 
 /* Update the all data fusion table. */
 function updateFTAll() {
 	global $service, $new_data, $fusion_table_all, $fusion_table_test;
-	$table_resource = $service->table->get($fusion_table_test);
+	$table_resource = $service->table->get($fusion_table_all);
+	
+	getNewTestData($fusion_table_all);
 	
 	//echo "<br />";
 	
 	foreach ($new_data as $test_result) {
 		// check to see if the row has already been entered due to a previous transaction that was interrupted due to Guzzle timeout
-		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s' AND testDate = '%s';", $fusion_table_test, $test_result["new_address"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec));
+		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s' AND testDate = '%s';", $fusion_table_all, $test_result["new_address"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec));
 		$rowid = $service->query->sql($query)->rows[0][0];
 		
 		if (strcmp($rowid, "") === 0) {
-			$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_test, $test_result["new_address"]);
+			$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_all, $test_result["new_address"]);
 			$prediction = $service->query->sql($query)->rows[0][0];
 			
 			// insert the new test result into the fusion table		
@@ -154,7 +168,7 @@ function updateFTAll() {
 			
 			//echo $csv_data . "<br />";
 
-			$result = $service->table->importRows($fusion_table_test, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
+			$result = $service->table->importRows($fusion_table_all, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
 		}
 	}
 }

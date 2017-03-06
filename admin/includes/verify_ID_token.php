@@ -21,24 +21,29 @@ function check_token($jwt) {
 		try {
 			/* Decode the user web token. */
 			$decoded = JWT::decode($jwt, $parsed_key, array('RS256'));
-			$valid_flag = 1;
-			echo $valid_flag;
-			//exit();
+			
+			if (@isset($decoded)) {
+				$valid_flag = 1;
+				break;
+			}
 		}
 		catch(DomainException $e) {
-			continue;
+			echo $valid_flag;
+			exit();
 		}
 		catch(ExpiredException $e) {
 			echo $valid_flag;
-			//exit();
+			exit();
 		}
 		catch(UnexpectedValueException $e) {
 			echo $valid_flag;
-			//exit();
+			exit();
 		}
 		catch(SignatureInvalidException $e) {
-			echo $valid_flag;
-			//exit();
+			continue;
 		}
 	}
+	
+	echo $valid_flag;
+	exit();
 }

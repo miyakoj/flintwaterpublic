@@ -42,11 +42,6 @@ else {
 	
 		email_user($result);
 	}
-	else if ($_POST["type"] == "alerts") {
-		//$result = queries($_POST["type"]);
-		
-		//createJSON($result);
-	}
 }
 
 function email_user() {

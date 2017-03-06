@@ -9,13 +9,7 @@ var months = new Array("January", "February", "March", "April", "May", "June", "
 function onStartup() {	
 	if ($("body").attr("id").indexOf("news_page") != -1) {
 		googleRssFeed();
-		loadAlerts();
-		
-		if ($("#news .card").length == 0)
-			$("#news").prepend("<p class='text-center'>There are no news articles available.</p>");
-		
-		if ($("#alerts .card").length == 0)
-			$("#alerts").prepend("<p class='text-center'>There are no alerts available.</p>");
+		loadAlerts();		
 	}
 }
 
@@ -44,6 +38,9 @@ function googleRssFeed() {
 				html += '</div></div>';
       		}
 	   		$("#news").html(html);
+			
+			if ($("#news .card").length == 0)
+				$("#news").prepend("<p class='text-center'>There are no news articles available.</p>");
 		}
 	});
 }
@@ -90,6 +87,9 @@ function loadAlerts() {
 				}
 				
 				$("#alerts").html(html);
+				
+				if ($("#alerts .card").length == 0)
+					$("#alerts").prepend("<p class='text-center'>There are no alerts available.</p>");
 			});
 		});
 	});

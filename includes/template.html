@@ -65,19 +65,19 @@
 			  <div class="container-fluid">
 			   <div class="navbar-header">
 				<a class="navbar-toggle"> 
-				  <span class="sr-only">Toggle navigation</span>
+				  <span class="sr-only" data-i18n="navbar.toggleText"></span>
 				  <span class="icon icon-lg">menu</span>
 				</a>
 				
 				<div id="header_top">
-				<div id="made_in_Flint">Made in Flint</div>
+				<div id="made_in_Flint" data-i18n="navbar.madeInFlint"></div>
 				
-				<div id="language_menu" class="dropdown dropdown-inline">
-					<a id="language_toggle" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false">Languages <span class="caret"></span></a>
+				<div id="language_menu" class="dropdown dropdown-inline hide">
+					<a id="language_toggle" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false"><span data-i18n="navbar.languageHeading"></span> <i class="material-icons">expand_more</i></a>
+					
 					<ul class="dropdown-menu nav" aria-labelledby="language_toggle">
-						<li><a id="lang_en" href="#" class="active">EN</a></li>
-						<li><a id="lang_es" href="#">ES</a></li>
-						<li><a id="lang_ar" href="#">العربية</a></li>
+						<li><a id="en" href="#">EN</a></li>
+						<li><a id="es" href="#">ES</a></li>
 					</ul>
 				</div>
 				
@@ -139,17 +139,21 @@
   </div>
 </div>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/i18next.min.js"></script>
+<script type="text/javascript" src="js/i18nextXHRBackend.min.js"></script>
+<script type="text/javascript" src="js/i18nextBrowserLanguageDetector.min.js"></script>
+<script type="text/javascript" src="js/i18nextLocalStorageCache.min.js"></script>
+<script type="text/javascript" src="js/jquery-i18next.min.js"></script>
 <script type="text/javascript" src="js/jquery.form.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/modernizr-custom.js"></script>
-
-<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places" async defer></script>-->
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript" src="../js/lang.js"></script>
 <script type="text/javascript" src="../js/nav_drawer.js"></script>
 <script type="text/javascript" src="js/map.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
-<!--<script src="https://apis.google.com/js/client.js?onload=setAPIKey"></script>-->
 <script type="text/javascript" src="js/news.js"></script>
 
 <script>

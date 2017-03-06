@@ -153,6 +153,11 @@ function queries($choice, $var = "", $var2 = array()) {
 	else if (strcmp($choice, "delete_alert") === 0) {
 		$query = sprintf("DELETE FROM Alerts WHERE id = %d;", $var);
 	}
+	else if (strcmp($choice, "get_alerts") === 0) {
+		$date = new DateTime(); // get the current date and time
+		
+		$query = sprintf("SELECT priority, title, body, url, added, expiration FROM Alerts WHERE expiration >= '%s' || YEAR(expiration) = '0000' ORDER BY priority ASC, expiration DESC;", $date->format("Y-m-d H:i:s"));
+	}
 	/* Edit Page Queries */
 	else if (strcmp($choice, "resource_locations") === 0) {
 		$query = "SELECT aidAddress FROM AidLocation WHERE aidAddress != '' ORDER BY aidAddress+0<>0 DESC, aidAddress+0, aidAddress;";
