@@ -1,7 +1,7 @@
 # MyWater-Flint Source Code #
 
 ## Description ##
-This source enables you to create user and administration websites to aid in navigating a water crisis such as the one Flint, MI is experiencing. Though the original runs on the Google Cloud Platform and utilizes Google Fusion Tables and Firebase Authentication, the source can also be run on any web server running PHP and MySQL with some modifications.
+This source gives you a starting point to create user and administration websites to aid in navigating a water crisis such as the one Flint, MI is experiencing. Though the original runs on the Google Cloud Platform and utilizes Google Fusion Tables and Firebase Authentication, the source can also be run on any web server running PHP and MySQL with some modifications.
 
 ## Requirements ##
 * [PHP 5.5 or higher](http://www.php.net/)
@@ -15,6 +15,8 @@ This source enables you to create user and administration websites to aid in nav
 * [jQuery](http://jquery.com/)
 * [Bootstrap](https://getbootstrap.com/)
 * [Daemonite's Material UI](https://github.com/Daemonite/material/)
+* [i18next](http://i18next.com/)
+* [Chart.js](http://www.chartjs.org/)
 
 ### Plugins Used ###
 * [jQuery Form](http://malsup.com/jquery/form/)
