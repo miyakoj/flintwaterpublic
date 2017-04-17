@@ -32,25 +32,25 @@
 		<div class="modal-content">
 			<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="icon" aria-hidden="true">close</span></button>
-			<h4 class="modal-title">Contact Us</h4>
+			<h4 class="modal-title" data-i18n="contactForm.contactFormTitle"></h4>
 			</div>
 			
 			<div class="modal-body">
 				<div class="form-group">
-				<label for="email">Email:</label>
-				<input id="email" class="form-control" type="text" name="email" placeholder="Enter your email address if you would like a response." tabindex="20" />
+				<label for="email" data-i18n="[prepend]form.email">:</label>
+				<input id="email" class="form-control" type="text" name="email" tabindex="20" data-i18n="[placeholder]contactForm.contactFormEmail" />
 				</div>
 				
 				<div class="form-group">
-				<label for="comments">Comments:<span class="required">*</span></label>
-				<textarea id="comments" class="form-control textarea-autosize" rows="5" name="comments" placeholder="Please enter between 20 and 1,000 characters." tabindex="21" character limit required></textarea>
-				<p class="char_count"></p>
+				<label for="comments" data-i18n="[prepend]form.comments">: <span class="required">*</span></label>
+				<textarea id="comments" class="form-control textarea-autosize" rows="5" name="comments" data-i18n="[placeholder]contactForm.contactFormLimit" tabindex="21" character limit required></textarea>
+				<p class="char_count"><span data-i18n="[prepend]form.characters">: </span></p>
 				</div>
 			</div>
 			
 			<div class="modal-footer">
-			<button type="button" class="btn btn-flat" data-dismiss="modal">Cancel</button>
-			<button type="submit" class="submit_button btn btn-primary disabled">Submit</button>
+			<button type="button" class="btn btn-flat" data-dismiss="modal" data-i18n="form.cancel"></button>
+			<button type="submit" class="submit_button btn btn-primary disabled" data-i18n="form.submit"></button>
 			</div>
 		</div>
 		</form>
@@ -66,7 +66,7 @@
 			   <div class="navbar-header">
 				<a class="navbar-toggle"> 
 				  <span class="sr-only" data-i18n="navbar.toggleText"></span>
-				  <span class="icon icon-lg">menu</span>
+				  <i class="material-icons">menu</i>
 				</a>
 				
 				<div id="header_top">
@@ -76,8 +76,8 @@
 					<a id="language_toggle" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false"><span data-i18n="navbar.languageHeading"></span> <i class="material-icons">expand_more</i></a>
 					
 					<ul class="dropdown-menu nav" aria-labelledby="language_toggle">
-						<li><a id="en" href="#">EN</a></li>
-						<li><a id="es" href="#">ES</a></li>
+						<li><a id="en" data-lang="en-US" href="#">EN</a></li>
+						<li><a id="es" data-lang="es" href="#">ES</a></li>
 					</ul>
 				</div>
 				
@@ -87,23 +87,23 @@
 				</div>
 			   </div>
 			   
-			   <div id="main_menu" class="tab-nav">
+			   <div id="main_menu" class="main-menu tab-nav">
 				<ul class="nav navbar-nav nav-justified">
-				<li><a id="map_link" href="#"><span>Map</span></a></li>
-				<li><a id="news_link" href="#"><span>News and Alerts</span></a></li>
+				<li><a id="map_link" href="#"><span data-i18n="mainMenu.mapLink"></span></a></li>
+				<li><a id="news_link" href="#"><span data-i18n="mainMenu.newsLink"></span></a></li>
 
 				<li id="show_me_menu" class="dropdown">
 				  <a id="show_me_toggle" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-				  <span>Show me how to...</span> <i class="material-icons">expand_more</i></a>
+				  <span data-i18n="mainMenu.showmeLink"></span> <i class="material-icons">expand_more</i></a>
 				  <ul aria-labelledby="show_me_toggle" class="dropdown-menu">
-					<li><a id="test_link" href="#"><span>Test My Water</span></a></li>
-					<li><a id="filter_link" href="#"><span>Install a Water Filter</span></a></li>
-					<li><a id="aerator_link" href="#"><span>Clean My Aerator</span></a></li>
-					<li class="hide"><a id="survey_link" href="#"><span>Take a Survey</span></a></li>
+					<li><a id="test_link" href="#"><span data-i18n="mainMenu.testLink"></span></a></li>
+					<li><a id="filter_link" href="#"><span data-i18n="mainMenu.filterLink"></span></a></li>
+					<li><a id="aerator_link" href="#"><span data-i18n="mainMenu.aeratorLink"></span></a></li>
+					<li class="hide"><a id="survey_link" href="#"><span data-i18n="mainMenu.surveyLink"></span></a></li>
 				  </ul>
 				</li>
 				
-				<li class="hide"><a id="report_link" href="#"><span>Report a Water Issue</span></a></li>
+				<li class="hide"><a id="report_link" href="#"><span data-i18n="mainMenu.reportLink"></span></a></li>
 			  </ul> 
 			   </div>
 			  </div>
@@ -122,14 +122,14 @@
 		
 		<footer>
 		  <div class="section">
-			<div id="site_desc">MyWater-Flint was created to provide the latest water information and resources to the people of Flint.</div>
+			<div id="site_desc"><span data-i18n="footer.siteDesc"></span></div>
 		
-			<div id="copyright">
-				<span>&copy;2016</span>
-				<a id="about_link" href="#">About</a>
-				<a id="disclaimer_link" href="#">Disclaimer</a>
-				<a id="privacy_link" href="#" class="hide">Privacy</a>
-				<a id="contact_us" href="#">Contact</a>
+			<div id="copyright">&copy;
+				<span data-i18n="footer.copyright"></span>
+				<a id="about_link" href="#"><span data-i18n="footer.aboutLink"></span></a>
+				<a id="disclaimer_link" href="#"><span data-i18n="footer.disclaimerLink"></span></a>
+				<a id="privacy_link" href="#" class="hide"><span data-i18n="footer.privacyLink"></span></a>
+				<a id="contact_us" href="#"><span data-i18n="footer.contactUs"></span></a>
 			</div>
 			
 			<div class="clearfix"> </div>
@@ -141,10 +141,10 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="js/i18next.min.js"></script>
+<script type="text/javascript" src="js/jquery-i18next.min.js"></script>
 <script type="text/javascript" src="js/i18nextXHRBackend.min.js"></script>
 <script type="text/javascript" src="js/i18nextBrowserLanguageDetector.min.js"></script>
 <script type="text/javascript" src="js/i18nextLocalStorageCache.min.js"></script>
-<script type="text/javascript" src="js/jquery-i18next.min.js"></script>
 <script type="text/javascript" src="js/jquery.form.min.js"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script type="text/javascript" src="js/modernizr-custom.js"></script>

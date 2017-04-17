@@ -593,12 +593,12 @@ function addFusionListener(object) {
 
 function attachLegendCard() {
 		var placeholderDetails = "<div id='legend'>";
-			placeholderDetails = "<div id='title'><span>EPA Ratings Based on Tested Samples</span></div>";
+			placeholderDetails = "<div id='title'><span data-i18n='legend.title'></span></div>";
 	
-		var lowIcon = "<img src='" + lowRiskSrc + "' title ='low lead test results / low predicted risk' class ='legend_icons' /> ";
-		var moderateIcon = "<img src='" + moderateRiskSrc + "' title ='medium lead test results / medium predicted risk' class='legend_icons' /> ";
-		var highIcon = "<img src='" + highRiskSrc + "' title ='high lead test results / high predicted risk' class='legend_icons' /> ";
-		var unknownIcon = "<img src='" + unknownRiskSrc + "' title ='no lead test results, prediction only' class='legend_icons' /> ";
+		var lowIcon = "<img src='" + lowRiskSrc + "' data-i18n='[title]legend.lowImgTitle' class ='legend_icons' /> ";
+		var moderateIcon = "<img src='" + moderateRiskSrc + "' data-i18n='[title]legend.medImgTitle' class='legend_icons' /> ";
+		var highIcon = "<img src='" + highRiskSrc + "' data-i18n='[title]legend.highImgTitle' class='legend_icons' /> ";
+		var unknownIcon = "<img src='" + unknownRiskSrc + "' data-i18n='[title]legend.predictedImgTitle' class='legend_icons' /> ";
 		
 		var lowMsg;
 		var moderateMsg;
@@ -606,16 +606,16 @@ function attachLegendCard() {
 		var unknownMsg;
 		
 		if (windowWidth < 1280) {
-			lowMsg = "<span>Low</span> <span>(0-15 ppb)</span>";
-			moderateMsg = "<span>Medium</span> <span>(16-150 ppb)</span>";
-			highMsg = "<span>High</span> <span>(Over 150 ppb)</span>";
-			unknownMsg = "<span>Predicted</span>";
+			lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
+			moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
+			highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
+			unknownMsg = "<span data-i18n='legend.predicted'></span>";
 		}
 		else {
-			lowMsg = "<span>Low</span> <span>(0-15 ppb)</span>";
-			moderateMsg = "<span>Medium</span> <span>(16-150 ppb)</span>";
-			highMsg = "<span>High</span> <span>(Over 150 ppb)</span>";
-			unknownMsg = "<span>Predicted</span>";
+			lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
+			moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
+			highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
+			unknownMsg = "<span data-i18n='legend.predicted'></span>";
 		}
 	
 		placeholderDetails += "<div class='row'>";
@@ -626,7 +626,7 @@ function attachLegendCard() {
 		placeholderDetails += "</div>\n</div>";
 
 		$("#legend_card .card-inner").empty().html(placeholderDetails);		
-		$("#legend_card").show();
+		$("#legend_card").show().localize();
 }
 	
 

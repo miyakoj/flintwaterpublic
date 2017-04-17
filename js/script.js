@@ -930,7 +930,7 @@ $(document).ready(function() {
 	}
 	/* Contact us form. */
 	else if ($pageId.indexOf("index") != -1) {
-		$("#contact_form .char_count").html("<span>Characters remaining:</span> " + (1000 - $("#contact_form #comments").val().length));
+		$("#contact_form .char_count span").after((1000 - $("#contact_form #comments").val().length));
 		$("#contact_form #comments").on("keyup", function(event) {
 			$(".char_count").html("<span>Characters remaining:</span> " + (1000 - $(this).val().length));
 		});

@@ -1,0 +1,84 @@
+{
+	"form": {
+		"email": "Email",
+		"comments": "Comments",
+		"characters": "Characters remaining",
+		"cancel": "Cancel",
+		"submit": "Submit"
+	},
+	"navbar": {
+		"toggleText": "Toggle navigation",
+		"madeInFlint": "Made in Flint",
+		"languageHeading": "Languages"
+	},
+	"mainMenu": {
+		"mapLink": "Map",
+		"newsLink": "News and Alerts",
+		"showmeLink": "Show me how to...",
+		"testLink": "Test My Water",
+		"filterLink": "Install a Water Filter",
+		"aeratorLink": "Clean My Aerator",
+		"surveyLink": "Take a Survey",
+		"reportLink": "Report a Water Issue"
+	},
+	"toggles": {
+		"testResults": "Lead test results",
+		"water": "Water pickup",
+		"waterAlt": "Water Pickup Sites",
+		"recycling": "Water bottle recycling",
+		"recyclingAlt": "Recycling Sites",
+		"waterTesting": "Water test kits",
+		"waterTestingAlt": "Water Test Kits",
+		"bloodTesting": "Blood testing",
+		"bloodTestingAlt": "Blood Testing Sites",
+		"filters": "Water filter pickup",
+		"filtersAlt": "Water Filters Sites",
+		"pipes": "Pipe info",
+		"pipesAlt": "Pipe Info"
+	},
+	"map": {
+		"searchText": "Search for a location",
+		"saveBtnTitle": "Save Location",
+		"saveBtnText": "Save",
+		"211Text": ""
+	},
+	"locationCard": {
+		"infoBtnText": "More Info"
+	},
+	"resourceCard": {
+		"reportText": "Report an Inaccuracy",
+		"reportBtnText": "Report",
+		"tempClosed": "Temporarily Closed",
+		"permClosed": "Permanently Closed",
+		"noWater": "Doesn't Have Water Pickup",
+		"noFilters": "Doesn't Have Water Filters",
+		"noTestKits": "Doesn't Have Test Kits",
+		"noRecycling": ">Doesn't Accept Recycling",
+		"noBloodTesting": "Doesn't Perform Blood Testing",
+		"directionsBtnText": "Get Directions"
+	},
+	"legend": {
+		"title": "EPA Ratings Based on Tested Samples",
+		"lowImgTitle": "low lead test results",
+		"medImgTitle": "medium lead test results",
+		"highImgTitle": "high lead test results",
+		"predictedImgTitle": "no lead test results, prediction only",
+		"low": "Low",
+		"medium": "Medium",
+		"high": "High",
+		"predicted": "Predicted"
+	},
+	"footer": {
+		"siteDesc": "MyWater-Flint was created to provide the latest water information and resources to the people of Flint.",
+		"copyright": "2016",
+		"aboutLink": "About",
+		"disclaimerLink": "Disclaimer",
+		"privacyLink": "Privacy",
+		"contactUs": "Contact"
+	},
+	"contactForm": {
+		"contactFormTitle": "Contact Us",
+		"contactFormEmail": "Enter your email address if you would like a response.",
+		"contactFormLimit": "Please enter between 20 and 1,000 characters."
+	}
+}
