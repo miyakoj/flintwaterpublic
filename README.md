@@ -15,8 +15,8 @@ This source gives you a starting point to create user and administration website
 * [jQuery](http://jquery.com/)
 * [Bootstrap](https://getbootstrap.com/)
 * [Daemonite's Material UI](https://github.com/Daemonite/material/)
-* [i18next](http://i18next.com/)
-* [Chart.js](http://www.chartjs.org/)
+* [i18next](http://i18next.com/) (with the language detector, local storage cache, XHR backend, and jqueryi18next plugins)
+* [Chart.js](http://www.chartjs.org/) (to display data as charts on the admin site)
 
 ### Plugins Used ###
 * [jQuery Form](http://malsup.com/jquery/form/)
@@ -24,7 +24,7 @@ This source gives you a starting point to create user and administration website
 * [Feednami](https://github.com/sekando/feednami-client/)
 
 ### Other ###
-* [Carasmo's Bootstrap Navigation Drawer](https://jsbin.com/seqola/2/edit?html,css,js,output/)
+* [Carasmo's Bootstrap Navigation Drawer](https://jsbin.com/seqola/2/edit?html,css,js,output)
 * [Minimal Admin Panel Flat Bootstrap Responsive Web Template](https://w3layouts.com/minimal-admin-panel-flat-bootstrap-responsive-web-template/) (can be used for free as long as you include a backlink)
 
 ### Credits ###

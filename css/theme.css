@@ -7,7 +7,7 @@ body {
 }
 
 body[id='404_page'] {
-	background:#8482BE url("http://www.mywater-flint.com/images/404.png") no-repeat fixed top center;
+	background:#8482BE url("https://www.mywater-flint.com/images/404.png") no-repeat fixed top center;
 }
 
 a, .card-action a {
@@ -338,7 +338,7 @@ html, body {
 
 #stepper_content .btn-primary{
 	color:#fff!important;
-	font-family:""Roboto"",""Helvetica"",""Arial"",sans-serif;
+	font-family:"Roboto","Helvetica","Arial",sans-serif;
 	font-size:14px;
 	font-weight:500;
 	text-transform:uppercase;

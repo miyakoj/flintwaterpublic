@@ -40,7 +40,8 @@
 		"searchText": "Search for a location",
 		"saveBtnTitle": "Save Location",
 		"saveBtnText": "Save",
-		"211Text": ""
+		"211Text": "Need help? Call the",
+		"211LinkText": "211 service"
 	},
 	"locationCard": {
 		"infoBtnText": "More Info"
@@ -53,7 +54,7 @@
 		"noWater": "Doesn't Have Water Pickup",
 		"noFilters": "Doesn't Have Water Filters",
 		"noTestKits": "Doesn't Have Test Kits",
-		"noRecycling": ">Doesn't Accept Recycling",
+		"noRecycling": "Doesn't Accept Recycling",
 		"noBloodTesting": "Doesn't Perform Blood Testing",
 		"directionsBtnText": "Get Directions"
 	},
@@ -68,9 +69,41 @@
 		"high": "High",
 		"predicted": "Predicted"
 	},
+	"providerInfo": {
+		"waterTitle": "Water Pickup",
+		"recycleTitle": "Recycling",
+		"bloodtestTitle": "Blood Testing",
+		"filterTitle": "Water Filters",
+		"testkitTitle": "Water Testing"
+	},
+	"propertyInfo": {
+		"abandonmentMsgStart": "This property is listed as",
+		"abandonmentMsgAbandoned": "abandoned",
+		"abandonmentMsgOccupied": "occupied",
+		"abandonmentMsgUnknown": "This property's abandonment status is unknown.",
+		"lowLevelTitle": "Low Reported Lead Level",
+		"lowLevelMsg": "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.",
+		"medLevelTitle": "Moderate Reported Lead Level",
+		"medLevelMsg": "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.",
+		"highLevelTitle": "High Reported Lead Level",
+		"highLevelMsg": "Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.",
+		"leadLevel": "Lead Level",
+		"lastTested": "Last Tested",
+		"testDate": "Test Date",
+		"previousResults": "Previous results",
+		"predictionTitle": "No Reported Test Results",
+		"highRiskMsg": "High predicted risk of elevated lead levels. Testing is recommended.",
+		"medRiskMsg": "Moderate predicted risk of elevated lead levels. Testing is recommended.",
+		"lowRiskMsg": "Predicted risk of elevated lead levels. Testing is recommended.",
+		"noTestResultsMsg": "No test results available.",
+		"noPredictionMsg": "No lead prediction available.",
+		"locQuestionsTitle": "Is this your location?",
+		"locQuestionsMsg": "Providing more information can help with diagnosing issues and providing water resources.",
+		"locQuestionsLinkText": "Report a water issue"
+	},
 	"footer": {
 		"siteDesc": "MyWater-Flint was created to provide the latest water information and resources to the people of Flint.",
-		"copyright": "2016",
+		"copyright": "2017",
 		"aboutLink": "About",
 		"disclaimerLink": "Disclaimer",
 		"privacyLink": "Privacy",
@@ -80,5 +113,24 @@
 		"contactFormTitle": "Contact Us",
 		"contactFormEmail": "Enter your email address if you would like a response.",
 		"contactFormLimit": "Please enter between 20 and 1,000 characters."
+	},
+	"newsPage": {
+		"newsPageTitle": "News",
+		"alertsTabTitle": "Alerts"
+	},
+	"aboutPage": {
+		"aboutPageTitle": "About this Site",
+		"copyrightPart1": "This website is a joint project between",
+		"copyrightPart2": "and the",
+		"copyrightPart3": "with support from",
+		"dataPart1": "Water test data courtesy of the",
+		"dataPart2": "and property abandonment data courtesy of the United States Postal Service (both via UM-Ann Arbor MDST). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of"
+	},
+	"disclaimerPage": {
+		"disclaimerPageTitle": "Disclaimer",
+		"disclaimerPrt1": "Any user of the MyWater-Flint data portal application (\"MyWater-Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of MyWater-Flint.",
+		"disclaimerPrt2": "The data displayed on MyWater-Flint are provided as a public service, on an \"AS-IS\" basis, and for informational purposes only. University does not create these data, vouch for their accuracy, or guarantee that these are the most recent data available from the data provider. For many or all of the data, the data are by their nature approximate and will contain some inaccuracies. The data may contain errors introduced by the data provider(s) and/or by University. The names of counties and other locations shown in MyWater-Flint may differ from those in the original data.",
+		"disclaimerPrt3": "University makes no warranty, representation or guaranty of any type as to any errors and omissions, or as to the content, accuracy, timeliness, completeness or fitness for any particular purpose or use of any data provided on MyWater-Flint; nor is it intended that any such warranty be implied, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.  Furthermore, University (a) expressly disclaims the accuracy, adequacy, or completeness of any data and (b) shall not be liable for any errors, omissions or other defects in, delays or interruptions in such data, or for any actions taken or not taken in reliance upon such data. Neither University nor any of its data providers will be liable for any damages relating to your use of the data provided in MyWater-Flint.",
+		"disclaimerPrt4": "University shall reserve the right to discontinue the availability of any content on MyWater-Flint at any time and for any reason or no reason at all. The user assumes the entire risk related to its use of the data on MyWater-Flint. In no event will University be liable to you or to any third party for any direct, indirect, incidental, consequential, special or exemplary damages or lost profit resulting from any use or misuse of these data."
 	}
 }

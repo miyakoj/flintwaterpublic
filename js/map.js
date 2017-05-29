@@ -68,7 +68,7 @@ var savedLocationIcon;
 var iconSize = 30;
 
 /* The admin site uses the same map.js so the folder depth has to be compensated for. */
-if (location.href.indexOf("admin"))
+if (location.href.indexOf("admin") != '-1')
 	folderPrefix = "../";
 else
 	folderPrefix = "";
@@ -91,15 +91,21 @@ var leadLevelOfInput;
 window.jsonpCallbacks = {};
 
 function setAPIKey() {
-	gapi.client.setApiKey(apiKey);
-	gapi.load("client:auth2", checkAuth);
+	if (location.href.indexOf("admin") != '-1') {
+		$('#map_container').parent().prepend('<p>Map is temporarily unavailable. Please see resident map at <a href="http://www.mywater-flint.com">http://www.mywater-flint.com</a>.</p>');
+		$('#map_container, #map_layer_selection, #resource_layer_selection').hide();
+	}
+	else {
+		gapi.client.setApiKey(apiKey);
+		gapi.load("client:auth2", checkAuth);
+	}
 }
 
-function checkAuth() {	
+function checkAuth() {
 	gapi.auth2.init({
 		client_id: clientId,
 		scope: scopes
-	}).then(function(resp) {		
+	}).then(function(resp) {
 		initMap();
 	});
 }
@@ -302,8 +308,7 @@ function initMap() {
 	
 	if (!isNaN(numberSaved) && (numberSaved > 0)) {
 		for (var i = 1; i <= numberSaved; i++) {
-			var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" 
-				+ localStorage.getItem("savedLocationAddress"+i) + "' ORDER BY 'testDate' DESC";
+			var query = "SELECT 'latitude', 'longitude', 'abandoned', 'leadLevel', 'testDate', 'prediction' FROM " + fusionTableAllId + " WHERE address LIKE '" + localStorage.getItem("savedLocationAddress"+i) + "' ORDER BY 'testDate' DESC";
 			
 			/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 			(function(index){
@@ -429,8 +434,7 @@ function initMap() {
 					+ streetAddress + "' ORDER BY 'testDate' DESC";
 					
 		console.log(query);
-					
-		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
+		
 		window.jsonpCallbacks["searchQueryCallback"] = function(data) {
 			if (data.rows != undefined)
 				locationMarker.setPosition({lat: data.rows[0][0], lng: data.rows[0][1]});
@@ -558,7 +562,6 @@ function addFusionListener(object) {
 		// show loading screen
 		$("#loading_screen").show();
 
-		/* Based on code found here: http://stackoverflow.com/questions/21373643/jquery-ajax-calls-in-a-for-loop#21373707 */
 		window.jsonpCallbacks["fusionLayerQueryCallback"] = function(data) {
 			var content = fusionQueryCallback(data, event.row["address"].value);
 			createLocationCardContent("location", content);
@@ -724,7 +727,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Water Pickup") != -1) {
 						markerImg = folderPrefix+"images/water_pickup_icon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Pickup' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' data-i18n='[title]providerInfo.waterTitle' /> ";
 						resourcesAvailable += "Water Pickup, ";
 						
 						if (icon == null)
@@ -733,7 +736,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Recycle") != -1) {
 						markerImg = folderPrefix+"images/recycle_icon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Recycling' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' data-i18n='[title]providerInfo.recycleTitle' /> ";
 						resourcesAvailable += "Recycling, ";
 						
 						if (icon == null)
@@ -742,7 +745,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Blood Testing") != -1) {
 						markerImg = folderPrefix+"images/bloodtest_icon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Blood Testing' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' data-i18n='[title]providerInfo.bloodtestTitle' /> ";
 						resourcesAvailable += "Blood Testing, ";
 						
 						if (icon == null)
@@ -751,7 +754,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Water Filters") != -1) {
 						markerImg = folderPrefix+"images/water_filter_icon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Filters' /> ";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' data-i18n='[title]providerInfo.filterTitle' /> ";
 						resourcesAvailable += "Water Filters, ";
 						
 						if (icon == null)
@@ -760,7 +763,7 @@ function callStorageAPI(object) {
 					
 					if (provider.resType.indexOf("Test Kits") != -1) {
 						markerImg = folderPrefix+"images/lead_test_icon.png";
-						images += "<img src='" + markerImg + "' class='marker_popup_icons' title='Water Testing' />";
+						images += "<img src='" + markerImg + "' class='marker_popup_icons' data-i18n='[title]providerInfo.testkitTitle' />";
 						resourcesAvailable += "Water Testing";
 						
 						if (icon == null)
@@ -782,7 +785,7 @@ function callStorageAPI(object) {
 						content += "<p id='provider_notes'>" + provider.notes + "</p>";
 					
 					if ($pageId.indexOf("dashboard") == -1)
-						content += "<p id='211_info'>Need help? Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a>.</p>";
+						content += "<p id='211_info'><span data-i18n='map.211Text'></span> <a href='http://www.centralmichigan211.org' target='_blank' data-i18n='map.211LinkText'></a>.</p>";
 
 					/*If the resource is saved, display on map always if not then do not display*/
 					if (isSaved)
@@ -997,41 +1000,41 @@ function createLocationContent(streetAddress, dataObj) {
 	
 	if (((leadLevel != -1) && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		// set the abandonment message for the property
-		abandonmentMsg = "This property is listed as ";
+		abandonmentMsg = i18next.t('propertyInfo.abandonmentMsgStart');
 		
 		if (abandonmentStatus === "Y")
-			abandonmentMsg += "abandoned.";
+			abandonmentMsg += " " + i18next.t('propertyInfo.abandonmentMsgAbandoned') + ".";
 		else if (abandonmentStatus === "N")
-			abandonmentMsg += "occupied.";
+			abandonmentMsg += " " + i18next.t('propertyInfo.abandonmentMsgOccupied') + ".";
 		else
-			abandonmentMsg = "This property's abandonment status is unknown.";
+			abandonmentMsg = i18next.t('propertyInfo.abandonmentMsgUnknown');
 		
 		// the property has a reported lead level
 		if (leadLevel != -1) {
 			if (leadLevel <= 15) {
-				warningMsg = "Low Reported Lead Level";
+				warningMsg = i18next.t('propertyInfo.lowLevelTitle');
 				warningImg = lowRiskCircle;
-				suggestedAction = "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = i18next.t('propertyInfo.lowLevelMsg');
 			}
 			else if (leadLevel <= 150) {
-				warningMsg = "Moderate Reported Lead Level";
+				warningMsg = i18next.t('propertyInfo.medLevelTitle');
 				warningImg = medRiskCircle;
-				suggestedAction = "Based on EPA recommendations, residents are encouraged to use filtered or bottled water. Pregnant women and kids under 6 years old, use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = i18next.t('propertyInfo.medLevelMsg');
 			}
 			else {
-				warningMsg = "High Reported Lead Level";
+				warningMsg = i18next.t('propertyInfo.highLevelTitle');
 				warningImg = highRiskCircle;
-				suggestedAction = "Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.";
+				suggestedAction = i18next.t('propertyInfo.highLevelMsg');
 			}
 			
 			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";			
-			content += "<div id='current_results'><strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Last Tested:</strong> " + testDate + "</div>";
+			content += "<div id='current_results'><strong>" + i18next.t('propertyInfo.leadLevel') + ":</strong> " + leadLevel + " ppb<br /> <strong>" + i18next.t('propertyInfo.lastTested') + ":</strong> " + testDate + "</div>";
 			content += "<div id='more_info_details' class='collapse'>";
 			
 			/* Show other test results if they exist. */
 			if (dataObj.rows.length > 2) {
-				content += "<div id='previous_results'><button type='button' class='btn btn-flat' data-toggle='collapse' data-target='#previous_results_details' aria-expanded='false' aria-controls='previous_results_details'><span>Previous results</span> <i class='material-icons'>expand_more</i></button></div>";
+				content += "<div id='previous_results'><button type='button' class='btn btn-flat' data-toggle='collapse' data-target='#previous_results_details' aria-expanded='false' aria-controls='previous_results_details'><span>" +  i18next.t('propertyInfo.previousResults') + "</span> <i class='material-icons'>expand_more</i></button></div>";
 				content += "<div class='collapse' id='previous_results_details'>";
 				
 				for (var i=1; i<dataObj.rows.length; i++) {
@@ -1040,7 +1043,7 @@ function createLocationContent(streetAddress, dataObj) {
 					if (leadLevel != -1) {
 						testDate = dataObj.rows[i][4].slice(0, dataObj.rows[i][4].indexOf(" "));
 						
-						content += "<strong>Lead Level:</strong> " + leadLevel + " ppb<br /> <strong>Test Date:</strong> " + testDate;
+						content += "<strong>" + i18next.t('propertyInfo.leadLevel') + ":</strong> " + leadLevel + " ppb<br /> <strong>" + i18next.t('propertyInfo.testDate') + ":</strong> " + testDate;
 						
 						i < dataObj.rows.length-2 ? content += "<hr/ >" : content += "";
 					}
@@ -1055,32 +1058,35 @@ function createLocationContent(streetAddress, dataObj) {
 		// the property only has a prediction
 		else {
 			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
-			content += "<div id='results' class='emphasis'>No Reported Test Results</div>";
+			content += "<div id='results' class='emphasis'>" + i18next.t('propertyInfo.predictionTitle') + "</div>";
 		
 			if (prediction >= 0.20)
-				warningMsg = "High predicted risk of elevated lead levels. Testing is recommended.";
+				warningMsg = i18next.t('propertyInfo.highRiskMsg');
 			else if ((prediction > 0.10) && (prediction < 0.20))
-				warningMsg = "Moderate predicted risk of elevated lead levels. Testing is recommended.";
+				warningMsg = i18next.t('propertyInfo.medRiskMsg');
 			else if (prediction <= 0.10)
-				warningMsg = "Predicted risk of elevated lead levels. Testing is recommended.";
+				warningMsg = i18next.t('propertyInfo.lowRiskMsg');
 			
 			warningImg = unknownRiskCircle;
 			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
 			
 			if ($pageId.indexOf("dashboard") == -1)
-				content += "<p id='suggested_action'>Based on EPA recommendations, residents are encouraged to use only bottled water for drinking, cooking, washing food, and brushing teeth.</p>";
+				content += "<p id='suggested_action'>" + i18next.t('propertyInfo.highLevelMsg') + "</p>";
 		}
 		content = "<img id='risk_img' class='pull-left' src='" + warningImg + "' />" + content;
 	}	
 	else {
 		content = "<img id='risk_img' class='pull-left' src='" + unknownRiskCircle + "' />" + content;
-		content += "<div>No test results available.<br />";
-		content += "No lead prediction available.</div>";
+		content += "<div>" + i18next.t('propertyInfo.noTestResultsMsg') + "<br />";
+		content += i18next.t('propertyInfo.noPredictionMsg') + "</div>";
 	}
 	
-	if ($pageId.indexOf("dashboard") == -1)
-		content += "<p id='211_info'>Call the <a href='http://www.centralmichigan211.org' target='_blank'>211 service</a> for questions and help.</p> <hr class='hide' /> <div id='location_questions' class='hide'><h5>Is this your location?</h5> <p>Providing more information can help with diagnosing issues and providing water resources.</p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "'>Report a water issue</a></div></div>";
-	
+	if ($pageId.indexOf("dashboard") == -1) {
+		content += "<p id='211_info'><span data-i18n='map.211Text'></span> <a href='http://www.centralmichigan211.org' target='_blank' data-i18n='map.211LinkText'></a></p>";
+		
+		content += "<hr class='hide' /> <div id='location_questions' class='hide'><h5 data-i18n='propertyInfo.locQuestionsTitle'></h5> <p data-i18n='propertyInfo.locQuestionsMsg'></p> <a href='page.php?pid=report&address=" + $("#address").text().replace(/\s/g, "+") + "' data-i18n='propertyInfo.locQuestionsLinkText'></a></div></div>";
+	}
+
 	return content;
 }
 
@@ -1227,7 +1233,7 @@ function bindInfoWindow(type, clickedMarker, map, resourcesAvailable, content) {
 				});
 			}
 			
-			$("#resource_card").show();
+			$("#resource_card").localize().show();
 			
 			if (isSaved)
 				$("#resource_card #card_save .icon").html("star");

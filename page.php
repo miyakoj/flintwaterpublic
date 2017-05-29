@@ -13,11 +13,11 @@ if (@isset($_GET["pid"])) {
 		
 		case "news":
 			$pagetitle = "News";
-			$content = "<section class='container'><h2>News</h2>
+			$content = "<section class='container'><h2 data-i18n='newsPage.newsPageTitle'></h2>
 				<nav class='tab-nav'>
 				  <ul class='nav nav-justified' role='tablist'>
-					<li id='alerts_tab' role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab'>Alerts</a></li>
-					<li id='news_tab' role='presentation' class='tab-nav-brand active'><a href='#news' aria-controls='news' role='tab' data-toggle='tab'>News</a></li>
+					<li id='alerts_tab' role='presentation' class='tab-nav-brand'><a href='#alerts' aria-controls='alerts' role='tab' data-toggle='tab' data-i18n='newsPage.alertsTabTitle'></a></li>
+					<li id='news_tab' role='presentation' class='tab-nav-brand active'><a href='#news' aria-controls='news' role='tab' data-toggle='tab' data-i18n='newsPage.newsPageTitle'></a></li>
 				  </ul>
 				</nav>
 				
@@ -35,7 +35,7 @@ if (@isset($_GET["pid"])) {
 		case "test":
 			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
-				<h2>Test your water</h2>
+				<h2 data-i18n='pageKeys.waterTestPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -148,7 +148,7 @@ if (@isset($_GET["pid"])) {
 		case "filter":
 			$pagetitle = "Install a Water Filter";
 			$content = "<div id='install_filter' class='container-fluid'>
-				<h2>Install a Water Filter</h2>
+				<h2 data-i18n='pageKeys.waterFilterPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -294,7 +294,7 @@ if (@isset($_GET["pid"])) {
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='clean_aerator' class='container-fluid'>
-				<h2>Clean My Aerator</h2>
+				<h2 data-i18n='pageKeys.aeratorPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -421,7 +421,7 @@ if (@isset($_GET["pid"])) {
 			
 			$pagetitle = "Report a Water Issue";
 			$content = "<div id='report_problem' class='container-fluid'>
-				<h2>Report a Water Issue</h2>
+				<h2 data-i18n='pageKeys.reportPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -523,27 +523,24 @@ if (@isset($_GET["pid"])) {
 		
 		case "about":
 			$pagetitle = "About this Site";
-			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
+			$content = "<h3 class='text-center' data-i18n='aboutPage.aboutPageTitle'></h3>";
 			$content .= "<section class='container'><div id='university_images' class='container-fluid'><div class='row'>
 			<div class='col-md-6'><img id='umf_logo' src='images/umf_logo.png' /></div>
 			<div class='col-md-6'><img id='um_logo' src='images/um_logo.png' /></div>
 			</div></div>
 			
-			<p class='text-justify'>This website is a joint project between <a href='http://www.umflint.edu'>University of Michigan-Flint</a> and the <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> with support from <a href='http://www.google.org'>Google.org</a>.</p>
+			<p class='text-justify'><span data-i18n='aboutPage.copyrightPart1'></span> <a href='http://www.umflint.edu'>University of Michigan-Flint</a> <span data-i18n='aboutPage.copyrightPart2'></span> <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> <span data-i18n='aboutPage.copyrightPart3'></span> <a href='http://www.google.org'>Google.org</a>.</p>
 			
-			<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United States Postal Service (both via UM-Ann Arbor MDST). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p></section>";
+			<p class='text-justify'><span data-i18n='aboutPage.dataPart1'></span> <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> <span data-i18n='aboutPage.dataPart2'></span> <a href='http://www.flintcares.com'>Flint Cares</a>.</p></section>";
 		break;
 		
 		case "disclaimer":
 			$pagetitle = "Disclaimer";
-			$content = "<h3 class='text-center'>" . $pagetitle . "</h3>";
-			$content .= "<section class='container'><p class='text-justify'><strong>Any user of the MyWater-Flint data portal application (\"MyWater-Flint\") agrees to all of the following disclaimers, waives any and all claims against, and agrees to hold harmless, the Regents of the University of Michigan, its board members, officers, employees, agent and students (collectively, \"University\") with regard to any matter related to the use or the contents of MyWater-Flint.</strong></p>
-			
-				<p class='text-justify'>The data displayed on MyWater-Flint are provided as a public service, on an \"AS-IS\" basis, and for informational purposes only. University does not create these data, vouch for their accuracy, or guarantee that these are the most recent data available from the data provider. For many or all of the data, the data are by their nature approximate and will contain some inaccuracies. The data may contain errors introduced by the data provider(s) and/or by University. The names of counties and other locations shown in MyWater-Flint may differ from those in the original data.</p>
-				
-				<p class='text-justify'>University makes no warranty, representation or guaranty of any type as to any errors and omissions, or as to the content, accuracy, timeliness, completeness or fitness for any particular purpose or use of any data provided on MyWater-Flint; nor is it intended that any such warranty be implied, including, without limitation, the implied warranties of merchantability and fitness for a particular purpose.  Furthermore, University (a) expressly disclaims the accuracy, adequacy, or completeness of any data and (b) shall not be liable for any errors, omissions or other defects in, delays or interruptions in such data, or for any actions taken or not taken in reliance upon such data. Neither University nor any of its data providers will be liable for any damages relating to your use of the data provided in MyWater-Flint.</p>
-				
-				<p class='text-justify'>University shall reserve the right to discontinue the availability of any content on MyWater-Flint at any time and for any reason or no reason at all. The user assumes the entire risk related to its use of the data on MyWater-Flint. In no event will University be liable to you or to any third party for any direct, indirect, incidental, consequential, special or exemplary damages or lost profit resulting from any use or misuse of these data.</p></section>";
+			$content = "<h3 class='text-center' data-i18n='disclaimerPage.disclaimerPageTitle'></h3>";
+			$content .= "<section class='container'><p class='text-justify'><strong data-i18n='disclaimerPage.disclaimerPrt1'></strong></p>			
+				<p class='text-justify' data-i18n='disclaimerPage.disclaimerPrt2'></p>				
+				<p class='text-justify' data-i18n='disclaimerPage.disclaimerPrt3'></p>				
+				<p class='text-justify' data-i18n='disclaimerPage.disclaimerPrt4'></p></section>";
 		break;
 		
 		case "privacy":

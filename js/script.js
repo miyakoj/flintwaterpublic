@@ -13,7 +13,8 @@ if (!Modernizr.webaudio && !localStorage.getItem("browserMsg")) {
 }
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
-var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
+//var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
+var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places&callback=initMap";
 var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
@@ -83,11 +84,11 @@ $(document).ready(function() {
 	
 	/* Size and position the Google Play badge. */
 	//$('#language_menu').removeClass('hide');
-	$('#google_play_link').css({
+	/*$('#google_play_link').css({
 		top: function() {
 			return $('#language_menu').height() + 15 + "px"
 		}
-	});
+	});*/
 	
 	/* Dynamically adjust the dropdown menu links. */
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
@@ -473,7 +474,7 @@ $(document).ready(function() {
 	}
 	
 	/* All "show me how" pages and the "report a problem" page. */
-	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1)) {
+	if (($pageId.indexOf("index") == -1) && ($pageId.indexOf("news") == -1) && ($pageId.indexOf("about") == -1) && ($pageId.indexOf("disclaimer") == -1)) {
 		$nodeId = $activeNode.attr("id");
 		$nodeSubstring = $nodeId.slice(0, $nodeId.length-1);
 		
