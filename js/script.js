@@ -502,7 +502,7 @@ $(document).ready(function() {
 			localStorage.setItem("saved_resource_array", JSON.stringify(oldResourceActiveArray));
 		}
 		else if ($pageId.indexOf("filter") != -1) {
-			$("#PUR_video").addClass("hide");
+			$(".help_video").addClass("hide");
 			$("#map").remove();			
 		}			
 		else
@@ -563,6 +563,8 @@ $(document).ready(function() {
 						autocomplete = initAutocomplete("location");
 						
 						if ($("#location_lat").val().length == 0) {
+							$('#location').attr('placeholder', '');
+							
 							console.log(autocomplete.getPlace());
 							
 							/* Get the lat/long for the location using geocoding. */
@@ -667,6 +669,7 @@ $(document).ready(function() {
 					if ($pageId.indexOf("filter") != -1) {
 						var $temp = $(this).attr("id");
 						filter_type = $temp.slice(0, $temp.indexOf("_"));
+						console.log("filter_type = " + filter_type);
 					}
 					
 					$("#" + $nodeSubstring + "1").removeClass("active").addClass("done");
@@ -677,8 +680,6 @@ $(document).ready(function() {
 					if ($pageId.indexOf("test") == -1) {
 						if ($pageId.indexOf("report") == -1)
 							$("#map").addClass("hide");
-						
-						$(".help_video").removeClass("hide");
 						
 						if ($pageId.indexOf("filter") == -1)
 							$(".help_video").removeClass("hide");
@@ -691,6 +692,8 @@ $(document).ready(function() {
 					}
 					
 					if ($pageId.indexOf("report") != -1) {
+						autocomplete = initAutocomplete("location");
+						
 						if ($("#location_lat").val().length == 0) {
 							/* Get the lat/long for the location using geocoding. */
 							geocoder.geocode({
@@ -806,11 +809,11 @@ $(document).ready(function() {
 				});
 				
 				/* Set the validation rules. */
-				$("#report_problem #location").rules("add", {required: true, location: true});
-				
 				jQuery.validator.addMethod("location", function(value, element) {
 					return this.optional(element) || /(?:((?:\d[\d ]+)?[A-Za-z][A-Za-z ]+)[\s,]*([A-Za-z#0-9][A-Za-z#0-9 ]+)?[\s,]*)?(?:([A-Za-z][A-Za-z ]+)[\s,]+)?((?=AL|AK|AS|AZ|AR|CA|CO|CT|DE|DC|FM|FL|GA|GU|HI|ID|IL|IN|IA|KS|KY|LA|ME|MH|MD|MA|MI|MN|MS|MO|MT|NE|NV|NH|NJ|NM|NY|NC|ND|MP|OH|OK|OR|PW|PA|PR|RI|SC|SD|TN|TX|UT|VT|VI|VA|WA|WV|WI|WY)[A-Z]{2})(\, [A-Z]+[a-z]+\ ? [A-Z]+[a-z]+)*/.test(value);
 				}, "Please choose an option from the list or enter a location in the form Number Street, City, State with proper capitalization.");
+				
+				$("#report_problem #location").rules("add", {required: true, location: true});
 				
 				$("#report_problem #problem_type").rules("add", {required: true});
 				$("#report_problem #problem_text").rules("add", {required: true, minlength: 5, maxlength: 500});
@@ -826,7 +829,7 @@ $(document).ready(function() {
 							return $("#email").is(":checked");
 						}
 					}*/
-				});
+				});				
 				
 				/*$.validator.methods.phoneUS = function(value, element) {
 					return this.optional(element) || /^(\([2-9]([02-9]\d|1[02-9])\))\ [2-9]([02-9]\d|1[02-9])-\d{4}$/.test(value);

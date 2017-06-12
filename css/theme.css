@@ -535,10 +535,14 @@ footer .card-action btn {
 		text-align:center;
 	}
 
-	#show_me_menu .dropdown-menu span{
+	#show_me_menu .dropdown-menu span {
 		color: rgba(0,0,0,.87);
 		font-size: 14px;
 		font-weight: 400;
+	}
+	
+	#show_me_menu .dropdown-menu > .active > a span {
+		color: #FFF;
 	}
 }
 

@@ -35,7 +35,7 @@ if (@isset($_GET["pid"])) {
 		case "test":
 			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
-				<h2 data-i18n='pageKeys.waterTestPageTitle'></h2>
+				<h2 data-i18n='testPage.waterTestPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -47,16 +47,16 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>1</span>
 											</div>
-											<span class='stepper-text'>Get a water test kit</span>
+											<span class='stepper-text' data-i18n='testPage.testPageTitle'></span>
 										</div>
 										<div id='water_step1_content' class='stepper-vert-content'>										
 										  <ul>
-											<li>Pick up a free test kit from a water resource location.</li>
-											<li>Residents who need transportation or any other assistance can call <a href='http://www.centralmichigan211.org'>211</a>.</li>
+											<li data-i18n='testPage.step1a'></li>
+											<li><span data-i18n='testPage.step1b'></span> <a href='http://www.centralmichigan211.org'>211</a>.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <button class='next_button btn btn-flat btn-primary' href='#'>Next</a>
-										  <button class='cancel_button btn btn-flat' href='#'>Cancel</a>
+										  <button class='next_button btn btn-flat btn-primary' href='#' data-i18n='showmePages.nextBtn'></a>
+										  <button class='cancel_button btn btn-flat' href='#' data-i18n='showmePages.cancelBtn'></a>
 										  </div>
 										</div>
 										
@@ -65,24 +65,23 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>2</span>
 											</div>
-											<span class='stepper-text'>Take the water sample</span>
+											<span class='stepper-text' data-i18n='testPage.step2Title'></span>
 										</div>
 										<div id='water_step2_content' class='stepper-vert-content hide'>
 											<div class='help_video embed-responsive embed-responsive-16by9 center-block'>
 											<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/KMaAZA1c3oA' allowfullscreen></iframe>
 											</div>
-										
 										   <ul>
-											 <li>Fill out the water test form that came with your water test kit.</li>
-											 <li>The sample should be taken from either your kitchen(recommended) or bathroom sink.</li>
-											 <li>Water must not have been used at all for more than 6 hours before taking the sample. A good time to do this is first thing in the morning.</li>
-											 <li>Use cold water that has not been filtered.</li>
-											 <li>Fill the water jug almost to the top, leave about 2 inches for air at the top.</li>
+											 <li data-i18n='testPage.step2a'></li>
+											 <li data-i18n='testPage.step2b'></li>
+											 <li data-i18n='testPage.step2c'></li>
+											 <li data-i18n='testPage.step2d'></li>
+											 <li data-i18n='testPage.step2e'></li>
 										   </ul>
 										   <div class='btn_group'>
-										   <button class='back_button btn btn-flat btn-primary hide' href='#'>Back</button>
-										   <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
-										   <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
+										   <button class='back_button btn btn-flat btn-primary hide' href='#' data-i18n='showmePages.backBtn'></button>
+										   <button class='next_button btn btn-flat btn-primary' href='#' data-i18n='showmePages.nextBtn'></button>
+										   <button class='cancel_button btn btn-flat' href='#' data-i18n='showmePages.cancelBtn'></button>
 										  </div>
 										</div>
 										
@@ -91,16 +90,16 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>3</span>
 											</div>
-											<span class='stepper-text'>Drop off test results</span>
+											<span class='stepper-text' data-i18n='testPage.step3Title'></span>
 										</div>
 										<div id='water_step3_content' class='stepper-vert-content hide'>
 										  <ul>
-											 <li>Seal the water sample tightly and take it to a drop-off location.</li>
-											 <li>Once your test has been processed, you can find your results under the \"Testing Results\" tab on the <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> website.</li>
+											 <li data-i18n='testPage.step3a'></li>
+											 <li><span data-i18n='testPage.step3b'></span> <a href='http://www.michigan.gov/flintwater'>Michigan.gov/flintwater</a> <span data-i18n='testPage.step3b2'></span>.</li>
 										  </ul>
 										  <div class='btn_group'>
-										  <button class='back_button btn btn-flat btn-primary hide' href='#'>Back</button>
-										  <button class='next_button btn btn-flat btn-primary' href='#'>Return to map</button>
+										  <button class='back_button btn btn-flat btn-primary hide' href='#' data-i18n='showmePages.backBtn'></button>
+										  <button class='next_button btn btn-flat btn-primary' href='#' data-i18n='showmePages.endBtn'></button>
 										 </div>
 										</div>
 									</div>
@@ -109,46 +108,13 @@ if (@isset($_GET["pid"])) {
 							
 							<div id='sidebar' class='col-sm-7'></div>
 						</div>
-					</div>
-					
-					<div id='resource_card' class='card'>
-						<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
-						
-						<div class='card-main'>				
-							<div class='card-inner'></div>
-							
-							<div class='card-action'>
-								<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Save Location'><span class='icon icon-lg'>star_border</span> Save</button>
-								
-								<ul id='card_report_menu' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' title='Report an Inaccuracy'>
-									<li>
-										<div class='dropdown'>
-										<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-										<span class='icon icon-lg'>error</span> Report</a>
-										
-										<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
-											<li><a href='#'>Temporarily Closed</a></li>
-											<li><a href='#'>Permanently Closed</a></li>
-											<li><a href='#'>Doesn't Have Water Pickup</a></li>
-											<li><a href='#'>Doesn't Have Water Filters</a></li>
-											<li><a href='#'>Doesn't Have Test Kits</a></li>
-											<li><a href='#'>Doesn't Accept Recycling</a></li>
-											<li><a href='#'>Doesn't Perform Blood Testing</a></li>
-										</ul>
-										</div>
-									</li>
-								</ul>
-								
-								<button id='card_directions' class='btn btn-flat pull-right' title='Get Directions'>Get Directions</button>
-							</div>
-						</div>
 					</div>";
 		break;
 		
 		case "filter":
 			$pagetitle = "Install a Water Filter";
 			$content = "<div id='install_filter' class='container-fluid'>
-				<h2 data-i18n='pageKeys.waterFilterPageTitle'></h2>
+				<h2 data-i18n='filterPage.filterPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -160,28 +126,28 @@ if (@isset($_GET["pid"])) {
 											<span class='icon stepper-step-icon'>done</span>
 											<span class='stepper-step-num'>1</span>
 										</div>
-										<span class='stepper-text'>Choose your filter type</span>
+										<span class='stepper-text' data-i18n='filterPage.step1Title'></span>
 									</div>
 									
 									<div id='allFilters_step1_content' class='stepper-vert-content'>
 										<div id='Brita_card' class='next_button card'>
 											<div class='card-main'>
 												<div class='card-img'><img src='images/Brita.jpg' /></div>
-												<div class='card-inner'><h5>Brita</h5></div>
+												<div class='card-inner'><h5 data-i18n='filterPage.step1Brita'></h5></div>
 											</div>
 										</div>
 										
 										<div id='PUR_card' class='next_button card'>
 											<div class='card-main'>
 												<div class='card-img'><img src='images/PUR.jpg' /></div>
-												<div class='card-inner'><h5>PUR</h5></div>
+												<div class='card-inner'><h5 data-i18n='filterPage.step1PUR'></h5></div>
 											</div>
 										</div>
 										
 										<div id='ZeroWater_card' class='next_button card'>
 											<div class='card-main'>
 												<div class='card-img'><img src='images/ZeroWater.jpg' /></div>
-												<div class='card-inner'><h5>ZeroWater</h5></div>
+												<div class='card-inner'><h5 data-i18n='filterPage.step1ZeroWater'></h5></div>
 											</div>
 										</div>
 									</div>
@@ -191,50 +157,50 @@ if (@isset($_GET["pid"])) {
 										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>2</span>
 									</div>
-									<span class='stepper-text'>Install your adapter</span>
+									<span class='stepper-text' data-i18n='filterPage.step2Title'></span>
 								</div>
 								
 								<div id='Brita_step2_content' class='stepper-vert-content hide'>
 									<div id='Brita_video' class='help_video embed-responsive embed-responsive-16by9 center-block'>
-										<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/Y0hfK6E8R18' allowfullscreen></iframe>
+										<iframe class='embed-responsive-item' data-i18n='[src]filterPage.step2BritaVideo' allowfullscreen></iframe>
 									</div>
 									
 								   <ul>
-										<li>Remove your aerator.</li>
-										<li>See if you have threads sticking out of the faucet head.</li>
-										<li>If you have threads sticking out you don't need an adapter.</li>
-										<li>If you don't have threads sticking out, choose one of the adapters in the box that fit you faucet.</li>
-										<li>Screw in the adapter.</li>
+										<li data-i18n='filterPage.step2Brita1'></li>
+										<li data-i18n='filterPage.step2Brita2'></li>
+										<li data-i18n='filterPage.step2Brita3'></li>
+										<li data-i18n='filterPage.step2Brita4'></li>
+										<li data-i18n='filterPage.step2Brita5'></li>
 								   </ul>
 								   <div class='btn_group'>
-								  <button id='Brita_step2_button' class='next_button btn btn-primary btn-flat'>Next</button>
-								  <button class='cancel_button btn btn-flat'>Cancel</button>
+								  <button id='Brita_step2_button' class='next_button btn btn-primary btn-flat' data-i18n='showmePages.nextBtn'></button>
+								  <button class='cancel_button btn btn-flat' data-i18n='showmePages.cancelBtn'></button>
 								  </div>
 								</div>
 								
 								<div id='PUR_step2_content' class='stepper-vert-content hide'>									
 									<div id='PUR_video' class='help_video embed-responsive embed-responsive-16by9 center-block'>
-										<iframe class='embed-responsive-item' src='https://www.youtube.com/embed/r3Xm34EkQLY' allowfullscreen></iframe>
+										<iframe class='embed-responsive-item' data-i18n='[src]filterPage.step2PURVideo' allowfullscreen></iframe>
 									</div>
 								
 								   <ul>
-									 <li>Remove your aerator.</li>
-									 <li>Choose an adapter from the PUR filter box that fits the missing aerator location.</li>
-									 <li>Put the rubber gasket that matches your adapter over the threads.</li>
-									 <li>Next, screw the adapter on.</li>
+									 <li data-i18n='filterPage.step2PUR1'></li>
+									 <li data-i18n='filterPage.step2PUR2'></li>
+									 <li data-i18n='filterPage.step2PUR3'></li>
+									 <li data-i18n='filterPage.step2PUR4'></li>
 								   </ul>
 								   <div class='btn_group'>
-								  <button id='PUR_step2_button' class='next_button btn btn-primary btn-flat'>Next</button>
-								  <button class='cancel_button btn btn-flat'>Cancel</button>
+								  <button id='PUR_step2_button' class='next_button btn btn-primary btn-flat' data-i18n='showmePages.nextBtn'></button>
+								  <button class='cancel_button btn btn-flat' data-i18n='showmePages.cancelBtn'></button>
 								  </div>
 								</div>
 								
 								<div id='ZeroWater_step2_content' class='stepper-vert-content hide'>
-								   <p>ZeroWater pitchers do not require an adapter. No installation video is available.</p>
+								   <p data-i18n='filterPage.step2ZeroWater'></p>
 								   
 								   <div class='btn_group'>
-								  <button id='ZeroWater_step2_button' class='next_button btn btn-primary btn-flat'>Next</button>
-								  <button class='cancel_button btn btn-flat'>Cancel</button>
+								  <button id='ZeroWater_step2_button' class='next_button btn btn-primary btn-flat' data-i18n='showmePages.nextBtn'></button>
+								  <button class='cancel_button btn btn-flat' data-i18n='showmePages.cancelBtn'></button>
 								  </div>
 								</div>
 										
@@ -243,43 +209,43 @@ if (@isset($_GET["pid"])) {
 										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>3</span>
 									</div>
-									<span class='stepper-text'>Install your filter</span>
+									<span class='stepper-text' data-i18n='filterPage.step3Title'></span>
 								</div>
 								
 								<div id='Brita_step3_content' class='stepper-vert-content hide'>
 								  <ul>
-									<li>Line up the hole in the filter base.</li>
-									<li>Twist the mounting collar to secure it to the faucet.</li>
-									<li>Line up the peg on the bottom of the filter cartridge with the hole in the filter base.</li>
-									<li>Place your hand under the base and push down on the top of the filter cartridge until you here a click.</li>
+									<li data-i18n='filterPage.step3Brita1'></li>
+									<li data-i18n='filterPage.step3Brita2'></li>
+									<li data-i18n='filterPage.step3Brita3'></li>
+									<li data-i18n='filterPage.step3Brita4'></li>
 								  </ul>
 								  <div class='btn_group'>
-								 <button class='next_button btn btn-primary btn-flat'>Return to map</button>
+								 <button class='next_button btn btn-primary btn-flat' data-i18n='showmePages.endBtn'></button>
 								 </div>
 								</div>
 								
 								<div id='PUR_step3_content' class='stepper-vert-content hide'>
 								  <ul>
-										<li>Remove filter from packaging.</li>
-										<li>Remove the cap from the filter unit by unscrewing the top half of the cylindrical shape.</li>
-										<li>Place the filter in the bottom half of the unit with the arrow pointing at the center of the PUR logo.</li>
-										<li>Screw the cap back on.</li>
-										<li>Push the filter unit onto the adapter until you hear a click.</li>
+										<li data-i18n='filterPage.step3PUR1'></li>
+										<li data-i18n='filterPage.step3PUR2'></li>
+										<li data-i18n='filterPage.step3PUR3'></li>
+										<li data-i18n='filterPage.step3PUR4'></li>
+										<li data-i18n='filterPage.step3PUR5'></li>
 								  </ul>
 								  <div class='btn_group'>
-								 <button class='next_button btn btn-primary btn-flat'>Return to map</button>
+								 <button class='next_button btn btn-primary btn-flat' data-i18n='showmePages.endBtn'></button>
 								 </div>
 								</div>
 								
 								<div id='ZeroWater_step3_content' class='stepper-vert-content hide'>
 								  <ul>
-										<li>Remove lid from the pitcher</li>
-										<li>Remove water reservoir from the pitcher.</li>
-										<li>Remove filter from packaging.</li>
-										<li>Screw the filter into the bottom of the reservoir.</li>
+										<li data-i18n='filterPage.step3ZeroWater1'></li>
+										<li data-i18n='filterPage.step3ZeroWater2'></li>
+										<li data-i18n='filterPage.step3ZeroWater3'></li>
+										<li data-i18n='filterPage.step3ZeroWater4'></li>
 								  </ul>
 								  <div class='btn_group'>
-								 <button class='next_button btn btn-primary btn-flat'>Return to map</button>
+								 <button class='next_button btn btn-primary btn-flat' data-i18n='showmePages.endBtn'></button>
 								 </div>
 								</div>
 										</div>
@@ -294,7 +260,7 @@ if (@isset($_GET["pid"])) {
 		case "aerator":
 			$pagetitle = "Clean My Aerator";
 			$content = "<div id='clean_aerator' class='container-fluid'>
-				<h2 data-i18n='pageKeys.aeratorPageTitle'></h2>
+				<h2 data-i18n='aeratorPage.aeratorPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -306,19 +272,19 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>1</span>
 											</div>
-											<span class='stepper-text'>Remove the aerator</span>
+											<span class='stepper-text' data-i18n='aeratorPage.step1Title'></span>
 										</div>
-										<div id='aerator_step1_content' class='stepper-vert-content'>										
+										<div id='aerator_step1_content' class='stepper-vert-content'>
 										  <ul>
-											<li>Get a cloth or tape to wrap around the aerator.</li>
-											<li>Get a pair of pliers.</li>
-											<li>Place the plier jaws around the aerator gently.</li>
-											<li>Grip the faucet arm.</li>
-											<li>Turn the aerator clockwise without crushing aerator.</li>
+											<li data-i18n='aeratorPage.step1a'></li>
+											<li data-i18n='aeratorPage.step1b'></li>
+											<li data-i18n='aeratorPage.step1c'></li>
+											<li data-i18n='aeratorPage.step1d'></li>
+											<li data-i18n='aeratorPage.step1e'></li>
 										  </ul>
 										  <div class='btn_group'>
-										  <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
-										  <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
+										  <button class='next_button btn btn-flat btn-primary' href='#' data-i18n='showmePages.nextBtn'></button>
+										  <button class='cancel_button btn btn-flat' href='#' data-i18n='showmePages.cancelBtn'></button>
 										  </div>
 										</div>
 										
@@ -327,7 +293,7 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>2</span>
 											</div>
-											<span class='stepper-text'>Clean the aerator</span>
+											<span class='stepper-text' data-i18n='aeratorPage.step2Title'></span>
 										</div>
 										<div id='aerator_step2_content' class='stepper-vert-content hide'>
 											<div class='help_video embed-responsive embed-responsive-16by9 center-block'>
@@ -335,13 +301,13 @@ if (@isset($_GET["pid"])) {
 											</div>
 										
 										   <ul>
-											<li>Move the aerator over a flat surface.</li>
-											<li>Remove the parts inside the aerator by pushing them. If stuck, place in a solution that can remove lime. Remember the order in which you removed the parts.</li>
-											<li>Clean aerator by gently scrubbing with a toothbrush.</li>
+											<li data-i18n='aeratorPage.step2a'></li>
+											<li data-i18n='aeratorPage.step2b'></li>
+											<li data-i18n='aeratorPage.step2c'></li>
 										  </ul>
 										   <div class='btn_group'>
-										  <button class='next_button btn btn-flat btn-primary' href='#'>Next</button>
-										  <button class='cancel_button btn btn-flat' href='#'>Cancel</button>
+										  <button class='next_button btn btn-flat btn-primary' href='#' data-i18n='showmePages.nextBtn'></button>
+										  <button class='cancel_button btn btn-flat' href='#' data-i18n='showmePages.cancelBtn'></button>
 										  </div>
 										</div>
 										
@@ -350,16 +316,16 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>3</span>
 											</div>
-											<span class='stepper-text'>Reinstall the aerator</span>
+											<span class='stepper-text' data-i18n='aeratorPage.step3Title'></span>
 										</div>
 										<div id='aerator_step3_content' class='stepper-vert-content hide'>
 										  <ul>
-											<li>Put the aerator back together in reverse order.</li>
-											<li>Screw the aerator back into the faucet counterclockwise.</li>
-											<li>Tighten with pliers, but not too tightly.</li>
+											<li data-i18n='aeratorPage.step3a'></li>
+											<li data-i18n='aeratorPage.step3b'></li>
+											<li data-i18n='aeratorPage.step3c'></li>
 										  </ul>
 										  <div class='btn_group'>
-										 <button class='next_button btn btn-flat btn-primary' href='#'>Return to map</button>
+										 <button class='next_button btn btn-flat btn-primary' href='#' data-i18n='showmePages.endBtn'></button>
 										 </div>
 										</div>
 									</div>
@@ -373,23 +339,23 @@ if (@isset($_GET["pid"])) {
 		
 		/*case "submit":
 			$pagetitle = "Submit Location Information";
-			$content ="<div id='submit_info' class='stepper-vert'><h2>Submit Location Information</h2>
+			$content ="<div id='submit_info' class='stepper-vert'><h2 data-i18n='submitInfoPage.submitInfoPageTitle'></h2>
 							<div class='stepper-vert-inner'>
 								<div id='submit_step1' class='stepper active'>
 									<div class='stepper-step'>
 										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>1</span>
 									</div>
-									<span class='stepper-text'>Introduction</span>
+									<span class='stepper-text' data-i18n='submitInfoPage.step1Title'></span>
 								</div>
-								<div id='submit_step1_content' class='stepper-vert-content'>								
-								  <p></p>Submitting more information about a location helps make lead level predictions more accurate for the entire community.</p>
+								<div id='submit_step1_content' class='stepper-vert-content'>
+								  <p data-i18n='submitInfoPage.step1'></p>
 								  
-								  <h6>Thank you for doing your part!</h6>
+								  <p data-i18n='submitInfoPage.step1thankyou'></p>
 								  
 								  <div class='btn_group'>
-								  <button id='step1_click' href='#' class='btn btn-flat btn-primary'>Continue</button>
-								  <button class='cancel_button btn btn-flat btn-primary'>Cancel</button>
+								  <button id='step1_click' href='#' class='btn btn-flat btn-primary' data-i18n='showmePages.nextBtn'></button>
+								  <button class='cancel_button btn btn-flat btn-primary' data-i18n='showmePages.cancelBtn'></button>
 								  </div>
 								</div>
 								
@@ -398,15 +364,15 @@ if (@isset($_GET["pid"])) {
 										<span class='icon stepper-step-icon'>done</span>
 										<span class='stepper-step-num'>2</span>
 									</div>
-									<span class='stepper-text'>Enter your location</span>
+									<span class='stepper-text' data-i18n='submitInfoPage.step2Title'></span>
 								</div>
 								<div id='submit_step2_content' class='stepper-vert-content hide'>
 									<label for='locationTextField' style='display:none;'>Enter Your Location: </label><br />
 									<input class='form-control' id='locationTextField' onFocus='initAutocomplete()'>
 									
 								   <div class='btn_group'>
-								  <button type='submit' id='step2_click' class='btn btn-flat btn-primary disabled'>Continue</button>
-								  <button type='button' class='cancel_button btn btn-flat btn-primary'>Cancel</button>
+								  <button type='submit' id='step2_click' class='btn btn-flat btn-primary disabled' data-i18n='showmePages.submitBtn'></button>
+								  <button type='button' class='cancel_button btn btn-flat btn-primary' data-i18n='showmePages.cancelBtn'></button>
 								  </div>
 								</div>
 							</div>
@@ -417,11 +383,11 @@ if (@isset($_GET["pid"])) {
 			if (@isset($_GET["address"]))
 				$address = mb_convert_case($_GET["address"], MB_CASE_TITLE, "UTF-8") . ", Flint, MI";
 			else
-				$placeholder = "placeholder='Enter a location or click a favorite location on the map'";
+				$placeholder = "placeholder=''";
 			
 			$pagetitle = "Report a Water Issue";
 			$content = "<div id='report_problem' class='container-fluid'>
-				<h2 data-i18n='pageKeys.reportPageTitle'></h2>
+				<h2 data-i18n='waterIssuePage.waterIssuePageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				
@@ -434,19 +400,19 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>1</span>
 											</div>
-											<span class='stepper-text'>Enter the location</span>
+											<span class='stepper-text' data-i18n='waterIssuePage.step1Title'></span>
 										</div>
 										<div id='report_step1_content' class='stepper-vert-content'>
 											<div class='form-group'>
-											<label for='location' class='sr-only'>Enter the Location:</label>
-											<input id='location' class='form-control' type='text' name='location' " . $placeholder . " tabindex='20' value='" . $address . "'required />
+											<label for='location' class='sr-only'><span data-i18n='waterIssuePage.step1LocationLabel'></span>:</label>
+											<input id='location' class='form-control' type='text' name='location' data-i18n='[placeholder]waterIssuePage.addressPlaceholder'  tabindex='20' value='" . $address . "'required />
 											<input id='location_lat' type='hidden' class='form-control' />
 											<input id='location_lng' type='hidden' class='form-control' />
 											</div>
 											
 											<div class='btn_group'>
-											<button class='next_button btn btn-flat btn-primary disabled' href='#' tabindex='21'>Next</button>
-											<button class='cancel_button btn btn-flat' href='#' tabindex='22'>Cancel</button>
+											<button class='next_button btn btn-flat btn-primary disabled' href='#' tabindex='21' data-i18n='showmePages.nextBtn'></button>
+											<button class='cancel_button btn btn-flat' href='#' tabindex='22' data-i18n='showmePages.cancelBtn'></button>
 											</div>
 										</div>
 										
@@ -455,28 +421,28 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>2</span>
 											</div>
-											<span class='stepper-text'>Describe the problem</span>
+											<span class='stepper-text' data-i18n='waterIssuePage.step2Title'></span>
 										</div>
 										<div id='report_step2_content' class='stepper-vert-content hide'>
 											<div class='form-group'>
-											<label for='problem_type'>Select the problem:</label>
-											<select id='problem_type' name='problem_type' placeholder='Please choose a problem type.' class='form-control' tabindex='23' required>
+											<label for='problem_type'><span data-i18n='waterIssuePage.step2ProblemLabel'></span>:</label>
+											<select id='problem_type' name='problem_type' data-i18n='[placeholder]waterIssuePage.step2ProblemTypePlaceholder' class='form-control' tabindex='23' required>
 												<option value=''></option> 
-												<option value='Discolored Water'>Discolored Water</option>
-												<option value='Water Main Break'>Water Main Break</option>
-												<option value='Other Infrastructure Issue'>Other Water-Related Infrastructure Issue</option>
+												<option value='Discolored Water' data-i18n='waterIssuePage.step2Option1'></option>
+												<option value='Water Main Break' data-i18n='waterIssuePage.step2Option2'></option>
+												<option value='Other Infrastructure Issue' data-i18n='waterIssuePage.step2Option3'></option>
 											</select>
 											</div>
 											
 											<div class='form-group'>
-											<label for='problem_text'>Describe the problem:</label>
-											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' placeholder='500 character limit' tabindex='24' required></textarea>
+											<label for='problem_text'><span data-i18n='waterIssuePage.step2ProblemLabel'></span>:</label>
+											<textarea id='problem_text' class='form-control textarea-autosize' rows='5' name='problem_text' data-i18n='[placeholder]waterIssuePage.step2ProblemTextPlaceholder' tabindex='24' required></textarea>
 											<p class='char_count'></p>
 											</div>
 											
 											<div class='btn_group'>
-											<button class='next_button btn btn-flat btn-primary disabled' href='#' tabindex='25'>Next</button>
-											<button class='cancel_button btn btn-flat' href='#' tabindex='26'>Cancel</button>
+											<button class='next_button btn btn-flat btn-primary disabled' href='#' tabindex='25' data-i18n='showmePages.nextBtn'></button>
+											<button class='cancel_button btn btn-flat' href='#' tabindex='26' data-i18n='showmePages.cancelBtn'></button>
 											</div>
 										</div>
 										
@@ -485,30 +451,31 @@ if (@isset($_GET["pid"])) {
 												<span class='icon stepper-step-icon'>done</span>
 												<span class='stepper-step-num'>3</span>
 											</div>
-											<span class='stepper-text'>Contact information</span>
+											<span class='stepper-text' data-i18n='waterIssuePage.step3Title'></span>
 										</div>
 										<div id='report_step3_content' class='stepper-vert-content hide'>
 											<!--<div id='contact_pref' class='form-group'>
-												<h5>Contact preference:</h5>
+												<h5><span data-i18n='waterIssuePage.step3ContactPref'></span>:</h5>
 												
 												<label class='radio-inline'>
-													<input type='radio' name='contact_radio_options' id='email_choice' value='email' tabindex='27' /> Email
+													<input type='radio' name='contact_radio_options' id='email_choice' value='email' tabindex='27' /> <span data-i18n='waterIssuePage.step3EmailPref'></span>
 												</label>
 												<label class='radio-inline'>
-													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone' tabindex='28' /> Phone
+													<input type='radio' name='contact_radio_options' id='phone_choice' value='phone' tabindex='28' /> <span data-i18n='waterIssuePage.step3PhonePref'></span>
 												</label>
 											</div>-->
 											
 											<div class='form-group'>
-											<label for='email'>Email address:</label>
-											<input id='email' class='form-control' type='email' name='email' placeholder='user@email.com' tabindex='29' required />
+											<label for='email'><span data-i18n='waterIssuePage.step3EmailLabel'></span>:</label>
+											<input id='email' class='form-control' type='email' name='email' data-i18n='[placeholder]waterIssuePage.step3EmailPlaceholder' tabindex='29' required />
 											</div>
 											
-											<!--<input id='phone' class='form-control hide' type='tel' name='phone' placeholder='(555) 555-5555' tabindex='30' />-->
+											<!--<label for='phone'><span data-i18n='waterIssuePage.step3PhoneLabel'></span>:</label>
+											<input id='phone' class='form-control hide' type='tel' name='phone' data-i18n='[placeholder]waterIssuePage.step3PhonePlaceholder' tabindex='30' />-->
 											
 											<div class='btn_group'>
-											<button type='submit' class='next_button btn btn-flat btn-primary disabled' tabindex='31'>Submit</button>
-											<button type='button' class='cancel_button btn btn-flat' tabindex='32'>Cancel</button>
+											<button type='submit' class='next_button btn btn-flat btn-primary disabled' tabindex='31' data-i18n='showmePages.submitBtn'></button>
+											<button type='button' class='cancel_button btn btn-flat' tabindex='32' data-i18n='showmePages.cancelBtn'></button>
 											</div>
 										</div>
 									</div>

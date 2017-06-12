@@ -1232,6 +1232,8 @@ function bindInfoWindow(type, clickedMarker, map, resourcesAvailable, content) {
 					bottom: 0
 				});
 			}
+			else
+				$("#resource_card").appendTo('#map_container');
 			
 			$("#resource_card").localize().show();
 			

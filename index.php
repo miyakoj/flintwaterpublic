@@ -40,39 +40,6 @@ $content = "<div id='map_container'>
 				</div>
 			</div>
 		</div>
-
-		<div id='resource_card' class='card'>
-			<button type='button' class='close' aria-label='Close'><span class='icon' aria-hidden='true'>close</span></button>
-			
-			<div class='card-main'>				
-				<div class='card-inner'></div>
-				
-				<div class='card-action'>
-					<button id='card_save' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' data-i18n='[title]map.saveBtnTitle'><span class='icon icon-lg'>star_border</span> <span data-i18n='map.saveBtnText'></span></button>
-					
-					<ul id='card_report_menu' class='btn btn-flat pull-left' data-toggle='tooltip' data-placement='top' data-i18n='[title]resourceCard.reportText'>
-					    <li>
-							<div class='dropdown'>
-							<a id='report_button' class='btn btn-flat dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-							<span class='icon icon-lg'>error</span> <span data-i18n='resourceCard.reportBtnText'></span></a>
-							
-							<ul class='dropdown-menu dropdown-menu-right' aria-labelledby='report_button'>
-								<li><a href='#' data-i18n='resourceCard.tempClosed'></a></li>
-								<li><a href='#' data-i18n='resourceCard.permClosed'></a></li>
-								<li><a href='#' data-i18n='resourceCard.noWater'></a></li>
-								<li><a href='#' data-i18n='resourceCard.noFilters'></a></li>
-								<li><a href='#' data-i18n='resourceCard.noTestKits'></a></li>
-								<li><a href='#' data-i18n='resourceCard.noRecycling'</a></li>
-								<li><a href='#' data-i18n='resourceCard.noBloodTesting'></a></li>
-							</ul>
-							</div>
-						</li>
-					</ul>
-					
-					<button id='card_directions' class='btn btn-flat pull-right' data-i18n='resourceCard.directionsBtnText'></button>
-				</div>
-			</div>
-		</div>
 		
 		<div id='legend_card' class='card'>
 			<div class='card-main'>
