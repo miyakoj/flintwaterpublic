@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,8 +76,8 @@
 					<a id="language_toggle" class="dropdown-toggle" href="#" data-toggle="dropdown" role="button"  aria-haspopup="true" aria-expanded="false"><span data-i18n="navbar.languageHeading"></span> <i class="material-icons">expand_more</i></a>
 					
 					<ul class="dropdown-menu nav" aria-labelledby="language_toggle">
-						<li><a id="en" data-lang="en-US" href="#">EN</a></li>
-						<li><a id="es" data-lang="es" href="#">ES</a></li>
+						<li><a id="en" class="lang" data-lang="en-US" href="#">EN</a></li>
+						<li><a id="es" class="lang" data-lang="es" href="#">ES</a></li>
 					</ul>
 				</div>
 				
@@ -157,8 +157,8 @@
 		  <div class="section">
 			<div id="site_desc"><span data-i18n="footer.siteDesc"></span></div>
 		
-			<div id="copyright">&copy;
-				<span data-i18n="footer.copyright"></span>
+			<div id="copyright">
+				<div class="copyright_text">&copy; <span class="copyright_year" data-i18n="footer.copyright"></span></div>
 				<a id="about_link" href="#"><span data-i18n="footer.aboutLink"></span></a>
 				<a id="disclaimer_link" href="#"><span data-i18n="footer.disclaimerLink"></span></a>
 				<a id="privacy_link" href="#" class="hide"><span data-i18n="footer.privacyLink"></span></a>

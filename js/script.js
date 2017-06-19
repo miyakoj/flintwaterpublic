@@ -56,7 +56,7 @@ else if ($pageId.indexOf("news") != -1) {
 }
 
 
-$(document).ready(function() {
+$(document).ready(function() {	
 	// fix the AJAX linebreaks problem for text areas
 	$.valHooks.textarea = {
 	  get: function( elem ) {
@@ -81,14 +81,6 @@ $(document).ready(function() {
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip();
 	});
-	
-	/* Size and position the Google Play badge. */
-	//$('#language_menu').removeClass('hide');
-	/*$('#google_play_link').css({
-		top: function() {
-			return $('#language_menu').height() + 15 + "px"
-		}
-	});*/
 	
 	/* Dynamically adjust the dropdown menu links. */
 	$(".dropdown-menu a").css("line-height", $(".dropdown-menu a").css("min-height"));
@@ -133,9 +125,9 @@ $(document).ready(function() {
 	
 	//set toggles width based on number of toggles
 	var numItems = 7;
-	var average;
-	average = windowWidth/numItems;
-	$('#toggles label').css("width", average);
+	var avgTabWidth;
+	avgTabWidth = windowWidth/numItems;
+	$('#toggles label').css("width", avgTabWidth);
 	
 	$("footer #copyright a").each(function(i) {		
 		if ($(this).attr("id").indexOf("contact_us") == -1) { //($(this).attr("href").length == 1)
@@ -238,7 +230,7 @@ $(document).ready(function() {
 	
 	/* Phones and small tablets. */
 	if (windowWidth < 768) {
-		$("#main_menu").append($("#made_in_Flint"), $("#google_play_link"), $("footer")); //$('#language_menu')
+		$("#main_menu").append( $('#language_menu'), $("#made_in_Flint"), $("#google_play_link"), $("footer"));
 		//$("#header").append($("#contact_form"));
 		
 		$("#made_in_Flint img").css({
@@ -376,6 +368,13 @@ $(document).ready(function() {
 		});
 	}
 	else { // Desktop/Laptop or HD phone
+		/* Size and position the Google Play badge. */
+		/*$('#google_play_link').css({
+			top: function() {
+				return $('#language_menu').height() + 15 + "px"
+			}
+		});*/
+		
 		if (windowWidth < 1024) {
 			$("#header_top").addClass("clearfix");
 			$("#toggles").removeClass("btn-group btn-group-justified");

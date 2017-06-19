@@ -61,7 +61,7 @@ html, body {
 }
 
 #language_menu #language_toggle {
-	color:#A4A8B9!important;
+	color:#000!important;
 }
 
 #language_menu a:hover {
@@ -162,12 +162,7 @@ html, body {
 	color:#000!important;
 }
 
-.dropdown-menu li > .a:hover, .dropdown-menu li > a:hover {
-	background-color:transparent!important;
-	color:inherit!important;
-}
-
-.dropdown-menu li.active > .a, .dropdown-menu li.active > a, .dropdown-menu li.active > .a:hover, .dropdown-menu li.active > a:hover {
+.dropdown-menu li.active > .a, .dropdown-menu li.active > a {
 	background-color:#3A4EA2;
 	color:#FFF!important;
 }
@@ -497,6 +492,10 @@ footer .card-action btn {
 
 	#logo h1 {
 		font-size:1.75em;
+	}
+	
+	#language_menu #language_toggle {
+		color:#A4A8B9!important;
 	}
 
 	#main_menu {

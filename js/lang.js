@@ -1,3 +1,32 @@
+/* Change the document language. */
+function changeDocLang(lang) {
+	var langCode;
+	
+	if (lang) {
+		if (lang.indexOf('-') != -1)
+			langCode = lang.slice(0, lang.indexOf('-'));
+		else
+			langCode = lang;
+		
+		$('html').attr('lang', langCode);
+	}
+	else
+		lang = 'en';
+}
+
+/* Change the language when something is selected in the menu. */
+$('.lang').click(function () {
+	var lang = $(this).attr('data-lang');
+	i18next.changeLanguage(lang, (err, t) => {
+		// change the Google map language
+
+		changeDocLang(lang);
+		$('#language_menu .dropdown-menu li').removeClass('active');
+		$(this).parent().addClass('active');
+		$(document).localize();
+	});
+});
+
 $(document).ready(function() {
 	/* Loads a language file from the server. */
 	i18next.use(window.i18nextXHRBackend).init();
@@ -21,6 +50,7 @@ $(document).ready(function() {
 		}
 	});
 	
+	/* Initialize the i18next plugin. */
 	i18next.init({
 		debug: true,
 		whitelist: ['en-US', 'es'],
@@ -43,22 +73,9 @@ $(document).ready(function() {
 			parseDefaultValueFromContent: true // parses default values from content ele.val or ele.text
 		});
 		
+		var lang = localStorage.lang;
+		changeDocLang(lang);
+		$('.lang[data-lang=' + lang +']').parent().addClass('active'); // select the right language menu item on page load
 		$(document).localize();
 	});
-
-	/*i18next.changeLanguage(lang, (err, t) => {
-		console.log(lang);
-		//i18next.setLng(lng, callback)
-	});*/
-
-	/*$('.lang').click(function () {
-			var lang = $(this).attr('data-lang');
-			i18next.changeLanguage(lang);
-			
-			/*i18n.init({
-				lng: lang
-			}, function (t) {
-				$(document).i18n();
-			});
-		});*/
 });

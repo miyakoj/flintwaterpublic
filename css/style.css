@@ -70,12 +70,16 @@ header {
 	height:auto;
 }
 
-#language_menu {
-	padding-right:0!important;
+#language_menu #language_toggle {
+	padding:0 16px;
 }
 
-#language_menu #language_toggle {
-	pointer-events:none;
+#language_menu .nav li, #language_menu .nav a {
+	display:inline;
+}
+
+#language_menu #language_toggle .material-icons {
+	display:none;
 }
 
 #language_menu .dropdown-menu {
@@ -129,15 +133,15 @@ header {
 	margin-right:0px!important;
 }
 
-#show_me_menu {
+#show_me_menu, #language_menu {
 	z-index:100!important;
 }
 
-#show_me_menu #show_me_toggle{
+#show_me_menu #show_me_toggle, #language_menu #language_toggle {
 	pointer-events:none;
 }
 
-#show_me_menu ul {
+#show_me_menu ul, #language_menu ul {
 	min-height:20px!important;
 	padding:5px 5px 5px 25px!important;
 	position:static;
@@ -607,7 +611,12 @@ footer #copyright span {
 	margin-bottom:10px;
 }
 
-#copyright span, #copyright a {
+footer #copyright a {
+	padding-right:5px;
+	display:inline;
+}
+
+footer #copyright .copyright_text {
 	display:block;
 }
 	
