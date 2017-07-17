@@ -32,18 +32,24 @@ $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 $client->setRedirectUri($redirect_uri);
 
 /* Get a reference to the Fusion Table Service. */
-$service = new Google_Service_Fusiontables($client);
+//$service = new Google_Service_Fusiontables($client);
 
-updateFTRecent();
+//updateFTRecent();
 updateFTAll();
 
 /* Retrieve new water test results from the remote DB */
 function getNewTestData($table) {
-	global $service, $db, $connection, $new_data;
+	global $service, $mysqli, $db, $connection, $new_data;
 	
 	// get the date of the most recent test from the fusion table
-	$query = "SELECT testDate FROM " . $table . " ORDER BY testDate DESC LIMIT 1;";
-	$testDate = $service->query->sql($query)->rows[0][0];
+	//$query = "SELECT testDate FROM " . $table . " ORDER BY testDate DESC LIMIT 1;";
+	//$testDate = $service->query->sql($query)->rows[0][0];
+	
+	$query = "SELECT dateUpdated FROM WaterCondition ORDER BY dateUpdated DESC LIMIT 1";
+	$result = $mysqli->query($query);
+	$row = $result->fetch_assoc();
+	$testDate = $row["dateUpdated"];
+	$testDate = "2017-01-27 08:59:08";
 	
 	// convert a standard MySQL date into a MongoDB ISO date
 	$most_recent_date = new MongoDate(strtotime($testDate)); // 2017-01-27 08:59:08
@@ -102,28 +108,35 @@ function insertNewPropertySQL($property) {
 
 /* Update the most recent data fusion table. */
 function updateFTRecent() {
-	global $service, $new_data, $fusion_table_recent;
-	$table_resource = $service->table->get($fusion_table_recent);
+	global $service, $mysqli, $new_data, $fusion_table_recent;
+	//$table_resource = $service->table->get($fusion_table_recent);
 	
 	getNewTestData($fusion_table_recent);
 	
 	//var_dump($new_data);
 	
 	foreach ($new_data as $test_result) {
-		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s';", $fusion_table_recent, $test_result["new_address"]);
-		$rowid = $service->query->sql($query)->rows[0][0];
+		//$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s';", $fusion_table_recent, $test_result["new_address"]);
+		//$rowid = $service->query->sql($query)->rows[0][0];
+		
+		$query = sprintf("SELECT * FROM WaterCondition WHERE address = '%s';", $test_result["new_address"]);
+		$result = $mysqli->query($query);
+		$row_count = $result->num_rows;
 		
 		//echo $query . "<br />";
 		//echo $rowid . "<br />";
 		
 		// update the most recent test date, lead value, and copper value in the row corresponding to the address
-		if (strcmp($rowid, "") !== 0) {
+		//if (strcmp($rowid, "") !== 0) {
+		if ($row_count > 0) {
 			// update the existing row's abandoned status, lead, copper, and test date values
 			//$query = sprintf("UPDATE %s SET abandoned = '%s', testDate = '%s', leadLevel = '%s', copperLevel = '%s' WHERE ROWID = '%s';", $fusion_table_recent, $test_result["USPS Vacancy"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $rowid);
 			
 			//echo $query . "<br />";
 		
 			//$result = $service->query->sql($query);
+			
+			$kml = generateKML($test_result["lat"], $test_result["lng"]);
 			
 			$csv_data = sprintf("%s; %s; %s; %s; %s; -1; %s; %s; %s; %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"], $kml);
 		}
@@ -141,14 +154,14 @@ function updateFTRecent() {
 			//insertNewPropertySQL($test_result);
 		}
 		
-		file_put_contents("fusion_table_recent.csv", $csv_data, FILE_APPEND);
+		//file_put_contents("fusion_table_recent.csv", $csv_data, FILE_APPEND);
 	}
 }
 
 /* Update the all data fusion table. */
 function updateFTAll() {
-	global $service, $new_data, $fusion_table_all, $fusion_table_test;
-	$table_resource = $service->table->get($fusion_table_all);
+	global $service, $mysqli, $new_data, $fusion_table_all, $fusion_table_test;
+	//$table_resource = $service->table->get($fusion_table_all);
 	
 	getNewTestData($fusion_table_all);
 	
@@ -156,25 +169,32 @@ function updateFTAll() {
 	
 	foreach ($new_data as $test_result) {
 		// check to see if the row has already been entered due to a previous transaction that was interrupted due to Guzzle timeout
-		$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s' AND testDate = '%s';", $fusion_table_all, $test_result["new_address"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec));
-		$rowid = $service->query->sql($query)->rows[0][0];
+		//$query = sprintf("SELECT ROWID FROM %s WHERE address = '%s' AND testDate = '%s';", $fusion_table_all, $test_result["new_address"], date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec));
+		//$rowid = $service->query->sql($query)->rows[0][0];
 		
-		if (strcmp($rowid, "") === 0) {
-			$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_all, $test_result["new_address"]);
-			$prediction = $service->query->sql($query)->rows[0][0];
+		//if (strcmp($rowid, "") === 0) {
+			//$query = sprintf("SELECT prediction FROM %s WHERE address = '%s';", $fusion_table_all, $test_result["new_address"]);
+			//$prediction = $service->query->sql($query)->rows[0][0];
+			
+			$query = sprintf("SELECT prediction, w.parcelID, p.parcelID FROM WaterCondition w JOIN PredictionLocations p ON w.parcelID = p.parcelID WHERE address = '%s' LIMIT 1;", $test_result["new_address"]);
+			$result = $mysqli->query($query);
+			$row = $result->fetch_assoc();
+			$prediction = $row["prediction"];
 			
 			// insert the new test result into the fusion table		
 			$csv_data = sprintf("%s, %s, %s, %s, %s, %s, %s, %s, %s\n", $test_result["lat"], $test_result["lng"], $test_result["new_address"], $test_result["USPS Vacancy"], $test_result["PID no Dash"], $prediction, date("Y-m-d h:i:s", $test_result["Date Submitted"]->sec), $test_result["Lead (ppb)"], $test_result["Copper (ppb)"]);
 			
 			//echo $csv_data . "<br />";
 
-			$result = $service->table->importRows($fusion_table_all, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
-		}
+			//$result = $service->table->importRows($fusion_table_all, array('postBody' => $table_resource, 'data' => $csv_data, 'isStrict' => false));
+		//}
+		
+		file_put_contents("fusion_table_all.csv", $csv_data, FILE_APPEND);
 	}
 }
 
 /* 
- * Generates a KML polygon for a specific latitude/longitude coordinate to be used in the "most recent data" fusion table.
+ * Generates a KML polygon location marker for a specific latitude/longitude coordinate to be used in the "most recent data" fusion table.
  * Original code created in Java by Philip Boyd (https://www.github.com/phboyd).
  */
 function generateKML($lat, $lng) {

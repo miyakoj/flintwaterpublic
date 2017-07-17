@@ -15,7 +15,7 @@ $connection = new MongoClient("mongodb://" . getenv('MONGODB_USER') . ":" . gete
 $new_data = array();
 
 getNewTestData();
-updateSQLDB();
+//updateSQLDB();
 
 /* Retrieve new water test results from Ann Arbor's DB */
 function getNewTestData() {
@@ -27,8 +27,7 @@ function getNewTestData() {
 	$row = $result->fetch_assoc();
 	
 	// convert a standard MySQL date into a MongoDB ISO date
-	$most_recent_date = new MongoDate(strtotime($row["dateUpdated"]));
-	
+	$most_recent_date = new MongoDate(strtotime($row["dateUpdated"]));	
 	//echo "Newest Date: " . $row["dateUpdated"] . "<br />";
 	//echo "MongoDate: " . $most_recent_date->sec . "<br /><br />";
 	
@@ -65,6 +64,8 @@ function getNewTestData() {
 		}
 		
 		//file_put_contents("water_test_results.csv", $output, FILE_APPEND);
+		
+		//print_r($new_data);
 	}
 	else
 		exit();

@@ -45,20 +45,28 @@ $(document).ready(function() {
 		cache: {
 			enabled: true,
 			prefix: 'i18next_res_',
-			//expirationTime: 7*24*60*60*1000 // cache for a week
-			expirationTime: 10*1000
+			expirationTime: 7*24*60*60*1000 // cache for a week
+			//expirationTime: 10*1000
 		}
 	});
 	
 	/* Initialize the i18next plugin. */
+	var $pageId = $("body").attr("id").slice(0, $("body").attr("id").indexOf("_"));
+	var loadPath;
+	
+	if ($pageId.indexOf("dashboard") == -1)
+		loadPath = 'langs/{{lng}}.json';
+	else
+		loadPath = '../langs/{{lng}}.json';
+	
 	i18next.init({
-		debug: true,
+		debug: false,
 		whitelist: ['en-US', 'es'],
 		fallbackLng: 'en-US',
 		load: 'currentOnly',
 		//ns: ['template'],
 		backend: {
-			loadPath: 'langs/{{lng}}.json'
+			loadPath: loadPath
 		}
 	}, (err, t) => {
 		/* Use jQuery to replace text. */
@@ -77,5 +85,8 @@ $(document).ready(function() {
 		changeDocLang(lang);
 		$('.lang[data-lang=' + lang +']').parent().addClass('active'); // select the right language menu item on page load
 		$(document).localize();
+		
+		// dynamically add the year
+		$('footer .copyright_year').html('2016-' + new Date().getFullYear());
 	});
 });

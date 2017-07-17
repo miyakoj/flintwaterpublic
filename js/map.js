@@ -92,7 +92,7 @@ window.jsonpCallbacks = {};
 
 function setAPIKey() {
 	if (location.href.indexOf("admin") != '-1') {
-		$('#map_container').parent().prepend('<p>Map is temporarily unavailable. Please see resident map at <a href="http://www.mywater-flint.com">http://www.mywater-flint.com</a>.</p>');
+		$('#map_container').parent().prepend('<p>The map is temporarily unavailable. Please see the resident map at <a href="http://www.mywater-flint.com">http://www.mywater-flint.com</a>.</p>');
 		$('#map_container, #map_layer_selection, #resource_layer_selection').hide();
 	}
 	else {
@@ -595,41 +595,41 @@ function addFusionListener(object) {
 
 
 function attachLegendCard() {
-		var placeholderDetails = "<div id='legend'>";
-			placeholderDetails = "<div id='title'><span data-i18n='legend.title'></span></div>";
-	
-		var lowIcon = "<img src='" + lowRiskSrc + "' data-i18n='[title]legend.lowImgTitle' class ='legend_icons' /> ";
-		var moderateIcon = "<img src='" + moderateRiskSrc + "' data-i18n='[title]legend.medImgTitle' class='legend_icons' /> ";
-		var highIcon = "<img src='" + highRiskSrc + "' data-i18n='[title]legend.highImgTitle' class='legend_icons' /> ";
-		var unknownIcon = "<img src='" + unknownRiskSrc + "' data-i18n='[title]legend.predictedImgTitle' class='legend_icons' /> ";
-		
-		var lowMsg;
-		var moderateMsg;
-		var highMsg;
-		var unknownMsg;
-		
-		if (windowWidth < 1280) {
-			lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
-			moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
-			highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
-			unknownMsg = "<span data-i18n='legend.predicted'></span>";
-		}
-		else {
-			lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
-			moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
-			highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
-			unknownMsg = "<span data-i18n='legend.predicted'></span>";
-		}
-	
-		placeholderDetails += "<div class='row'>";
-		placeholderDetails += "<div class='col-xs-3'>" + lowIcon + lowMsg + "</div>";
-		placeholderDetails += "<div class='col-xs-3'>" + moderateIcon + moderateMsg + "</div>";
-		placeholderDetails += "<div class='col-xs-3'>" + highIcon + highMsg + "</div>";
-		placeholderDetails += "<div class='col-xs-3'>" + unknownIcon + unknownMsg + "</div>";
-		placeholderDetails += "</div>\n</div>";
+	var placeholderDetails = "<div id='legend'>";
+		placeholderDetails = "<div id='title'><span data-i18n='legend.title'></span></div>";
 
-		$("#legend_card .card-inner").empty().html(placeholderDetails);		
-		$("#legend_card").show().localize();
+	var lowIcon = "<img src='" + lowRiskSrc + "' data-i18n='[title]legend.lowImgTitle' class ='legend_icons' /> ";
+	var moderateIcon = "<img src='" + moderateRiskSrc + "' data-i18n='[title]legend.medImgTitle' class='legend_icons' /> ";
+	var highIcon = "<img src='" + highRiskSrc + "' data-i18n='[title]legend.highImgTitle' class='legend_icons' /> ";
+	var unknownIcon = "<img src='" + unknownRiskSrc + "' data-i18n='[title]legend.predictedImgTitle' class='legend_icons' /> ";
+	
+	var lowMsg;
+	var moderateMsg;
+	var highMsg;
+	var unknownMsg;
+	
+	if (windowWidth < 1280) {
+		lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
+		moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
+		highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
+		unknownMsg = "<span data-i18n='legend.predicted'></span>";
+	}
+	else {
+		lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
+		moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
+		highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
+		unknownMsg = "<span data-i18n='legend.predicted'></span>";
+	}
+
+	placeholderDetails += "<div class='row'>";
+	placeholderDetails += "<div class='col-xs-3'>" + lowIcon + lowMsg + "</div>";
+	placeholderDetails += "<div class='col-xs-3'>" + moderateIcon + moderateMsg + "</div>";
+	placeholderDetails += "<div class='col-xs-3'>" + highIcon + highMsg + "</div>";
+	placeholderDetails += "<div class='col-xs-3'>" + unknownIcon + unknownMsg + "</div>";
+	placeholderDetails += "</div>\n</div>";
+
+	$("#legend_card .card-inner").empty().html(placeholderDetails);	
+	$("#legend_card").localize().show();
 }
 	
 
@@ -1144,7 +1144,7 @@ function attachLocationCard(type, clickedMarker, address, content) {
 			if (windowWidth >= 600 && $pageId.indexOf("dashboard") != -1) {
 				$("#location_card").css({
 					left: (($("#map").width() / 2) - ($("#location_card").width() / 2)) + "px",
-					bottom: 0
+					bottom: '5px'
 				});
 			}
 		}
@@ -1231,6 +1231,9 @@ function bindInfoWindow(type, clickedMarker, map, resourcesAvailable, content) {
 					left: (($("#map").width() / 2) - ($("#resource_card").width() / 2)) + "px",
 					bottom: 0
 				});
+				
+				if ($pageId.indexOf("dashboard") != -1)
+					$("#resource_card").css('bottom', '5px');
 			}
 			else
 				$("#resource_card").appendTo('#map_container');
