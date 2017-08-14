@@ -104,13 +104,26 @@ header {
 	float:left;
 }
 
+#slide-nav li.active a {
+	margin:0 5px;
+	padding:2px 16px;
+}
+
 #navbar-height-col {
 	width:auto!important;
 	padding-top:25px;
 }
 
 #main_menu li a {
-	min-height:30px;
+	min-height:28px;
+}
+
+#slide-nav #main_menu {
+	padding-top:5px;
+}
+
+#slide-nav #main_menu li a.spanish {
+	min-height:20px;
 }
 
 .navbar {
@@ -182,6 +195,10 @@ header {
 
 #toggles .list label {
     position:relative;
+}
+
+#toggles .list label.spanish {
+    font-size:84%!important;
 }
 
 #toggles #risk_factor_btn {
@@ -444,7 +461,7 @@ body[id="index_page"] main {
 	vertical-align:middle;
 }
 
-#stepper_content.btn-primary::active {
+#stepper_content.btn-primary:active {
 	box-shadow:0 4px 5px 0 rgba(0,0,0,.14),0 1px 10px 0 rgba(0,0,0,.12),0 2px 4px -1px rgba(0,0,0,.2);
 	background-color:rgba(158,158,158,.4)
 }
@@ -603,8 +620,16 @@ footer {
 	padding:10px;
 }
 
+footer.spanish {
+	padding: 0 10px;
+}
+
 footer #site_desc {
 	margin:10px 0;
+}
+
+footer #site_desc.spanish {
+	margin-top:0;
 }
 
 footer #copyright span {
@@ -612,7 +637,7 @@ footer #copyright span {
 }
 
 footer #copyright a {
-	padding-right:5px;
+	padding-right:7px;
 	display:inline;
 }
 

@@ -12,18 +12,24 @@ function changeDocLang(lang) {
 	}
 	else
 		lang = 'en';
+	
+	if (lang === 'es') {
+		$('#slide-nav #main_menu, #slide-nav #main_menu li a, #toggles .list label, footer, footer #site_desc').addClass('spanish');
+	}
+	else {
+		$('#slide-nav #main_menu, #slide-nav #main_menu li a, #toggles .list label, footer, footer #site_desc').removeClass('spanish');
+	}
 }
 
 /* Change the language when something is selected in the menu. */
 $('.lang').click(function () {
 	var lang = $(this).attr('data-lang');
 	i18next.changeLanguage(lang, (err, t) => {
-		// change the Google map language
-
 		changeDocLang(lang);
-		$('#language_menu .dropdown-menu li').removeClass('active');
+		$('#language_menu li').removeClass('active');
 		$(this).parent().addClass('active');
 		$(document).localize();
+		console.log(localStorage.lang);
 	});
 });
 
@@ -46,7 +52,6 @@ $(document).ready(function() {
 			enabled: true,
 			prefix: 'i18next_res_',
 			expirationTime: 7*24*60*60*1000 // cache for a week
-			//expirationTime: 10*1000
 		}
 	});
 	
@@ -64,7 +69,6 @@ $(document).ready(function() {
 		whitelist: ['en-US', 'es'],
 		fallbackLng: 'en-US',
 		load: 'currentOnly',
-		//ns: ['template'],
 		backend: {
 			loadPath: loadPath
 		}

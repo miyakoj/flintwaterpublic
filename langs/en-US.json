@@ -67,7 +67,10 @@
 		"low": "Low",
 		"medium": "Medium",
 		"high": "High",
-		"predicted": "Predicted"
+		"predicted": "Predicted",
+		"lowRange": "(0-15 ppb)",
+		"mediumRange": "(16-150 ppb)",
+		"highRange": "(Over 150 ppb)"
 	},
 	"providerInfo": {
 		"waterTitle": "Water Pickup",

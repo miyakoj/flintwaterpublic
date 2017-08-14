@@ -14,7 +14,7 @@ if (!Modernizr.webaudio && !localStorage.getItem("browserMsg")) {
 
 /* Dynamically load remote scripts only on pages where they're relevant. */
 //var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
-var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places&callback=initMap";
+var map_api = "https://maps.googleapis.com/maps/api/js?key=AIzaSyA0qZMLnj11C0CFSo-xo6LwqsNB_hKwRbM&libraries=visualization,places";
 var client_api = "https://apis.google.com/js/client.js?onload=setAPIKey";
 var form_validation_api = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js";
 var form_validation_addl_js = "https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js";
@@ -127,7 +127,11 @@ $(document).ready(function() {
 	var numItems = 7;
 	var avgTabWidth;
 	avgTabWidth = windowWidth/numItems;
-	$('#toggles label').css("width", avgTabWidth);
+	
+	if (windowWidth < 1366)
+		$('#toggles label').css("width", avgTabWidth);
+	else
+		$('#toggles label').css("max-width", avgTabWidth);
 	
 	$("footer #copyright a").each(function(i) {		
 		if ($(this).attr("id").indexOf("contact_us") == -1) { //($(this).attr("href").length == 1)
@@ -140,8 +144,7 @@ $(document).ready(function() {
 	/* Launch the contact form in a modal. */
 	$("footer #contact_us").on("click", function() {
 		$('#contact_form').modal("toggle")
-	});
-	
+	});	
 	
 	/* Mark the tab of the current page as active. */
 	if ($pageId.indexOf("index") != -1)
@@ -153,46 +156,6 @@ $(document).ready(function() {
 		if ($("#" + $pageId + "_link").parent().parent().parent().attr("id") == "show_me_menu")
 			$("#show_me_menu").addClass("active");
 	}
-	
-	/* General layout/CSS differences between the mobile and desktop versions. */
-	/* Phones and small tablets. */
-	if (windowWidth < 600) {
-		$("#location_card, #resource_card").appendTo($("body"));
-		$("#legend_card").appendTo($("map-container"));
-		
-		$("#resource_card #card_report_menu").on("click", function() {
-			$(this).find("li:first-child").addClass("dropup open");
-			$(this).find("#report_button").attr("aria-expanded", "true");
-		});
-	}
-	/* Large tablets and computers. */
-	else if (windowWidth >= 600) {
-		$("#location_card, #resource_card").css({
-			"width": function() {
-				return $("#search_input").outerWidth();
-			},
-			"top": function() {
-				return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
-			},
-			"left": function() {
-				return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
-			}
-		});
-		
-		$("#legend_card").css({
-			"width": function() {
-				return $("#location_card").outerWidth();
-			},
-			"top": function() {
-				return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
-			},
-			"left": function() {
-				return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
-			}
-		});
-	}
-	
-	$("#legend_card").hide();
 	
 	if (windowWidth < 768) {
 		//closes the nav drawer when you click outside of it
@@ -369,11 +332,11 @@ $(document).ready(function() {
 	}
 	else { // Desktop/Laptop or HD phone
 		/* Size and position the Google Play badge. */
-		/*$('#google_play_link').css({
+		$('#google_play_link').css({
 			top: function() {
 				return $('#language_menu').height() + 15 + "px"
 			}
-		});*/
+		});
 		
 		if (windowWidth < 1024) {
 			$("#header_top").addClass("clearfix");

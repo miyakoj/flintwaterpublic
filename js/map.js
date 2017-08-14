@@ -91,14 +91,14 @@ var leadLevelOfInput;
 window.jsonpCallbacks = {};
 
 function setAPIKey() {
-	if (location.href.indexOf("admin") != '-1') {
+	/*if (location.href.indexOf("admin") != '-1') {
 		$('#map_container').parent().prepend('<p>The map is temporarily unavailable. Please see the resident map at <a href="http://www.mywater-flint.com">http://www.mywater-flint.com</a>.</p>');
 		$('#map_container, #map_layer_selection, #resource_layer_selection').hide();
-	}
-	else {
+	}*/
+	//else {
 		gapi.client.setApiKey(apiKey);
 		gapi.load("client:auth2", checkAuth);
-	}
+	//}
 }
 
 function checkAuth() {
@@ -111,26 +111,18 @@ function checkAuth() {
 }
 
 function initMap() {
-	$("#resource_card, #location_card").hide();
+	$("#resource_card, #location_card, #legend_card").hide();
 	
 	/* Add position:relative; to the map container if not using a mobile device. */
 	if (windowHeight > 600) {
 		$("wrapper").css("position", "static");
 		$("#map_container").css("position", "relative");
 	}
-	
-	attachLegendCard();
-
-	/* Position the map in the correct element if it exists on the page. */
-	if($("#search_input").length != 0)
-		$("#map_container #search_input").after($("#map"));
-	
-	$("#search_input").val(""); // clear the search input upon refresh
   
 	/* Size the map based on the window size. */
 	var mapHeight;
 	
-	if (windowHeight < 600)
+	if (windowHeight < 600 && windowWidth < 1280)
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("#legend_card").outerHeight();
 	else
 		mapHeight = windowHeight - $("#header").outerHeight() - $("#toggles").outerHeight() - $("footer").outerHeight();
@@ -185,6 +177,56 @@ function initMap() {
 	}];
 
 	map.setOptions({styles: noPoi});
+	
+	//google.maps.event.addListener(map, 'tilesloaded', function() {
+		attachLegendCard();
+
+		/* Position the map in the correct element if it exists on the page. */
+		if($("#search_input").length != 0)
+			$("#map_container #search_input").after($("#map"));
+		
+		$("#search_input").val(""); // clear the search input upon refresh
+		
+		/* General layout/CSS differences between the mobile and desktop versions. */
+		/* Phones and small tablets. */
+		if (windowWidth < 600) {
+			$("#location_card, #resource_card").appendTo($("body"));
+			$("#legend_card").appendTo($("map-container"));
+			
+			$("#resource_card #card_report_menu").on("click", function() {
+				$(this).find("li:first-child").addClass("dropup open");
+				$(this).find("#report_button").attr("aria-expanded", "true");
+			});
+		}
+		/* Large tablets and computers. */
+		else if (windowWidth >= 600) {
+			$("#location_card, #resource_card").css({
+				"width": function() {
+					return $("#search_input").outerWidth();
+				},
+				"top": function() {
+					return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
+				},
+				"left": function() {
+					return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
+				}
+			});
+			
+			$("#legend_card").css({
+				"width": function() {
+					return $("#location_card").outerWidth();
+				},
+				"top": function() {
+					return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
+				},
+				"left": function() {
+					return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
+				}
+			});
+		}
+		
+		//$("#legend_card").hide();
+	//});
 	
 	geocoder = new google.maps.Geocoder();
 	
@@ -285,15 +327,15 @@ function initMap() {
 		scaledSize: new google.maps.Size(iconSize, iconSize)
 	};
 	
-	/* Only load lead areas on the index and admin dashboard pages. */
-	if ($pageId.indexOf("index") != -1 || $pageId.indexOf("dashboard") != -1) {
+	/* Only load lead areas on the admin dashboard page. */
+	if ($pageId.indexOf("dashboard") != -1) {
 		callStorageAPI("leadLevels_birdview.json");
-		
-		/* Only load pipe data and construction sites on the index page. */
-		if ($pageId.indexOf("index") != -1) {
-			callStorageAPI("pipedata.json");
-			callStorageAPI("construction_sites.json");
-		}
+	}
+	
+	/* Only load pipe data and construction sites on the index page. */
+	if ($pageId.indexOf("index") != -1) {
+		callStorageAPI("pipedata.json");
+		callStorageAPI("construction_sites.json");
 	}
 		
 	callStorageAPI("providers.json");
@@ -608,18 +650,10 @@ function attachLegendCard() {
 	var highMsg;
 	var unknownMsg;
 	
-	if (windowWidth < 1280) {
-		lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
-		moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
-		highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
-		unknownMsg = "<span data-i18n='legend.predicted'></span>";
-	}
-	else {
-		lowMsg = "<span data-i18n='legend.low'></span> <span>(0-15 ppb)</span>";
-		moderateMsg = "<span data-i18n='legend.medium'></span> <span>(16-150 ppb)</span>";
-		highMsg = "<span data-i18n='legend.high'></span> <span>(Over 150 ppb)</span>";
-		unknownMsg = "<span data-i18n='legend.predicted'></span>";
-	}
+	lowMsg = "<span data-i18n='legend.low'></span> <span data-i18n='legend.lowRange'></span>";
+	moderateMsg = "<span data-i18n='legend.medium'></span> <span data-i18n='legend.mediumRange'></span>";
+	highMsg = "<span data-i18n='legend.high'></span> <span data-i18n='legend.highRange'></span>";
+	unknownMsg = "<span data-i18n='legend.predicted'></span>";
 
 	placeholderDetails += "<div class='row'>";
 	placeholderDetails += "<div class='col-xs-3'>" + lowIcon + lowMsg + "</div>";
@@ -629,7 +663,10 @@ function attachLegendCard() {
 	placeholderDetails += "</div>\n</div>";
 
 	$("#legend_card .card-inner").empty().html(placeholderDetails);	
-	$("#legend_card").localize().show();
+	$("#legend_card").show();
+	
+	if (location.href.indexOf("admin") == '-1')
+		$("#legend_card").localize();
 }
 	
 
@@ -646,6 +683,8 @@ function callStorageAPI(object) {
 			/* Lead level area data. */
 			if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);
+				
+				console.log(js_obj);
 				
 				leadLayerBirdViewMarkers = [];
 				
@@ -849,7 +888,7 @@ function callStorageAPI(object) {
 					constructionMarkers.push(constructionMarker);
 				}				
 			}
-			// Uploading Pipe Data From JSON in bucket
+			// Uploading Pipe Data From JSON file in bucket
 			else if (object == "pipedata.json") {
 				js_obj = $.parseJSON(resp.body);
 				var tempArr;
@@ -998,6 +1037,8 @@ function createLocationContent(streetAddress, dataObj) {
 	var warningImg;
 	var suggestedAction;
 	
+	console.log(dataObj);
+	
 	if (((leadLevel != -1) && (typeof leadLevel !== "undefined")) || (typeof prediction !== "undefined")) {
 		// set the abandonment message for the property
 		abandonmentMsg = i18next.t('propertyInfo.abandonmentMsgStart');
@@ -1028,7 +1069,7 @@ function createLocationContent(streetAddress, dataObj) {
 			}
 			
 			content += "<div id='abandonment'>" + abandonmentMsg + "</div>";
-			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";			
+			content += "<div id='warning' class='emphasis'>" + warningMsg + "</div>";
 			content += "<div id='current_results'><strong>" + i18next.t('propertyInfo.leadLevel') + ":</strong> " + leadLevel + " ppb<br /> <strong>" + i18next.t('propertyInfo.lastTested') + ":</strong> " + testDate + "</div>";
 			content += "<div id='more_info_details' class='collapse'>";
 			

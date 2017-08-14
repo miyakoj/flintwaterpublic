@@ -86,6 +86,10 @@ html, body {
 	color:#A4A8B9!important;
 }
 
+#slide-nav li.active a {
+	background-color:#DDD!important;
+}
+
 .navbar-nav > li > a {
 	text-shadow:none!important;
 	color:inherit!important;
@@ -459,9 +463,9 @@ footer .card-action btn {
 }
 
 .loader {
-  border: 5px solid #f3f3f3;
+  border: 5px solid #F3F3F3;
   border-radius: 50%;
-  border-top: 5px solid #3a4ea2;
+  border-top: 5px solid #3A4EA2;
   width: 50px;
   height: 50px;
   -webkit-animation: spin 1s linear infinite;
@@ -497,14 +501,22 @@ footer .card-action btn {
 	#language_menu #language_toggle {
 		color:#A4A8B9!important;
 	}
+	
+	#language_menu li.active a {
+		background-color:#3A4EA2!important;
+	}
 
 	#main_menu {
 		background:transparent!important;
 		color:#A4A8B9!important;
 	}
+	
+	#main_menu  li.active a {
+		background:transparent!important;
+	}
 
 	#show_me_menu a {
-		color:#a4a8b9 !important;
+		color:#A4A8B9 !important;
 	}
 
 	#show_me_menu .dropdown-menu a {
@@ -529,11 +541,7 @@ footer .card-action btn {
 }
 
 /* Desktop/Laptop only. */
-@media only screen and (min-width:992px) {
-	footer #site_desc p {
-		text-align:center;
-	}
-
+@media only screen and (min-width:992px) {	
 	#show_me_menu .dropdown-menu span {
 		color: rgba(0,0,0,.87);
 		font-size: 14px;
@@ -542,6 +550,10 @@ footer .card-action btn {
 	
 	#show_me_menu .dropdown-menu > .active > a span {
 		color: #FFF;
+	}
+	
+	footer #site_desc p {
+		text-align:center;
 	}
 }
 
