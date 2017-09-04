@@ -820,8 +820,18 @@ function callStorageAPI(object) {
 					if (provider.hours.length > 0)
 						content += "<p id='provider_hours'>" + provider.hours + "</p>";
 					
-					if (provider.notes.length > 0)
+					if (provider.notes.length > 0) {
+						/* From: http://regexlib.com/REDetails.aspx?regexp_id=2841 */
+						var matches = provider.notes.match(/(ht|f)tp(s?)\:\/\/(([a-zA-Z0-9\-\._]+(\.[a-zA-Z0-9\-\._]+)+)|localhost)(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?([\d\w\.\/\%\+\-\=\&amp;\?\:\\\&quot;\'\,\|\~\;]*)/);
+						
+						if (matches) {
+							var url = matches[0];
+							
+							provider.notes = provider.notes.replace(url, '<a href="' + url + '" target="_blank">' + url + '</a>');
+						}
+						
 						content += "<p id='provider_notes'>" + provider.notes + "</p>";
+					}
 					
 					if ($pageId.indexOf("dashboard") == -1)
 						content += "<p id='211_info'><span data-i18n='map.211Text'></span> <a href='http://www.centralmichigan211.org' target='_blank' data-i18n='map.211LinkText'></a>.</p>";
