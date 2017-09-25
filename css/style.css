@@ -368,6 +368,10 @@ body[id="index_page"] #map, body[id="test_page"] #map, body[id="report_page"] #m
 	display:none!important;
 }
 
+#resource_card .card-inner {
+	overflow-y:auto;
+}
+
 #provider_resources .marker_popup_icons {
 	width:auto;
 	height:25px;

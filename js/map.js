@@ -815,7 +815,7 @@ function callStorageAPI(object) {
 					content += "<h5 id='provider_title'>" + title + "</h5> <p id='provider_address'>" + provider.aidAddress + "</p>";
 					
 					if (provider.phone.length > 0)
-						content += "<p id='provider_phone'>" + provider.phone + "</p>";
+						content += "<p id='provider_phone'><a href='tel:" + provider.phone.replace(/[() -]/g, "") + "'>" + provider.phone + "</a></p>";
 					
 					if (provider.hours.length > 0)
 						content += "<p id='provider_hours'>" + provider.hours + "</p>";
