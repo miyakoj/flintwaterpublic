@@ -498,7 +498,10 @@ if (@isset($_GET["pid"])) {
 			
 			<p class='text-justify'><span data-i18n='aboutPage.copyrightPart1'></span> <a href='http://www.umflint.edu'>University of Michigan-Flint</a> <span data-i18n='aboutPage.copyrightPart2'></span> <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>University of Michigan-Ann Arbor Michigan Data Science Team</a> <span data-i18n='aboutPage.copyrightPart3'></span> <a href='http://www.google.org'>Google.org</a>.</p>
 			
-			<p class='text-justify'><span data-i18n='aboutPage.dataPart1'></span> <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> <span data-i18n='aboutPage.dataPart2'></span> <a href='https://www.cityofflint.com/water-sites/'>City of Flint</a> <span data-i18n='aboutPage.dataPart3'></span> <a href='http://www.flintcares.com'>Flint Cares</a>.</p></section>";
+			<p class='text-justify'><span data-i18n='aboutPage.dataPart1'></span> <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> <span data-i18n='aboutPage.dataPart2'></span> <a href='https://www.cityofflint.com/water-sites/'>City of Flint</a> <span data-i18n='aboutPage.dataPart3'></span> <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
+			
+			<iframe class='center-block' src='https://ghbtns.com/github-btn.html?user=miyakoj&repo=flintwaterpublic&type=fork&size=large' frameborder='0' scrolling='0' width='80px' height='30px'></iframe>
+			</section>";
 		break;
 		
 		case "disclaimer":
