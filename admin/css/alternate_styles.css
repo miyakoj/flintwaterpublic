@@ -1,0 +1,27 @@
+/* Tablet only. */
+@media only screen and (min-width:600px) {	
+	#legend_card #title {
+		text-align:center;
+		font-weight:bold;
+	}
+}
+
+/* Tablet and desktop/laptop only. */
+@media only screen and (min-width:768px) {	
+	.navbar-default .navbar-default, .navbar-default .drop-men {
+		padding-top:10px;
+	}
+	
+	.navbar-default #top-menu a, .navbar-default .drop-men .dropdown-toggle {
+		line-height:48px;
+	}
+	
+	.navbar-default #top-menu {
+		margin-left:10px;
+	}
+}
+
+/* Desktop/Laptop only. */
+@media only screen and (min-width:992px) {
+	
+}

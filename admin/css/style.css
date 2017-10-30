@@ -1,0 +1,431 @@
+body {
+	padding:0;
+}
+
+.material-icons {
+	vertical-align:middle;
+}
+
+/* Navigation */
+.nav {
+	margin:0;
+}
+
+
+/* Dashboard */
+.col-md-8 {
+	padding:0 15px;
+}
+
+#map_container {
+	position:relative;
+}
+
+#map {
+	width:100%;
+	height:100%;
+}
+
+#map_layer_selection {
+	margin:10px 0 10px -5px;
+}
+
+#legend_card {
+	margin-bottom:0;
+}
+
+#legend_card #title {
+	margin-bottom:12px;
+	display:block;
+}
+
+#legend_card .col-xs-3 {
+	padding-left: .1em;
+	padding-right: .1em;
+}
+
+#legend_card .card-inner {
+	margin: 14px 4px!important;
+	padding:3px 0;
+}
+
+#legend_card .legend_icons {
+	display: block;
+	height: .8em;
+	width: 100%;
+}
+
+.btn-toolbar > .btn-group {
+	margin-left:10px;
+}
+
+.btn-toolbar > .btn-group:first-child {
+	margin-left:5px;
+}
+
+#location_card, #resource_card {
+	margin:0;
+	position:absolute;
+}
+
+#location_card .close, #resource_card .close {
+	position:absolute;
+	right:0;
+}
+
+#location_card .close span, #resource_card .close span {
+	margin-right:10px;
+}
+
+#location_card h5, #resource_card h5 {
+	font-weight:bold;
+}
+
+#location_card {
+	width:25em;
+	z-index:200!important;
+}
+
+#location_card .card-inner {
+	margin:10px!important;
+}
+
+#location_card h5 {
+	margin-bottom:12px;
+}
+
+#location_card .card-inner hr {
+	margin:8px 0;
+}
+
+#location_card .card-inner #warning, #location_card .card-inner #results {
+	margin-top:12px;
+}
+
+#location_card .card-inner #abandonment {
+	margin-bottom:12px;
+}
+
+#location_card .card-inner #address + #results {
+	margin-bottom:12px;
+}
+
+#location_card #risk_img {
+	width:auto;
+	height:22px;
+	margin-right:10px;
+}
+
+#location_card #previous_results button {
+	padding:4px 0;
+	padding-top:6px;
+	line-height:30px;
+}
+
+#location_card #previous_results button span {
+	display:inline-block;
+	line-height:30px;
+}
+
+#location_card #previous_results .material-icons {
+	vertical-align:text-bottom;
+}
+
+#resource_card {
+	width:20em;
+	height:12em;
+}
+
+#resource_card #provider_resources, #resource_card #provider_title {
+	margin-bottom:10px;
+}
+
+#resource_card #provider_title {
+	font-weight:bold;
+}
+
+#resource_card .marker_popup_icons {
+	width:30px;
+	height:auto;
+}
+
+
+#graph_area {
+	margin:0 16px;
+}
+
+canvas+p {
+	margin-top:15px;
+}
+
+
+/* Reports Page */
+#report_list h5 {
+	margin-bottom:15px;
+}
+
+#report_area #time_period h5 {
+	margin-bottom:5px;
+}
+
+#report_list .nav button {
+	width:100%;
+	margin-bottom:10px;
+}
+
+#report_list .help-block {
+	margin-bottom:0;
+}
+
+#report_area #report_type {
+	margin-bottom:15px;
+}
+
+#report_area #time_period .form-group {
+	margin-top:0;
+}
+
+#report_area #options .form-group {
+	margin-top:15px;
+}
+
+#report_area #time_period label, #report_area #limit label {
+	padding-right:5px;
+}
+
+#report_area select {
+	width:100%;
+}
+
+#report_area #limit input {
+	margin-right:12px;
+}
+
+#report_area #clear_button {
+	margin-right:12px;
+}
+
+#report_area #display_area {
+	margin-top:15px;
+}
+
+#report_area #print_report, #report_area #create_csv {
+	margin-top:15px;
+	margin-right:8px;
+}
+
+#report_area #display_area .table-responsive {
+	position:relative;
+}
+
+#report_area #display_area #table_header {
+	position:absolute;
+	top:0;
+	left:0;
+}
+
+#report_area #display_area #scrollbox .table {
+	margin-top:0;
+}
+
+#report_area #display_area table {
+	width:100%;
+}
+
+#report_area #display_area td {
+	margin-left:0;
+}
+
+#report_area #display_area table .record_number {
+	width:2%;
+}
+
+#report_area #display_area table .address {
+	width:30%;
+}
+
+#report_area #display_area table .small_num {
+	width:19%;
+}
+
+#report_area #display_area table .date, #report_area #display_area table .large_num {
+	width:29%;
+}
+
+#report_area #display_area table .text {
+	width:30%;
+}
+
+#report_area #display_area table th:last-of-type {
+	width:15px;
+	padding-left:0!important;
+	padding-right:0!important;
+}
+
+#report_area #display_area #scrollbox {
+	overflow-y:scroll;
+}
+
+
+/* Edit Page */
+#edit_resources .panel-body {
+	padding-top:0;
+}
+
+#edit_resources .panel-body #instructions, #edit_page #location_form #location_list {
+	margin-top:15px;
+}
+
+#edit_page #category_options label {
+	padding-left:8px;
+}
+
+
+/* Alerts Page */
+#expiration.form-control, #priority.form-control {
+	width:auto;
+}
+
+
+/* Profile Page */
+#profile_page #show_info label {
+	padding-right:8px;
+}
+
+#profile_page #user_group_dropdown {
+	display:none;
+}
+
+
+/* Users Page */
+#users_page #instructions {
+	margin-top:15px;
+}
+
+#users_page #user_group {
+	display:none;
+}
+
+#users_page td .material-icons {
+	padding-top:0;
+}
+
+#edit_modal .modal-footer button {
+	margin-right:0;
+}
+
+
+/* Login Page */
+.login {
+	padding-top:1em;
+}
+
+.login .login-bottom {
+	margin-top:1em;
+}
+
+.login .login-bottom h2 {
+	padding:0 0 0.9em 0;
+}
+
+.login #forgot_password {
+	margin-top:-20px;
+	margin-bottom:15px;
+	display:block;
+}
+
+
+/* Account Management Page */
+#mgmt_page .row {
+	margin-bottom:15px;
+}
+
+
+/* Misc */
+h3 {
+	margin-bottom:20px;
+}
+
+section p {
+	margin-bottom:15px;
+}
+
+li.disabled a {
+	pointer-events:none;
+}
+
+.alert {
+	margin:15px 0 0 0;
+}
+
+form .btn {
+	margin-bottom:15px;
+}
+
+form .alert {
+	clear:both;
+}
+
+form label {
+	width:100%;
+}
+
+form label.error {
+	display:block;
+}
+
+form .col-xs-12, form .col-md-3, form .col-md-5, form .col-md-6 {
+	padding-left:0;
+}
+
+form p.char_count {
+	margin-bottom:0;
+}
+
+#loading_screen {
+	width:100%;
+	height:100%;
+	position:absolute;
+	top:0;
+	left:0;
+	z-index:1000;
+}
+
+#page_alert {
+	position:absolute;
+}
+
+#contact_form .alert-success {
+	margin-top:0!important;
+}
+
+#contact_form .icon {
+	margin-top:0;
+}
+
+#contact_form .alert {
+	margin-top:0;
+}
+
+.modal-title {
+	margin-bottom:0;
+}
+
+.modal-body .alert {
+	margin-top:15px;
+}
+
+
+/* Footer */
+
+footer {
+	margin-top:15px;
+}
+
+footer.copy {
+	padding:8px 0;
+}
+
+footer.copy a {
+	padding-left:12px;
+}

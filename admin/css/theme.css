@@ -1,0 +1,15 @@
+* {
+	font-family:"roboto"!important;
+}
+
+.icon, .material-icons {
+	font-family:"Material Icons"!important;
+}
+
+.glyphicon {
+	font-family:"Glyphicons Halflings"!important;
+}
+
+.navbar-brand {
+	background-color:#242E56!important;
+}

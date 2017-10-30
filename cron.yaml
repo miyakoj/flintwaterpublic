@@ -1,0 +1,35 @@
+cron:
+- description: Update the resource provider JSON file used on the user site.
+  url: /cron/provider_processing
+  schedule: every 12 hours
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 3
+    
+- description: Update the database used on the admin site with new water test results.
+  url: /cron/data_updates_db
+  schedule: every sunday 08:00
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 3
+    
+- description: Update the fusion tables used to display data on the map with new water test results.
+  url: /cron/data_updates_ft
+  schedule: every 24 hours from 08:30 to 08:30
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 3
+    
+- description: Update the lead area JSON used for the map.
+  url: /cron/lead_area_processing
+  schedule: every sunday 09:00
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 3
+
+- description: Update the predictions report CSV used for the admin reports page.
+  url: /cron/predictions_report
+  schedule: every sunday 10:00
+  retry_parameters:
+    min_backoff_seconds: 30
+    max_doublings: 3

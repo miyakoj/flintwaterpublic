@@ -1,0 +1,296 @@
+/* Tablets, laptops, and desktops. */
+@media only screen and (min-width:600px) {
+	#map {
+		position:relative;
+	}
+	
+	#search_input {
+		width:22em;
+	}
+	
+	#location_card, #resource_card, #legend_card {
+		bottom:auto;
+		right:auto;
+	}
+	
+	#location_card #more_info_button {
+		display:none;
+	}
+		
+	#resource_card {
+		width:25em;
+	}
+	
+	#resource_card #card_report_menu {
+		display:block;
+	}
+	
+	/*#location_card {
+		width:300px;
+		max-height: 150px;
+		top:3.5em;
+		left:0;
+	}*/
+	
+	#legend_card .col-xs-3 {
+		padding-left: .1em;
+		padding-right: .1em;
+	}
+	
+	#legend_card .card-inner {
+		margin: 14px 4px!important;
+	}
+	
+	.row .alert-success {
+		margin:10px 25% 0 25%!important;
+	}
+	
+	footer {
+		display:none;
+	}
+	
+	body[id="index_page"] footer {
+		display:block;
+	}
+}
+
+/* Tablet and desktop/laptop only. */
+@media only screen and (min-width:768px) {
+	/*#header_top {
+		margin-bottom:15px;
+	}*/
+	
+	#made_in_Flint {
+		margin-top:0;
+		margin-bottom:0;
+		display:block;
+		float:left;
+	}
+	
+	#language_menu {
+		padding-right:0!important;
+		position:absolute!important;
+		top:10px;
+		right:10px;
+		z-index:100!important;
+		color:inherit;
+	}
+	
+	#language_menu #language_toggle {
+		width:auto!important;
+		padding-left:6px!important;
+		padding-right:6px!important;
+	}
+	
+	#language_menu #language_toggle .material-icons {
+		display:inline-block;
+	}
+	
+	header #google_play_link {
+		top:0;
+		right:0;
+		position:absolute;
+	}
+	
+	.navbar-header {
+		margin-top:0;
+	}
+	
+	#header_top {
+		padding:10px;
+	}
+	
+	#logo {
+		margin:0 20%;	
+	}
+	
+	#logo img {
+		display:inline;
+	}
+	
+	#main_menu {
+		width:100%!important;
+	}
+	
+	#main_menu li {
+		height: 48px;
+		padding:0 24px;
+	}
+	
+	#main_menu a, #main_menu a.spanish {
+		margin:0;
+		padding:0;
+		line-height:48px;
+	}
+	
+	#show_me_menu ul {
+		padding-left:0!important;
+		position:absolute!important;
+	}
+	
+	#show_me_menu li {
+		width:auto!important;
+		padding:0 12px!important;
+	}
+	
+	#show_me_menu .dropdown-menu a {
+		padding:5px!important;
+	}
+	
+	#language_menu li.active a {
+		margin:0;
+		padding:0 16px;
+	}
+	
+	#sidebar {
+		height:35em;
+	}
+	
+	#topbar {
+		display:none;
+	}
+	
+	.stepper-vert-inner .btn_group .back_button {
+		display:none;
+	}
+	
+	#filter_page #allFilters_step1_content .card-img img {
+		width:100px;
+	}
+	
+	footer #site_desc, footer #copyright {
+		float:left;
+	}
+	
+	footer #site_desc, footer #site_desc.spanish {
+		padding-right:20px;
+		padding-bottom:0;
+	}
+	
+	#copyright span, #copyright a {
+		padding-right:10px;
+		display:inline;
+	}
+}
+
+/* Desktop/Laptop only. */
+@media only screen and (min-width:992px) {
+	#logo {
+		margin-top:0;
+	}
+	
+	#logo img {
+		width:4rem;
+		height:4rem;
+	}
+	
+	.col-md-12 {
+		float:none;
+	}
+	
+	main {
+		/*margin:0 25%;*/
+	}
+
+	main[id="index_page"] {
+		margin:0;
+	}
+
+	main .col-md-12 {
+		width:auto!important;
+	}
+
+	main .col-md-12[id="index_page"] {
+		width:100%!important;
+	}
+	
+	#index_page main {
+		margin:0!important;
+	}
+	
+	#slide-nav, #navbar-height-col {
+		z-index:auto!important;
+	}
+	
+	#language_menu ul {
+		padding-left:5px!important;
+	}
+	
+	#language_menu .nav li {
+		display:block;
+	}
+	
+	#language_menu .nav a {
+		display:flex;
+	}
+	
+	#main_menu {
+		width:60rem!important;
+		margin:0 auto!important;
+	}
+	
+	#main_menu a, #main_menu a.spanish {
+		padding-left:0;
+	}	
+	
+	#show_me_menu #show_me_toggle, #language_menu #language_toggle {
+		pointer-events:auto;
+	}
+	
+	#toggles span {
+		display:inline;
+	}
+	
+    #provider_popup img {
+		width:30px;
+	}
+	
+	#news_page .container {
+		padding:0 16px;
+	}
+	
+	#news_page #news .card-header .card-inner {
+		display:block;
+	}
+	
+	#news_page .card-inner #expiration span {
+		display:block;
+	}
+	
+	#show_me_menu .dropdown-menu {
+		border: none;
+		border-radius: 2px;
+		box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
+	}
+	
+	#show_me_menu .dropdown-menu li {
+		margin: 0!important;
+		padding: 0 16px!important;
+		height: 48px;
+		line-height: 48px!important;
+	}
+	
+	footer #site_desc, footer #site_desc.spanish {
+		margin:0;
+	}
+	
+	footer #copyright {
+		padding:0;
+	}
+	
+	footer #copyright .copyright_text {
+		display:inline;
+	}
+}
+
+/* Desktop/Laptop only. */
+@media only screen and (min-width:1280px) {	
+	#legend_card #title {
+		margin-bottom:12px;
+		display:block;
+	}
+	
+	#legend_card .col-xs-3 span+span {
+		margin-top:8px;
+	}
+}

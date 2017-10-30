@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyWater-Flint | Administrative Site</title>
+
+<link rel="shortcut icon" href="../images/favicon16.png" type="image/png" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="../css/base.min.css">
+<link rel="stylesheet" href="../css/project.min.css">
+
+<!-- Custom Theme files -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="css/template.css" rel="stylesheet" type="text/css" />
+<!--<link href="css/font-awesome.css" rel="stylesheet" type="text/css" />-->
+<link href="css/custom_styles.css" rel="stylesheet" type="text/css" />
+<link href="css/style.css" rel="stylesheet" type="text/css" />
+<link href="css/alternate_styles.css" rel="stylesheet" type="text/css" />
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js" type="text/javascript"></script>
+<script src="https://www.gstatic.com/firebasejs/3.5.3/firebase.js" type= "text/javascript"></script>
+<!-- Mainly scripts -->
+<!--<script src="https://use.fontawesome.com/8bd2681a13.js" type="text/javascript"></script>-->
+<script src="js/jquery.metisMenu.js" type="text/javascript"></script>
+<!-- Custom and plugin javascript -->
+<link href="css/custom.css" rel="stylesheet" rel="stylesheet" type="text/css" />
+<script src="js/custom.js" type="text/javascript"></script>
+<script src="js/screenfull.js" type="text/javascript"></script>
+
+{SCRIPT}
+
+<script type="text/javascript">
+	/* 
+	 * Idle Logout 
+	 * From: http://stackoverflow.com/a/955704
+	 */
+	var timer = 0;
+	var timeout;
+
+	var loginResetInterval = function() {
+		if (timer != 0) {
+			// first step: clear the existing timer
+			window.clearInterval(timer);
+			timer = 0;
+			window.clearTimeout(timeout);
+			
+			// second step: implement the timer again
+			timer = window.setInterval(loginAutoLogout, 1200000);
+			
+			$("#timeout_modal").modal("hide");
+		}
+	};
+
+	var loginAutoLogout = function() {
+		// warn user about impending logout two minutes before
+		$("#timeout_modal").on("click", loginResetInterval).modal("show");
+		
+		// auto-close timeout dialog after two min
+		timeout = setTimeout(function() {
+			firebase.auth().signOut().then(function(user) {
+				// redirect to the login page
+				window.location.href="login.php";
+			}, function(error) {
+				console.log(error);
+			});
+		}, 120000);
+	};
+	
+	/*$("body").on({
+		mousemove: loginResetInterval,
+		click: loginResetInterval,
+		keypress: loginResetInterval,
+		scroll: loginResetInterval
+	});*/
+	
+	$(document).ready(function() {
+		// the interval 'timer' is set as soon as the page loads to 20 min
+		//timer = window.setInterval(loginAutoLogout, 1200000);
+		
+		// the idle logout prevention dialog
+		$("body").prepend("<div id='timeout_modal' class='modal fade' tabindex='-1' role='dialog'>" +
+			"<div class='modal-dialog modal-sm' role='document'>" +
+				"<div class='modal-content'>" +
+					"<div class='modal-body'>In two minutes your session will end. Click \"OK\" to extend it another 20 min.</div>" +
+					"<div class='modal-footer'><button type='button' class='btn btn-default pull-right' data-dismiss='modal'>OK</button></div>" +
+				"</div>" +
+			"</div>" +
+		"</div>");
+		
+		// fix the AJAX linebreaks problem
+		$.valHooks.textarea = {
+		  get: function( elem ) {
+			return elem.value.replace( /\r?\n/g, "\r\n" );
+		  }
+		};
+	});
+</script>
+
+<!----->
+<!--skycons-icons-->
+<script src="js/skycons.js"></script>
+<!--//skycons-icons-->
+</head>
+
+<body id="{PAGE_ID}">
+<div id="loading_screen" class="hide"><div class="loader"></div></div>
+
+<div id="wrapper" class="hide">
+<!----->
+<nav id="main_menu" class="navbar-default navbar-static-top" role="navigation">
+	<div class="navbar-header">
+	<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	<span class="sr-only">Toggle navigation</span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	<span class="icon-bar"></span>
+	</button>
+	<h1><a id="home_link" class="navbar-brand" href="#">Administration</a></h1>
+	</div>
+	<div class=" border-bottom">
+	<!-- Brand and toggle get grouped for better mobile display -->
+
+	<!-- Collect the nav links, forms, and other content for toggling -->
+	<div class="drop-men">
+	<ul class="nav_1">
+	<li class="dropdown">
+	<a href="#" class="dropdown-toggle dropdown-at" data-toggle="dropdown"><span class="name-caret"></span> <i class="caret"></i></a>
+	<ul class="dropdown-menu" role="menu">
+	<li><a id="profile_link" href="#"><span class="material-icons nav_icon">edit</span> <span class="nav-label">Edit Profile</span></a></li>
+	<li><a id="logout_link" href="#"><span class="material-icons nav_icon">exit_to_app</span> <span class="nav-label">Logout</span></a></li>
+	</ul>
+	</li>
+	</ul>
+	</div><!-- /.navbar-collapse -->
+
+	<div class="navbar-default" role="navigation">
+	<div class="collapse navbar-collapse">
+	{NAVIGATION}
+	</div>
+	</div>
+
+	<div class="clearfix"></div>
+</nav>
+		
+<div id="page-wrapper" class="gray-bg dashbard-1">
+<div class="content-main">
+	{CONTENT}
+
+	<!---->
+	<div class="clearfix"> </div>
+	
+	<footer class="copy">
+	<div id="copyright">
+		<span>MyWater-Flint &copy;</span>
+		<span class="copyright_year"></span>
+		<a id="about_link" href="#">About</a>
+		<a id="disclaimer_link" href="#">Disclaimer</a>
+		<a id="privacy_link" href="#" class="hide">Privacy</a>
+		<a id="contact_link" href="#" data-toggle="modal" data-target="#contact_form">Contact</a>
+		<a id="login_link" href="#" class="hide">Login</a>
+	</div>
+	<div>Design by <a href="http://w3layouts.com/" target="_blank">W3layouts</a></div>
+	</footer>
+	
+	<div class="clearfix"> </div>
+</div>
+</div>
+</div>
+
+<div id="page_alert" class="alert alert-dismissible hide" role="alert"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="icon" aria-hidden="true">close</span></button></div>
+
+<div id="contact_form" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<form>
+		<div class="modal-content">
+			<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span class="icon" aria-hidden="true">close</span></button>
+			<h4 class="modal-title">Contact Us</h4>
+			</div>
+			
+			<div class="modal-body">
+				<div class="form-group">
+				<label for="email">Email:</label>
+				<input id="email" class="form-control" type="text" name="email" placeholder="Enter your email address if you would like a response." tabindex="1" />
+				</div>
+				
+				<div class="form-group">
+				<label for="comments">Comments<span class="required">*</span>:</label>
+				<textarea id="comments" class="form-control textarea-autosize" rows="5" name="comments" placeholder="Please enter between 20 and 1,000 characters." tabindex="2" character limit required></textarea>
+				<p class="char_count"></p>
+				</div>
+			</div>
+			
+			<div class="modal-footer">
+			<button type="button" class="btn btn-flat" data-dismiss="modal" tabindex="4">Cancel</button>
+			<button type="submit" class="submit_button btn btn-default" tabindex="3">Submit</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+</div>
+<!---->
+
+<script src="js/Chart.bundle.min.js" type="text/javascript"></script>
+<!--scrolling js-->
+<script src="js/jquery.nicescroll.js" type="text/javascript"></script>
+<script src="js/custom_scripts.js" type="text/javascript"></script>
+<script src="../js/map.js" type="text/javascript"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=[GOOGLE API KEY]&libraries=visualization,places" type="text/javascript"></script>
+<script src="https://apis.google.com/js/client.js?onload=setAPIKey" type="text/javascript"></script>
+<!--//scrolling js-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous" type= "text/javascript"></script>
+<script src="https://www.google.com/jsapi" type= "text/javascript"></script>
+<script src="../js/jquery.form.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/i18next.min.js"></script>
+<script type="text/javascript" src="../js/jquery-i18next.min.js"></script>
+<script type="text/javascript" src="../js/i18nextXHRBackend.min.js"></script>
+<script type="text/javascript" src="../js/i18nextBrowserLanguageDetector.min.js"></script>
+<script type="text/javascript" src="../js/i18nextLocalStorageCache.min.js"></script>
+<script type="text/javascript" src="../js/lang.js"></script>
+</body>
+</html>
