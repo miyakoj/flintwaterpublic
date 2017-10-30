@@ -10,6 +10,7 @@ This source gives you a starting point to create user and administration website
 * [Firebase Authentication](https://firebase.google.com/) (if the admin login is used "out of the box")
 * [PHP-JWT](https://github.com/firebase/php-jwt/) (to verify Firebase Authentication login tokens)
 * [Composer](https://getcomposer.org/) (used to manage the Google API Client Library, PHP-JWT, and all dependencies)
+* A database of water quality data. MyWater-Flint uses a MongoDB database provided by the University of Michigan-Ann Arbor Michigan Data Science Team.
 
 ### Libraries/Frameworks Used ###
 * [jQuery](http://jquery.com/)

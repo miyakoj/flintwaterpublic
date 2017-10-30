@@ -35,7 +35,7 @@ ehthumbs.db
 Thumbs.db
 
 # Custom files #
-*.yaml
+app.yaml
 *.bak
 navbar_test.html
 color_scheme.png

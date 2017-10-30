@@ -1,0 +1,132 @@
+application: [APPLICATION-ID]
+version: 1
+runtime: php55
+api_version: 1
+
+default_expiration: "1d"
+
+skip_files:
+- (.*/)?\.csv$
+- (.*/)?\.xlsx$
+
+handlers:
+#CRON JOBS
+- url: /cron/provider_processing
+  script: /cron/provider_processing.php
+  login: admin
+  
+- url: /cron/data_updates_db
+  script: /cron/data_updates_db.php
+  login: admin
+  
+- url: /cron/data_updates_ft
+  script: /cron/data_updates_ft.php
+  login: admin
+  
+- url: /cron/lead_area_processing
+  script: /cron/lead_area_processing.php
+  login: admin
+  
+- url: /cron/predictions_report
+  script: /cron/predictions_report.php
+  login: admin
+  
+#GENERAL HANDLERS
+- url: /(.*\.(htm|html|css|js|json))$
+  static_files: \1
+  upload: .*\.(htm|html|css|js|json)$
+  application_readable: true
+  
+- url: /(.*\.(ico|jpg|jpeg|png|gif))$
+  static_files: \1
+  upload: .*\.(ico|jpg|jpeg|png|gif)$
+  
+- url: /(.*\.(woff|woff2|ttf|otf|eot|svg))$
+  static_files: \1
+  upload: .*\.(woff|woff2|ttf|otf|eot|svg)$
+  
+- url: /admin/(.*\.(ico|jpg|jpeg|png|gif))$
+  static_files: \1
+  upload: admin/.*\.(ico|jpg|jpeg|png|gif)$
+
+#ADMIN SITE HANDLERS
+- url: /admin
+  script: admin/login.php
+  secure: always
+  
+- url: /admin/
+  script: admin/login.php
+  secure: always
+  
+- url: /admin/login.php
+  script: admin/login.php
+  secure: always
+  
+- url: /admin/page.php
+  script: admin/page.php
+  secure: always
+  
+#RESTRICTED SCRIPTS
+- url: /includes/json_processing.php
+  script: includes/json_processing.php.php
+  login: admin
+  auth_fail_action: unauthorized
+  
+- url: /includes/predictions_report
+  script: includes/predictions_report.php
+  login: admin
+  auth_fail_action: unauthorized
+  
+- url: /includes/lead_area_processing
+  script: includes/lead_area_processing.php
+  login: admin
+  auth_fail_action: unauthorized
+  
+- url: /includes/data_updates
+  script: includes/data_updates.php
+  login: admin
+  auth_fail_action: unauthorized
+  
+- url: /includes/queries
+  script: includes/queries.php
+  login: admin
+  auth_fail_action: unauthorized
+
+#MISC  
+- url: /index.php
+  script: index.php
+  
+- url: /index.html
+  script: index.php
+  
+- url: /page.php
+  script: page.php
+  
+- url: /(.+\.php)$
+  script: \1
+  
+- url: /
+  script: index.php
+  
+- url: /.*
+  script: 404.php
+  
+  
+# [START env]
+env_variables:
+  MYSQL_DSN: [MYSQL-DSN]
+  MYSQL_HOST: localhost
+  MYSQL_INSTANCE: [MYSQL-INSTANCE-ID]
+  MYSQL_USER: [MYSQL-USER]
+  MYSQL_PASSWORD: [MYSQL-PASSWORD]
+  MYSQL_DATABASE: [MYSQL-DATABASE]
+  MONGODB_IP: [MONGODB-IP-ADDRESS]
+  MONGODB_DATABASE: [MONGODB-DATABASE]
+  MONGODB_USER: [MONGODB-USER]
+  MONGODB_PASSWORD: [MONGODB-PASSWORD]
+  APP_EMAIL: [APP-EMAIL]
+  APP_ID: [APPLICATION-ID]
+  GOOGLE_APPLICATION_CREDENTIALS: [GOOGLE-APP-CREDENTIALS]
+  GOOGLE_SERVER_KEY: [GOOGLE-SERVER-KEY]
+  FIREBASE_SERVER_KEY: [FIREBASE-SERVER-KEY]
+# [END env]
