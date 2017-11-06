@@ -41,7 +41,7 @@ $content = "<div id='map_container'>
 			</div>
 		</div>
 		
-		<div id='legend_card' class='card'>
+		<div id='legend_card' class='card hide'>
 			<div class='card-main'>
 				<div class='card-inner'></div>
 			</div>

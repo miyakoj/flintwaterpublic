@@ -241,6 +241,7 @@ input[type='checkbox'] {
 
 #map_container {
 	width:100%;
+	position:relative;
 }
 
 #map {

@@ -178,55 +178,13 @@ function initMap() {
 
 	map.setOptions({styles: noPoi});
 	
-	//google.maps.event.addListener(map, 'tilesloaded', function() {
-		attachLegendCard();
+	attachLegendCard();
 
-		/* Position the map in the correct element if it exists on the page. */
-		if($("#search_input").length != 0)
-			$("#map_container #search_input").after($("#map"));
-		
-		$("#search_input").val(""); // clear the search input upon refresh
-		
-		/* General layout/CSS differences between the mobile and desktop versions. */
-		/* Phones and small tablets. */
-		if (windowWidth < 600) {
-			$("#location_card, #resource_card").appendTo($("body"));
-			$("#legend_card").appendTo($("map-container"));
-			
-			$("#resource_card #card_report_menu").on("click", function() {
-				$(this).find("li:first-child").addClass("dropup open");
-				$(this).find("#report_button").attr("aria-expanded", "true");
-			});
-		}
-		/* Large tablets and computers. */
-		else if (windowWidth >= 600) {
-			$("#location_card, #resource_card").css({
-				"width": function() {
-					return $("#search_input").outerWidth();
-				},
-				"top": function() {
-					return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
-				},
-				"left": function() {
-					return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
-				}
-			});
-			
-			$("#legend_card").css({
-				"width": function() {
-					return $("#location_card").outerWidth();
-				},
-				"top": function() {
-					return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
-				},
-				"left": function() {
-					return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
-				}
-			});
-		}
-		
-		//$("#legend_card").hide();
-	//});
+	/* Position the map in the correct element if it exists on the page. */
+	if($("#search_input").length != 0)
+		$("#map_container #search_input").after($("#map"));
+	
+	$("#search_input").val(""); // clear the search input upon refresh
 	
 	geocoder = new google.maps.Geocoder();
 	
@@ -401,7 +359,47 @@ function initMap() {
 	// Changes CSS to make search bar visible, making sure it isn't displayed before the map
 	map.addListener('idle', function() {
 		$("#search_input").css("display", "block");
-		$("#legend_card").show();
+		
+		/* General layout/CSS differences between the mobile and desktop versions. */
+		/* Phones and small tablets. */
+		if (windowWidth < 600) {
+			$("#location_card, #resource_card").appendTo($("body"));
+			$("#legend_card").appendTo($("map-container"));
+			
+			$("#resource_card #card_report_menu").on("click", function() {
+				$(this).find("li:first-child").addClass("dropup open");
+				$(this).find("#report_button").attr("aria-expanded", "true");
+			});
+		}
+		/* Large tablets and computers. */
+		else if (windowWidth >= 600) {
+			$("#location_card, #resource_card").css({
+				"width": function() {
+					return $("#search_input").outerWidth();
+				},
+				"top": function() {
+					return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
+				},
+				"left": function() {
+					return parseInt($("#search_input").css("left")) + parseInt($("#search_input").css("margin-left")) + "px";
+				}
+			});
+			
+			$("#legend_card").css({
+				"width": function() {
+					return $("#location_card").outerWidth();
+				},
+				"top": function() {
+					//console.log(parseInt($("#search_input").css("top")));
+					return parseInt($("#search_input").css("top")) + $("#search_input").outerHeight(true) + 10 + "px";
+				},
+				"left": function() {
+					return parseInt($("#location_card").css("left")) + parseInt($("#location_card").css("margin-left")) + "px";
+				}
+			});
+		}
+		
+		$("#legend_card").removeClass('hide');
 		$("#loading_screen").addClass("hide");
 	});
 	
