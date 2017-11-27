@@ -1072,7 +1072,9 @@ if (@isset($_POST["pid"])) {
 					<div class='content-top-1'>
 					<section>
 					<p class='text-justify'>The MyWater-Flint Administration site was developed by <a href='http://www.umflint.edu'>University of Michigan-Flint</a> to assist with research and the prioritization of relief efforts.</p>
-					<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United Status Postal Service (both via <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>UM-Ann Arbor Michigan Data Science Team</a>). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
+					<p class='text-justify'>Water test data courtesy of the <a href='http://www.michigan.gov/flintwater/0,6092,7-345-76292_76294_76297---,00.html'>State of Michigan</a> and property abandonment data courtesy of the United Status Postal Service (both via <a href='http://web.eecs.umich.edu/~jabernet/FlintWater/data_dive_summary.html'>UM-Ann Arbor Michigan Data Science Team</a>). Predicted risk results (developed using computer modeling) courtesy of UM-Ann Arbor MDST. Resource site information courtesy of <a href='https://www.cityofflint.com/water-sites/'>City of Flint</a> and <a href='http://www.flintcares.com'>Flint Cares</a>.</p>
+					
+					<iframe class='center-block' src='https://ghbtns.com/github-btn.html?user=miyakoj&repo=flintwaterpublic&type=fork&size=large' frameborder='0' scrolling='0' width='80px' height='30px'></iframe>
 					</section>
 					</div>
 				</div>
@@ -1211,9 +1213,31 @@ if (@isset($_POST["pid"])) {
 		
 		$numTestsData = arrayAccumulation($testLevelsData[2]);
 		
-		
 		$script = "<script type='text/javascript'>
 		$(document).ready(function() {
+			/* from: https://stackoverflow.com/a/15666143/7843806 */
+			var PIXEL_RATIO = (function () {
+				var ctx = document.createElement('canvas').getContext('2d'),
+					dpr = window.devicePixelRatio || 1,
+					bsr = ctx.webkitBackingStorePixelRatio ||
+						  ctx.mozBackingStorePixelRatio ||
+						  ctx.msBackingStorePixelRatio ||
+						  ctx.oBackingStorePixelRatio ||
+						  ctx.backingStorePixelRatio || 1;
+
+				return dpr / bsr;
+			})();
+			var createHiPPICanvas = function(w, h) {
+				var ratio = PIXEL_RATIO;
+				var can = document.createElement('canvas');
+				can.width = w * ratio;
+				can.height = h * ratio;
+				can.style.width = w + 'px';
+				can.style.height = h + 'px';
+				can.getContext('2d').setTransform(ratio, 0, 0, ratio, 0, 0);
+				return can;
+			}
+
 			/* Global Chart Config */
 			Chart.defaults.global.defaultFontFamily = '\"Verdana\", sans-serif';
 			Chart.defaults.global.defaultFontSize = 11;

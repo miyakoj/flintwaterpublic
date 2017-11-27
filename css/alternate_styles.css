@@ -124,7 +124,6 @@
 	}
 	
 	#show_me_menu ul {
-		padding-left:0!important;
 		position:absolute!important;
 	}
 	
@@ -210,10 +209,6 @@
 	
 	#slide-nav, #navbar-height-col {
 		z-index:auto!important;
-	}
-	
-	#language_menu ul {
-		padding-left:5px!important;
 	}
 	
 	#language_menu .nav li {

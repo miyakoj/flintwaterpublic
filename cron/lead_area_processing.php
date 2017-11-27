@@ -349,6 +349,7 @@ function lead_area_processing() {
 	$options = ['gs' => ['Content-Type' => 'application/json', 'read_cache_expiry_seconds' => '86400']];
 	$context = stream_context_create($options);
 	file_put_contents("gs://h2o-flint.appspot.com/".$filename, $output, 0, $context);
+	//file_put_contents($filename, $output);
 }
 
 ?>

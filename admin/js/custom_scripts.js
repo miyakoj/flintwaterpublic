@@ -38,11 +38,11 @@ $("#loading_screen").removeClass("hide");
 	
 	// Initialize Firebase
 	config = {
-		apiKey: "AIzaSyAphuqStHEGm66EUi4fsdaU8OtOwuUnOrY",
-		authDomain: "uniteflint.firebaseapp.com",
-		databaseURL: "https://uniteflint.firebaseio.com",
-		storageBucket: "uniteflint.appspot.com",
-		messagingSenderId: "402781339047"
+		apiKey: "[FIREBASE API KEY]",
+		authDomain: "[FIREBASE ACCOUNT URL]",
+		databaseURL: "[FIREBASE DATABASE]",
+		storageBucket: "[FIREBASE STORAGE BUCKET]",
+		messagingSenderId: "[FIREBASE MESSAGING SENDER ID]"
 	};
 	app = firebase.initializeApp(config);
 	auth = firebase.auth();
