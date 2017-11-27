@@ -35,7 +35,7 @@ if (@isset($_GET["pid"])) {
 		case "test":
 			$pagetitle = "Test Your Water";
 			$content = "<div id='water_test' class='container-fluid'>
-				<h2 data-i18n='testPage.waterTestPageTitle'></h2>
+				<h2 data-i18n='testPage.testPageTitle'></h2>
 				<div class='row'>
 					<div id='topbar' class='col-xs-12'></div>
 				

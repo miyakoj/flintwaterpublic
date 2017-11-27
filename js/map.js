@@ -662,9 +662,7 @@ function attachLegendCard() {
 
 	$("#legend_card .card-inner").empty().html(placeholderDetails);	
 	$("#legend_card").show();
-	
-	if (location.href.indexOf("admin") == '-1')
-		$("#legend_card").localize();
+	$("#legend_card").localize();
 }
 	
 
@@ -682,7 +680,7 @@ function callStorageAPI(object) {
 			if (object == "leadLevels_birdview.json") {
 				js_obj = $.parseJSON(resp.body);
 				
-				console.log(js_obj);
+				//console.log(js_obj);
 				
 				leadLayerBirdViewMarkers = [];
 				

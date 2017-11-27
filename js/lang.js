@@ -72,7 +72,7 @@ $(document).ready(function() {
 		backend: {
 			loadPath: loadPath
 		}
-	}, (err, t) => {
+	}, function(err, t) {		
 		/* Use jQuery to replace text. */
 		jqueryI18next.init(i18next, $, {
 			tName: 't', // --> appends $.t = i18next.t

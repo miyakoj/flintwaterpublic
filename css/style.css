@@ -156,12 +156,19 @@ header {
 
 #show_me_menu ul, #language_menu ul {
 	min-height:20px!important;
-	padding:5px 5px 5px 25px!important;
+	padding:5px 5px 5px 5px!important;
 	position:static;
 }
 
 #show_me_menu li:nth-child(4) {
 	display:none;
+}
+
+#language_menu .dropdown-menu a {
+	min-height:35px!important;
+	padding-top:0!important;
+	padding-bottom:0!important;
+	line-height:35px!important;
 }
 
 
