@@ -35,6 +35,7 @@ There are areas that require you to insert your own API keys and other informati
 * /manifest.json - Firebase Cloud Messaging client ID.
 * /admin/includes/globals.php - The total number of households in your town/city.
 * /admin/includes/template.html - Google API key near the end of the file.
+* /admin/js/custom_scripts.js - Firebase API key and Firebase URLs.
 * /includes/template.html - Google Analytics IDs in the head of the file.
 * /js/map.js - Google Client ID, Google API key, and the Google Fusion table ID of the table being used to provide water quality data.
 
