@@ -37,7 +37,7 @@
 		"pipesAlt": "Información sobre Tuberia"
 	},
 	"map": {
-		"searchText": "Buscar una ubicación",
+		"searchText": "Buscar una ubicación por dirección",
 		"saveBtnTitle": "Guardar Dirección",
 		"saveBtnText": "Guarda",
 		"211Text": "Necesita ayuda? Lllama",

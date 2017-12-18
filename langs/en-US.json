@@ -37,7 +37,7 @@
 		"pipesAlt": "Pipe Info"
 	},
 	"map": {
-		"searchText": "Search for a location",
+		"searchText": "Search for a location by address",
 		"saveBtnTitle": "Save Location",
 		"saveBtnText": "Save",
 		"211Text": "Need help? Call the",
