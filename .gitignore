@@ -55,7 +55,7 @@ fusion_table_all.csv
 fusion_table_recent.csv
 geo_locations.csv
 fusion_table_full.xlsx
-oath_client_id.json
+h2o-flint-oath-client-id.json
 /vendor
 js/map_old.js
 admin/firebase_rules.json
@@ -76,3 +76,4 @@ firebase_notifications_test.html
 h2o-flint-default-acct.json
 admin/images/icons.svg
 alerts.json
+temp.txt
